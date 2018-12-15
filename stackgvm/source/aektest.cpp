@@ -92,14 +92,20 @@ typedef enum {
 } HostFunctionEnum;
 
 Result hostPrintHeader(Scalar* frame) {
-    //std::printf("P6 %d %d 255 ", (int)frame[0].i, (int)frame[0].i);
+#ifdef _GVM_DEBUGGING_
     std::printf("OUTPUT PPM HEADER {P6 %d %d 255}\n", (int)frame[0].i, (int)frame[0].i);
+#else
+    //std::printf("P6 %d %d 255 ", (int)frame[0].i, (int)frame[0].i);
+#endif
     return SUCCESS;
 }
 
 Result hostPrintRGB(Scalar* frame) {
-    //std::printf("%c%c%c", (int)frame[0].f, (int)frame[1].f, (int)frame[2].f);
+#ifdef _GVM_DEBUGGING_
     std::printf("OUTPUT PPM PIXEL {%d, %d, %d}\n", (int)frame[0].f, (int)frame[1].f, (int)frame[2].f);
+#else
+    //std::printf("%c%c%c", (int)frame[0].f, (int)frame[1].f, (int)frame[2].f);
+#endif
     return SUCCESS;
 }
 
@@ -327,9 +333,12 @@ GFUNC(render) {
     vnorm_ll    (v_render_temp_0, v_render_direction)                                               // 3 [1, 1, 1]
 
     // pixel = vec3_add(vec3_scale(sample(orign, direction)), 3.5)                                  // 11
-    //call(sample)                                                                                    // 3 [1, 2]
+#ifdef _GVM_DEBUGGING_
+    hcall(shim_sample)                                                                              // 3 [1, 2]
+#else
+    call(sample)                                                                                    // 3 [1, 2]
+#endif
 
-    hcall(shim_sample)
 
     vfmul_lil   (m_render_sample_return, gf_rgb_scale, v_render_temp_0)                             // 4
     vadd_lll    (v_pixel_accumulator, v_render_temp_0, v_pixel_accumulator)                         // 4
@@ -354,12 +363,166 @@ GFUNC(render) {
     ret                                                                                             // 1
 };
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+typedef enum {
+    //
+    i_trace_material        = 0,
+    v_trace_origin          = 1,
+    v_trace_direction       = 4,
+    f_trace_distance        = 7,
+    v_trace_normal          = 8,
+    f_trace_p               = 11,
+    f_trace_k               = 12,
+    f_trace_j               = 13,
+} TraceLocalsEnum;
+
 GFUNC(trace) {
+// int32 trace(cvr3 origin, cvr3 direction, float32& distance, vec3& normal) {
+
+    addr_d      (g_globals, 0)                                                              // 3 [1, 1, 1]
+
+//   distance         = 1e9;
+    copy_il     (0, gf_distance_max, f_trace_distance)                                      // 4 [1, 1, 1, 1]
+
+//   // Assume trace hits nothing
+//   int32   material = 0;
+    load_sl     (0, i_trace_material)                                                       // 3 [1, 1, 1]
+//
+
+
+//   float32 p = -origin.z / direction.z;
+    fdiv_lll (v_trace_origin + 2, v_trace_direction + 2, f_trace_p)                         // 4 [1, 1, 1, 1]
+
+//   // Check if trace maybe hits floor
+//   if (0.01 < p) {
+//     distance = p,
+//     normal   = normal_up,
+//     material = 1;
+//   }
+                                                                                            // 11
+    fbge_li     (f_trace_p, gf_distance_min, 11)                                            // 4 [1, 1, 2]
+    copy_ll     (f_trace_p, f_trace_distance)                                               // 3 [1, 1, 1]
+    vcopy_il    (gv_normal_up, v_trace_normal)                                              // 3 [1, 1, 1]
+    load_sl     (1, i_trace_material)                                                       // 3 [1, 1, 1]
+
+
+    load_sl     (19, f_trace_k)                                                             // 3 [1, 1, 1]
+//   // Check if trace maybe hits a sphere
+//   for (int32 k = 19; k--;) {
+
+    load_sl     (9, f_trace_j)                                                              // 3 [1, 1, 1]
+//     for (int32 j = 9; j--;) {
+//       if (data[j] & 1 << k) {
+//         vec3 p = vec3_sub(
+//           origin,
+//           vec3(k, 0.0, j + 4.0) // Sphere coordinate
+//         );
+//
+//         float32
+//           b = dot(p, direction),
+//           eye_offset = dot(p, p) - 1.0,
+//           q = b * b - eye_offset
+//         ;
+//         if (q > 0) {
+//           float32 sphere_distance = -b - sqrt(q);
+//           if (sphere_distance < distance && sphere_distance > 0.01) {
+//             distance = sphere_distance,
+//             normal   = vec3_normalize(
+//               vec3_add(p, vec3_scale(direction, distance))
+//             ),
+//             material = 2; // Returning here is fast, but we'd get z fighting
+//           }
+//         }
+//       }
+//     }
+//   }
+//
+//   return material;
+// }
     ret
 };
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 GFUNC(sample) {
-    vcopy_ll(6, 0)
+// vec3 sample(cvr3 origin, cvr3 direction) {
+//   float32 distance;
+//   vec3 normal;
+//
+//   // Find where the ray intersects the world
+//   int32 material = trace(origin, direction, distance, normal);
+//
+//   // Hit nothing? Sky shade
+//   if (!material) {
+//     float32 gradient = 1.0 - direction.z;
+//     gradient *= gradient;
+//     gradient *= gradient;
+//     return vec3_scale(
+//       sky_rgb, // Blueish sky colour
+//       gradient
+//     );
+//   }
+//
+//   vec3
+//     intersection = vec3_add(origin, vec3_scale(direction, distance)),
+//
+//     // Calculate the lighting vector
+//     light = vec3_normalize(
+//       vec3_sub(
+//         vec3( // lighting direction, plus a bit of randomness to generate soft shadows.
+//           9.0 + frand(),
+//           9.0 + frand(),
+//           16.0
+//         ),
+//         intersection
+//       )
+//     ),
+//
+//     half_vector = vec3_add(
+//       direction,
+//       vec3_scale(
+//         normal,
+//         dot(normal, direction) * -2.0
+//       )
+//     )
+//   ;
+//
+//   // Calculate the lambertian illumuination factor
+//   float32 lambertian = dot(light, normal);
+//   if (lambertian < 0 || trace(intersection, light, distance, normal)) {
+//     lambertian = 0; // in shadow
+//   }
+//
+//   // Hit the floor plane
+//   if (material & 1) {
+//     intersection = vec3_scale(intersection, 0.2);
+//     return vec3_scale(
+//       (
+//         // Compute check colour based on the position
+//         (int32) (ceil(intersection.x) + ceil(intersection.y)) & 1 ?
+//         floor_red_rgb : // red
+//         floor_white_rgb   // white
+//       ),
+//       (lambertian * 0.2 + 0.1)
+//     );
+//   }
+//
+//   // Compute the specular highlight power
+//   float32 specular = pow(dot(light, half_vector) * (lambertian > 0.0), 99.0);
+//
+//   // Hit a sphere
+//   return vec3_add(
+//     vec3(specular, specular, specular),
+//     vec3_scale(
+//       sample(intersection, half_vector),
+//       0.5
+//     )
+//   );
+// }
+    load_sl (0, 0)
+    load_sl (0, 1)
+    load_sl (0, 2)
     ret
 };
 
@@ -383,9 +546,13 @@ END_GFUNC_TABLE
 
 
 int main() {
+    FloatClock t;
     Interpreter::init(100, 0, functionTable, hostFunctionTable, globalData);
+    t.set();
     //Result result =
     Interpreter::invoke(render);
+    float32 elapsed = t.elapsed();
     Interpreter::done();
+    std::printf("Took %.6f seconds\n", elapsed);
     return 0;
 }
