@@ -5,6 +5,7 @@
 
 IS(FRND_L) {
     LOC(0).f = invRMax * std::rand();
+    //std::fprintf(stderr, "\tfrnd => %f\n", LOC(0).f);
     STEP(2);
     NEXT;
 }

@@ -31,10 +31,11 @@ typedef enum {
     gi_max_rays            = 31,
     gf_dof_scale           = 32,
     gf_dof_bias            = 33,
-    gf_rgb_scale           = 34,
-    gf_camera_scale        = 35,
-    gf_distance_max        = 36,
-    gf_distance_min        = 37,
+    gf_accum_scale         = 34,
+    gf_rgb_scale           = 35,
+    gf_camera_scale        = 36,
+    gf_distance_max        = 37,
+    gf_distance_min        = 38,
 } GlobalEnum;
 
 
@@ -70,6 +71,7 @@ Scalar globals[] = {
 #endif
     99.0f,   // gf_dof_scale
     0.5f,    // gf_dof_bias
+    16.0f,   // gf_accum_scale
     3.5f,    // gf_rgb_scale
     0.002f,  // gf_camera_scale
     1e9f,    // gf_distamce_max
@@ -86,6 +88,7 @@ Scalar globals[] = {
 typedef enum {
     print_header = 1,
     print_rgb,
+    shim_sample
 } HostFunctionEnum;
 
 Result hostPrintHeader(Scalar* frame) {
@@ -97,6 +100,22 @@ Result hostPrintHeader(Scalar* frame) {
 Result hostPrintRGB(Scalar* frame) {
     //std::printf("%c%c%c", (int)frame[0].f, (int)frame[1].f, (int)frame[2].f);
     std::printf("OUTPUT PPM PIXEL {%d, %d, %d}\n", (int)frame[0].f, (int)frame[1].f, (int)frame[2].f);
+    return SUCCESS;
+}
+
+// This function serves as a proxy for the virtual code sample function for now
+Result hostShimSample(Scalar* frame) {
+    frame[0].f = 1;
+    frame[1].f = 1;
+    frame[2].f = 1;
+    std::fprintf(
+        stderr,
+        "\nsample(origin:{%.6f, %.6f, %.6f}, direction:{%.6f, %.6f, %.6f}) => {%.6f, %.6f, %.6f}\n\n",
+        frame[3].f, frame[4].f, frame[5].f,
+        frame[6].f, frame[7].f, frame[8].f,
+        frame[0].f, frame[1].f, frame[2].f
+    );
+
     return SUCCESS;
 }
 
@@ -129,9 +148,12 @@ typedef enum {
     v_render_temp_0            = 19,
     v_render_temp_1            = 22,
     v_render_delta             = 25,
+    v_pixel_accumulator        = 28,
 
     m_next_func_param_space    = 32,
-    v_pixel_accumulator        = 32, // Crafty, Maybe.
+    m_render_sample_return     = 32,
+    v_render_origin            = 35,
+    v_render_direction         = 38
 } RenderLocalsEnum;
 
 GFUNC(render) {
@@ -208,21 +230,26 @@ GFUNC(render) {
 
 
 //  for (int32 y = image_size; y--;) {
+
     copy_ll     (i_render_image_size,   i_render_pixel_y_pos)                                       // 3 [1, 1, 1]
 
+// Y LOOP TARGET
 
 //      for (int32 x = image_size; x--;) {
 
     copy_ll     (i_render_image_size,   i_render_pixel_x_pos)                                       // 3 [1, 1, 1]
 
 
+// X LOOP TARGET
+
 //          vec3 pixel(13.0, 13.0, 13.0);
 
     vcopy_il    (gv_const_ambient_rgb,  v_pixel_accumulator)                                        // 3 [1, 1, 1]
 
 //          for (int32 ray_count = 64; ray_count--;) {
-
     copy_il     (0, gi_max_rays, i_render_ray_count)                                                // 3 [1, 1, 1]
+
+//  RAY COUNT LOOP TARGET
 
 //          // Random delta to be added for depth of field effects
 //              vec3 delta = vec3_add(
@@ -230,36 +257,100 @@ GFUNC(render) {
 //                  vec3_scale(camera_right, (frand() - 0.5) * 99.0)
 //              );
 
-    // vec3_scale(camera_up,    (frand() - 0.5) * 99.0)                                             // 14
+    //                                                                                              // 32
+    // v0 = vec3_scale(camera_up,    (frand() - 0.5) * 99.0)                                        // 14
     frnd_l      (m_render_temp_0)                                                                   // 2 [1, 1]
     fsub_lil    (m_render_temp_0,       gf_dof_bias,                m_render_temp_0)                // 4 [1, 1, 1, 1]
     fmul_ill    (gf_dof_scale,          m_render_temp_0,            m_render_temp_0)                // 4 [1, 1, 1, 1]
     vfmul_lll   (v_render_camera_up,    m_render_temp_0,            v_render_temp_0)                // 4 [1, 1, 1, 1]
 
-    // vec3_scale(camera_right, (frand() - 0.5) * 99.0)                                             // 14
+    // delta = vec3_add(v0, vec3_scale(camera_right, (frand() - 0.5) * 99.0))                       // 18
     frnd_l      (m_render_temp_0)                                                                   // 2 [1, 1]
     fsub_lil    (m_render_temp_0,       gf_dof_bias,                m_render_temp_0)                // 4 [1, 1, 1, 1]
     fmul_ill    (gf_dof_scale,          m_render_temp_0,            m_render_temp_0)                // 4 [1, 1, 1, 1]
     vfmul_lll   (v_render_camera_right, m_render_temp_0,            v_render_temp_1)                // 4 [1, 1, 1, 1]
-
     vadd_lll    (v_render_temp_0,       v_render_temp_1,            v_render_delta)                 // 4 [1, 1, 1, 1]
+
+//         // Accumulate the sample result into the current pixel
+//         pixel  = vec3_add(
+//           vec3_scale(
+//             sample(
+//               vec3_add(
+//                 focal_point,
+//                 delta
+//               ),
+//               vec3_normalize(
+//                 vec3_sub(
+//                   vec3_scale(
+//                     vec3_add(
+//                       vec3_scale(camera_up, frand() + x),
+//                       vec3_add(
+//                         vec3_scale(camera_right, frand() + y),
+//                         eye_offset
+//                       )
+//                     ),
+//                     16.0
+//                   ),
+//                   delta
+//                 )
+//               )
+//             ),
+//             3.5
+//           ),
+//           pixel
+//         );
+//       }
+
+    //                                                                                              // 49
+    // origin = vec3_add(focal_point, delta)
+    vadd_ill    (gv_focal_point, v_render_delta, v_render_origin)                                   // 4 [1, 1, 1, 1]
+
+    // v0 = vec3_add(vec3_scale(camera_right, frand() + y), eye_offset)                             // 17
+    itof_ll     (i_render_pixel_y_pos,  m_render_temp_0)                                            // 3 [1, 1, 1]
+    frnd_l      (m_render_temp_1)                                                                   // 2 [1, 1]
+    fadd_lll    (m_render_temp_0, m_render_temp_1, m_render_temp_0)                                 // 4
+    vfmul_lll   (v_render_camera_right, m_render_temp_0, v_render_temp_0)                           // 4
+    vadd_lll    (v_render_temp_0, v_render_eye_offset, v_render_temp_0)                             // 4
+
+    // v1 = vec3_scale(camera_up, frand() + x),                                                     // 13
+    itof_ll     (i_render_pixel_x_pos,  m_render_temp_0)                                            // 3 [1, 1, 1]
+    frnd_l      (m_render_temp_1)                                                                   // 2 [1, 1]
+    fadd_lll    (m_render_temp_0, m_render_temp_1, m_render_temp_0)                                 // 4 [1, 1, 1, 1]
+    vfmul_lll   (v_render_camera_up, m_render_temp_0, v_render_temp_1)                              // 4 [1, 1, 1, 1]
+
+    // v0 = vec3_scale(vec3_add(v0, v1), 16)                                                        // 8
+    vadd_lll    (v_render_temp_0, v_render_temp_1, v_render_temp_0)                                 // 4 [1, 1, 1, 1]
+    vfmul_lil   (v_render_temp_0, gf_accum_scale, v_render_temp_0)                                  // 4 [1, 1, 1, 1]
+
+    // v0 = vec3_sub(v0, delta)                                                                     // 7
+    vsub_lll    (v_render_temp_0, v_render_delta, v_render_temp_0)                                  // 4 [1, 1, 1, 1]
+    vnorm_ll    (v_render_temp_0, v_render_direction)                                               // 3 [1, 1, 1]
+
+    // pixel = vec3_add(vec3_scale(sample(orign, direction)), 3.5)                                  // 11
+    //call(sample)                                                                                    // 3 [1, 2]
+
+    hcall(shim_sample)
+
+    vfmul_lil   (m_render_sample_return, gf_rgb_scale, v_render_temp_0)                             // 4
+    vadd_lll    (v_pixel_accumulator, v_render_temp_0, v_pixel_accumulator)                         // 4
 
 //          } // ray loop
 
-    dbnz_l      (i_render_ray_count, -14-14-4)                                                        // 4 [1, 1, 2]
+    dbnz_l      (i_render_ray_count, -11-49-32)                                                     // 4 [1, 1, 2]
 
 //          printf("%c%c%c", (int32)pixel.x, (int32)pixel.y, (int32)pixel.z);
-
+                                                                                                    // 6
+    vcopy_ll    (v_pixel_accumulator, m_next_func_param_space)                                      // 3
     hcall       (print_rgb)                                                                         // 3 [1, 2]
 
 //      } // x loop
 
-    dbnn_l      (i_render_pixel_x_pos, -3-3-4-3-14-14-4)                                            // 4 [1, 1, 2]
+    dbnn_l      (i_render_pixel_x_pos, -4-6-11-49-32-3-3)                                           // 4 [1, 1, 2]
 
 
 //  } // y loop
 
-    dbnn_l      (i_render_pixel_y_pos, -4-3-3-3-4-3-14-14-4)                                        // 4 [1, 1, 2]
+    dbnn_l      (i_render_pixel_y_pos, -4-4-6-11-49-32-3-3-3)                                       // 4 [1, 1, 2]
     ret                                                                                             // 1
 };
 
@@ -268,6 +359,7 @@ GFUNC(trace) {
 };
 
 GFUNC(sample) {
+    vcopy_ll(6, 0)
     ret
 };
 
@@ -279,12 +371,13 @@ END_GDATA_TABLE
 
 BEGIN_GHOST_TABLE(hostFunctionTable)
     hostPrintHeader,
-    hostPrintRGB
+    hostPrintRGB,
+    hostShimSample
 END_GHOST_TABLE
 
 BEGIN_GFUNC_TABLE(functionTable)
     { _gvm_render, 32,  0,  0, 32 },
-    { _gvm_trace,  0,   0,  0,  0 },
+    { _gvm_trace,  9,   3,  6,  0 },
     { _gvm_sample, 0,   0,  0,  0 }
 END_GFUNC_TABLE
 

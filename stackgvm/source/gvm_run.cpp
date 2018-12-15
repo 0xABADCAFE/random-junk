@@ -33,9 +33,11 @@ using namespace GVM;
 
 #define FETCH         switch (*PRGC)
 #ifdef _GVM_DEBUG_OPCODES_
-    #define IS(opcode)    case Opcode::_##opcode: std::fprintf(stderr, "\t%-10s %3d %3d %3d\n", #opcode, (int)PRGC[1], (int)PRGC[2], (int)PRGC[3]);
+    #define IS(opcode)          case Opcode::_##opcode: std::fprintf(stderr, "\t%-10s %3d %3d %3d\n", #opcode, (int)PRGC[1], (int)PRGC[2], (int)PRGC[3]);
+    #define gvmDebugOpcode(...) std::fprintf(stderr, __VA_ARGS__)
 #else
     #define IS(opcode)    case Opcode::_##opcode:
+    #define gvmDebugOpcode(...)
 #endif
 #define NEXT          goto forever
 #define STEP(size)    PRGC += (size)
