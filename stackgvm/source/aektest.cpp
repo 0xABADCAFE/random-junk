@@ -375,6 +375,7 @@ typedef enum {
     f_trace_p               = 11,
     f_trace_k               = 12,
     f_trace_j               = 13,
+    m_trace_temp_0          = 14
 } TraceLocalsEnum;
 
 GFUNC(trace) {
@@ -414,6 +415,13 @@ GFUNC(trace) {
     load_sl     (9, f_trace_j)                                                              // 3 [1, 1, 1]
 //     for (int32 j = 9; j--;) {
 //       if (data[j] & 1 << k) {
+
+    cpix_il     (0, gi_bitmap, f_trace_j, m_trace_temp_0)                                   // 4 [1, 1, 1, 1]
+
+
+    dbnn_l      (f_trace_j, -4-4)                                                           // 4 [1, 1, 2]
+    dbnn_l      (f_trace_k, -4-4-4)                                                         // 4 [1, 1, 2]
+
 //         vec3 p = vec3_sub(
 //           origin,
 //           vec3(k, 0.0, j + 4.0) // Sphere coordinate
@@ -444,6 +452,21 @@ GFUNC(trace) {
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+typedef enum {
+    //
+    v_sample_rgb          = 0,
+    v_sample_origin       = 3,
+    v_sample_direction    = 6,
+    v_sample_intersection = 9,
+    v_sample_light        = 12,
+    v_sample_half_vector  = 15,
+    i_sample_material     = 18,
+    f_sample_lambertian   = 19,
+    f_sample_specular     = 20,
+
+
+} SampleLocalsEnum;
 
 GFUNC(sample) {
 // vec3 sample(cvr3 origin, cvr3 direction) {
@@ -540,8 +563,8 @@ END_GHOST_TABLE
 
 BEGIN_GFUNC_TABLE(functionTable)
     { _gvm_render, 32,  0,  0, 32 },
-    { _gvm_trace,  9,   3,  6,  0 },
-    { _gvm_sample, 0,   0,  0,  0 }
+    { _gvm_trace,  0,   0,  0,  0 },
+    { _gvm_sample, 9,   3,  6,  0 }
 END_GFUNC_TABLE
 
 

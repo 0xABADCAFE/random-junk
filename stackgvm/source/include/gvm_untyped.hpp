@@ -352,6 +352,20 @@ IS(COPY_I1L) {
     NEXT;
 }
 
+IS(CPIX_I0L) {
+    // Copy indirect indexed by local to local
+    LOC(2).u = UIX0(1)[LOC(1).u];
+    STEP(3);
+    NEXT;
+}
+
+IS(CPIX_I1L) {
+    // Copy indirect indexed by local to local
+    LOC(2).u = UIX1(1)[LOC(1).u];
+    STEP(3);
+    NEXT;
+}
+
 IS(COPY_LI0) {
     // Copy a local scalar to an indirect
     IX0(1).u = LOC(0).u;

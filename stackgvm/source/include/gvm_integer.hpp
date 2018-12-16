@@ -80,11 +80,17 @@ IS(BGT_II) {
 // Decrement Integer And Branch If Not Zero ////////////////////////////////////////////////////////////////////////////
 
 IS(DBNZ_L) {
+    gvmDebugOpcode(
+        "\tdbnz {%d} => ",
+        LOC(0).i
+    );
     // Decrement local and branch if not zero
     if (--LOC(0).i) {
+        gvmDebugOpcode("{%d} branch taken %d\n", (int)LOC(0).i, (int)J16(1));
         STEP(J16(1));
         NEXT;
     }
+    gvmDebugOpcode("{%d} branch not taken\n", (int)LOC(0).i);
     STEP(4);
     NEXT;
 }
@@ -92,11 +98,17 @@ IS(DBNZ_L) {
 // Decrement Integer And Branch If Not Negative ////////////////////////////////////////////////////////////////////////
 
 IS(DBNN_L) {
-    // Decrement local and branch if not zero
+    gvmDebugOpcode(
+        "\tdbnn {%d} => ",
+        LOC(0).i
+    );
+    // Decrement local and branch if not negative
     if (--LOC(0).i >= 0) {
+        gvmDebugOpcode("{%d} branch taken %d\n", (int)LOC(0).i, (int)J16(1));
         STEP(J16(1));
         NEXT;
     }
+    gvmDebugOpcode("{%d} branch not taken\n", (int)LOC(0).i);
     STEP(4);
     NEXT;
 }

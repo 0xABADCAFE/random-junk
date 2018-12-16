@@ -62,6 +62,9 @@ namespace GVM {
             _COPY_I0L,  // Copy an indirect[0] scalar to a local
             _COPY_I1L,  // Copy an indirect[1] scalar to a local
 
+            _CPIX_I0L,
+            _CPIX_I1L,
+
             _COPY_LI0,  // Copy a local scalar to indirect[0] variable
             _COPY_LI1,  // Copy a local scalar to indirect[1] variable
             _COPY_II,  // Copy an indirect scalar to another indirect

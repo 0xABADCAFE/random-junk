@@ -60,10 +60,11 @@
 #define save_il(I,l)      _OP(SAVE_##I##L),  _D8(l),
 #define load_hl(h,l)      _OP(LOAD_HL),      _D8(h), _D8(l),
 
-#define copy_ll(l1,l2)    _OP(COPY_LL),      _D8(l1), _D8(l2),
-#define copy_il(I,i,l)    _OP(COPY_I##I##L), _D8(i),  _D8(l),
-#define copy_li(l,I,i)    _OP(COPY_LI##I),   _D8(l),  _D8(i),
-#define copy_ii(i1,i2)    _OP(COPY_II),      _D8(i1), _D8(i2),
+#define copy_ll(l1,l2)      _OP(COPY_LL),      _D8(l1), _D8(l2),
+#define copy_il(I,i,l)      _OP(COPY_I##I##L), _D8(i),  _D8(l),
+#define cpix_il(I,i,l1,l2)  _OP(CPIX_I##I##L), _D8(i),  _D8(l1), _D8(l2),
+#define copy_li(l,I,i)      _OP(COPY_LI##I),   _D8(l),  _D8(i),
+#define copy_ii(i1,i2)      _OP(COPY_II),      _D8(i1), _D8(i2),
 
 #define itof_ll(l1,l2)    _OP(ITOF_LL),      _D8(l1), _D8(l2),
 #define ftoi_ll(l1,l2)    _OP(FTOI_LL),      _D8(l1), _D8(l2),
