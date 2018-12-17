@@ -98,10 +98,10 @@
 #define bclr_l(b,x) _OP(BCLR_SL), _D8(b), _D8(l),
 #define bclr_i(b,x) _OP(BCLR_SI), _D8(b), _D8(i),
 
-#define bbs_l(b,l,j) _OP(BBS_SL), _D8(b), _D8(l), _D16(j),
-#define bbs_i(b,i,j) _OP(BBS_SI), _D8(b), _D8(i), _D16(j),
-#define bbc_l(b,l,j) _OP(BBC_SL), _D8(b), _D8(l), _D16(j),
-#define bbc_i(b,i,j) _OP(BBC_SI), _D8(b), _D8(i), _D16(j),
+#define bbs_sl(b,l,j) _OP(BBS_SL), _D8(b), _D8(l), _D16(j),
+#define bbs_si(b,i,j) _OP(BBS_SI), _D8(b), _D8(i), _D16(j),
+#define bbc_l(b,l,j)  _OP(BBC_SL), _D8(b), _D8(l), _D16(j),
+#define bbc_si(b,i,j) _OP(BBC_SI), _D8(b), _D8(i), _D16(j),
 //
 // // Two operand logical negate
 #define not_ll(l1,l2) _OP(NOT_LL),       _D8(l1), _D8(l2),

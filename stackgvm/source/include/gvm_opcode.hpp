@@ -99,10 +99,10 @@ namespace GVM {
             _BSET_SI, // Set bit in indirect
             _BCLR_SL, // Clear bit in local
             _BCLR_SI, // Clear bit in indirect
-            _BBS_SL,  // Branch if bit is set (local)
+            _BBS_SL,  // Branch if bit is set (fixed in local)
             _BBS_SI,  // Branch if bit is set (indirect)
             _BBC_SL,  // Branch if bit is clear (local)
-            _BBC_SI,  // Branch if bit os clear (indirect)
+            _BBC_SI,  // Branch if bit is clear (indirect)
 
             // Two operand logical negate
             _NOT_LL,

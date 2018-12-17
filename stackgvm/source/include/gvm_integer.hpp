@@ -200,7 +200,7 @@ IS(BBC_SL) {
 }
 
 IS(BBC_SI) {
-    // Branch if bit os clear (indirect)
+    // Branch if bit is clear (indirect)
     if (!(IX0(1).u & (1 << U8(0)))) {
         STEP(J16(2));
         NEXT;

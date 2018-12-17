@@ -376,6 +376,14 @@ typedef enum {
     f_trace_k               = 12,
     f_trace_j               = 13,
     m_trace_temp_0          = 14,
+    m_trace_temp_1          = 15,
+    m_trace_temp_2          = 16,
+    m_trace_temp_3          = 17,
+    v_trace_sphere          = 18,
+    v_trace_p               = 21,
+    f_trace_b               = 22,
+    f_trace_eye_offset      = 23,
+    f_frace_q               = 24
 } TraceLocalsEnum;
 
 GFUNC(trace) {
@@ -407,27 +415,53 @@ GFUNC(trace) {
     vcopy_il    (gv_normal_up, v_trace_normal)                                              // 3 [1, 1, 1]
     load_sl     (1, i_trace_material)                                                       // 3 [1, 1, 1]
 
+    load_sl     (1, m_trace_temp_0)                                                         // 3 [1, 1, 1]
+    //   // Check if trace maybe hits a sphere
+
+    load_sl     (0, v_trace_sphere + 1)                                                     // 3 [1, 1, 1]
+    load_sl     (4, m_trace_temp_3)                                                         // 3 [1, 1, 1]
+//  for (int32 k = 19; k--;) {
     load_sl     (19, f_trace_k)                                                             // 3 [1, 1, 1]
-//   // Check if trace maybe hits a sphere
-//   for (int32 k = 19; k--;) {
 
+// Loop k target - TODO - these loops should be inverted so that the j loop is outermost
+    lsl_lll     (m_trace_temp_0, f_trace_k, m_trace_temp_1)                                 // 4 [1, 1, 1, 1]
+//      for (int32 j = 9; j--;) {
     load_sl     (8, f_trace_j)                                                              // 3 [1, 1, 1]
-//     for (int32 j = 9; j--;) {
-//       if (data[j] & 1 << k) {
 
-    cpix_il     (0, gi_bitmap, f_trace_j, m_trace_temp_0)                                   // 4 [1, 1, 1, 1]
-
-
-    dbnn_l      (f_trace_j, -4)                                                             // 4 [1, 1, 2]
-    dbnn_l      (f_trace_k, -4-4-3)                                                         // 4 [1, 1, 2]
+// Loop j target
+//       if (data[j] & 1 << k) {                                                            // 12
+    cpix_il     (0, gi_bitmap, f_trace_j, m_trace_temp_2)                                   // 4 [1, 1, 1, 1]
+    and_lll     (m_trace_temp_1, m_trace_temp_2, m_trace_temp_2)                            // 4 [1, 1, 1, 1]
+    bez_l       (m_trace_temp_2, 33)                                                        // 4 [1, 1, 2]
 
 //         vec3 p = vec3_sub(
 //           origin,
 //           vec3(k, 0.0, j + 4.0) // Sphere coordinate
 //         );
-//
+                                                                                            // 14
+    itof_ll     (f_trace_k, v_trace_sphere)                                                 // 3 [1, 1, 1]
+    add_lll     (f_trace_j, m_trace_temp_3, m_trace_temp_2)                                 // 4 [1, 1, 1, 1]
+    itof_ll     (m_trace_temp_2, v_trace_sphere + 2)                                        // 3 [1, 1, 1]
+    vsub_lll    (v_trace_origin, v_trace_sphere, v_trace_p)                                 // 4 [1, 1, 1, 1]
+
 //         float32
-//           b = dot(p, direction),
+//           b = dot(p, direction),                                                         // 15
+    vdot_lll    (v_trace_p, v_trace_direction, f_trace_b)                                   // 4
+
+//           eye_offset = dot(p, p) - 1.0,
+    itof_ll     (m_trace_temp_0, m_trace_temp_1)                                            // 3
+    vdot_lll    (v_trace_p, v_trace_p, m_trace_temp_2)                                      // 4
+    fsub_lll    (m_trace_temp_2, m_trace_temp_1, f_trace_eye_offset)                        // 4
+
+//      } j
+    dbnn_l      (f_trace_j, -15-14-12)                                                // 4 [1, 1, 2]
+
+//  } k
+    dbnn_l      (f_trace_k, -4 -15-14-12-3-4)                                         // 4 [1, 1, 2]
+
+
+//
+
 //           eye_offset = dot(p, p) - 1.0,
 //           q = b * b - eye_offset
 //         ;
@@ -573,6 +607,7 @@ END_GFUNC_TABLE
 
 
 int main() {
+    std::printf("Max Opcode %d\n", Opcode::_MAX);
     FloatClock t;
     Interpreter::init(100, 0, functionTable, hostFunctionTable, globalData);
 

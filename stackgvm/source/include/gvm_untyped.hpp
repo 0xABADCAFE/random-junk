@@ -118,11 +118,17 @@ IS(LI1BNN) {
 // Single Operand Branch If Zero ///////////////////////////////////////////////////////////////////////////////////////
 
 IS(BEZ_L) {
+    gvmDebugOpcode(
+        "\tbez {%u} => ",
+        LOC(0).u
+    );
     // Branch to a signed 16-bit offset if local is equal to zero
     if (0 == LOC(0).u) {
+        gvmDebugOpcode("branch taken %d\n", (int)J16(1));
         STEP(J16(1));
         NEXT;
     }
+    gvmDebugOpcode("branch not taken\n");
     STEP(4);
     NEXT;
 }
