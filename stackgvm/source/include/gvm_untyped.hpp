@@ -354,15 +354,17 @@ IS(COPY_I1L) {
 
 IS(CPIX_I0L) {
     // Copy indirect indexed by local to local
-    LOC(2).u = UIX0(1)[LOC(1).u];
-    STEP(3);
+    LOC(2).u = UIX0(0)[LOC(1).u];
+    gvmDebug("\tcpix [%u] %u\n", (unsigned)LOC(1).u, (unsigned)LOC(2).u);
+    STEP(4);
     NEXT;
 }
 
 IS(CPIX_I1L) {
     // Copy indirect indexed by local to local
-    LOC(2).u = UIX1(1)[LOC(1).u];
-    STEP(3);
+    LOC(2).u = UIX1(0)[LOC(1).u];
+    gvmDebug("\tcpix [%u] %u\n", (unsigned)LOC(1).u, (unsigned)LOC(2).u);
+    STEP(4);
     NEXT;
 }
 

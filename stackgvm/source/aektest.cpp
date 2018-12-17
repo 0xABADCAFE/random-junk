@@ -375,7 +375,7 @@ typedef enum {
     f_trace_p               = 11,
     f_trace_k               = 12,
     f_trace_j               = 13,
-    m_trace_temp_0          = 14
+    m_trace_temp_0          = 14,
 } TraceLocalsEnum;
 
 GFUNC(trace) {
@@ -401,26 +401,25 @@ GFUNC(trace) {
 //     normal   = normal_up,
 //     material = 1;
 //   }
-                                                                                            // 11
-    fbge_li     (f_trace_p, gf_distance_min, 11)                                            // 4 [1, 1, 2]
+                                                                                            // 13
+    fbge_li     (f_trace_p, gf_distance_min, 13)                                            // 4 [1, 1, 2]
     copy_ll     (f_trace_p, f_trace_distance)                                               // 3 [1, 1, 1]
     vcopy_il    (gv_normal_up, v_trace_normal)                                              // 3 [1, 1, 1]
     load_sl     (1, i_trace_material)                                                       // 3 [1, 1, 1]
-
 
     load_sl     (19, f_trace_k)                                                             // 3 [1, 1, 1]
 //   // Check if trace maybe hits a sphere
 //   for (int32 k = 19; k--;) {
 
-    load_sl     (9, f_trace_j)                                                              // 3 [1, 1, 1]
+    load_sl     (8, f_trace_j)                                                              // 3 [1, 1, 1]
 //     for (int32 j = 9; j--;) {
 //       if (data[j] & 1 << k) {
 
     cpix_il     (0, gi_bitmap, f_trace_j, m_trace_temp_0)                                   // 4 [1, 1, 1, 1]
 
 
-    dbnn_l      (f_trace_j, -4-4)                                                           // 4 [1, 1, 2]
-    dbnn_l      (f_trace_k, -4-4-4)                                                         // 4 [1, 1, 2]
+    dbnn_l      (f_trace_j, -4)                                                             // 4 [1, 1, 2]
+    dbnn_l      (f_trace_k, -4-4-3)                                                         // 4 [1, 1, 2]
 
 //         vec3 p = vec3_sub(
 //           origin,
@@ -464,8 +463,6 @@ typedef enum {
     i_sample_material     = 18,
     f_sample_lambertian   = 19,
     f_sample_specular     = 20,
-
-
 } SampleLocalsEnum;
 
 GFUNC(sample) {
@@ -561,9 +558,16 @@ BEGIN_GHOST_TABLE(hostFunctionTable)
     hostShimSample
 END_GHOST_TABLE
 
+/*
+    uint8* entryPoint;
+    uint8  frameSize;
+    uint8  returnSize;
+    uint8  paramSize;
+    uint8  localSize;
+ */
 BEGIN_GFUNC_TABLE(functionTable)
     { _gvm_render, 32,  0,  0, 32 },
-    { _gvm_trace,  0,   0,  0,  0 },
+    { _gvm_trace,  32,  1, 10, 21 },
     { _gvm_sample, 9,   3,  6,  0 }
 END_GFUNC_TABLE
 
@@ -571,9 +575,15 @@ END_GFUNC_TABLE
 int main() {
     FloatClock t;
     Interpreter::init(100, 0, functionTable, hostFunctionTable, globalData);
+
+    Scalar* tmp = Interpreter::stack();
+    for (int i = 0; i<64; i++) {
+        tmp[i].u = 0;
+    }
+
     t.set();
     //Result result =
-    Interpreter::invoke(render);
+    Interpreter::invoke(trace);
     float32 elapsed = t.elapsed();
     Interpreter::done();
     std::printf("Took %.6f seconds\n", elapsed);
