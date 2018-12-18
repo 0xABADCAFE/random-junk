@@ -47,7 +47,7 @@ Scalar globals[] = {
     vec3(0.0f, 0.0f, 1.0f),    // gv_normal_up
     vec3(0.7f, 0.6f, 1.0f),    // gv_sky_rgb
     vec3(3.0f, 1.0f, 1.0f),    // gv_floor_red_rgb,
-    vec3(3.0f, 3.0f, 3.0f),    // gv)floor_white_rgb
+    vec3(3.0f, 3.0f, 3.0f),    // gv_floor_white_rgb
     vec3(13.0f, 13.0f, 13.0f), // gv_const_ambient_rgb
 
     // Bitmap
@@ -375,15 +375,18 @@ typedef enum {
     f_trace_p               = 11,
     f_trace_k               = 12,
     f_trace_j               = 13,
-    m_trace_temp_0          = 14,
-    m_trace_temp_1          = 15,
-    m_trace_temp_2          = 16,
-    m_trace_temp_3          = 17,
-    v_trace_sphere          = 18,
-    v_trace_p               = 21,
-    f_trace_b               = 22,
-    f_trace_eye_offset      = 23,
-    f_frace_q               = 24
+    i_trace_bitmap_row      = 14,
+    v_trace_sphere          = 15,
+    f_trace_zero            = 16, // Shared with v_trace_sphere[1]
+    v_trace_p               = 18,
+    f_trace_b               = 21,
+    f_trace_eye_offset      = 22,
+    f_trace_q               = 23,
+    f_trace_sphere_distance = 23, // Shared with f_trace_q
+    m_trace_temp_0          = 24,
+    m_trace_temp_1          = 25,
+    m_trace_temp_2          = 26,
+    m_trace_temp_3          = 27,
 } TraceLocalsEnum;
 
 GFUNC(trace) {
@@ -392,16 +395,13 @@ GFUNC(trace) {
     addr_d      (g_globals, 0)                                                              // 3 [1, 1, 1]
 
 //   distance         = 1e9;
-    copy_il     (0, gf_distance_max, f_trace_distance)                                      // 4 [1, 1, 1, 1]
-
 //   // Assume trace hits nothing
 //   int32   material = 0;
-    load_sl     (0, i_trace_material)                                                       // 3 [1, 1, 1]
-//
-
-
 //   float32 p = -origin.z / direction.z;
-    fdiv_lll (v_trace_origin + 2, v_trace_direction + 2, f_trace_p)                         // 4 [1, 1, 1, 1]
+                                                                                            // Total: 11
+    copy_il     (0, gf_distance_max, f_trace_distance)                                      // 4 [1, 1, 1, 1]
+    load_sl     (0, i_trace_material)                                                       // 3 [1, 1, 1]
+    fdiv_lll    (v_trace_origin + 2, v_trace_direction + 2, f_trace_p)                      // 4 [1, 1, 1, 1]
 
 //   // Check if trace maybe hits floor
 //   if (0.01 < p) {
@@ -409,78 +409,89 @@ GFUNC(trace) {
 //     normal   = normal_up,
 //     material = 1;
 //   }
-                                                                                            // 13
+                                                                                            // Total: 16
     fbge_li     (f_trace_p, gf_distance_min, 13)                                            // 4 [1, 1, 2]
     copy_ll     (f_trace_p, f_trace_distance)                                               // 3 [1, 1, 1]
     vcopy_il    (gv_normal_up, v_trace_normal)                                              // 3 [1, 1, 1]
     load_sl     (1, i_trace_material)                                                       // 3 [1, 1, 1]
-
     load_sl     (1, m_trace_temp_0)                                                         // 3 [1, 1, 1]
-    //   // Check if trace maybe hits a sphere
 
-    load_sl     (0, v_trace_sphere + 1)                                                     // 3 [1, 1, 1]
+  // Check if trace maybe hits a sphere
+//     for (int32 j = 9; j--;) {
+//         for (int32 k = 19; k--;) {
+//             if (data[j] & 1 << k) {
+//                 vec3 p = vec3_sub(
+//                     origin,
+//                     vec3(k, 0.0, j + 4.0) // Sphere coordinate
+//                 );
+//
+//                 float32
+//                     b = dot(p, direction),
+//                     eye_offset = dot(p, p) - 1.0,
+//                     q = b * b - eye_offset
+//                 ;
+//                 if (q > 0) {
+//                     float32 sphere_distance = -b - sqrt(q);
+//                     if (sphere_distance < distance && sphere_distance > 0.01) {
+//                         distance = sphere_distance,
+//                         normal   = vec3_normalize(
+//                             vec3_add(p, vec3_scale(direction, distance))
+//                         ),
+//                         material = 2; // Returning here is fast, but we'd get z fighting
+//                     }
+//                 }
+//             }
+//         }
+//     }
+
+    // Check if trace maybe hits a sphere                                                   // Total: 9
+    load_sl     (0, f_trace_zero)                                                           // 3 [1, 1, 1]
     load_sl     (4, m_trace_temp_3)                                                         // 3 [1, 1, 1]
-//  for (int32 k = 19; k--;) {
-    load_sl     (19, f_trace_k)                                                             // 3 [1, 1, 1]
-
-// Loop k target - TODO - these loops should be inverted so that the j loop is outermost
-    lsl_lll     (m_trace_temp_0, f_trace_k, m_trace_temp_1)                                 // 4 [1, 1, 1, 1]
-//      for (int32 j = 9; j--;) {
     load_sl     (8, f_trace_j)                                                              // 3 [1, 1, 1]
 
-// Loop j target
-//       if (data[j] & 1 << k) {                                                            // 12
-    cpix_il     (0, gi_bitmap, f_trace_j, m_trace_temp_2)                                   // 4 [1, 1, 1, 1]
-    and_lll     (m_trace_temp_1, m_trace_temp_2, m_trace_temp_2)                            // 4 [1, 1, 1, 1]
-    bez_l       (m_trace_temp_2, 33)                                                        // 4 [1, 1, 2]
+// Loop target for j                                                                        // Total: 7
+    cpix_il     (0, gi_bitmap, f_trace_j, i_trace_bitmap_row)                               // 4 [1, 1, 1, 1]
+    load_sl     (18, f_trace_k)                                                             // 3 [1, 1, 1]
 
-//         vec3 p = vec3_sub(
-//           origin,
-//           vec3(k, 0.0, j + 4.0) // Sphere coordinate
-//         );
-                                                                                            // 14
+// Loop target for k                                                                        // Total: 8
+    lsl_lll     (m_trace_temp_0, f_trace_k, m_trace_temp_1)                                 // 4 [1, 1, 1, 1]
+    and_lll     (m_trace_temp_1, i_trace_bitmap_row, m_trace_temp_2)                        // 4 [1, 1, 1, 1]
+
+                                                                                            // Total: 41
+    bez_l       (m_trace_temp_2, 41+15)                                                      // 4 [1, 1, 2]
     itof_ll     (f_trace_k, v_trace_sphere)                                                 // 3 [1, 1, 1]
     add_lll     (f_trace_j, m_trace_temp_3, m_trace_temp_2)                                 // 4 [1, 1, 1, 1]
     itof_ll     (m_trace_temp_2, v_trace_sphere + 2)                                        // 3 [1, 1, 1]
     vsub_lll    (v_trace_origin, v_trace_sphere, v_trace_p)                                 // 4 [1, 1, 1, 1]
+    vdot_lll    (v_trace_p, v_trace_direction, f_trace_b)                                   // 4 [1, 1, 1, 1]
+    itof_ll     (m_trace_temp_0, m_trace_temp_1)                                            // 3 [1, 1, 1]
+    vdot_lll    (v_trace_p, v_trace_p, m_trace_temp_2)                                      // 4 [1, 1, 1, 1]
+    fsub_lll    (m_trace_temp_2, m_trace_temp_1, f_trace_eye_offset)                        // 4 [1, 1, 1, 1]
+    fmul_lll    (f_trace_b, f_trace_b, m_trace_temp_2)                                      // 4 [1, 1, 1, 1]
+    fsub_lll    (m_trace_temp_2, f_trace_eye_offset, f_trace_q)                             // 4 [1, 1, 1, 1]
 
-//         float32
-//           b = dot(p, direction),                                                         // 15
-    vdot_lll    (v_trace_p, v_trace_direction, f_trace_b)                                   // 4
+//                 if (q > 0) {
+//                     float32 sphere_distance = -b - sqrt(q);
+//                     if (sphere_distance < distance && sphere_distance > 0.01) {
+//                         distance = sphere_distance,
+//                         normal   = vec3_normalize(
+//                             vec3_add(p, vec3_scale(direction, distance))
+//                         ),
+//                         material = 2; // Returning here is fast, but we'd get z fighting
+//                     }
+//                 }
+                                                                                            // 15
+    fbge_ll     (f_trace_zero, f_trace_q, 15)                                               // 5 [1, 1, 1, 2]
+    fsqrt_ll    (f_trace_q, f_trace_q)                                                      // 3
+    fadd_lll    (f_trace_b, f_trace_q, f_trace_sphere_distance)                             // 4
+    fneg_ll     (f_trace_sphere_distance, f_trace_sphere_distance)                          // 3
 
-//           eye_offset = dot(p, p) - 1.0,
-    itof_ll     (m_trace_temp_0, m_trace_temp_1)                                            // 3
-    vdot_lll    (v_trace_p, v_trace_p, m_trace_temp_2)                                      // 4
-    fsub_lll    (m_trace_temp_2, m_trace_temp_1, f_trace_eye_offset)                        // 4
 
-//      } j
-    dbnn_l      (f_trace_j, -15-14-12)                                                // 4 [1, 1, 2]
+// k--
+    dbnn_l      (f_trace_k, -15-41-8)                                                      // 4 [1, 1, 2]
+// j--
+    dbnn_l      (f_trace_j, -4 -15-41-8 -7)                                               // 4 [1, 1, 2]
 
-//  } k
-    dbnn_l      (f_trace_k, -4 -15-14-12-3-4)                                         // 4 [1, 1, 2]
-
-
-//
-
-//           eye_offset = dot(p, p) - 1.0,
-//           q = b * b - eye_offset
-//         ;
-//         if (q > 0) {
-//           float32 sphere_distance = -b - sqrt(q);
-//           if (sphere_distance < distance && sphere_distance > 0.01) {
-//             distance = sphere_distance,
-//             normal   = vec3_normalize(
-//               vec3_add(p, vec3_scale(direction, distance))
-//             ),
-//             material = 2; // Returning here is fast, but we'd get z fighting
-//           }
-//         }
-//       }
-//     }
-//   }
-//
-//   return material;
-// }
     ret
 };
 

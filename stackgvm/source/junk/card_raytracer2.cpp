@@ -158,8 +158,8 @@ int32 trace(cvr3 origin, cvr3 direction, float32& distance, vec3& normal) {
   }
 
   // Check if trace maybe hits a sphere
-  for (int32 k = 19; k--;) {
-    for (int32 j = 9; j--;) {
+  for (int32 j = 9; j--;) {
+    for (int32 k = 19; k--;) {
       if (data[j] & 1 << k) {
         vec3 p = vec3_sub(
           origin,
