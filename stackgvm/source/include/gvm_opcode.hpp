@@ -34,6 +34,9 @@ namespace GVM {
             _BEQ_LL,   // Branch to a signed 16-bit offset if two local values are equal
             _BEQ_LI,   // Branch to a signed 16-bit offset if local and indirect values are equal
             _BEQ_II,   // Branch to a signed 16-bit offset if two indirect values are equal
+            _BNE_LL,   // Branch to a signed 16-bit offset if two local values are not equal
+            _BNE_LI,   // Branch to a signed 16-bit offset if local and indirect values are not equal
+            _BNE_II,   // Branch to a signed 16-bit offset if two indirect values are not equal
 
             _ADDR_LL,  // Get address of local variable into local variable
             _ADDR_I0L, // Get the address of an indirect[0] variable into local variable

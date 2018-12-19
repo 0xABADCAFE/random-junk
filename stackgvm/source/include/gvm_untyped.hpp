@@ -197,6 +197,38 @@ IS(BEQ_II) {
     NEXT;
 }
 
+// Two Operand Branch If Not Equal /////////////////////////////////////////////////////////////////////////////////////
+
+IS(BNE_LL) {
+    // Branch to a signed 16-bit offset if two local values are equal
+    if (LOC(1).u != LOC(0).u) {
+        STEP(J16(2));
+        NEXT;
+    }
+    STEP(5);
+    NEXT;
+}
+
+IS(BNE_LI) {
+    // Branch to a signed 16-bit offset if local and indirect values are equal
+    if (IX0(1).u != LOC(0).u) {
+        STEP(J16(2));
+        NEXT;
+    }
+    STEP(5);
+    NEXT;
+}
+
+IS(BNE_II) {
+    // Branch to a signed 16-bit offset if two indirect values are equal
+    if (IX0(0).u != IX1(1).u) {
+        STEP(J16(2));
+        NEXT;
+    }
+    STEP(5);
+    NEXT;
+}
+
 // Addressing Operations //////////////////////////////////////////////////////////////////////////////////////////////
 
 IS(ADDR_LL) {
