@@ -410,7 +410,7 @@ GFUNC(trace) {
 //     material = 1;
 //   }
                                                                                             // Total: 14
-    fclt_li     (gf_distance_min, f_trace_p, 14)                                            // 5 [1, 1, 1, 2]
+    fclt_il     (gf_distance_min, f_trace_p, 14)                                            // 5 [1, 1, 1, 2]
         copy_ll     (f_trace_p, f_trace_distance)                                           // 3 [1, 1, 1]
         vcopy_il    (gv_normal_up, v_trace_normal)                                          // 3 [1, 1, 1]
         load_sl     (1, i_trace_material)                                                   // 3 [1, 1, 1]
