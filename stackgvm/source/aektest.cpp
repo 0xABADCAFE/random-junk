@@ -409,14 +409,11 @@ GFUNC(trace) {
 //     normal   = normal_up,
 //     material = 1;
 //   }
-                                                                                            // Total: 16
-//  fbge_li     (f_trace_p, gf_distance_min, 13)                                            // 4 [1, 1, 2]
-    fclt_li     (gf_distance_min, f_trace_p, 13)                                            // 4 [1, 1, 2]
-
-    copy_ll     (f_trace_p, f_trace_distance)                                               // 3 [1, 1, 1]
-    vcopy_il    (gv_normal_up, v_trace_normal)                                              // 3 [1, 1, 1]
-    load_sl     (1, i_trace_material)                                                       // 3 [1, 1, 1]
-    load_sl     (1, m_trace_temp_0)                                                         // 3 [1, 1, 1]
+                                                                                            // Total: 14
+    fclt_li     (gf_distance_min, f_trace_p, 14)                                            // 5 [1, 1, 1, 2]
+        copy_ll     (f_trace_p, f_trace_distance)                                           // 3 [1, 1, 1]
+        vcopy_il    (gv_normal_up, v_trace_normal)                                          // 3 [1, 1, 1]
+        load_sl     (1, i_trace_material)                                                   // 3 [1, 1, 1]
 
   // Check if trace maybe hits a sphere
 //     for (int32 j = 9; j--;) {
@@ -446,7 +443,8 @@ GFUNC(trace) {
 //         }
 //     }
 
-    // Check if trace maybe hits a sphere                                                   // Total: 9
+    // Check if trace maybe hits a sphere                                                   // Total: 12
+    load_sl     (1, m_trace_temp_0)                                                         // 3 [1, 1, 1]
     load_sl     (0, f_trace_zero)                                                           // 3 [1, 1, 1]
     load_sl     (4, m_trace_temp_3)                                                         // 3 [1, 1, 1]
     load_sl     (8, f_trace_j)                                                              // 3 [1, 1, 1]
@@ -460,7 +458,7 @@ GFUNC(trace) {
     and_lll     (m_trace_temp_1, i_trace_bitmap_row, m_trace_temp_2)                        // 4 [1, 1, 1, 1]
 
                                                                                             // Total: 41
-    bez_l       (m_trace_temp_2, 41+15)                                                      // 4 [1, 1, 2]
+    bez_l       (m_trace_temp_2, 41+15)                                                     // 4 [1, 1, 2]
     itof_ll     (f_trace_k, v_trace_sphere)                                                 // 3 [1, 1, 1]
     add_lll     (f_trace_j, m_trace_temp_3, m_trace_temp_2)                                 // 4 [1, 1, 1, 1]
     itof_ll     (m_trace_temp_2, v_trace_sphere + 2)                                        // 3 [1, 1, 1]
@@ -483,10 +481,10 @@ GFUNC(trace) {
 //                     }
 //                 }
                                                                                             // 15
-    fbge_ll     (f_trace_zero, f_trace_q, 15)                                               // 5 [1, 1, 1, 2]
-    fsqrt_ll    (f_trace_q, f_trace_q)                                                      // 3
-    fadd_lll    (f_trace_b, f_trace_q, f_trace_sphere_distance)                             // 4
-    fneg_ll     (f_trace_sphere_distance, f_trace_sphere_distance)                          // 3
+    fcgt_ll     (f_trace_q, f_trace_zero, 15)                                               // 5 [1, 1, 1, 2]
+        fsqrt_ll    (f_trace_q, f_trace_q)                                                  // 3
+        fadd_lll    (f_trace_b, f_trace_q, f_trace_sphere_distance)                         // 4
+        fneg_ll     (f_trace_sphere_distance, f_trace_sphere_distance)                      // 3
 
 
 // k--
