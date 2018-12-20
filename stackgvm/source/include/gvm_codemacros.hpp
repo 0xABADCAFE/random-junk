@@ -54,12 +54,12 @@
 #define bne_ii(i1,i2,j)  _OP(BNE_II),       _D8(i1),  _D8(i2), _D16(j),
 
 // C style "continue if condition true"
-#define ifeq_ll(l1,l2,j)  _OP(BNE_LL),       _D8(l1),  _D8(l2), _D16(j),
-#define ifeq_li(l,i,j)    _OP(BNE_LI),       _D8(l),   _D8(i),  _D16(j),
-#define ifeq_ii(i1,i2,j)  _OP(BNE_II),       _D8(i1),  _D8(i2), _D16(j),
-#define ifne_ll(l1,l2,j)  _OP(BEQ_LL),       _D8(l1),  _D8(l2), _D16(j),
-#define ifne_li(l,i,j)    _OP(BEQ_LI),       _D8(l),   _D8(i),  _D16(j),
-#define ifne_ii(i1,i2,j)  _OP(BEQ_II),       _D8(i1),  _D8(i2), _D16(j),
+#define ceq_ll(l1,l2,j)  _OP(BNE_LL),       _D8(l1),  _D8(l2), _D16(j),
+#define ceq_li(l,i,j)    _OP(BNE_LI),       _D8(l),   _D8(i),  _D16(j),
+#define ceq_ii(i1,i2,j)  _OP(BNE_II),       _D8(i1),  _D8(i2), _D16(j),
+#define cne_ll(l1,l2,j)  _OP(BEQ_LL),       _D8(l1),  _D8(l2), _D16(j),
+#define cne_li(l,i,j)    _OP(BEQ_LI),       _D8(l),   _D8(i),  _D16(j),
+#define cne_ii(i1,i2,j)  _OP(BEQ_II),       _D8(i1),  _D8(i2), _D16(j),
 
 #define addr_ll(l1,l2)   _OP(ADDR_LL),      _D8(l1),  _D8(l2),
 #define addr_il(I,i,l)   _OP(ADDR_I##I##L), _D8(i),   _D8(l),
@@ -107,27 +107,27 @@
 #define ble_ii(i1,i2,j)   _OP(BGE_II),       _D8(i2), _D8(i1),  _D16(j),
 
 // C style "continue if condition true"
-#define iflt_ll(l1,l2,j)   _OP(BGE_LL),       _D8(l1), _D8(l2),  _D16(j),
-#define iflt_il(i,l,j)     _OP(BGE_IL),       _D8(i),  _D8(l),   _D16(j),
-#define iflt_li(l,i,j)     _OP(BGE_LI),       _D8(l),  _D8(i),   _D16(j),
-#define iflt_ii(i1,i2,j)   _OP(BGE_II),       _D8(i1), _D8(i2),  _D16(j),
+#define clt_ll(l1,l2,j)   _OP(BGE_LL),       _D8(l1), _D8(l2),  _D16(j),
+#define clt_il(i,l,j)     _OP(BGE_IL),       _D8(i),  _D8(l),   _D16(j),
+#define clt_li(l,i,j)     _OP(BGE_LI),       _D8(l),  _D8(i),   _D16(j),
+#define clt_ii(i1,i2,j)   _OP(BGE_II),       _D8(i1), _D8(i2),  _D16(j),
 
-#define ifle_ll(l1,l2,j)   _OP(BGT_LL),       _D8(l1), _D8(l2),  _D16(j),
-#define ifle_il(i,l,j)     _OP(BGT_IL),       _D8(i),  _D8(l),   _D16(j),
-#define ifle_li(l,i,j)     _OP(BGT_LI),       _D8(l),  _D8(i),   _D16(j),
-#define ifle_ii(i1,i2,j)   _OP(BGT_II),       _D8(i1), _D8(i2),  _D16(j),
-
-// Operand inverted aliases
-#define ifge_ll(l1,l2,j)   _OP(BGT_LL),       _D8(l2), _D8(l1),  _D16(j),
-#define ifge_il(i,l,j)     _OP(BGT_LI),       _D8(l),  _D8(i),   _D16(j),
-#define ifge_li(l,i,j)     _OP(BGT_IL),       _D8(i),  _D8(l),   _D16(j),
-#define ifge_ii(i1,i2,j)   _OP(BGT_II),       _D8(i2), _D8(i1),  _D16(j),
+#define cle_ll(l1,l2,j)   _OP(BGT_LL),       _D8(l1), _D8(l2),  _D16(j),
+#define cle_il(i,l,j)     _OP(BGT_IL),       _D8(i),  _D8(l),   _D16(j),
+#define cle_li(l,i,j)     _OP(BGT_LI),       _D8(l),  _D8(i),   _D16(j),
+#define cle_ii(i1,i2,j)   _OP(BGT_II),       _D8(i1), _D8(i2),  _D16(j),
 
 // Operand inverted aliases
-#define ifgt_ll(l1,l2,j)   _OP(BGE_LL),       _D8(l2), _D8(l1),  _D16(j),
-#define ifgt_il(i,l,j)     _OP(BGE_LI),       _D8(l),  _D8(i),   _D16(j),
-#define ifgt_li(l,i,j)     _OP(BGE_IL),       _D8(i),  _D8(l),   _D16(j),
-#define ifgt_ii(i1,i2,j)   _OP(BGE_II),       _D8(i2), _D8(i1),  _D16(j),
+#define cge_ll(l1,l2,j)   _OP(BGT_LL),       _D8(l2), _D8(l1),  _D16(j),
+#define cge_il(i,l,j)     _OP(BGT_LI),       _D8(l),  _D8(i),   _D16(j),
+#define cge_li(l,i,j)     _OP(BGT_IL),       _D8(i),  _D8(l),   _D16(j),
+#define cge_ii(i1,i2,j)   _OP(BGT_II),       _D8(i2), _D8(i1),  _D16(j),
+
+// Operand inverted aliases
+#define cgt_ll(l1,l2,j)   _OP(BGE_LL),       _D8(l2), _D8(l1),  _D16(j),
+#define cgt_il(i,l,j)     _OP(BGE_LI),       _D8(l),  _D8(i),   _D16(j),
+#define cgt_li(l,i,j)     _OP(BGE_IL),       _D8(i),  _D8(l),   _D16(j),
+#define cgt_ii(i1,i2,j)   _OP(BGE_II),       _D8(i2), _D8(i1),  _D16(j),
 
 //
 #define dbnz_l(l,j)       _OP(DBNZ_L),       _D8(l),  _D16(j),
@@ -276,27 +276,27 @@
 #define fble_ii(i1,i2,j)   _OP(FBGE_II),       _D8(i2), _D8(i1),  _D16(j),
 
 // C style "continue if condition true"
-#define fiflt_ll(l1,l2,j)   _OP(FBGE_LL),       _D8(l1), _D8(l2),  _D16(j),
-#define fiflt_il(i,l,j)     _OP(FBGE_IL),       _D8(i),  _D8(l),   _D16(j),
-#define fiflt_li(l,i,j)     _OP(FBGE_LI),       _D8(l),  _D8(i),   _D16(j),
-#define fiflt_ii(i1,i2,j)   _OP(FBGE_II),       _D8(i1), _D8(i2),  _D16(j),
+#define fclt_ll(l1,l2,j)   _OP(FBGE_LL),       _D8(l1), _D8(l2),  _D16(j),
+#define fclt_il(i,l,j)     _OP(FBGE_IL),       _D8(i),  _D8(l),   _D16(j),
+#define fclt_li(l,i,j)     _OP(FBGE_LI),       _D8(l),  _D8(i),   _D16(j),
+#define fclt_ii(i1,i2,j)   _OP(FBGE_II),       _D8(i1), _D8(i2),  _D16(j),
 
-#define fifle_ll(l1,l2,j)   _OP(FBGT_LL),       _D8(l1), _D8(l2),  _D16(j),
-#define fifle_il(i,l,j)     _OP(FBGT_IL),       _D8(i),  _D8(l),   _D16(j),
-#define fifle_li(l,i,j)     _OP(FBGT_LI),       _D8(l),  _D8(i),   _D16(j),
-#define fifle_ii(i1,i2,j)   _OP(FBGT_II),       _D8(i1), _D8(i2),  _D16(j),
-
-// Operand inverted aliases
-#define fifge_ll(l1,l2,j)   _OP(FBGT_LL),       _D8(l2), _D8(l1),  _D16(j),
-#define fifge_il(i,l,j)     _OP(FBGT_LI),       _D8(l),  _D8(i),   _D16(j),
-#define fifge_li(l,i,j)     _OP(FBGT_IL),       _D8(i),  _D8(l),   _D16(j),
-#define fifge_ii(i1,i2,j)   _OP(FBGT_II),       _D8(i2), _D8(i1),  _D16(j),
+#define fcle_ll(l1,l2,j)   _OP(FBGT_LL),       _D8(l1), _D8(l2),  _D16(j),
+#define fcle_il(i,l,j)     _OP(FBGT_IL),       _D8(i),  _D8(l),   _D16(j),
+#define fcle_li(l,i,j)     _OP(FBGT_LI),       _D8(l),  _D8(i),   _D16(j),
+#define fcle_ii(i1,i2,j)   _OP(FBGT_II),       _D8(i1), _D8(i2),  _D16(j),
 
 // Operand inverted aliases
-#define fifgt_ll(l1,l2,j)   _OP(FBGE_LL),       _D8(l2), _D8(l1),  _D16(j),
-#define fifgt_il(i,l,j)     _OP(FBGE_LI),       _D8(l),  _D8(i),   _D16(j),
-#define fifgt_li(l,i,j)     _OP(FBGE_IL),       _D8(i),  _D8(l),   _D16(j),
-#define fifgt_ii(i1,i2,j)   _OP(FBGE_II),       _D8(i2), _D8(i1),  _D16(j),
+#define fcge_ll(l1,l2,j)   _OP(FBGT_LL),       _D8(l2), _D8(l1),  _D16(j),
+#define fcge_il(i,l,j)     _OP(FBGT_LI),       _D8(l),  _D8(i),   _D16(j),
+#define fcge_li(l,i,j)     _OP(FBGT_IL),       _D8(i),  _D8(l),   _D16(j),
+#define fcge_ii(i1,i2,j)   _OP(FBGT_II),       _D8(i2), _D8(i1),  _D16(j),
+
+// Operand inverted aliases
+#define fcgt_ll(l1,l2,j)   _OP(FBGE_LL),       _D8(l2), _D8(l1),  _D16(j),
+#define fcgt_il(i,l,j)     _OP(FBGE_LI),       _D8(l),  _D8(i),   _D16(j),
+#define fcgt_li(l,i,j)     _OP(FBGE_IL),       _D8(i),  _D8(l),   _D16(j),
+#define fcgt_ii(i1,i2,j)   _OP(FBGE_II),       _D8(i2), _D8(i1),  _D16(j),
 
 //
 // // Two operand, local to local handy maths functions
