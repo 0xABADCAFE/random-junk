@@ -637,7 +637,7 @@ int main() {
 
     t.set();
     //Result result =
-    Interpreter::invoke(trace);
+    Interpreter::invoke(render);
     float32 elapsed = t.elapsed();
     Interpreter::done();
     std::printf("Took %.6f seconds\n", elapsed);

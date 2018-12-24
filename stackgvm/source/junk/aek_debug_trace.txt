@@ -7,13 +7,13 @@ GVM::Interpreter::validateTables()
 	Host function table has 3 entries
 	Global data table has 1 entries
 GVM::Interpreter::init()
-	Call Stack          [0x9084020 - 0x9084650]
-	Frame Stack         [0x9084870 - 0x908f12c]
+	Call Stack          [0x9a4c020 - 0x9a4c650]
+	Frame Stack         [0x9a4c870 - 0x9a5712c]
 	Function Table      [0x8057080] : 4 entries
 	Host Function Table [0x80570a8] : 4 entries
 	Global Data Table   [0x80570bc] : 2 entries
 GVM::Interpreter::enterFunction(2) {
-	Address: 0x9084870
+	Address: 0x9a4c870
 	Size: 32
 	Return Address: (nil)
 	PC Entry: 0x80570e0
@@ -1691,4 +1691,4 @@ GVM::Interpreter::done()
 Max Opcode 241
 
 Executed: 1262 instructions total.
-Took 0.011239 seconds
+Took 0.011363 seconds
