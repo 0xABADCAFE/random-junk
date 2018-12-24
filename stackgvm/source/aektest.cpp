@@ -377,6 +377,7 @@ typedef enum {
     f_trace_j               = 13,
     i_trace_bitmap_row      = 14,
     v_trace_sphere          = 15,
+    v_trace_temp            = 15, // Shared with v_trace_sphere
     f_trace_zero            = 16, // Shared with v_trace_sphere[1]
     v_trace_p               = 18,
     f_trace_b               = 21,
@@ -458,7 +459,7 @@ GFUNC(trace) {
     and_lll     (m_trace_temp_1, i_trace_bitmap_row, m_trace_temp_2)                        // 4 [1, 1, 1, 1]
 
                                                                                             // Total: 41
-    bez_l       (m_trace_temp_2, 41+15)                                                     // 4 [1, 1, 2]
+    bez_l       (m_trace_temp_2, 41+42)                                                     // 4 [1, 1, 2]
     itof_ll     (f_trace_k, v_trace_sphere)                                                 // 3 [1, 1, 1]
     add_lll     (f_trace_j, m_trace_temp_3, m_trace_temp_2)                                 // 4 [1, 1, 1, 1]
     itof_ll     (m_trace_temp_2, v_trace_sphere + 2)                                        // 3 [1, 1, 1]
@@ -480,17 +481,24 @@ GFUNC(trace) {
 //                         material = 2; // Returning here is fast, but we'd get z fighting
 //                     }
 //                 }
-                                                                                            // 15
-    fcgt_ll     (f_trace_q, f_trace_zero, 15)                                               // 5 [1, 1, 1, 2]
-        fsqrt_ll    (f_trace_q, f_trace_q)                                                  // 3
-        fadd_lll    (f_trace_b, f_trace_q, f_trace_sphere_distance)                         // 4
-        fneg_ll     (f_trace_sphere_distance, f_trace_sphere_distance)                      // 3
+                                                                                            // Total: 42
+    fcgt_ll     (f_trace_q, f_trace_zero, 42)                                               // 5 [1, 1, 1, 2]
+        fsqrt_ll    (f_trace_q, f_trace_q)                                                  // 3 [1, 1, 1]
+        fadd_lll    (f_trace_b, f_trace_q, f_trace_sphere_distance)                         // 4 [1, 1, 1, 1]
+        fneg_ll     (f_trace_sphere_distance, f_trace_sphere_distance)                      // 3 [1, 1, 1]
 
+        fclt_ll     (f_trace_sphere_distance, f_trace_distance, 27)                         // 5 [1, 1, 1, 2]
+            fcgt_li     (f_trace_sphere_distance, gf_distance_min, 22)                      // 5 [1, 1, 1, 2]
 
+                copy_ll     (f_trace_sphere_distance, f_trace_distance)                     // 3 [1, 1, 1]
+                vfmul_lll   (v_trace_direction, f_trace_distance, v_trace_temp)             // 4 [1, 1, 1, 1]
+                vadd_lll    (v_trace_temp, v_trace_p, v_trace_temp)                         // 4 [1, 1, 1, 1]
+                vnorm_ll    (v_trace_temp, v_trace_normal)                                  // 3 [1, 1, 1]
+                load_sl     (2, i_trace_material)                                           // 3 [1, 1, 1]
 // k--
-    dbnn_l      (f_trace_k, -15-41-8)                                                      // 4 [1, 1, 2]
+    dbnn_l      (f_trace_k, -42-41-8)                                                      // 4 [1, 1, 2]
 // j--
-    dbnn_l      (f_trace_j, -4 -15-41-8 -7)                                               // 4 [1, 1, 2]
+    dbnn_l      (f_trace_j, -4 -42-41-8 -7)                                               // 4 [1, 1, 2]
 
     ret
 };
