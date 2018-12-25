@@ -95,7 +95,7 @@ Result hostPrintHeader(Scalar* frame) {
 #ifdef _GVM_DEBUGGING_
     std::printf("OUTPUT PPM HEADER {P6 %d %d 255}\n", (int)frame[0].i, (int)frame[0].i);
 #else
-    //std::printf("P6 %d %d 255 ", (int)frame[0].i, (int)frame[0].i);
+    std::printf("P6 %d %d 255 ", (int)frame[0].i, (int)frame[0].i);
 #endif
     return SUCCESS;
 }
@@ -104,16 +104,17 @@ Result hostPrintRGB(Scalar* frame) {
 #ifdef _GVM_DEBUGGING_
     std::printf("OUTPUT PPM PIXEL {%d, %d, %d}\n", (int)frame[0].f, (int)frame[1].f, (int)frame[2].f);
 #else
-    //std::printf("%c%c%c", (int)frame[0].f, (int)frame[1].f, (int)frame[2].f);
+    std::printf("%c%c%c", (int)frame[0].f, (int)frame[1].f, (int)frame[2].f);
 #endif
     return SUCCESS;
 }
 
 // This function serves as a proxy for the virtual code sample function for now
 Result hostShimSample(Scalar* frame) {
-    frame[0].f = 1;
-    frame[1].f = 1;
-    frame[2].f = 1;
+    frame[0].f = 1.0f;
+    frame[1].f = 1.0f;
+    frame[2].f = 1.0f;
+    
     std::fprintf(
         stderr,
         "\nsample(origin:{%.6f, %.6f, %.6f}, direction:{%.6f, %.6f, %.6f}) => {%.6f, %.6f, %.6f}\n\n",
@@ -333,12 +334,8 @@ GFUNC(render) {
     vnorm_ll    (v_render_temp_0, v_render_direction)                                               // 3 [1, 1, 1]
 
     // pixel = vec3_add(vec3_scale(sample(orign, direction)), 3.5)                                  // 11
-#ifdef _GVM_DEBUGGING_
-    hcall(shim_sample)                                                                              // 3 [1, 2]
-#else
-    call(sample)                                                                                    // 3 [1, 2]
-#endif
-
+    //call(sample)                                                                                    // 3 [1, 2]
+    hcall(shim_sample)
 
     vfmul_lil   (m_render_sample_return, gf_rgb_scale, v_render_temp_0)                             // 4
     vadd_lll    (v_pixel_accumulator, v_render_temp_0, v_pixel_accumulator)                         // 4
@@ -508,23 +505,55 @@ GFUNC(trace) {
 typedef enum {
     //
     v_sample_rgb          = 0,
-    v_sample_origin       = 3,
-    v_sample_direction    = 6,
-    v_sample_intersection = 9,
-    v_sample_light        = 12,
-    v_sample_half_vector  = 15,
-    i_sample_material     = 18,
-    f_sample_lambertian   = 19,
-    f_sample_specular     = 20,
+    v_sample_in_origin    = 3,
+    v_sample_in_direction = 6,
+    f_sample_gradient     = 9,
+    m_sample_next_func_p  = 32,
+
+    i_sample_material     = m_sample_next_func_p + i_trace_material,
+    v_sample_origin       = m_sample_next_func_p + v_trace_origin,
+    v_sample_intersection = m_sample_next_func_p + v_trace_origin,
+    v_sample_direction    = m_sample_next_func_p + v_trace_direction,
+    v_sample_light        = m_sample_next_func_p + v_trace_direction,
+    f_sample_distnace     = m_sample_next_func_p + f_trace_distance,
+    v_sample_normal       = m_sample_next_func_p + v_trace_normal,
+
 } SampleLocalsEnum;
 
 GFUNC(sample) {
 // vec3 sample(cvr3 origin, cvr3 direction) {
+
+    addr_d      (g_globals, 0)                                                              // 3 [1, 1, 1]
+    load_sl     (1, 0)
+    load_sl     (2, 1)
+    load_sl     (3, 2)
+    itof_ll     (0, 0)
+    itof_ll     (1, 1)
+    itof_ll     (2, 2)
+    ret
+
 //   float32 distance;
 //   vec3 normal;
 //
 //   // Find where the ray intersects the world
 //   int32 material = trace(origin, direction, distance, normal);
+
+    vcopy_ll    (v_sample_in_origin,    v_sample_origin)                           // 3 [1, 1, 1]
+    vcopy_ll    (v_sample_in_direction, v_sample_direction)                        // 3 [1, 1, 1]
+    call(trace)                                                                    // 3 [1, 2]
+
+    bnz_l   (i_sample_material, 27)                                                    // 4 [1, 1, 2]
+        load_sl     (1, f_sample_gradient)                                             // 3 [1, 1, 1]
+        itof_ll     (f_sample_gradient, f_sample_gradient)                             // 3
+        fsub_lll    (f_sample_gradient, v_sample_in_direction+2, f_sample_gradient)    // 4
+        fmul_lll    (f_sample_gradient, f_sample_gradient, f_sample_gradient)          // 4
+        fmul_lll    (f_sample_gradient, f_sample_gradient, f_sample_gradient)          // 4
+        vfmul_ill   (gv_sky_rgb,        f_sample_gradient, v_sample_rgb)               // 4
+        ret                                                                            // 1
+    //load_sl     (0, 0)
+    //load_sl     (0, 1)
+    //load_sl     (0, 2)
+    ret
 //
 //   // Hit nothing? Sky shade
 //   if (!material) {
@@ -593,9 +622,7 @@ GFUNC(sample) {
 //     )
 //   );
 // }
-    load_sl (0, 0)
-    load_sl (0, 1)
-    load_sl (0, 2)
+
     ret
 };
 
@@ -621,25 +648,25 @@ END_GHOST_TABLE
 BEGIN_GFUNC_TABLE(functionTable)
     { _gvm_render, 32,  0,  0, 32 },
     { _gvm_trace,  32,  1, 10, 21 },
-    { _gvm_sample, 9,   3,  6,  0 }
+    { _gvm_sample, 32,   3,  6, 23 }
 END_GFUNC_TABLE
 
 
 int main() {
-    std::printf("Max Opcode %d\n", Opcode::_MAX);
+    std::fprintf(stderr, "Max Opcode %d\n", Opcode::_MAX);
     FloatClock t;
     Interpreter::init(100, 0, functionTable, hostFunctionTable, globalData);
 
-    Scalar* tmp = Interpreter::stack();
-    for (int i = 0; i<64; i++) {
-        tmp[i].u = 0;
-    }
+//     Scalar* tmp = Interpreter::stack();
+//     for (int i = 0; i<64; i++) {
+//         tmp[i].u = 0;
+//     }
 
     t.set();
     //Result result =
     Interpreter::invoke(render);
     float32 elapsed = t.elapsed();
     Interpreter::done();
-    std::printf("Took %.6f seconds\n", elapsed);
+    std::fprintf(stderr, "Took %.6f seconds\n", elapsed);
     return 0;
 }
