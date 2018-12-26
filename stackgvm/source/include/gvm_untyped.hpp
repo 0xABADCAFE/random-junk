@@ -93,22 +93,36 @@ IS(RET) {
 // Linked List Traversal ///////////////////////////////////////////////////////////////////////////////////////////////
 
 IS(LI0BNN) {
+    gvmDebugOpcode(
+        "\tlibnn %u(i0) : {%p} => ",
+        OPU(0),
+        IX0(0).a
+    );
     // Load indirect[0] to indirection register[0] and branch if not null
     if (!(IR(0) = IX0(0).a)) {
+        gvmDebugOpcode("taken %d\n", (int)J16(1));
         STEP(J16(1));
         NEXT;
     }
-    STEP(3);
+    gvmDebugOpcode("not taken\n");
+    STEP(4);
     NEXT;
 }
 
 IS(LI1BNN) {
+    gvmDebugOpcode(
+        "\tlibnn %u(i1) : {%p} => ",
+        OPU(0),
+        IX1(0).a
+    );
     // Load indirect[1] to indirection register[1] and branch if not null
     if (!(IR(1) = IX1(0).a)) {
-        STEP(J16(2));
+        gvmDebugOpcode("taken %d\n", (int)J16(1));
+        STEP(J16(1));
         NEXT;
     }
-    STEP(3);
+    gvmDebugOpcode("not taken\n");
+    STEP(4);
     NEXT;
 }
 
@@ -119,49 +133,105 @@ IS(LI1BNN) {
 
 IS(BEZ_L) {
     gvmDebugOpcode(
-        "\tbez {%u} => ",
+        "\tbez %d(sf) : {%u} => ",
+        OPS(0),
         LOC(0).u
     );
     // Branch to a signed 16-bit offset if local is equal to zero
     if (0 == LOC(0).u) {
-        gvmDebugOpcode("branch taken %d\n", (int)J16(1));
+        gvmDebugOpcode("taken %d\n", (int)J16(1));
         STEP(J16(1));
         NEXT;
     }
-    gvmDebugOpcode("branch not taken\n");
+    gvmDebugOpcode("not taken\n");
     STEP(4);
     NEXT;
 }
 
-IS(BEZ_I) {
+IS(BEZ_I0) {
+    gvmDebugOpcode(
+        "\tbez %u(i0) : {%u} => ",
+        OPU(0),
+        IX0(0).u
+    );
     // Branch to a signed 16-bit offset if indirect is equal to zero
-    if (0 == IX(0, 1).u) {
-        STEP(J16(2));
+    if (0 == IX0(0).u) {
+        gvmDebugOpcode("taken %d\n", (int)J16(1));
+        STEP(J16(1));
         NEXT;
     }
-    STEP(5);
+    gvmDebugOpcode("not taken\n");
+    STEP(4);
+    NEXT;
+}
+
+IS(BEZ_I1) {
+    gvmDebugOpcode(
+        "\tbez %u(i1) : {%u} => ",
+        OPU(0),
+        IX1(0).u
+    );
+    // Branch to a signed 16-bit offset if indirect is equal to zero
+    if (0 == IX1(0).u) {
+        gvmDebugOpcode("taken %d\n", (int)J16(1));
+        STEP(J16(1));
+        NEXT;
+    }
+    gvmDebugOpcode("not taken\n");
+    STEP(4);
     NEXT;
 }
 
 // Single Operand Branch If Not Zero //////////////////////////////////////////////////////////////////////////////////
 
 IS(BNZ_L) {
+    gvmDebugOpcode(
+        "\tbnz %d(sf) : {%u} => ",
+        OPS(0),
+        LOC(0).u
+    );
     // Branch to a signed 16-bit offset if local is not equal to zero
     if (0 != LOC(0).u) {
+        gvmDebugOpcode("taken %d\n", (int)J16(1));
         STEP(J16(1));
         NEXT;
     }
+    gvmDebugOpcode("not taken\n");
     STEP(4);
     NEXT;
 }
 
-IS(BNZ_I) {
+IS(BNZ_I0) {
+    gvmDebugOpcode(
+        "\tbnz %u(i0) : {%u} => ",
+        OPU(0),
+        IX0(0).u
+    );
     // Branch to a signed 16-bit offset if indirect is not equal to zero
-    if (0 != IX(0, 1).u) {
-        STEP(J16(2));
+    if (0 != IX0(0).u) {
+        gvmDebugOpcode("taken %d\n", (int)J16(1));
+        STEP(J16(1));
         NEXT;
     }
-    STEP(5);
+    gvmDebugOpcode("not taken\n");
+    STEP(4);
+    NEXT;
+}
+
+IS(BNZ_I1) {
+    gvmDebugOpcode(
+        "\tbnz %u(i0) : {%u} => ",
+        OPU(0),
+        IX1(0).u
+    );
+    // Branch to a signed 16-bit offset if indirect is not equal to zero
+    if (0 != IX1(0).u) {
+        gvmDebugOpcode("taken %d\n", (int)J16(1));
+        STEP(J16(1));
+        NEXT;
+    }
+    gvmDebugOpcode("not taken\n");
+    STEP(4);
     NEXT;
 }
 
@@ -288,9 +358,15 @@ IS(ADDR_DI1) {
 IS(ADDR_D0) {
     // Load the address of a global data symbol directly into an index register
     uint32 symbolId = SYM(0);
+    gvmDebugOpcode(
+        "\taddr %u(globals) ",
+        symbolId
+    );
     if (!symbolId) {
+        gvmDebugOpcode(", i0 : illegal symbol id\n");
         EXIT(EXEC_ILLEGAL_DATA_ID);
     }
+    gvmDebugOpcode("{%p}, i0\n", (void*)dataTable[symbolId]);
     IR(0) = dataTable[symbolId];
     SAVE_IR(0);
     STEP(3);
@@ -300,9 +376,15 @@ IS(ADDR_D0) {
 IS(ADDR_D1) {
     // Load the address of a global data symbol directly into an index register
     uint32 symbolId = SYM(0);
+    gvmDebugOpcode(
+        "\taddr %u(globals) ",
+        symbolId
+    );
     if (!symbolId) {
+        gvmDebugOpcode(", i1 : illegal symbol id\n");
         EXIT(EXEC_ILLEGAL_DATA_ID);
     }
+    gvmDebugOpcode("{%p}, i1\n", (void*)dataTable[symbolId]);
     IR(1) = dataTable[symbolId];
     SAVE_IR(1);
     STEP(3);
@@ -371,6 +453,13 @@ IS(LOAD_HL) {
 
 IS(COPY_LL) {
     // Copy a local scalar to a local scalar
+    gvmDebugOpcode(
+        "\tcopy %d(sf) {%u}, %d(sf)\n",
+        OPS(0),
+        LOC(0).u,
+        OPS(1)
+    );
+
     LOC(1).u = LOC(0).u;
     STEP(3);
     NEXT;
@@ -378,6 +467,13 @@ IS(COPY_LL) {
 
 IS(COPY_I0L) {
     // Copy an indirect scalar to a local
+    gvmDebugOpcode(
+        "\tcopy %u(i0) {%u}, %d(sf)\n",
+        OPU(0),
+        IX0(0).u,
+        OPS(1)
+    );
+
     LOC(1).u = IX0(0).u;
     STEP(3);
     NEXT;
@@ -385,6 +481,12 @@ IS(COPY_I0L) {
 
 IS(COPY_I1L) {
     // Copy an indirect scalar to a local
+    gvmDebugOpcode(
+        "\tcopy %u(i1) {%u}, %d(sf)\n",
+        OPU(0),
+        IX1(0).u,
+        OPS(1)
+    );
     LOC(1).u = IX1(0).u;
     STEP(3);
     NEXT;
@@ -392,6 +494,14 @@ IS(COPY_I1L) {
 
 IS(CPIX_I0L) {
     // Copy indirect indexed by local to local
+    gvmDebugOpcode(
+        "\tcopy %u(i0)[%d(sf) {%u}] {%u}, %d(sf)\n",
+        OPU(0),
+        OPS(1),
+        LOC(1).u,
+        UIX0(0)[LOC(1).u],
+        OPS(2)
+    );
     LOC(2).u = UIX0(0)[LOC(1).u];
     STEP(4);
     NEXT;
@@ -399,6 +509,14 @@ IS(CPIX_I0L) {
 
 IS(CPIX_I1L) {
     // Copy indirect indexed by local to local
+    gvmDebugOpcode(
+        "\tcopy %u(i1)[%d(sf) {%u}] {%u}, %d(sf)\n",
+        OPU(0),
+        OPS(1),
+        LOC(1).u,
+        UIX1(0)[LOC(1).u],
+        OPS(2)
+    );
     LOC(2).u = UIX1(0)[LOC(1).u];
     STEP(4);
     NEXT;
@@ -429,14 +547,28 @@ IS(COPY_II) {
 
 IS(ITOF_LL) {
     // Cast integer to float
+    gvmDebugOpcode(
+        "\titof %d(sf) {%d}, %d(sf) => ",
+        OPU(0),
+        LOC(0).i,
+        OPS(1)
+    );
     LOC(1).f = (float32)LOC(0).i;
+    gvmDebugOpcode("{%.6f}\n", LOC(1).f);
     STEP(3);
     NEXT;
 }
 
 IS(FTOI_LL) {
     // Cast float to integer
+    gvmDebugOpcode(
+        "\titof %d(sf) {%.6f}, %d(sf) => ",
+        OPU(0),
+        LOC(0).f,
+        OPS(1)
+    );
     LOC(1).i = (int32)LOC(0).f;
+    gvmDebugOpcode("{%d}\n", LOC(1).i);
     STEP(3);
     NEXT;
 }

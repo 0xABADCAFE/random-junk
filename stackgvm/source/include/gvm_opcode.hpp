@@ -28,9 +28,11 @@ namespace GVM {
             // Scalar instructions (float or integer) //////////////////////////////////////////////////////////////////
 
             _BEZ_L,    // Branch to a signed 16-bit offset if local is equal to zero
-            _BEZ_I,    // Branch to a signed 16-bit offset if indirect is equal to zero
+            _BEZ_I0,    // Branch to a signed 16-bit offset if indirect is equal to zero
+            _BEZ_I1,
             _BNZ_L,    // Branch to a signed 16-bit offset if local is not equal to zero
-            _BNZ_I,    // Branch to a signed 16-bit offset if indirect is not equal to zero
+            _BNZ_I0,    // Branch to a signed 16-bit offset if indirect is not equal to zero
+            _BNZ_I1,
             _BEQ_LL,   // Branch to a signed 16-bit offset if two local values are equal
             _BEQ_LI,   // Branch to a signed 16-bit offset if local and indirect values are equal
             _BEQ_II,   // Branch to a signed 16-bit offset if two indirect values are equal

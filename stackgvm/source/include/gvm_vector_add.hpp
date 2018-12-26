@@ -4,7 +4,7 @@
  * Twenty Odd Years Too Late Game Virtual Machine
  */
     gvmDebugOpcode(
-        "\tvadd {%0.6f, %0.6f, %0.6f}, {%0.6f, %0.6f, %0.6f} => ",
+        "{%0.6f, %0.6f, %0.6f} + {%0.6f, %0.6f, %0.6f} => ",
         vs1[0], vs1[1], vs1[2],
         vs2[0], vs2[1], vs2[2]
     );

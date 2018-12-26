@@ -9,6 +9,10 @@
 
 #define vec3(x, y, z) Scalar(x), Scalar(y), Scalar(z)
 
+#define vec3_x(v) (v)
+#define vec3_y(v) ((v)+1)
+#define vec3_z(v) ((v)+2)
+
 #define BEGIN_GDATA_TABLE(name) Scalar* name[] = { 0,
 #define END_GDATA_TABLE ,0 };
 #define BEGIN_GFUNC_TABLE(name) FuncInfo name[] = { { 0, 0, 0, 0, 0 },

@@ -30,15 +30,19 @@ using namespace GVM;
     #define LOC(operand)   ( frameStack[(int8)programCounter[(operand) + 1]] )
 #endif
 
-
-#define FETCH         switch (*PRGC)
 #ifdef _GVM_DEBUG_OPCODES_
+    #define OPS(o) ((int)PRGC[(o)+1])
+    #define OPU(o) ((unsigned)PRGC[(o)+1])
     #define IS(opcode)          case Opcode::_##opcode: std::fprintf(stderr, "\t%-10s %3d %3d %3d\n", #opcode, (int)PRGC[1], (int)PRGC[2], (int)PRGC[3]);
     #define gvmDebugOpcode(...) std::fprintf(stderr, __VA_ARGS__)
 #else
+    #define OPS(o)
+    #define OPU(o)
     #define IS(opcode)    case Opcode::_##opcode:
     #define gvmDebugOpcode(...)
 #endif
+
+#define FETCH switch (*PRGC)
 #define NEXT          goto forever
 #define STEP(size)    PRGC += (size)
 #define EXIT(code)    SAVE_PRGC; return ((code))

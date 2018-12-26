@@ -88,7 +88,8 @@ Scalar globals[] = {
 typedef enum {
     print_header = 1,
     print_rgb,
-    shim_sample
+    shim_sample,
+    shim_trace
 } HostFunctionEnum;
 
 Result hostPrintHeader(Scalar* frame) {
@@ -106,23 +107,6 @@ Result hostPrintRGB(Scalar* frame) {
 #else
     std::printf("%c%c%c", (int)frame[0].f, (int)frame[1].f, (int)frame[2].f);
 #endif
-    return SUCCESS;
-}
-
-// This function serves as a proxy for the virtual code sample function for now
-Result hostShimSample(Scalar* frame) {
-    frame[0].f = 1.0f;
-    frame[1].f = 1.0f;
-    frame[2].f = 1.0f;
-
-    std::fprintf(
-        stderr,
-        "\nsample(origin:{%.6f, %.6f, %.6f}, direction:{%.6f, %.6f, %.6f}) => {%.6f, %.6f, %.6f}\n\n",
-        frame[3].f, frame[4].f, frame[5].f,
-        frame[6].f, frame[7].f, frame[8].f,
-        frame[0].f, frame[1].f, frame[2].f
-    );
-
     return SUCCESS;
 }
 
@@ -387,6 +371,28 @@ typedef enum {
     m_trace_temp_3          = 27,
 } TraceLocalsEnum;
 
+// This function serves as a proxy for the virtual code sample function for now
+Result hostShimTrace(Scalar* frame) {
+//  material = 0;
+//  float32 p = -origin.z / direction.z;
+//  if (0.01 < p) {
+//      distance = p,
+//      normal   = normal_up,
+//      material = 1;
+//  }
+
+    frame[i_trace_material].i = 0;
+    float32 p = -frame[vec3_z(v_trace_origin)].f / frame[vec3_z(v_trace_direction)].f;
+    if (0.01 < p) {
+        frame[f_trace_distance].f = p;
+        frame[vec3_x(v_trace_normal)].f = globals[vec3_x(gv_normal_up)].f;
+        frame[vec3_y(v_trace_normal)].f = globals[vec3_y(gv_normal_up)].f;
+        frame[vec3_z(v_trace_normal)].f = globals[vec3_z(gv_normal_up)].f;
+        frame[i_trace_material].i = 1;
+    }
+    return SUCCESS;
+}
+
 GFUNC(trace) {
 // int32 trace(cvr3 origin, cvr3 direction, float32& distance, vec3& normal) {
 
@@ -523,6 +529,29 @@ typedef enum {
 
 } SampleLocalsEnum;
 
+// This function serves as a proxy for the virtual code sample function for now
+Result hostShimSample(Scalar* frame) {
+    frame[vec3_x(v_sample_rgb)].f = 1.0f;
+    frame[vec3_y(v_sample_rgb)].f = 1.0f;
+    frame[vec3_z(v_sample_rgb)].f = 1.0f;
+
+    std::fprintf(
+        stderr,
+        "\nsample(origin:{%.6f, %.6f, %.6f}, direction:{%.6f, %.6f, %.6f}) => {%.6f, %.6f, %.6f}\n\n",
+        frame[vec3_x(v_sample_in_origin)].f,
+        frame[vec3_y(v_sample_in_origin)].f,
+        frame[vec3_z(v_sample_in_origin)].f,
+        frame[vec3_x(v_sample_in_direction)].f,
+        frame[vec3_y(v_sample_in_direction)].f,
+        frame[vec3_z(v_sample_in_direction)].f,
+        frame[vec3_x(v_sample_rgb)].f,
+        frame[vec3_y(v_sample_rgb)].f,
+        frame[vec3_z(v_sample_rgb)].f
+    );
+
+    return SUCCESS;
+}
+
 GFUNC(sample) {
 // vec3 sample(cvr3 origin, cvr3 direction) {
 
@@ -536,8 +565,8 @@ GFUNC(sample) {
 
     vcopy_ll    (v_sample_in_origin,    v_sample_origin)                           // 3 [1, 1, 1]
     vcopy_ll    (v_sample_in_direction, v_sample_direction)                        // 3 [1, 1, 1]
-    call(trace)                                                                    // 3 [1, 2]
-
+    //call(trace)                                                                    // 3 [1, 2]
+    hcall(shim_trace)
     bnz_l   (i_sample_material, 27)                                                    // 4 [1, 1, 2]
         load_sl     (1, f_sample_gradient)                                             // 3 [1, 1, 1]
         itof_ll     (f_sample_gradient, f_sample_gradient)                             // 3
@@ -631,7 +660,8 @@ END_GDATA_TABLE
 BEGIN_GHOST_TABLE(hostFunctionTable)
     hostPrintHeader,
     hostPrintRGB,
-    hostShimSample
+    hostShimSample,
+    hostShimTrace
 END_GHOST_TABLE
 
 /*
