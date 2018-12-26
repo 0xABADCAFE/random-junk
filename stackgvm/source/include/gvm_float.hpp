@@ -5,7 +5,7 @@
 
 IS(FRND_L) {
     LOC(0).f = 0.5f;//invRMax * std::rand();
-    //std::fprintf(stderr, "\tfrnd => %f\n", LOC(0).f);
+    std::fprintf(stderr, "\tfrnd => %f\n", LOC(0).f);
     STEP(2);
     NEXT;
 }
@@ -220,7 +220,7 @@ IS(FSUB_ILI) {
 
 IS(FSUB_LIL) {
     // Local - Indirect -> Local
-    LOC(2).f = LOC(0).f - IX0(0).f;
+    LOC(2).f = LOC(0).f - IX0(1).f;
     STEP(4);
     NEXT;
 }

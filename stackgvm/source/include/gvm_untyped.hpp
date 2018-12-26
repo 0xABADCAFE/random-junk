@@ -428,15 +428,17 @@ IS(COPY_II) {
 // Type Conversion Operations //////////////////////////////////////////////////////////////////////////////////////////
 
 IS(ITOF_LL) {
+    // Cast integer to float
+    LOC(1).f = (float32)LOC(0).i;
+    STEP(3);
+    NEXT;
+}
+
+IS(FTOI_LL) {
     // Cast float to integer
     LOC(1).i = (int32)LOC(0).f;
     STEP(3);
     NEXT;
 }
 
-IS(FTOI_LL) {
-    // Cast integer to float
-    LOC(1).f = (float32)LOC(0).i;
-    STEP(3);
-    NEXT;
-}
+
