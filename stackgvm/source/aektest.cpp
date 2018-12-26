@@ -114,7 +114,7 @@ Result hostShimSample(Scalar* frame) {
     frame[0].f = 1.0f;
     frame[1].f = 1.0f;
     frame[2].f = 1.0f;
-    
+
     std::fprintf(
         stderr,
         "\nsample(origin:{%.6f, %.6f, %.6f}, direction:{%.6f, %.6f, %.6f}) => {%.6f, %.6f, %.6f}\n\n",
@@ -334,8 +334,8 @@ GFUNC(render) {
     vnorm_ll    (v_render_temp_0, v_render_direction)                                               // 3 [1, 1, 1]
 
     // pixel = vec3_add(vec3_scale(sample(orign, direction)), 3.5)                                  // 11
-    //call(sample)                                                                                    // 3 [1, 2]
-    hcall(shim_sample)
+    call(sample)                                                                                    // 3 [1, 2]
+    //hcall(shim_sample)
 
     vfmul_lil   (m_render_sample_return, gf_rgb_scale, v_render_temp_0)                             // 4
     vadd_lll    (v_pixel_accumulator, v_render_temp_0, v_pixel_accumulator)                         // 4
@@ -396,10 +396,11 @@ GFUNC(trace) {
 //   // Assume trace hits nothing
 //   int32   material = 0;
 //   float32 p = -origin.z / direction.z;
-                                                                                            // Total: 11
+                                                                                            // Total: 14
     copy_il     (0, gf_distance_max, f_trace_distance)                                      // 4 [1, 1, 1, 1]
     load_sl     (0, i_trace_material)                                                       // 3 [1, 1, 1]
     fdiv_lll    (v_trace_origin + 2, v_trace_direction + 2, f_trace_p)                      // 4 [1, 1, 1, 1]
+    fneg_ll     (f_trace_p, f_trace_p)                                                      // 3 [1, 1, 1]
 
 //   // Check if trace maybe hits floor
 //   if (0.01 < p) {
@@ -412,6 +413,8 @@ GFUNC(trace) {
         copy_ll     (f_trace_p, f_trace_distance)                                           // 3 [1, 1, 1]
         vcopy_il    (gv_normal_up, v_trace_normal)                                          // 3 [1, 1, 1]
         load_sl     (1, i_trace_material)                                                   // 3 [1, 1, 1]
+
+ret
 
   // Check if trace maybe hits a sphere
 //     for (int32 j = 9; j--;) {
@@ -524,13 +527,6 @@ GFUNC(sample) {
 // vec3 sample(cvr3 origin, cvr3 direction) {
 
     addr_d      (g_globals, 0)                                                              // 3 [1, 1, 1]
-    load_sl     (1, 0)
-    load_sl     (2, 1)
-    load_sl     (3, 2)
-    itof_ll     (0, 0)
-    itof_ll     (1, 1)
-    itof_ll     (2, 2)
-    ret
 
 //   float32 distance;
 //   vec3 normal;
@@ -550,9 +546,9 @@ GFUNC(sample) {
         fmul_lll    (f_sample_gradient, f_sample_gradient, f_sample_gradient)          // 4
         vfmul_ill   (gv_sky_rgb,        f_sample_gradient, v_sample_rgb)               // 4
         ret                                                                            // 1
-    //load_sl     (0, 0)
-    //load_sl     (0, 1)
-    //load_sl     (0, 2)
+    load_sl     (0, 0)
+    load_sl     (0, 1)
+    load_sl     (0, 2)
     ret
 //
 //   // Hit nothing? Sky shade
