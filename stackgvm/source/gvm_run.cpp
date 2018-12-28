@@ -33,13 +33,17 @@ using namespace GVM;
 #ifdef _GVM_DEBUG_OPCODES_
     #define OPS(o) ((int)PRGC[(o)+1])
     #define OPU(o) ((unsigned)PRGC[(o)+1])
-    #define IS(opcode)          case Opcode::_##opcode: std::fprintf(stderr, "\t%-10s %3d %3d %3d\n", #opcode, (int)PRGC[1], (int)PRGC[2], (int)PRGC[3]);
+    //#define IS(opcode)          case Opcode::_##opcode: std::fprintf(stderr, "\t%-10s %3d %3d %3d\n", #opcode, (int)PRGC[1], (int)PRGC[2], (int)PRGC[3]);
+    #define IS(opcode) case Opcode::_##opcode: gvmDebug("\n\t%p : %3d : ", PRGC, (int)*PRGC);
     #define gvmDebugOpcode(...) std::fprintf(stderr, __VA_ARGS__)
+    #define gvmDebugJump(o) gvmDebugOpcode("jump %p", PRGC + (int)J16((o)));
+    #define gvmDebugSkip()  gvmDebugOpcode("skip")
 #else
     #define OPS(o)
     #define OPU(o)
     #define IS(opcode)    case Opcode::_##opcode:
     #define gvmDebugOpcode(...)
+    #define gvmDebugJump(o)
 #endif
 
 #define FETCH switch (*PRGC)

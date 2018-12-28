@@ -81,17 +81,19 @@ IS(BGT_II) {
 
 IS(DBNZ_L) {
     gvmDebugOpcode(
-        "\tdbnz %d(sf) : {%d} => ",
+        "\tdbnz %d(sf), %d : {%d} => ",
         OPS(0),
+        (int)J16(1),
         LOC(0).i
     );
     // Decrement local and branch if not zero
     if (--LOC(0).i) {
-        gvmDebugOpcode("{%d} taken %d\n", (int)LOC(0).i, (int)J16(1));
+        gvmDebugOpcode("{%d} ", (int)LOC(0).i);
+        gvmDebugJump(1);
         STEP(J16(1));
         NEXT;
     }
-    gvmDebugOpcode("{%d} not taken\n", (int)LOC(0).i);
+    gvmDebugOpcode("{%d} ", (int)LOC(0).i);
     STEP(4);
     NEXT;
 }
@@ -100,17 +102,20 @@ IS(DBNZ_L) {
 
 IS(DBNN_L) {
     gvmDebugOpcode(
-        "\tdbnn %d(sf) : {%d} => ",
+        "\tdbnn %d(sf), %d : {%d} => ",
         OPS(0),
+        (int)J16(1),
         LOC(0).i
     );
     // Decrement local and branch if not negative
     if (--LOC(0).i >= 0) {
-        gvmDebugOpcode("{%d} taken %d\n", (int)LOC(0).i, (int)J16(1));
+        gvmDebugOpcode("{%d} ", (int)LOC(0).i);
+        gvmDebugJump(1);
         STEP(J16(1));
         NEXT;
     }
-    gvmDebugOpcode("{%d} not taken\n", (int)LOC(0).i);
+    gvmDebugOpcode("{%d} ", (int)LOC(0).i);
+    gvmDebugSkip();
     STEP(4);
     NEXT;
 }

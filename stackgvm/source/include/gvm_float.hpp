@@ -1,7 +1,7 @@
 
 // Floating point specific instructions ////////////////////////////////////////////////////////////////////////////////
 
-// Single Operand Normalised Random Number ///s/ ////////////////////////////////////////////////////////////////////////
+// Single Operand Normalised Random Number /////////////////////////////////////////////////////////////////////////////
 
 IS(FRND_L) {
     LOC(0).f = 0.5f;//invRMax * std::rand();
@@ -12,37 +12,77 @@ IS(FRND_L) {
 // Two Operand Branch If Float Greater Or Equal ////////////////////////////////////////////////////////////////////////
 
 IS(FBGE_LL) {
+    gvmDebugOpcode(
+        "\tfbge %d(sf), %d(sf), %d : {%e} {%e} => ",
+        OPS(0),
+        OPS(1),
+        (int)J16(2),
+        LOC(0).f,
+        LOC(1).f
+    );
     if (LOC(0).f >= LOC(1).f) {
+        gvmDebugJump(2);
         STEP(J16(2));
         NEXT;
     }
+    gvmDebugSkip();
     STEP(5);
     NEXT;
 }
 
 IS(FBGE_IL) {
+    gvmDebugOpcode(
+        "\tfbge %u(i0), %d(sf), %d : {%e} {%e} => ",
+        OPU(0),
+        OPS(1),
+        (int)J16(2),
+        IX0(0).f,
+        LOC(1).f
+    );
     if (IX0(0).f >= LOC(1).f) {
+        gvmDebugJump(2);
         STEP(J16(2));
         NEXT;
     }
+    gvmDebugSkip();
     STEP(5);
     NEXT;
 }
 
 IS(FBGE_LI) {
+    gvmDebugOpcode(
+        "\tfbge %d(sf), %u(i0), %d : {%e} {%e} => ",
+        OPS(0),
+        OPU(1),
+        (int)J16(2),
+        LOC(0).f,
+        IX0(1).f
+    );
     if (LOC(0).f >= IX0(1).f) {
+        gvmDebugJump(2);
         STEP(J16(2));
         NEXT;
     }
+    gvmDebugSkip();
     STEP(5);
     NEXT;
 }
 
 IS(FBGE_II) {
+    gvmDebugOpcode(
+        "\tfbge %u(i0), %u(i1), %d : {%e} {%e} => ",
+        OPU(0),
+        OPU(1),
+        (int)J16(2),
+        IX0(0).f,
+        IX1(1).f
+    );
     if (IX0(0).f >= IX1(1).f) {
+        gvmDebugJump(2);
         STEP(J16(2));
         NEXT;
     }
+    gvmDebugSkip();
     STEP(5);
     NEXT;
 }
@@ -50,37 +90,77 @@ IS(FBGE_II) {
 // Two Operand Branch If Float Greater Than ////////////////////////////////////////////////////////////////////////////
 
 IS(FBGT_LL) {
+    gvmDebugOpcode(
+        "\tfbgt %d(sf), %d(sf), %d : {%e} {%e} => ",
+        OPS(0),
+        OPS(1),
+        (int)J16(2),
+        LOC(0).f,
+        LOC(1).f
+    );
     if (LOC(0).f > LOC(1).f) {
+        gvmDebugJump(2);
         STEP(J16(2));
         NEXT;
     }
+    gvmDebugSkip();
     STEP(5);
     NEXT;
 }
 
 IS(FBGT_IL) {
+    gvmDebugOpcode(
+        "\tfbgt %u(i0), %d(sf), %d : {%e} {%e} => ",
+        OPU(0),
+        OPS(1),
+        (int)J16(2),
+        IX0(0).f,
+        LOC(1).f
+    );
     if (IX0(0).f > LOC(1).f) {
+        gvmDebugJump(2);
         STEP(J16(2));
         NEXT;
     }
+    gvmDebugSkip();
     STEP(5);
     NEXT;
 }
 
 IS(FBGT_LI) {
+    gvmDebugOpcode(
+        "\tfbgt %d(sf), %u(i0), %d : {%e} {%e} => ",
+        OPS(0),
+        OPU(1),
+        (int)J16(2),
+        LOC(0).f,
+        IX0(1).f
+    );
     if (LOC(0).f > IX0(1).f) {
         STEP(J16(2));
+        gvmDebugJump(2);
         NEXT;
     }
+    gvmDebugSkip();
     STEP(5);
     NEXT;
 }
 
 IS(FBGT_II) {
+    gvmDebugOpcode(
+        "\tfbge %u(i0), %u(i1), %d : {%e} {%e} => ",
+        OPU(0),
+        OPU(1),
+        (int)J16(2),
+        IX0(0).f,
+        IX1(1).f
+    );
     if (IX0(0).f > IX1(1).f) {
         STEP(J16(2));
+        gvmDebugJump(2);
         NEXT;
     }
+    gvmDebugSkip();
     STEP(5);
     NEXT;
 }

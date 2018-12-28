@@ -94,34 +94,36 @@ IS(RET) {
 
 IS(LI0BNN) {
     gvmDebugOpcode(
-        "\tlibnn %u(i0) : {%p} => ",
+        "\tlibnn %u(i0), %d : {%p} => ",
         OPU(0),
+        (int)(int)J16(1),
         IX0(0).a
     );
     // Load indirect[0] to indirection register[0] and branch if not null
     if (!(IR(0) = IX0(0).a)) {
-        gvmDebugOpcode("taken %d\n", (int)J16(1));
+        gvmDebugJump(1);
         STEP(J16(1));
         NEXT;
     }
-    gvmDebugOpcode("not taken\n");
+    gvmDebugSkip();
     STEP(4);
     NEXT;
 }
 
 IS(LI1BNN) {
     gvmDebugOpcode(
-        "\tlibnn %u(i1) : {%p} => ",
+        "\tlibnn %u(i1), %d : {%p} => ",
         OPU(0),
+        (int)(int)J16(1),
         IX1(0).a
     );
     // Load indirect[1] to indirection register[1] and branch if not null
     if (!(IR(1) = IX1(0).a)) {
-        gvmDebugOpcode("taken %d\n", (int)J16(1));
+        gvmDebugJump(1);
         STEP(J16(1));
         NEXT;
     }
-    gvmDebugOpcode("not taken\n");
+    gvmDebugSkip();
     STEP(4);
     NEXT;
 }
@@ -133,17 +135,18 @@ IS(LI1BNN) {
 
 IS(BEZ_L) {
     gvmDebugOpcode(
-        "\tbez %d(sf) : {%u} => ",
+        "\tbez %d(sf), %d : {%u} => ",
         OPS(0),
+        (int)J16(1),
         LOC(0).u
     );
     // Branch to a signed 16-bit offset if local is equal to zero
     if (0 == LOC(0).u) {
-        gvmDebugOpcode("taken %d\n", (int)J16(1));
+        gvmDebugJump(1);
         STEP(J16(1));
         NEXT;
     }
-    gvmDebugOpcode("not taken\n");
+    gvmDebugSkip();
     STEP(4);
     NEXT;
 }
@@ -156,11 +159,11 @@ IS(BEZ_I0) {
     );
     // Branch to a signed 16-bit offset if indirect is equal to zero
     if (0 == IX0(0).u) {
-        gvmDebugOpcode("taken %d\n", (int)J16(1));
+        gvmDebugJump(1);
         STEP(J16(1));
         NEXT;
     }
-    gvmDebugOpcode("not taken\n");
+    gvmDebugSkip();
     STEP(4);
     NEXT;
 }
@@ -173,11 +176,11 @@ IS(BEZ_I1) {
     );
     // Branch to a signed 16-bit offset if indirect is equal to zero
     if (0 == IX1(0).u) {
-        gvmDebugOpcode("taken %d\n", (int)J16(1));
+        gvmDebugJump(1);
         STEP(J16(1));
         NEXT;
     }
-    gvmDebugOpcode("not taken\n");
+    gvmDebugSkip();
     STEP(4);
     NEXT;
 }
@@ -186,51 +189,54 @@ IS(BEZ_I1) {
 
 IS(BNZ_L) {
     gvmDebugOpcode(
-        "\tbnz %d(sf) : {%u} => ",
+        "\tbnz %d(sf), %d : {%u} => ",
         OPS(0),
+        (int)J16(1),
         LOC(0).u
     );
     // Branch to a signed 16-bit offset if local is not equal to zero
     if (0 != LOC(0).u) {
-        gvmDebugOpcode("taken %d\n", (int)J16(1));
+        gvmDebugJump(1);
         STEP(J16(1));
         NEXT;
     }
-    gvmDebugOpcode("not taken\n");
+    gvmDebugSkip();
     STEP(4);
     NEXT;
 }
 
 IS(BNZ_I0) {
     gvmDebugOpcode(
-        "\tbnz %u(i0) : {%u} => ",
+        "\tbnz %u(i0), %d : {%u} => ",
         OPU(0),
+        (int)J16(1),
         IX0(0).u
     );
     // Branch to a signed 16-bit offset if indirect is not equal to zero
     if (0 != IX0(0).u) {
-        gvmDebugOpcode("taken %d\n", (int)J16(1));
+        gvmDebugJump(1);
         STEP(J16(1));
         NEXT;
     }
-    gvmDebugOpcode("not taken\n");
+    gvmDebugSkip();
     STEP(4);
     NEXT;
 }
 
 IS(BNZ_I1) {
     gvmDebugOpcode(
-        "\tbnz %u(i0) : {%u} => ",
+        "\tbnz %u(i0), %d : {%u} => ",
         OPU(0),
+        (int)J16(1),
         IX1(0).u
     );
     // Branch to a signed 16-bit offset if indirect is not equal to zero
     if (0 != IX1(0).u) {
-        gvmDebugOpcode("taken %d\n", (int)J16(1));
+        gvmDebugJump(1);
         STEP(J16(1));
         NEXT;
     }
-    gvmDebugOpcode("not taken\n");
+    gvmDebugSkip();
     STEP(4);
     NEXT;
 }
@@ -238,31 +244,61 @@ IS(BNZ_I1) {
 // Two Operand Branch If Equal /////////////////////////////////////////////////////////////////////////////////////////
 
 IS(BEQ_LL) {
+    gvmDebugOpcode(
+        "\tbeq %d(sf), %d(sf), %d : {%u} {%u} => ",
+        OPS(0),
+        OPS(1),
+        (int)J16(2),
+        LOC(0).u,
+        LOC(1).u
+    );
     // Branch to a signed 16-bit offset if two local values are equal
     if (LOC(1).u == LOC(0).u) {
+        gvmDebugJump(2);
         STEP(J16(2));
         NEXT;
     }
+    gvmDebugSkip();
     STEP(5);
     NEXT;
 }
 
 IS(BEQ_LI) {
+    gvmDebugOpcode(
+        "\tbeq %d(sf), %u(i0), %d : {%u} {%u} => ",
+        OPS(0),
+        OPU(1),
+        (int)J16(2),
+        LOC(0).u,
+        IX0(1).u
+    );
     // Branch to a signed 16-bit offset if local and indirect values are equal
     if (IX0(1).u == LOC(0).u) {
+        gvmDebugJump(2);
         STEP(J16(2));
         NEXT;
     }
+    gvmDebugSkip();
     STEP(5);
     NEXT;
 }
 
 IS(BEQ_II) {
+    gvmDebugOpcode(
+        "\tbeq %u(i0), %u(i1), %d : {%u} {%u} => ",
+        OPU(0),
+        OPU(1),
+        (int)J16(2),
+        IX0(0).u,
+        IX1(1).u
+    );
     // Branch to a signed 16-bit offset if two indirect values are equal
     if (IX0(0).u == IX1(1).u) {
+        gvmDebugJump(2);
         STEP(J16(2));
         NEXT;
     }
+    gvmDebugSkip();
     STEP(5);
     NEXT;
 }
@@ -270,31 +306,61 @@ IS(BEQ_II) {
 // Two Operand Branch If Not Equal /////////////////////////////////////////////////////////////////////////////////////
 
 IS(BNE_LL) {
+    gvmDebugOpcode(
+        "\tbne %d(sf), %d(sf), %d : {%u} {%u} => ",
+        OPS(0),
+        OPS(1),
+        (int)J16(2),
+        LOC(0).u,
+        LOC(1).u
+    );
     // Branch to a signed 16-bit offset if two local values are equal
     if (LOC(1).u != LOC(0).u) {
+        gvmDebugJump(2);
         STEP(J16(2));
         NEXT;
     }
+    gvmDebugSkip();
     STEP(5);
     NEXT;
 }
 
 IS(BNE_LI) {
+    gvmDebugOpcode(
+        "\tbne %d(sf), %u(i0), %d : {%u} {%u} => ",
+        OPS(0),
+        OPU(1),
+        (int)J16(1),
+        LOC(0).u,
+        IX0(1).u
+    );
     // Branch to a signed 16-bit offset if local and indirect values are equal
     if (IX0(1).u != LOC(0).u) {
+        gvmDebugJump(2);
         STEP(J16(2));
         NEXT;
     }
+    gvmDebugSkip();
     STEP(5);
     NEXT;
 }
 
 IS(BNE_II) {
+    gvmDebugOpcode(
+        "\tbne %u(i0), %u(i1), %d : {%u} {%u} => ",
+        OPU(0),
+        OPU(1),
+        (int)J16(2),
+        IX0(0).u,
+        IX1(1).u
+    );
     // Branch to a signed 16-bit offset if two indirect values are equal
     if (IX0(0).u != IX1(1).u) {
+        gvmDebugJump(2);
         STEP(J16(2));
         NEXT;
     }
+    gvmDebugSkip();
     STEP(5);
     NEXT;
 }
@@ -359,14 +425,14 @@ IS(ADDR_D0) {
     // Load the address of a global data symbol directly into an index register
     uint32 symbolId = SYM(0);
     gvmDebugOpcode(
-        "\taddr %u(globals) ",
+        "\taddr %u(globals), i0 : ",
         symbolId
     );
     if (!symbolId) {
-        gvmDebugOpcode(", i0 : illegal symbol id\n");
+        gvmDebugOpcode("Abort on illegal symbol id");
         EXIT(EXEC_ILLEGAL_DATA_ID);
     }
-    gvmDebugOpcode("{%p}, i0\n", (void*)dataTable[symbolId]);
+    gvmDebugOpcode("{%p}", (void*)dataTable[symbolId]);
     IR(0) = dataTable[symbolId];
     SAVE_IR(0);
     STEP(3);
@@ -377,14 +443,14 @@ IS(ADDR_D1) {
     // Load the address of a global data symbol directly into an index register
     uint32 symbolId = SYM(0);
     gvmDebugOpcode(
-        "\taddr %u(globals) ",
+        "\taddr %u(globals), i1 : ",
         symbolId
     );
     if (!symbolId) {
-        gvmDebugOpcode(", i1 : illegal symbol id\n");
+        gvmDebugOpcode("Abort on illegal symbol id");
         EXIT(EXEC_ILLEGAL_DATA_ID);
     }
-    gvmDebugOpcode("{%p}, i1\n", (void*)dataTable[symbolId]);
+    gvmDebugOpcode("{%p}", (void*)dataTable[symbolId]);
     IR(1) = dataTable[symbolId];
     SAVE_IR(1);
     STEP(3);
@@ -454,10 +520,10 @@ IS(LOAD_HL) {
 IS(COPY_LL) {
     // Copy a local scalar to a local scalar
     gvmDebugOpcode(
-        "\tcopy %d(sf) {%u}, %d(sf)\n",
+        "\tcopy %d(sf), %d(sf) : {%X}",
         OPS(0),
-        LOC(0).u,
-        OPS(1)
+        OPS(1),
+        LOC(0).u
     );
 
     LOC(1).u = LOC(0).u;
@@ -468,10 +534,10 @@ IS(COPY_LL) {
 IS(COPY_I0L) {
     // Copy an indirect scalar to a local
     gvmDebugOpcode(
-        "\tcopy %u(i0) {%u}, %d(sf)\n",
+        "\tcopy %u(i0), %d(sf) : {%X}",
         OPU(0),
-        IX0(0).u,
-        OPS(1)
+        OPS(1),
+        IX0(0).u
     );
 
     LOC(1).u = IX0(0).u;
@@ -482,10 +548,10 @@ IS(COPY_I0L) {
 IS(COPY_I1L) {
     // Copy an indirect scalar to a local
     gvmDebugOpcode(
-        "\tcopy %u(i1) {%u}, %d(sf)\n",
+        "\tcopy %u(i1) %d(sf) : {%X}",
         OPU(0),
-        IX1(0).u,
-        OPS(1)
+        OPS(1),
+        IX1(0).u
     );
     LOC(1).u = IX1(0).u;
     STEP(3);
@@ -495,12 +561,12 @@ IS(COPY_I1L) {
 IS(CPIX_I0L) {
     // Copy indirect indexed by local to local
     gvmDebugOpcode(
-        "\tcopy %u(i0)[%d(sf) {%u}] {%u}, %d(sf)\n",
+        "\tcopy %u(i0)[%d(sf)], %d(sf) : i0[%u] {%u}\n",
         OPU(0),
         OPS(1),
+        OPS(2),
         LOC(1).u,
-        UIX0(0)[LOC(1).u],
-        OPS(2)
+        UIX0(0)[LOC(1).u]
     );
     LOC(2).u = UIX0(0)[LOC(1).u];
     STEP(4);
@@ -510,12 +576,12 @@ IS(CPIX_I0L) {
 IS(CPIX_I1L) {
     // Copy indirect indexed by local to local
     gvmDebugOpcode(
-        "\tcopy %u(i1)[%d(sf) {%u}] {%u}, %d(sf)\n",
+        "\tcopy %u(i1)[%d(sf)], %d(sf) : i1[%u] {%u}\n",
         OPU(0),
         OPS(1),
+        OPS(2),
         LOC(1).u,
-        UIX1(0)[LOC(1).u],
-        OPS(2)
+        UIX1(0)[LOC(1).u]
     );
     LOC(2).u = UIX1(0)[LOC(1).u];
     STEP(4);
@@ -523,6 +589,12 @@ IS(CPIX_I1L) {
 }
 
 IS(COPY_LI0) {
+    gvmDebugOpcode(
+        "\tcopy %d(sf), %u(i0) : {%X}",
+        OPS(0),
+        OPU(1),
+        LOC(0).u
+    );
     // Copy a local scalar to an indirect
     IX0(1).u = LOC(0).u;
     STEP(3);
@@ -530,8 +602,14 @@ IS(COPY_LI0) {
 }
 
 IS(COPY_LI1) {
+    gvmDebugOpcode(
+        "\tcopy %d(sf), %u(i0) : {%X}",
+        OPS(0),
+        OPU(1),
+        LOC(0).u
+    );
     // Copy a local scalar to an indirect
-    IX0(1).u = LOC(0).u;
+    IX1(1).u = LOC(0).u;
     STEP(3);
     NEXT;
 }
@@ -548,13 +626,13 @@ IS(COPY_II) {
 IS(ITOF_LL) {
     // Cast integer to float
     gvmDebugOpcode(
-        "\titof %d(sf) {%d}, %d(sf) => ",
+        "\titof %d(sf), %d(sf) : {%d} => ",
         OPU(0),
-        LOC(0).i,
-        OPS(1)
+        OPS(1),
+        LOC(0).i
     );
     LOC(1).f = (float32)LOC(0).i;
-    gvmDebugOpcode("{%.6f}\n", LOC(1).f);
+    gvmDebugOpcode("{%e}\n", LOC(1).f);
     STEP(3);
     NEXT;
 }
@@ -562,10 +640,10 @@ IS(ITOF_LL) {
 IS(FTOI_LL) {
     // Cast float to integer
     gvmDebugOpcode(
-        "\titof %d(sf) {%.6f}, %d(sf) => ",
+        "\titof %d(sf), %d(sf) : {%e} => ",
         OPU(0),
-        LOC(0).f,
-        OPS(1)
+        OPS(1),
+        LOC(0).f
     );
     LOC(1).i = (int32)LOC(0).f;
     gvmDebugOpcode("{%d}\n", LOC(1).i);
