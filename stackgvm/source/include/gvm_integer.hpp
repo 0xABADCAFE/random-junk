@@ -4,6 +4,14 @@
 // Two Operand Branch If Integer Greater Or Equal //////////////////////////////////////////////////////////////////////
 
 IS(BGE_LL) {
+    gvmDebugOpcode(
+        "bge %d(sf), %d(sf), %d : %d >= %d => ",
+        OPS(0),
+        OPS(1),
+        (int)J16(2),
+        LOC(0).i,
+        LOC(1).i
+    );
     if (LOC(0).i >= LOC(1).i) {
         STEP(J16(2));
         NEXT;
@@ -13,6 +21,14 @@ IS(BGE_LL) {
 }
 
 IS(BGE_IL) {
+    gvmDebugOpcode(
+        "bge %u(i0), %d(sf), %d : %d >= %d => ",
+        OPU(0),
+        OPS(1),
+        (int)J16(2),
+        IX0(0).i,
+        LOC(1).i
+    );
     if (IX0(0).i >= LOC(1).i) {
         STEP(J16(2));
         NEXT;
@@ -22,6 +38,14 @@ IS(BGE_IL) {
 }
 
 IS(BGE_LI) {
+    gvmDebugOpcode(
+        "bge %d(sf), %u(i0), %d : %d >= %d => ",
+        OPS(0),
+        OPU(1),
+        (int)J16(2),
+        LOC(0).i,
+        IX0(1).i
+    );
     if (LOC(0).i >= IX0(1).i) {
         STEP(J16(2));
         NEXT;
@@ -31,6 +55,14 @@ IS(BGE_LI) {
 }
 
 IS(BGE_II) {
+    gvmDebugOpcode(
+        "bge %u(i0), %u(i1), %d : %d >= %d => ",
+        OPU(0),
+        OPU(1),
+        (int)J16(2),
+        IX0(0).i,
+        IX1(1).i
+    );
     if (IX0(0).i >= IX1(1).i) {
         STEP(J16(2));
         NEXT;
@@ -42,6 +74,14 @@ IS(BGE_II) {
 // Two Operand Branch If Integer Greater Than //////////////////////////////////////////////////////////////////////////
 
 IS(BGT_LL) {
+    gvmDebugOpcode(
+        "bgt %d(sf), %d(sf), %d : %d > %d => ",
+        OPS(0),
+        OPS(1),
+        (int)J16(2),
+        LOC(0).i,
+        LOC(1).i
+    );
     if (LOC(0).i > LOC(1).i) {
         STEP(J16(2));
         NEXT;
@@ -51,6 +91,14 @@ IS(BGT_LL) {
 }
 
 IS(BGT_IL) {
+    gvmDebugOpcode(
+        "bgt %u(i0), %d(sf), %d : %d > %d => ",
+        OPU(0),
+        OPS(1),
+        (int)J16(2),
+        IX0(0).i,
+        LOC(1).i
+    );
     if (IX0(0).i > LOC(1).i) {
         STEP(J16(2));
         NEXT;
@@ -60,6 +108,14 @@ IS(BGT_IL) {
 }
 
 IS(BGT_LI) {
+    gvmDebugOpcode(
+        "bgt %d(sf), %u(i0), %d : %d > %d => ",
+        OPS(0),
+        OPU(1),
+        (int)J16(2),
+        LOC(0).i,
+        IX0(1).i
+    );
     if (LOC(0).i > IX0(1).i) {
         STEP(J16(2));
         NEXT;
@@ -69,6 +125,14 @@ IS(BGT_LI) {
 }
 
 IS(BGT_II) {
+    gvmDebugOpcode(
+        "bgt %u(i0), %u(i1), %d : %d > %d => ",
+        OPU(0),
+        OPU(1),
+        (int)J16(2),
+        IX0(0).i,
+        IX1(1).i
+    );
     if (IX0(0).i > IX1(1).i) {
         STEP(J16(2));
         NEXT;
@@ -81,19 +145,18 @@ IS(BGT_II) {
 
 IS(DBNZ_L) {
     gvmDebugOpcode(
-        "\tdbnz %d(sf), %d : {%d} => ",
+        "dbnz %d(sf), %d : --%d != 0 => ",
         OPS(0),
         (int)J16(1),
         LOC(0).i
     );
     // Decrement local and branch if not zero
     if (--LOC(0).i) {
-        gvmDebugOpcode("{%d} ", (int)LOC(0).i);
         gvmDebugJump(1);
         STEP(J16(1));
         NEXT;
     }
-    gvmDebugOpcode("{%d} ", (int)LOC(0).i);
+    gvmDebugOpcode("%d ", (int)LOC(0).i);
     STEP(4);
     NEXT;
 }
@@ -102,19 +165,18 @@ IS(DBNZ_L) {
 
 IS(DBNN_L) {
     gvmDebugOpcode(
-        "\tdbnn %d(sf), %d : {%d} => ",
+        "dbnn %d(sf), %d : --%d >= 0 => ",
         OPS(0),
         (int)J16(1),
         LOC(0).i
     );
     // Decrement local and branch if not negative
     if (--LOC(0).i >= 0) {
-        gvmDebugOpcode("{%d} ", (int)LOC(0).i);
         gvmDebugJump(1);
         STEP(J16(1));
         NEXT;
     }
-    gvmDebugOpcode("{%d} ", (int)LOC(0).i);
+    gvmDebugOpcode("%d ", (int)LOC(0).i);
     gvmDebugSkip();
     STEP(4);
     NEXT;

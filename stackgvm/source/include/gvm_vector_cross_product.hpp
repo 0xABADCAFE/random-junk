@@ -8,7 +8,7 @@
     // y =  v1.z * v2.x - v1.x * v2.z,
     // z =  v1.x * v2.y - v1.y * v2.x
     gvmDebugOpcode(
-        "{%e, %e, %e} x {%e, %e, %e} => ",
+        "{%g, %g, %g} x {%g, %g, %g} => ",
         vs1[0], vs1[1], vs1[2],
         vs2[0], vs2[1], vs2[2]
     );
@@ -16,7 +16,7 @@
     vd[1] = vs1[2] * vs2[0] - vs1[0] * vs2[2];
     vd[2] = vs1[0] * vs2[1] - vs1[1] * vs2[0];
     gvmDebugOpcode(
-        "{%e, %e, %e}\n",
+        "{%g, %g, %g}",
         vd[0], vd[1], vd[2]
     );
     STEP(4);

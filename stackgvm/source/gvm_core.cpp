@@ -280,7 +280,7 @@ Result Interpreter::invoke(uint16 functionId) {
 Result Interpreter::enterFunction(const uint8* returnAddress, uint16 functionId) {
     if (functionId == 0 || functionId > functionTableSize) {
         gvmDebug(
-            "GVM::Interpreter::enterFunction(%d)\n\tID is out of range 1-%d.\n",
+            "GVM::Interpreter::enterFunction(%d) : ID is out of range 1-%d.\n",
             (int)functionId,
             (int)functionTableSize
         );
@@ -290,7 +290,7 @@ Result Interpreter::enterFunction(const uint8* returnAddress, uint16 functionId)
         uint32 currentFrameSize = callStack->frameSize;
         if (frameStack + currentFrameSize > frameStackTop) {
             gvmDebug(
-                "GVM::Interpreter::enterFunction(%d)\n\tFrame Stack Overflow.\n",
+                "GVM::Interpreter::enterFunction(%d) : Frame Stack Overflow.\n",
                 (int)functionId
             );
             return EXEC_FRAME_STACK_OVERFLOW;
@@ -303,7 +303,7 @@ Result Interpreter::enterFunction(const uint8* returnAddress, uint16 functionId)
         programCounter           = functionTable[functionId].entryPoint;
 #ifdef _GVM_DEBUG_FUNCTIONS_
         gvmDebug(
-            "GVM::Interpreter::enterFunction(%d) {\n\tAddress: %p\n\tSize: %d\n\tReturn Address: %p\n\tPC Entry: %p\n}\n",
+            "GVM::Interpreter::enterFunction(%d) { Address: %p, Size: %d, Return Address: %p, PC Entry: %p }\n",
             (int)functionId,
             frameStack,
             (int)callStack->frameSize,
@@ -315,7 +315,7 @@ Result Interpreter::enterFunction(const uint8* returnAddress, uint16 functionId)
     }
 
     gvmDebug(
-        "GVM::Interpreter::enterFunction(%d)\n\tCall Stack overflowed.\n",
+        "GVM::Interpreter::enterFunction(%d) : Call Stack overflowed.\n",
         (int)functionId
     );
     return EXEC_CALL_STACK_OVERFLOW;
@@ -327,7 +327,7 @@ Result Interpreter::enterClosure(const uint8* returnAddress, int16 branch, uint8
     if (callStack < callStackTop) {
         uint32 currentFrameSize = callStack->frameSize;
         if (frameStack + currentFrameSize > frameStackTop) {
-            gvmDebug("GVM::Interpreter::enterClosure()\n\tFrame Stack Overflow.\n");
+            gvmDebug("GVM::Interpreter::enterClosure() : Frame Stack Overflow.\n");
             return EXEC_FRAME_STACK_OVERFLOW;
         }
         frameStack += currentFrameSize;
@@ -338,7 +338,7 @@ Result Interpreter::enterClosure(const uint8* returnAddress, int16 branch, uint8
         programCounter           += branch;
 #ifdef _GVM_DEBUG_FUNCTIONS_
         gvmDebug(
-            "GVM::Interpreter::enterClosure() {\n\tAddress: %p\n\tSize: %d\n\tReturn Address: %p\n\tPC Entry: %p\n}\n",
+            "GVM::Interpreter::enterClosure() { Address: %p, Size: %d, Return Address: %p, PC Entry: %p }\n",
             frameStack,
             (int)callStack->frameSize,
             returnAddress,
@@ -348,7 +348,7 @@ Result Interpreter::enterClosure(const uint8* returnAddress, int16 branch, uint8
         return SUCCESS;
     }
 
-    gvmDebug("GVM::Interpreter::enterClosure()\n\tCall Stack overflowed.\n");
+    gvmDebug("GVM::Interpreter::enterClosure() : Call Stack overflowed.\n");
     return EXEC_CALL_STACK_OVERFLOW;
 }
 
@@ -362,14 +362,14 @@ Result Interpreter::exitFunction() {
         int currentId = callStack->functionId;
         --callStack;
         if (frameStack - callStack->frameSize < frameStackBase) {
-            gvmDebug("GVM::Interpreter::exitFunction()\n\tFrame Stack Underflow.\n");
+            gvmDebug("GVM::Interpreter::exitFunction() : Frame Stack Underflow.\n");
             return EXEC_FRAME_STACK_UNDERFLOW;
         }
         frameStack -= callStack->frameSize;
         programCounter = returnTo;
 #ifdef _GVM_DEBUG_FUNCTIONS_
         gvmDebug(
-            "GVM::Interpreter::exitFunction(%d) {\n\tReturn to function:%d\n\tPC Resume: %p\n}\n",
+            "GVM::Interpreter::exitFunction(%d) { Return to function:%d, PC Resume: %p }\n",
             currentId,
             (int)callStack->functionId,
             programCounter
@@ -385,7 +385,7 @@ Result Interpreter::exitFunction() {
 Result Interpreter::invokeHostFunction(uint16 functionId) {
     if (functionId == 0 || functionId > hostFunctionTableSize) {
         gvmDebug(
-            "GVM::Interpreter::invokeHostFunction(%d)\n\tID is out of range 1-%d.\n",
+            "GVM::Interpreter::invokeHostFunction(%d) : ID is out of range 1-%d.\n",
             (int)functionId,
             (int)hostFunctionTableSize
         );
@@ -393,7 +393,7 @@ Result Interpreter::invokeHostFunction(uint16 functionId) {
     }
     if (!hostFunctionTable[functionId]) {
         gvmDebug(
-            "GVM::Interpreter::invokeHostFunction() hostFunctionTable[%d] does not point at a callable function.\n",
+            "GVM::Interpreter::invokeHostFunction(%d) index does not point at a callable function.\n",
             (int)functionId
         );
         return EXEC_ILLEGAL_CALL_ID;
@@ -401,7 +401,7 @@ Result Interpreter::invokeHostFunction(uint16 functionId) {
     uint32 currentFrameSize = callStack->frameSize;
     if (frameStack + currentFrameSize > frameStackTop) {
         gvmDebug(
-            "GVM::Interpreter::invokeHostFunction(%d)\n\tFrame Stack Overflow.\n",
+            "GVM::Interpreter::invokeHostFunction(%d) : Frame Stack Overflow.\n",
             (int)functionId
         );
         return EXEC_FRAME_STACK_OVERFLOW;
@@ -409,7 +409,7 @@ Result Interpreter::invokeHostFunction(uint16 functionId) {
     frameStack += currentFrameSize;
 #ifdef _GVM_DEBUG_FUNCTIONS_
     gvmDebug(
-        "GVM::Interpreter::invokeHostFunction() id: %d, stack address %p\n",
+        "GVM::Interpreter::invokeHostFunction(%d) { Stack Address %p }",
         (int)functionId,
         frameStack
     );

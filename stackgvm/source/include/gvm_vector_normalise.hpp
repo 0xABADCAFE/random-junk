@@ -10,7 +10,7 @@
         (vs1[2] * vs1[2])
     );
     gvmDebugOpcode(
-        "{%e, %e, %e} * %.6f => ",
+        "{%g, %g, %g} * %g => ",
         vs1[0], vs1[1], vs1[2],
         sf
     );
@@ -18,7 +18,7 @@
     vd[1] = sf * vs1[1];
     vd[2] = sf * vs1[2];
     gvmDebugOpcode(
-        "{%e, %e, %e}\n",
+        "{%g, %g, %g}",
         vd[0], vd[1], vd[2]
     );
     STEP(3);

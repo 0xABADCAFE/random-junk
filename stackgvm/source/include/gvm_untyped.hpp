@@ -2,6 +2,9 @@
 // Untyped Instructions ////////////////////////////////////////////////////////////////////////////////////////////////
 
 IS(HCF) {
+    gvmDebugOpcode(
+        "hcf : Abort"
+    );
     // Halt and catch fire
     EXIT(EXEC_HALT_AND_CATCH_FIRE);
 }
@@ -23,6 +26,10 @@ IS(BRA) {
 // Function Call ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 IS(BCALL) {
+    gvmDebugOpcode(
+        "bcall %d",
+        (int)J16(1)
+    );
     // Call an anonymous local function
     result = enterClosure(RTA(4), J16(1), U8(0));
 #ifdef _GVM_OPT_ALLOW_GOTO_
@@ -33,6 +40,10 @@ IS(BCALL) {
 }
 
 IS(CALL) {
+    gvmDebugOpcode(
+        "call %04X : ",
+        (unsigned)SYM(0)
+    );
     // Call a named function by ID
     result = enterFunction(RTA(3), SYM(0));
 #ifdef _GVM_OPT_ALLOW_GOTO_
@@ -70,9 +81,14 @@ IS(ICALL_I) {
 }
 
 IS(HCALL) {
+    gvmDebugOpcode(
+        "hcall %04X : ",
+        (int)SYM(0)
+    );
     // Call a host function by ID
     result = invokeHostFunction(SYM(0));
     if (result != SUCCESS) {
+        gvmDebugOpcode("Abort with status %d\n", (int)result);
         EXIT(result);
     }
     STEP(3);
@@ -80,6 +96,9 @@ IS(HCALL) {
 }
 
 IS(RET) {
+    gvmDebugOpcode(
+        "ret : "
+    );
     // Return from the current function
     result = exitFunction();
     if (result != SUCCESS) {
@@ -94,7 +113,7 @@ IS(RET) {
 
 IS(LI0BNN) {
     gvmDebugOpcode(
-        "\tlibnn %u(i0), %d : {%p} => ",
+        "libnn %u(i0), %d : %p != null => ",
         OPU(0),
         (int)(int)J16(1),
         IX0(0).a
@@ -112,7 +131,7 @@ IS(LI0BNN) {
 
 IS(LI1BNN) {
     gvmDebugOpcode(
-        "\tlibnn %u(i1), %d : {%p} => ",
+        "libnn %u(i1), %d : %p != null => ",
         OPU(0),
         (int)(int)J16(1),
         IX1(0).a
@@ -135,7 +154,7 @@ IS(LI1BNN) {
 
 IS(BEZ_L) {
     gvmDebugOpcode(
-        "\tbez %d(sf), %d : {%u} => ",
+        "bez %d(sf), %d : %u == 0 => ",
         OPS(0),
         (int)J16(1),
         LOC(0).u
@@ -153,8 +172,9 @@ IS(BEZ_L) {
 
 IS(BEZ_I0) {
     gvmDebugOpcode(
-        "\tbez %u(i0) : {%u} => ",
+        "bez %u(i0), %d : %u == 0 => ",
         OPU(0),
+        (int)J16(1),
         IX0(0).u
     );
     // Branch to a signed 16-bit offset if indirect is equal to zero
@@ -170,8 +190,9 @@ IS(BEZ_I0) {
 
 IS(BEZ_I1) {
     gvmDebugOpcode(
-        "\tbez %u(i1) : {%u} => ",
+        "bez %u(i1), %d : %u == 0 => ",
         OPU(0),
+        (int)J16(1),
         IX1(0).u
     );
     // Branch to a signed 16-bit offset if indirect is equal to zero
@@ -189,7 +210,7 @@ IS(BEZ_I1) {
 
 IS(BNZ_L) {
     gvmDebugOpcode(
-        "\tbnz %d(sf), %d : {%u} => ",
+        "bnz %d(sf), %d : %u != 0 => ",
         OPS(0),
         (int)J16(1),
         LOC(0).u
@@ -207,7 +228,7 @@ IS(BNZ_L) {
 
 IS(BNZ_I0) {
     gvmDebugOpcode(
-        "\tbnz %u(i0), %d : {%u} => ",
+        "bnz %u(i0), %d : %u != 0 => ",
         OPU(0),
         (int)J16(1),
         IX0(0).u
@@ -225,7 +246,7 @@ IS(BNZ_I0) {
 
 IS(BNZ_I1) {
     gvmDebugOpcode(
-        "\tbnz %u(i0), %d : {%u} => ",
+        "bnz %u(i0), %d : %u != 0 => ",
         OPU(0),
         (int)J16(1),
         IX1(0).u
@@ -245,7 +266,7 @@ IS(BNZ_I1) {
 
 IS(BEQ_LL) {
     gvmDebugOpcode(
-        "\tbeq %d(sf), %d(sf), %d : {%u} {%u} => ",
+        "beq %d(sf), %d(sf), %d : 0x%08X == 0x%08X => ",
         OPS(0),
         OPS(1),
         (int)J16(2),
@@ -265,7 +286,7 @@ IS(BEQ_LL) {
 
 IS(BEQ_LI) {
     gvmDebugOpcode(
-        "\tbeq %d(sf), %u(i0), %d : {%u} {%u} => ",
+        "beq %d(sf), %u(i0), %d : 0x%08X == 0x%08X => ",
         OPS(0),
         OPU(1),
         (int)J16(2),
@@ -285,7 +306,7 @@ IS(BEQ_LI) {
 
 IS(BEQ_II) {
     gvmDebugOpcode(
-        "\tbeq %u(i0), %u(i1), %d : {%u} {%u} => ",
+        "beq %u(i0), %u(i1), %d : 0x%08X == 0x%08X => ",
         OPU(0),
         OPU(1),
         (int)J16(2),
@@ -307,7 +328,7 @@ IS(BEQ_II) {
 
 IS(BNE_LL) {
     gvmDebugOpcode(
-        "\tbne %d(sf), %d(sf), %d : {%u} {%u} => ",
+        "bne %d(sf), %d(sf), %d : 0x%08X != 0x%08X => ",
         OPS(0),
         OPS(1),
         (int)J16(2),
@@ -327,7 +348,7 @@ IS(BNE_LL) {
 
 IS(BNE_LI) {
     gvmDebugOpcode(
-        "\tbne %d(sf), %u(i0), %d : {%u} {%u} => ",
+        "bne %d(sf), %u(i0), %d : 0x%08X != 0x%08X => ",
         OPS(0),
         OPU(1),
         (int)J16(1),
@@ -347,7 +368,7 @@ IS(BNE_LI) {
 
 IS(BNE_II) {
     gvmDebugOpcode(
-        "\tbne %u(i0), %u(i1), %d : {%u} {%u} => ",
+        "bne %u(i0), %u(i1), %d : 0x%08X != 0x%08X => ",
         OPU(0),
         OPU(1),
         (int)J16(2),
@@ -370,6 +391,12 @@ IS(BNE_II) {
 IS(ADDR_LL) {
     // Get address of local variable into local variable
     LOC(1).a = &LOC(0);
+    gvmDebugOpcode(
+        "addr %d(sf), %d(sf) : %p",
+        OPS(0),
+        OPS(1),
+        LOC(1).a
+    );
     STEP(3);
     NEXT;
 }
@@ -377,6 +404,12 @@ IS(ADDR_LL) {
 IS(ADDR_I0L) {
     // Get address of indirect [0] variable into local variable
     LOC(1).a = &IX0(0);
+    gvmDebugOpcode(
+        "addr %u(i0), %d(sf) : %p",
+        OPU(0),
+        OPS(1),
+        LOC(1).a
+    );
     STEP(3);
     NEXT;
 }
@@ -384,6 +417,12 @@ IS(ADDR_I0L) {
 IS(ADDR_I1L) {
     // Get address of indirect [1] variable into local variable
     LOC(1).a = &IX1(0);
+    gvmDebugOpcode(
+        "addr %u(i1), %d(sf) : %p",
+        OPU(0),
+        OPS(1),
+        LOC(1).a
+    );
     STEP(3);
     NEXT;
 }
@@ -391,9 +430,16 @@ IS(ADDR_I1L) {
 IS(ADDR_DL) {
     // Load the address of a global data symbol to a local variable
     uint32 symbolId = SYM(0);
+    gvmDebugOpcode(
+        "addr dat_%04X, %d(sf) : ",
+        symbolId,
+        OPS(2)
+    );
     if (!symbolId) {
+        gvmDebugOpcode("Abort on illegal symbol id");
         EXIT(EXEC_ILLEGAL_DATA_ID);
     }
+    gvmDebugOpcode("%p", (void*)dataTable[symbolId]);
     LOC(2).a = dataTable[symbolId];
     STEP(4);
     NEXT;
@@ -402,9 +448,16 @@ IS(ADDR_DL) {
 IS(ADDR_DI0) {
     // Load the address of a global data symbol to an indirect [0] variable
     uint32 symbolId = SYM(0);
+    gvmDebugOpcode(
+        "addr dat_%04X, %u(i0) : ",
+        symbolId,
+        OPU(2)
+    );
     if (!symbolId) {
+        gvmDebugOpcode("Abort on illegal symbol id");
         EXIT(EXEC_ILLEGAL_DATA_ID);
     }
+    gvmDebugOpcode("%p", (void*)dataTable[symbolId]);
     IX0(2).a = dataTable[symbolId];
     STEP(4);
     NEXT;
@@ -413,9 +466,16 @@ IS(ADDR_DI0) {
 IS(ADDR_DI1) {
     // Load the address of a global data symbol to an indirect [1] variable
     uint32 symbolId = SYM(0);
+    gvmDebugOpcode(
+        "addr dat_%04X, %u(i1) : ",
+        symbolId,
+        OPU(2)
+    );
     if (!symbolId) {
+        gvmDebugOpcode("Abort on illegal symbol id");
         EXIT(EXEC_ILLEGAL_DATA_ID);
     }
+    gvmDebugOpcode("%p", (void*)dataTable[symbolId]);
     IX1(2).a = dataTable[symbolId];
     STEP(4);
     NEXT;
@@ -425,14 +485,14 @@ IS(ADDR_D0) {
     // Load the address of a global data symbol directly into an index register
     uint32 symbolId = SYM(0);
     gvmDebugOpcode(
-        "\taddr %u(globals), i0 : ",
+        "addr dat_%04X, i0 : ",
         symbolId
     );
     if (!symbolId) {
         gvmDebugOpcode("Abort on illegal symbol id");
         EXIT(EXEC_ILLEGAL_DATA_ID);
     }
-    gvmDebugOpcode("{%p}", (void*)dataTable[symbolId]);
+    gvmDebugOpcode("%p", (void*)dataTable[symbolId]);
     IR(0) = dataTable[symbolId];
     SAVE_IR(0);
     STEP(3);
@@ -443,14 +503,18 @@ IS(ADDR_D1) {
     // Load the address of a global data symbol directly into an index register
     uint32 symbolId = SYM(0);
     gvmDebugOpcode(
-        "\taddr %u(globals), i1 : ",
+        "addr dat_%04X, i1 : ",
+        symbolId
+    );
+    gvmDebugOpcode(
+        "addr %u(globals), i1 : ",
         symbolId
     );
     if (!symbolId) {
         gvmDebugOpcode("Abort on illegal symbol id");
         EXIT(EXEC_ILLEGAL_DATA_ID);
     }
-    gvmDebugOpcode("{%p}", (void*)dataTable[symbolId]);
+    gvmDebugOpcode("%p", (void*)dataTable[symbolId]);
     IR(1) = dataTable[symbolId];
     SAVE_IR(1);
     STEP(3);
@@ -520,7 +584,7 @@ IS(LOAD_HL) {
 IS(COPY_LL) {
     // Copy a local scalar to a local scalar
     gvmDebugOpcode(
-        "\tcopy %d(sf), %d(sf) : {%X}",
+        "copy %d(sf), %d(sf) : 0x%08X",
         OPS(0),
         OPS(1),
         LOC(0).u
@@ -534,7 +598,7 @@ IS(COPY_LL) {
 IS(COPY_I0L) {
     // Copy an indirect scalar to a local
     gvmDebugOpcode(
-        "\tcopy %u(i0), %d(sf) : {%X}",
+        "copy %u(i0), %d(sf) : 0x%08X",
         OPU(0),
         OPS(1),
         IX0(0).u
@@ -548,7 +612,7 @@ IS(COPY_I0L) {
 IS(COPY_I1L) {
     // Copy an indirect scalar to a local
     gvmDebugOpcode(
-        "\tcopy %u(i1) %d(sf) : {%X}",
+        "copy %u(i1) %d(sf) : 0x%08X",
         OPU(0),
         OPS(1),
         IX1(0).u
@@ -561,7 +625,7 @@ IS(COPY_I1L) {
 IS(CPIX_I0L) {
     // Copy indirect indexed by local to local
     gvmDebugOpcode(
-        "\tcopy %u(i0)[%d(sf)], %d(sf) : i0[%u] {%u}\n",
+        "copy %u(i0)[%d(sf)], %d(sf) : i0[%u] => 0x%08X",
         OPU(0),
         OPS(1),
         OPS(2),
@@ -576,7 +640,7 @@ IS(CPIX_I0L) {
 IS(CPIX_I1L) {
     // Copy indirect indexed by local to local
     gvmDebugOpcode(
-        "\tcopy %u(i1)[%d(sf)], %d(sf) : i1[%u] {%u}\n",
+        "copy %u(i1)[%d(sf)], %d(sf) : i1[%u] => 0x%08X",
         OPU(0),
         OPS(1),
         OPS(2),
@@ -590,7 +654,7 @@ IS(CPIX_I1L) {
 
 IS(COPY_LI0) {
     gvmDebugOpcode(
-        "\tcopy %d(sf), %u(i0) : {%X}",
+        "copy %d(sf), %u(i0) : 0x%08X",
         OPS(0),
         OPU(1),
         LOC(0).u
@@ -603,7 +667,7 @@ IS(COPY_LI0) {
 
 IS(COPY_LI1) {
     gvmDebugOpcode(
-        "\tcopy %d(sf), %u(i0) : {%X}",
+        "copy %d(sf), %u(i0) : 0x%08X",
         OPS(0),
         OPU(1),
         LOC(0).u
@@ -615,6 +679,12 @@ IS(COPY_LI1) {
 }
 
 IS(COPY_II) {
+    gvmDebugOpcode(
+        "copy %u(i0), %u(i1) : 0x%08X",
+        OPU(0),
+        OPU(1),
+        IX0(0).u
+    );
     // Copy an indirect scalar to another indirect
     IX1(1).u = IX0(0).u;
     STEP(3);
@@ -626,13 +696,13 @@ IS(COPY_II) {
 IS(ITOF_LL) {
     // Cast integer to float
     gvmDebugOpcode(
-        "\titof %d(sf), %d(sf) : {%d} => ",
+        "itof %d(sf), %d(sf) : %d => ",
         OPU(0),
         OPS(1),
         LOC(0).i
     );
     LOC(1).f = (float32)LOC(0).i;
-    gvmDebugOpcode("{%e}\n", LOC(1).f);
+    gvmDebugOpcode("%e", LOC(1).f);
     STEP(3);
     NEXT;
 }
@@ -640,13 +710,13 @@ IS(ITOF_LL) {
 IS(FTOI_LL) {
     // Cast float to integer
     gvmDebugOpcode(
-        "\titof %d(sf), %d(sf) : {%e} => ",
+        "itof %d(sf), %d(sf) : %e => ",
         OPU(0),
         OPS(1),
         LOC(0).f
     );
     LOC(1).i = (int32)LOC(0).f;
-    gvmDebugOpcode("{%d}\n", LOC(1).i);
+    gvmDebugOpcode("%d", LOC(1).i);
     STEP(3);
     NEXT;
 }
