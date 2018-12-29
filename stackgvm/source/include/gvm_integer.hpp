@@ -186,6 +186,12 @@ IS(DBNN_L) {
 
 IS(LOAD_SL) {
     LOC(1).i = S8(0);
+    gvmDebugOpcode(
+        "copy %d, (%d) : %d",
+        OPS(0),
+        OPS(1),
+        LOC(1).i
+    );
     STEP(3);
     NEXT;
 }

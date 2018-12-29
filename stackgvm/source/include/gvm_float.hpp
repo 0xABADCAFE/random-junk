@@ -5,6 +5,11 @@
 
 IS(FRND_L) {
     LOC(0).f = 0.5f;//invRMax * std::rand();
+    gvmDebugOpcode(
+        "frnd (%d) : %g",
+        OPS(0),
+        LOC(0).f
+    );
     STEP(2);
     NEXT;
 }

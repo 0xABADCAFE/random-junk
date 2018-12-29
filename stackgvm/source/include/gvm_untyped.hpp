@@ -41,7 +41,7 @@ IS(BCALL) {
 
 IS(CALL) {
     gvmDebugOpcode(
-        "call %04X : ",
+        "call $%04X : ",
         (unsigned)SYM(0)
     );
     // Call a named function by ID
@@ -82,7 +82,7 @@ IS(ICALL_I) {
 
 IS(HCALL) {
     gvmDebugOpcode(
-        "hcall %04X : ",
+        "hcall $%04X : ",
         (int)SYM(0)
     );
     // Call a host function by ID
@@ -431,7 +431,7 @@ IS(ADDR_DL) {
     // Load the address of a global data symbol to a local variable
     uint32 symbolId = SYM(0);
     gvmDebugOpcode(
-        "addr dat_%04X, (%d) : ",
+        "addr $%04X, (%d) : ",
         symbolId,
         OPS(2)
     );
@@ -449,7 +449,7 @@ IS(ADDR_DI0) {
     // Load the address of a global data symbol to an indirect [0] variable
     uint32 symbolId = SYM(0);
     gvmDebugOpcode(
-        "addr dat_%04X, (i0+%u) : ",
+        "addr $%04X, (i0+%u) : ",
         symbolId,
         OPU(2)
     );
@@ -467,7 +467,7 @@ IS(ADDR_DI1) {
     // Load the address of a global data symbol to an indirect [1] variable
     uint32 symbolId = SYM(0);
     gvmDebugOpcode(
-        "addr dat_%04X, (i1+%u) : ",
+        "addr $%04X, (i1+%u) : ",
         symbolId,
         OPU(2)
     );
@@ -485,7 +485,7 @@ IS(ADDR_D0) {
     // Load the address of a global data symbol directly into an index register
     uint32 symbolId = SYM(0);
     gvmDebugOpcode(
-        "addr dat_%04X, i0 : ",
+        "addr $%04X, i0 : ",
         symbolId
     );
     if (!symbolId) {
@@ -503,11 +503,7 @@ IS(ADDR_D1) {
     // Load the address of a global data symbol directly into an index register
     uint32 symbolId = SYM(0);
     gvmDebugOpcode(
-        "addr dat_%04X, i1 : ",
-        symbolId
-    );
-    gvmDebugOpcode(
-        "addr %u(globals), i1 : ",
+        "addr $%04X, i1 : ",
         symbolId
     );
     if (!symbolId) {
