@@ -4,7 +4,7 @@
  * Twenty Odd Years Too Late Game Virtual Machine
  */
     gvmDebugOpcode(
-        "{%g, %g, %g}",
+        "{ %g, %g, %g }",
         ((float32*)us)[0], ((float32*)us)[1], ((float32*)us)[2]
     );
     ud[0] = us[0];

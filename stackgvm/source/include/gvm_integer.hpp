@@ -5,7 +5,7 @@
 
 IS(BGE_LL) {
     gvmDebugOpcode(
-        "bge %d(sf), %d(sf), %d : %d >= %d => ",
+        "bge (%d), (%d), %d : %d >= %d => ",
         OPS(0),
         OPS(1),
         (int)J16(2),
@@ -22,7 +22,7 @@ IS(BGE_LL) {
 
 IS(BGE_IL) {
     gvmDebugOpcode(
-        "bge %u(i0), %d(sf), %d : %d >= %d => ",
+        "bge (i0+%u), (%d), %d : %d >= %d => ",
         OPU(0),
         OPS(1),
         (int)J16(2),
@@ -39,7 +39,7 @@ IS(BGE_IL) {
 
 IS(BGE_LI) {
     gvmDebugOpcode(
-        "bge %d(sf), %u(i0), %d : %d >= %d => ",
+        "bge (%d), (i0+%u), %d : %d >= %d => ",
         OPS(0),
         OPU(1),
         (int)J16(2),
@@ -56,7 +56,7 @@ IS(BGE_LI) {
 
 IS(BGE_II) {
     gvmDebugOpcode(
-        "bge %u(i0), %u(i1), %d : %d >= %d => ",
+        "bge (i0+%u), (i1+%u), %d : %d >= %d => ",
         OPU(0),
         OPU(1),
         (int)J16(2),
@@ -75,7 +75,7 @@ IS(BGE_II) {
 
 IS(BGT_LL) {
     gvmDebugOpcode(
-        "bgt %d(sf), %d(sf), %d : %d > %d => ",
+        "bgt (%d), (%d), %d : %d > %d => ",
         OPS(0),
         OPS(1),
         (int)J16(2),
@@ -92,7 +92,7 @@ IS(BGT_LL) {
 
 IS(BGT_IL) {
     gvmDebugOpcode(
-        "bgt %u(i0), %d(sf), %d : %d > %d => ",
+        "bgt (i0+%u), (%d), %d : %d > %d => ",
         OPU(0),
         OPS(1),
         (int)J16(2),
@@ -109,7 +109,7 @@ IS(BGT_IL) {
 
 IS(BGT_LI) {
     gvmDebugOpcode(
-        "bgt %d(sf), %u(i0), %d : %d > %d => ",
+        "bgt (%d), (i0+%u), %d : %d > %d => ",
         OPS(0),
         OPU(1),
         (int)J16(2),
@@ -126,7 +126,7 @@ IS(BGT_LI) {
 
 IS(BGT_II) {
     gvmDebugOpcode(
-        "bgt %u(i0), %u(i1), %d : %d > %d => ",
+        "bgt (i0+%u), (i1+%u), %d : %d > %d => ",
         OPU(0),
         OPU(1),
         (int)J16(2),
@@ -145,7 +145,7 @@ IS(BGT_II) {
 
 IS(DBNZ_L) {
     gvmDebugOpcode(
-        "dbnz %d(sf), %d : --%d != 0 => ",
+        "dbnz (%d), %d : --%d != 0 => ",
         OPS(0),
         (int)J16(1),
         LOC(0).i
@@ -165,7 +165,7 @@ IS(DBNZ_L) {
 
 IS(DBNN_L) {
     gvmDebugOpcode(
-        "dbnn %d(sf), %d : --%d >= 0 => ",
+        "dbnn (%d), %d : --%d >= 0 => ",
         OPS(0),
         (int)J16(1),
         LOC(0).i

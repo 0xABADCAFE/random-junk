@@ -13,7 +13,7 @@ IS(FRND_L) {
 
 IS(FBGE_LL) {
     gvmDebugOpcode(
-        "fbge %d(sf), %d(sf), %d : %e >= %e => ",
+        "fbge (%d), (%d), %d : %e >= %e => ",
         OPS(0),
         OPS(1),
         (int)J16(2),
@@ -32,7 +32,7 @@ IS(FBGE_LL) {
 
 IS(FBGE_IL) {
     gvmDebugOpcode(
-        "fbge %u(i0), %d(sf), %d : %e >= %e => ",
+        "fbge (i0+%u), (%d), %d : %e >= %e => ",
         OPU(0),
         OPS(1),
         (int)J16(2),
@@ -51,7 +51,7 @@ IS(FBGE_IL) {
 
 IS(FBGE_LI) {
     gvmDebugOpcode(
-        "fbge %d(sf), %u(i0), %d : %e >= %e => ",
+        "fbge (%d), (i0+%u), %d : %e >= %e => ",
         OPS(0),
         OPU(1),
         (int)J16(2),
@@ -70,7 +70,7 @@ IS(FBGE_LI) {
 
 IS(FBGE_II) {
     gvmDebugOpcode(
-        "fbge %u(i0), %u(i1), %d : %e >= %e => ",
+        "fbge (i0+%u), (i1+%u), %d : %e >= %e => ",
         OPU(0),
         OPU(1),
         (int)J16(2),
@@ -91,7 +91,7 @@ IS(FBGE_II) {
 
 IS(FBGT_LL) {
     gvmDebugOpcode(
-        "fbgt %d(sf), %d(sf), %d : %e > %e => ",
+        "fbgt (%d), (%d), %d : %e > %e => ",
         OPS(0),
         OPS(1),
         (int)J16(2),
@@ -110,7 +110,7 @@ IS(FBGT_LL) {
 
 IS(FBGT_IL) {
     gvmDebugOpcode(
-        "fbgt %u(i0), %d(sf), %d : %e > %e => ",
+        "fbgt (i0+%u), (%d), %d : %e > %e => ",
         OPU(0),
         OPS(1),
         (int)J16(2),
@@ -129,7 +129,7 @@ IS(FBGT_IL) {
 
 IS(FBGT_LI) {
     gvmDebugOpcode(
-        "fbgt %d(sf), %u(i0), %d : %e > %e => ",
+        "fbgt (%d), (i0+%u), %d : %e > %e => ",
         OPS(0),
         OPU(1),
         (int)J16(2),
@@ -148,7 +148,7 @@ IS(FBGT_LI) {
 
 IS(FBGT_II) {
     gvmDebugOpcode(
-        "fbgt %u(i0), %u(i1), %d : %e > %e => ",
+        "fbgt (i0+%u), (i1+%u), %d : %e > %e => ",
         OPU(0),
         OPU(1),
         (int)J16(2),
@@ -170,7 +170,7 @@ IS(FBGT_II) {
 IS(FINV_LL) {
     // Reciprocal
     gvmDebugOpcode(
-        "finv %d(sf), %d(sf) : 1/%e => ",
+        "finv (%d), (%d) : 1/%e => ",
         OPS(0),
         OPS(1),
         LOC(0).f
@@ -184,7 +184,7 @@ IS(FINV_LL) {
 IS(FSQRT_LL) {
     // Square root
     gvmDebugOpcode(
-        "fsqrt %d(sf), %d(sf) : sqrt(%e) => ",
+        "fsqrt (%d), (%d) : sqrt(%e) => ",
         OPS(0),
         OPS(1),
         LOC(0).f
@@ -198,7 +198,7 @@ IS(FSQRT_LL) {
 IS(INVSQ_LL) {
     // Inverse square
     gvmDebugOpcode(
-        "finvsq %d(sf), %d(sf) : 1/(%e^2) => ",
+        "finvsq (%d), (%d) : 1/(%e^2) => ",
         OPS(0),
         OPS(1),
         LOC(0).f
@@ -214,7 +214,7 @@ IS(INVSQ_LL) {
 IS(FSIN_LL) {
     // Sine
     gvmDebugOpcode(
-        "fsin %d(sf), %d(sf) : sin(%e) => ",
+        "fsin (%d), (%d) : sin(%e) => ",
         OPS(0),
         OPS(1),
         LOC(0).f
@@ -228,7 +228,7 @@ IS(FSIN_LL) {
 IS(FCOS_LL) {
     // Cosine
     gvmDebugOpcode(
-        "fcos %d(sf), %d(sf) : cos(%e) => ",
+        "fcos (%d), (%d) : cos(%e) => ",
         OPS(0),
         OPS(1),
         LOC(0).f
@@ -242,7 +242,7 @@ IS(FCOS_LL) {
 IS(FACOS_LL) {
     // Arccosine
     gvmDebugOpcode(
-        "facos %d(sf), %d(sf) : acos(%e) => ",
+        "facos (%d), (%d) : acos(%e) => ",
         OPS(0),
         OPS(1),
         LOC(0).f
@@ -258,7 +258,7 @@ IS(FACOS_LL) {
 IS(FNEG_LL) {
     LOC(1).f = -LOC(0).f;
     gvmDebugOpcode(
-        "fneg %d(sf), %d(sf) : %g",
+        "fneg (%d), (%d) : %g",
         OPS(0),
         OPS(1),
         LOC(1).f
@@ -270,7 +270,7 @@ IS(FNEG_LL) {
 IS(FNEG_IL) {
     LOC(1).f = -IX0(0).f;
     gvmDebugOpcode(
-        "fneg %d(sf), %d(sf) : %g",
+        "fneg (%d), (%d) : %g",
         OPS(0),
         OPS(1),
         LOC(1).f
@@ -282,7 +282,7 @@ IS(FNEG_IL) {
 IS(FNEG_LI) {
     IX0(1).f = -LOC(0).f;
     gvmDebugOpcode(
-        "fneg %d(sf), %d(sf) : %g",
+        "fneg (%d), (%d) : %g",
         OPS(0),
         OPS(1),
         IX0(1).f
@@ -294,7 +294,7 @@ IS(FNEG_LI) {
 IS(FNEG_II) {
     IX1(1).f = -IX0(0).f;
     gvmDebugOpcode(
-        "fneg %d(sf), %d(sf) : %g",
+        "fneg (%d), (%d) : %g",
         OPS(0),
         OPS(1),
         IX1(1).f
@@ -308,7 +308,7 @@ IS(FNEG_II) {
 IS(FADD_LLL) {
     // Local + Local -> Local
     gvmDebugOpcode(
-        "fadd %d(sf), %d(sf), %d(sf) : %g + %g => ",
+        "fadd (%d), (%d), (%d) : %g + %g => ",
         OPS(0),
         OPS(1),
         OPS(2),
@@ -324,7 +324,7 @@ IS(FADD_LLL) {
 IS(FADD_ILL) {
     // Indirect + Local -> Local
     gvmDebugOpcode(
-        "fadd %u(i0), %d(sf), %d(sf) : %g + %g => ",
+        "fadd (i0+%u), (%d), (%d) : %g + %g => ",
         OPU(0),
         OPS(1),
         OPS(2),
@@ -340,7 +340,7 @@ IS(FADD_ILL) {
 IS(FADD_LLI) {
     // Local + Local -> Indirect
     gvmDebugOpcode(
-        "fadd %d(sf), %d(sf), %u(i0) : %g + %g => ",
+        "fadd (%d), (%d), (i0+%u) : %g + %g => ",
         OPS(0),
         OPS(1),
         OPU(2),
@@ -356,7 +356,7 @@ IS(FADD_LLI) {
 IS(FADD_ILI) {
     // Indirect + Local -> Indirect
     gvmDebugOpcode(
-        "fadd %u(i0), %d(sf), %u(i1) : %g + %g => ",
+        "fadd (i0+%u), (%d), (i1+%u) : %g + %g => ",
         OPU(0),
         OPS(1),
         OPU(2),
@@ -373,49 +373,112 @@ IS(FADD_ILI) {
 
 IS(FSUB_LLL) {
     // Local - Local -> Local
+    gvmDebugOpcode(
+        "fsub (%d), (%d), (%d) : %g - %g => ",
+        OPS(0),
+        OPS(1),
+        OPS(2),
+        LOC(0).f,
+        LOC(1).f
+    );
     LOC(2).f = LOC(0).f - LOC(1).f;
+    gvmDebugOpcode("%g", LOC(2).f);
     STEP(4);
     NEXT;
 }
 
 IS(FSUB_ILL) {
     // Indirect - Local -> Local
+    gvmDebugOpcode(
+        "fsub (i0+%u), (%d), (%d) : %g - %g => ",
+        OPU(0),
+        OPS(1),
+        OPS(2),
+        IX0(0).f,
+        LOC(1).f
+    );
     LOC(2).f = IX0(0).f - LOC(1).f;
+    gvmDebugOpcode("%g", LOC(2).f);
     STEP(4);
     NEXT;
 }
 
 IS(FSUB_LLI) {
     // Local - Local -> Indirect
+    gvmDebugOpcode(
+        "fsub (%d), (%d), (i0+%u) : %g - %g => ",
+        OPS(0),
+        OPS(1),
+        OPU(2),
+        LOC(0).f,
+        LOC(1).f
+    );
     IX0(2).f = LOC(0).f - LOC(1).f;
+    gvmDebugOpcode("%g", IX0(2).f);
     STEP(4);
     NEXT;
 }
 
 IS(FSUB_ILI) {
     // Indirect - Local -> Indirect
+    gvmDebugOpcode(
+        "fsub (i0+%u), (%d), (i1+%u) : %g - %g => ",
+        OPU(0),
+        OPS(1),
+        OPU(2),
+        IX0(0).f,
+        LOC(1).f
+    );
     IX1(2).f = IX0(0).f - LOC(1).f;
+    gvmDebugOpcode("%g", IX1(2).f);
     STEP(4);
     NEXT;
 }
 
 IS(FSUB_LIL) {
     // Local - Indirect -> Local
+    gvmDebugOpcode(
+        "fsub (%d), (i0+%u), (%d) : %g - %g => ",
+        OPS(0),
+        OPU(1),
+        OPS(2),
+        LOC(0).f,
+        IX0(1).f
+    );
     LOC(2).f = LOC(0).f - IX0(1).f;
+    gvmDebugOpcode("%g", LOC(2).f);
     STEP(4);
     NEXT;
 }
 
 IS(FSUB_IIL) {
     // Indirect - Indirect -> Local
+    gvmDebugOpcode(
+        "fsub (i0+%u), (i1+%u), (%d) : %g - %g => ",
+        OPU(0),
+        OPU(1),
+        OPS(2),
+        IX0(0).f,
+        IX1(1).f
+    );
     LOC(2).f = IX0(0).f - IX1(1).f;
+    gvmDebugOpcode("%g", LOC(2).f);
     STEP(4);
     NEXT;
 }
 
 IS(FSUB_LII) {
     // Local - Indirect -> Indirect
+    gvmDebugOpcode(
+        "fsub (%d), (%d), (%d) : %g - %g => ",
+        OPS(0),
+        OPS(1),
+        OPS(2),
+        LOC(0).f,
+        LOC(1).f
+    );
     IX1(2).f = LOC(0).f - IX0(1).f;
+    gvmDebugOpcode("%g", IX1(2).f);
     STEP(4);
     NEXT;
 }
@@ -424,28 +487,64 @@ IS(FSUB_LII) {
 
 IS(FMUL_LLL) {
     // Local * Local -> Local
+    gvmDebugOpcode(
+        "fmul (%d), (%d), (%d) : %g * %g => ",
+        OPS(0),
+        OPS(1),
+        OPS(2),
+        LOC(0).f,
+        LOC(1).f
+    );
     LOC(2).f = LOC(0).f * LOC(1).f;
+    gvmDebugOpcode("%g", LOC(2).f);
     STEP(4);
     NEXT;
 }
 
 IS(FMUL_ILL) {
     // Indirect * Local -> Local
+    gvmDebugOpcode(
+        "fmul (i0+%u), (%d), (%d) : %g * %g => ",
+        OPU(0),
+        OPS(1),
+        OPS(2),
+        IX0(0).f,
+        LOC(1).f
+    );
     LOC(2).f = IX0(0).f * LOC(1).f;
+    gvmDebugOpcode("%g", LOC(2).f);
     STEP(4);
     NEXT;
 }
 
 IS(FMUL_LLI) {
     // Local * Local -> Indirect
+    gvmDebugOpcode(
+        "fmul (%d), (%d), (i0+%u) : %g * %g => ",
+        OPS(0),
+        OPS(1),
+        OPU(2),
+        LOC(0).f,
+        LOC(1).f
+    );
     IX0(2).f = LOC(0).f * LOC(1).f;
+    gvmDebugOpcode("%g", IX0(2).f);
     STEP(4);
     NEXT;
 }
 
 IS(FMUL_ILI) {
     // Indirect * Local -> Indirect
+    gvmDebugOpcode(
+        "fmul (i0+%u), (%d), (i1+%u) : %g * %g => ",
+        OPU(0),
+        OPS(1),
+        OPU(2),
+        LOC(0).f,
+        LOC(1).f
+    );
     IX1(2).f = IX0(0).f * LOC(1).f;
+    gvmDebugOpcode("%g", IX1(2).f);
     STEP(4);
     NEXT;
 }
@@ -453,49 +552,112 @@ IS(FMUL_ILI) {
 // Three Operand Float Division (Noncommutative, 7 unique variants) ////////////////////////////////////////////////////
 
 IS(FDIV_LLL) {
+    gvmDebugOpcode(
+        "fdiv (%d), (%d), (%d) : %g / %g => ",
+        OPS(0),
+        OPS(1),
+        OPS(2),
+        LOC(0).f,
+        LOC(1).f
+    );
     LOC(2).f = LOC(0).f / LOC(1).f;
+    gvmDebugOpcode("%g", LOC(2).f);
     STEP(4);
     NEXT;
 }
 
 IS(FDIV_ILL) {
+    gvmDebugOpcode(
+        "fdiv (i0+%u), (%d), (%d) : %g / %g => ",
+        OPU(0),
+        OPS(1),
+        OPS(2),
+        LOC(0).f,
+        LOC(1).f
+    );
     // Indirect / Local -> Local
     LOC(2).f = IX0(0).f / LOC(1).f;
+    gvmDebugOpcode("%g", LOC(2).f);
     STEP(4);
     NEXT;
 }
 
 IS(FDIV_LLI) {
     // Local / Local -> Indirect
+    gvmDebugOpcode(
+        "fdiv (%d), (%d), (i0+%u) : %g / %g => ",
+        OPS(0),
+        OPS(1),
+        OPU(2),
+        LOC(0).f,
+        LOC(1).f
+    );
     IX0(2).f = LOC(0).f / LOC(1).f;
+    gvmDebugOpcode("%g", IX0(2).f);
     STEP(4);
     NEXT;
 }
 
 IS(FDIV_ILI) {
     // Indirect / Local -> Indirect
+    gvmDebugOpcode(
+        "fdiv (%d), (%d), (%d) : %g / %g => ",
+        OPS(0),
+        OPS(1),
+        OPS(2),
+        LOC(0).f,
+        LOC(1).f
+    );
     IX1(2).f = IX0(0).f / LOC(1).f;
+    gvmDebugOpcode("%g", IX1(2).f);
     STEP(4);
     NEXT;
 }
 
 IS(FDIV_LIL) {
     // Local / Indirect -> Local
+    gvmDebugOpcode(
+        "fdiv (%d), (i0+%u), (%d) : %g / %g => ",
+        OPS(0),
+        OPU(1),
+        OPS(2),
+        LOC(0).f,
+        IX0(1).f
+    );
     LOC(2).f = IX0(0).f / LOC(1).f;
+    gvmDebugOpcode("%g", LOC(2).f);
     STEP(4);
     NEXT;
 }
 
 IS(FDIV_IIL) {
     // Indirect / Indirect -> Local
+    gvmDebugOpcode(
+        "fdiv (i0+%u), (i1+%u), (%d) : %g / %g => ",
+        OPU(0),
+        OPU(1),
+        OPS(2),
+        IX0(0).f,
+        IX1(1).f
+    );
     LOC(2).f = IX0(0).f / IX1(1).f;
+    gvmDebugOpcode("%g", LOC(2).f);
     STEP(4);
     NEXT;
 }
 
 IS(FDIV_LII) {
     // Local / Indirect -> Indirect
+    gvmDebugOpcode(
+        "fdiv (%d), (i0+%u), (i1+%u) : %g / %g => ",
+        OPS(0),
+        OPU(1),
+        OPU(2),
+        LOC(0).f,
+        IX0(1).f
+    );
     IX1(2).f = LOC(0).f / IX0(1).f;
+    gvmDebugOpcode("%g", IX1(2).f);
     STEP(4);
     NEXT;
 }
@@ -503,49 +665,112 @@ IS(FDIV_LII) {
 // Three Operand Float Modulo (Noncommutative, 7 unique variants) //////////////////////////////////////////////////////
 
 IS(FMOD_LLL) {
+    gvmDebugOpcode(
+        "fmod (%d), (%d), (%d) : %g % %g => ",
+        OPS(0),
+        OPS(1),
+        OPS(2),
+        LOC(0).f,
+        LOC(1).f
+    );
     LOC(2).f = std::fmod(LOC(0).f, LOC(1).f);
+    gvmDebugOpcode("%g", LOC(2).f);
     STEP(4);
     NEXT;
 }
 
 IS(FMOD_ILL) {
     // Indirect % Local -> Local
+    gvmDebugOpcode(
+        "fmod (i0+%u), (%d), (%d) : %g % %g => ",
+        OPU(0),
+        OPS(1),
+        OPS(2),
+        IX0(0).f,
+        LOC(1).f
+    );
     LOC(2).f = std::fmod(IX0(0).f, LOC(1).f);
+    gvmDebugOpcode("%g", LOC(2).f);
     STEP(4);
     NEXT;
 }
 
 IS(FMOD_LLI) {
     // Local % Local -> Indirect
+    gvmDebugOpcode(
+        "fmod (%d), (%d), (i0+%u) : %g % %g => ",
+        OPS(0),
+        OPS(1),
+        OPU(2),
+        LOC(0).f,
+        LOC(1).f
+    );
     IX0(2).f = std::fmod(LOC(0).f, LOC(1).f);
+    gvmDebugOpcode("%g", IX0(2).f);
     STEP(4);
     NEXT;
 }
 
 IS(FMOD_ILI) {
     // Indirect % Local -> Indirect
+    gvmDebugOpcode(
+        "fmod (i0+%u), (%d), (i1+%u) : %g % %g => ",
+        OPU(0),
+        OPS(1),
+        OPU(2),
+        IX0(0).f,
+        LOC(1).f
+    );
     IX1(2).f = std::fmod(IX0(0).f, LOC(1).f);
+    gvmDebugOpcode("%g", IX1(2).f);
     STEP(4);
     NEXT;
 }
 
 IS(FMOD_LIL) {
     // Local % Indirect -> Local
+    gvmDebugOpcode(
+        "fmod (%d), (%d), (i0+%u) : %g % %g => ",
+        OPS(0),
+        OPU(1),
+        OPS(2),
+        LOC(0).f,
+        IX0(1).f
+    );
     LOC(2).f = std::fmod(IX0(0).f, LOC(1).f);
+    gvmDebugOpcode("%g", LOC(2).f);
     STEP(4);
     NEXT;
 }
 
 IS(FMOD_IIL) {
     // Indirect % Indirect -> Local
+    gvmDebugOpcode(
+        "fmod (i0+%u), (i1+%u), (%d) : %g % %g => ",
+        OPU(0),
+        OPU(1),
+        OPS(2),
+        IX0(0).f,
+        IX1(1).f
+    );
     LOC(2).f = std::fmod(IX0(0).f, IX1(1).f);
+    gvmDebugOpcode("%g", LOC(2).f);
     STEP(4);
     NEXT;
 }
 
 IS(FMOD_LII) {
     // Local % Indirect -> Indirect
+    gvmDebugOpcode(
+        "fmod (%d), (i0+%u), (i1+%u) : %g % %g => ",
+        OPS(0),
+        OPU(1),
+        OPU(2),
+        LOC(0).f,
+        IX0(1).f
+    );
     IX1(2).f = std::fmod(LOC(0).f, IX0(1).f);
+    gvmDebugOpcode("%g", IX1(2).f);
     STEP(4);
     NEXT;
 }
@@ -556,7 +781,16 @@ IS(FMAX_LLL) {
     // max(Local, Local) -> Local
     float32 f1 = LOC(0).f;
     float32 f2 = LOC(1).f;
+    gvmDebugOpcode(
+        "fmax (%d), (%d), (%d) : max(%g, %g) => ",
+        OPS(0),
+        OPS(1),
+        OPS(2),
+        f1,
+        f2
+    );
     LOC(2).f  = f1 > f2 ? f1 : f2;
+    gvmDebugOpcode("%g", LOC(2).f);
     STEP(4);
     NEXT;
 }
@@ -565,7 +799,16 @@ IS(FMAX_ILL) {
     // max(Indirect, Local) -> Local
     float32 f1 = IX0(0).f;
     float32 f2 = LOC(1).f;
+    gvmDebugOpcode(
+        "fmax (i0+%u), (%d), (%d) : max(%g, %g) => ",
+        OPU(0),
+        OPS(1),
+        OPS(2),
+        f1,
+        f2
+    );
     LOC(2).f  = f1 > f2 ? f1 : f2;
+    gvmDebugOpcode("%g", LOC(2).f);
     STEP(4);
     NEXT;
 }
@@ -574,7 +817,16 @@ IS(FMAX_LLI) {
     // max(Local, Local) -> Indirect
     float32 f1 = LOC(0).f;
     float32 f2 = LOC(1).f;
+    gvmDebugOpcode(
+        "fmax (%d), (%d), (i0+%u) : max(%g, %g) => ",
+        OPS(0),
+        OPS(1),
+        OPU(2),
+        f1,
+        f2
+    );
     IX0(0).f  = f1 > f2 ? f1 : f2;
+    gvmDebugOpcode("%g", IX0(2).f);
     STEP(4);
     NEXT;
 }
@@ -583,7 +835,16 @@ IS(FMAX_ILI) {
     // max(Indirect, Local) -> Indirect
     float32 f1 = IX0(0).f;
     float32 f2 = LOC(1).f;
+    gvmDebugOpcode(
+        "fmax (i0+%u), (%d), (i1+%u) : max(%g, %g) => ",
+        OPU(0),
+        OPS(1),
+        OPU(2),
+        f1,
+        f2
+    );
     IX1(2).f  = f1 > f2 ? f1 : f2;
+    gvmDebugOpcode("%g", IX1(2).f);
     STEP(4);
     NEXT;
 }
@@ -591,10 +852,19 @@ IS(FMAX_ILI) {
 // Three Operand Flaot Minumum (Commutative, 4 unique variants) ////////////////////////////////////////////////////////
 
 IS(FMIN_LLL) {
-    // max(Local, Local) -> Local
+    // min(Local, Local) -> Local
     float32 f1 = LOC(0).f;
     float32 f2 = LOC(1).f;
+    gvmDebugOpcode(
+        "fmin (%d), (%d), (%d) : max(%g, %g) => ",
+        OPS(0),
+        OPS(1),
+        OPS(2),
+        f1,
+        f2
+    );
     LOC(2).f  = f1 < f2 ? f1 : f2;
+    gvmDebugOpcode("%g", LOC(2).f);
     STEP(4);
     NEXT;
 }
@@ -603,7 +873,16 @@ IS(FMIN_ILL) {
     // min(Indirect, Local) -> Local
     float32 f1 = IX0(0).f;
     float32 f2 = LOC(1).f;
+    gvmDebugOpcode(
+        "fmin (i0+%u), (%d), (%d) : max(%g, %g) => ",
+        OPU(0),
+        OPS(1),
+        OPS(2),
+        f1,
+        f2
+    );
     LOC(2).f  = f1 < f2 ? f1 : f2;
+    gvmDebugOpcode("%g", LOC(2).f);
     STEP(4);
     NEXT;
 }
@@ -612,7 +891,16 @@ IS(FMIN_LLI) {
     // min(Local, Local) -> Indirect
     float32 f1 = LOC(0).f;
     float32 f2 = LOC(1).f;
+    gvmDebugOpcode(
+        "fmin (%d), (%d), (i0+%u) : max(%g, %g) => ",
+        OPS(0),
+        OPS(1),
+        OPU(2),
+        f1,
+        f2
+    );
     IX0(0).f  = f1 < f2 ? f1 : f2;
+    gvmDebugOpcode("%g", IX0(2).f);
     STEP(4);
     NEXT;
 }
@@ -621,7 +909,16 @@ IS(FMIN_ILI) {
     // min(Indirect, Local) -> Indirect
     float32 f1 = IX0(0).f;
     float32 f2 = LOC(1).f;
+    gvmDebugOpcode(
+        "fmin (i0+%u), (%d), (i1+%u) : max(%g, %g) => ",
+        OPU(0),
+        OPS(1),
+        OPU(2),
+        f1,
+        f2
+    );
     IX1(2).f  = f1 < f2 ? f1 : f2;
+    gvmDebugOpcode("%g", IX1(2).f);
     STEP(4);
     NEXT;
 }
