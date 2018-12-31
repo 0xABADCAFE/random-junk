@@ -8,17 +8,17 @@ GVM::Interpreter::validateTables()
 	Host function table has 4 entries
 	Global data table has 1 entries
 GVM::Interpreter::init()
-	Call Stack          [0x8a54018 - 0x8a54648]
-	Frame Stack         [0x8a54868 - 0x8a5f124]
+	Call Stack          [0x9494018 - 0x9494648]
+	Frame Stack         [0x9494868 - 0x949f124]
 	Function Table      [0x805d080] : 4 entries
 	Host Function Table [0x805d0a8] : 5 entries
 	Global Data Table   [0x805d0c0] : 2 entries
-GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Address: (nil), PC Entry: 0x805d1c0 }
+GVM::Interpreter::enterFunction(1) { Address: 0x9494868, Size: 32, Return Address: (nil), PC Entry: 0x805d1c0 }
 
 0x805d1c0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d1c3 : 28 : copy (i0+30), (0) : 0x00000004
 0x805d1c6 : 27 : copy (0), (32) : 0x00000004
-0x805d1c9 : 07 : hcall $0001 : GVM::Interpreter::invokeHostFunction(1) { Stack Address 0x8a548e8 }
+0x805d1c9 : 07 : hcall $0001 : GVM::Interpreter::invokeHostFunction(1) { Stack Address 0x94948e8 }
 0x805d1cc : CF : vnrm.v (i0+0), (2) : { -6, -16, 0 } * 0.0585206 => { -0.351123, -0.936329, 0 }
 0x805d1cf : E6 : mul.v (i0+6), (2), (8) : { 0, 0, 1 } x { -0.351123, -0.936329, 0 } => { 0.936329, -0.351123, 0 }
 0x805d1d3 : CE : vnrm.v (8), (8) : { 0.936329, -0.351123, 0 } * 1 => { 0.936329, -0.351123, 0 }
@@ -27,7 +27,7 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d1de : CE : vnrm.v (5), (5) : { 0, 0, 0.002 } * 500 => { 0, 0, 1 }
 0x805d1e1 : F0 : mulf.v (5), (i0+36), (5) : { 0, 0, 1 } * 0.002 => { 0, 0, 0.002 }
 0x805d1e5 : 3B : copy 1, (18) : 1
-0x805d1e8 : 77 : 
+0x805d1e8 : 77 : lsl (0), (18), (17) : 0x00000004 << 1 => 0x00000008
 0x805d1ec : 4A : 
 0x805d1ef : 2F : ito.f (17), (17) : -8 => -8.000000e+00
 0x805d1f2 : D6 : add.v (8), (5), (11) : { 0.00187266, -0.000702247, 0 } + { 0, 0, 0.002 } => { 0.00187266, -0.000702247, 0.002 }
@@ -61,12 +61,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.338951, -0.940894, 0.013 } * 16 => { -5.42322, -15.0543, 0.208 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.42322, -15.0543, 0.208 } - { 0, 0, 0 } => { -5.42322, -15.0543, 0.208 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.42322, -15.0543, 0.208 } * 0.0624894 => { -0.338894, -0.940735, 0.0129978 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.338894, -0.940735, 0.0129978 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -111,12 +111,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.338951, -0.940894, 0.013 } * 16 => { -5.42322, -15.0543, 0.208 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.42322, -15.0543, 0.208 } - { 0, 0, 0 } => { -5.42322, -15.0543, 0.208 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.42322, -15.0543, 0.208 } * 0.0624894 => { -0.338894, -0.940735, 0.0129978 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.338894, -0.940735, 0.0129978 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -161,12 +161,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.338951, -0.940894, 0.013 } * 16 => { -5.42322, -15.0543, 0.208 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.42322, -15.0543, 0.208 } - { 0, 0, 0 } => { -5.42322, -15.0543, 0.208 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.42322, -15.0543, 0.208 } * 0.0624894 => { -0.338894, -0.940735, 0.0129978 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.338894, -0.940735, 0.0129978 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -211,12 +211,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.338951, -0.940894, 0.013 } * 16 => { -5.42322, -15.0543, 0.208 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.42322, -15.0543, 0.208 } - { 0, 0, 0 } => { -5.42322, -15.0543, 0.208 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.42322, -15.0543, 0.208 } * 0.0624894 => { -0.338894, -0.940735, 0.0129978 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.338894, -0.940735, 0.0129978 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -239,7 +239,7 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d266 : D6 : add.v (28), (19), (28) : { 19.9753, 18.9788, 22.9646 } + { 2.32508, 1.99293, 3.32155 } => { 22.3003, 20.9717, 26.2862 }
 0x805d26a : 39 : dbnz.i (16), -92 : --1 != 0 => 0 
 0x805d26e : C6 : copy.v (28), (32) : { 22.3003, 20.9717, 26.2862 }
-0x805d271 : 07 : hcall $0002 : GVM::Interpreter::invokeHostFunction(2) { Stack Address 0x8a548e8 }
+0x805d271 : 07 : hcall $0002 : GVM::Interpreter::invokeHostFunction(2) { Stack Address 0x94948e8 }
 0x805d274 : 3A : dbnn.i (15), -108 : --3 >= 0 => jump to 0x805d208
 0x805d208 : C7 : copy.v (i0+18), (28) : { 13, 13, 13 }
 0x805d20b : 28 : copy (i0+31), (16) : 0x00000004
@@ -266,12 +266,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.340824, -0.940192, 0.013 } * 16 => { -5.45318, -15.0431, 0.208 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.45318, -15.0431, 0.208 } - { 0, 0, 0 } => { -5.45318, -15.0431, 0.208 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.45318, -15.0431, 0.208 } * 0.0624909 => { -0.340774, -0.940055, 0.0129981 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.340774, -0.940055, 0.0129981 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -316,12 +316,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.340824, -0.940192, 0.013 } * 16 => { -5.45318, -15.0431, 0.208 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.45318, -15.0431, 0.208 } - { 0, 0, 0 } => { -5.45318, -15.0431, 0.208 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.45318, -15.0431, 0.208 } * 0.0624909 => { -0.340774, -0.940055, 0.0129981 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.340774, -0.940055, 0.0129981 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -366,12 +366,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.340824, -0.940192, 0.013 } * 16 => { -5.45318, -15.0431, 0.208 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.45318, -15.0431, 0.208 } - { 0, 0, 0 } => { -5.45318, -15.0431, 0.208 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.45318, -15.0431, 0.208 } * 0.0624909 => { -0.340774, -0.940055, 0.0129981 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.340774, -0.940055, 0.0129981 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -416,12 +416,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.340824, -0.940192, 0.013 } * 16 => { -5.45318, -15.0431, 0.208 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.45318, -15.0431, 0.208 } - { 0, 0, 0 } => { -5.45318, -15.0431, 0.208 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.45318, -15.0431, 0.208 } * 0.0624909 => { -0.340774, -0.940055, 0.0129981 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.340774, -0.940055, 0.0129981 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -444,7 +444,7 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d266 : D6 : add.v (28), (19), (28) : { 19.9752, 18.9788, 22.9646 } + { 2.32508, 1.99293, 3.32154 } => { 22.3003, 20.9717, 26.2862 }
 0x805d26a : 39 : dbnz.i (16), -92 : --1 != 0 => 0 
 0x805d26e : C6 : copy.v (28), (32) : { 22.3003, 20.9717, 26.2862 }
-0x805d271 : 07 : hcall $0002 : GVM::Interpreter::invokeHostFunction(2) { Stack Address 0x8a548e8 }
+0x805d271 : 07 : hcall $0002 : GVM::Interpreter::invokeHostFunction(2) { Stack Address 0x94948e8 }
 0x805d274 : 3A : dbnn.i (15), -108 : --2 >= 0 => jump to 0x805d208
 0x805d208 : C7 : copy.v (i0+18), (28) : { 13, 13, 13 }
 0x805d20b : 28 : copy (i0+31), (16) : 0x00000004
@@ -471,12 +471,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.342696, -0.939489, 0.013 } * 16 => { -5.48314, -15.0318, 0.208 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.48314, -15.0318, 0.208 } - { 0, 0, 0 } => { -5.48314, -15.0318, 0.208 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.48314, -15.0318, 0.208 } * 0.0624922 => { -0.342654, -0.939372, 0.0129984 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.342654, -0.939372, 0.0129984 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -521,12 +521,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.342696, -0.939489, 0.013 } * 16 => { -5.48314, -15.0318, 0.208 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.48314, -15.0318, 0.208 } - { 0, 0, 0 } => { -5.48314, -15.0318, 0.208 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.48314, -15.0318, 0.208 } * 0.0624922 => { -0.342654, -0.939372, 0.0129984 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.342654, -0.939372, 0.0129984 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -571,12 +571,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.342696, -0.939489, 0.013 } * 16 => { -5.48314, -15.0318, 0.208 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.48314, -15.0318, 0.208 } - { 0, 0, 0 } => { -5.48314, -15.0318, 0.208 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.48314, -15.0318, 0.208 } * 0.0624922 => { -0.342654, -0.939372, 0.0129984 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.342654, -0.939372, 0.0129984 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -621,12 +621,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.342696, -0.939489, 0.013 } * 16 => { -5.48314, -15.0318, 0.208 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.48314, -15.0318, 0.208 } - { 0, 0, 0 } => { -5.48314, -15.0318, 0.208 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.48314, -15.0318, 0.208 } * 0.0624922 => { -0.342654, -0.939372, 0.0129984 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.342654, -0.939372, 0.0129984 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -649,7 +649,7 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d266 : D6 : add.v (28), (19), (28) : { 19.9752, 18.9788, 22.9646 } + { 2.32508, 1.99292, 3.32154 } => { 22.3003, 20.9717, 26.2862 }
 0x805d26a : 39 : dbnz.i (16), -92 : --1 != 0 => 0 
 0x805d26e : C6 : copy.v (28), (32) : { 22.3003, 20.9717, 26.2862 }
-0x805d271 : 07 : hcall $0002 : GVM::Interpreter::invokeHostFunction(2) { Stack Address 0x8a548e8 }
+0x805d271 : 07 : hcall $0002 : GVM::Interpreter::invokeHostFunction(2) { Stack Address 0x94948e8 }
 0x805d274 : 3A : dbnn.i (15), -108 : --1 >= 0 => jump to 0x805d208
 0x805d208 : C7 : copy.v (i0+18), (28) : { 13, 13, 13 }
 0x805d20b : 28 : copy (i0+31), (16) : 0x00000004
@@ -676,12 +676,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.344569, -0.938787, 0.013 } * 16 => { -5.51311, -15.0206, 0.208 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.51311, -15.0206, 0.208 } - { 0, 0, 0 } => { -5.51311, -15.0206, 0.208 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.51311, -15.0206, 0.208 } * 0.0624932 => { -0.344532, -0.938685, 0.0129986 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.344532, -0.938685, 0.0129986 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -726,12 +726,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.344569, -0.938787, 0.013 } * 16 => { -5.51311, -15.0206, 0.208 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.51311, -15.0206, 0.208 } - { 0, 0, 0 } => { -5.51311, -15.0206, 0.208 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.51311, -15.0206, 0.208 } * 0.0624932 => { -0.344532, -0.938685, 0.0129986 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.344532, -0.938685, 0.0129986 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -776,12 +776,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.344569, -0.938787, 0.013 } * 16 => { -5.51311, -15.0206, 0.208 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.51311, -15.0206, 0.208 } - { 0, 0, 0 } => { -5.51311, -15.0206, 0.208 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.51311, -15.0206, 0.208 } * 0.0624932 => { -0.344532, -0.938685, 0.0129986 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.344532, -0.938685, 0.0129986 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -826,12 +826,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.344569, -0.938787, 0.013 } * 16 => { -5.51311, -15.0206, 0.208 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.51311, -15.0206, 0.208 } - { 0, 0, 0 } => { -5.51311, -15.0206, 0.208 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.51311, -15.0206, 0.208 } * 0.0624932 => { -0.344532, -0.938685, 0.0129986 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.344532, -0.938685, 0.0129986 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -854,7 +854,7 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d266 : D6 : add.v (28), (19), (28) : { 19.9752, 18.9788, 22.9646 } + { 2.32508, 1.99292, 3.32154 } => { 22.3003, 20.9717, 26.2861 }
 0x805d26a : 39 : dbnz.i (16), -92 : --1 != 0 => 0 
 0x805d26e : C6 : copy.v (28), (32) : { 22.3003, 20.9717, 26.2861 }
-0x805d271 : 07 : hcall $0002 : GVM::Interpreter::invokeHostFunction(2) { Stack Address 0x8a548e8 }
+0x805d271 : 07 : hcall $0002 : GVM::Interpreter::invokeHostFunction(2) { Stack Address 0x94948e8 }
 0x805d274 : 3A : dbnn.i (15), -108 : --0 >= 0 => -1 skip
 0x805d278 : 3A : dbnn.i (14), -115 : --3 >= 0 => jump to 0x805d205
 0x805d205 : 27 : copy (0), (15) : 0x00000003
@@ -883,12 +883,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.338951, -0.940894, 0.011 } * 16 => { -5.42322, -15.0543, 0.176 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.42322, -15.0543, 0.176 } - { 0, 0, 0 } => { -5.42322, -15.0543, 0.176 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.42322, -15.0543, 0.176 } * 0.0624909 => { -0.338902, -0.940757, 0.0109984 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.338902, -0.940757, 0.0109984 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -933,12 +933,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.338951, -0.940894, 0.011 } * 16 => { -5.42322, -15.0543, 0.176 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.42322, -15.0543, 0.176 } - { 0, 0, 0 } => { -5.42322, -15.0543, 0.176 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.42322, -15.0543, 0.176 } * 0.0624909 => { -0.338902, -0.940757, 0.0109984 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.338902, -0.940757, 0.0109984 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -983,12 +983,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.338951, -0.940894, 0.011 } * 16 => { -5.42322, -15.0543, 0.176 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.42322, -15.0543, 0.176 } - { 0, 0, 0 } => { -5.42322, -15.0543, 0.176 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.42322, -15.0543, 0.176 } * 0.0624909 => { -0.338902, -0.940757, 0.0109984 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.338902, -0.940757, 0.0109984 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -1033,12 +1033,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.338951, -0.940894, 0.011 } * 16 => { -5.42322, -15.0543, 0.176 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.42322, -15.0543, 0.176 } - { 0, 0, 0 } => { -5.42322, -15.0543, 0.176 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.42322, -15.0543, 0.176 } * 0.0624909 => { -0.338902, -0.940757, 0.0109984 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.338902, -0.940757, 0.0109984 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -1061,7 +1061,7 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d266 : D6 : add.v (28), (19), (28) : { 20.0319, 19.0274, 23.0456 } + { 2.34398, 2.00913, 3.34854 } => { 22.3759, 21.0365, 26.3942 }
 0x805d26a : 39 : dbnz.i (16), -92 : --1 != 0 => 0 
 0x805d26e : C6 : copy.v (28), (32) : { 22.3759, 21.0365, 26.3942 }
-0x805d271 : 07 : hcall $0002 : GVM::Interpreter::invokeHostFunction(2) { Stack Address 0x8a548e8 }
+0x805d271 : 07 : hcall $0002 : GVM::Interpreter::invokeHostFunction(2) { Stack Address 0x94948e8 }
 0x805d274 : 3A : dbnn.i (15), -108 : --3 >= 0 => jump to 0x805d208
 0x805d208 : C7 : copy.v (i0+18), (28) : { 13, 13, 13 }
 0x805d20b : 28 : copy (i0+31), (16) : 0x00000004
@@ -1088,12 +1088,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.340824, -0.940192, 0.011 } * 16 => { -5.45318, -15.0431, 0.176 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.45318, -15.0431, 0.176 } - { 0, 0, 0 } => { -5.45318, -15.0431, 0.176 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.45318, -15.0431, 0.176 } * 0.0624924 => { -0.340783, -0.940078, 0.0109987 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.340783, -0.940078, 0.0109987 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -1138,12 +1138,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.340824, -0.940192, 0.011 } * 16 => { -5.45318, -15.0431, 0.176 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.45318, -15.0431, 0.176 } - { 0, 0, 0 } => { -5.45318, -15.0431, 0.176 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.45318, -15.0431, 0.176 } * 0.0624924 => { -0.340783, -0.940078, 0.0109987 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.340783, -0.940078, 0.0109987 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -1188,12 +1188,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.340824, -0.940192, 0.011 } * 16 => { -5.45318, -15.0431, 0.176 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.45318, -15.0431, 0.176 } - { 0, 0, 0 } => { -5.45318, -15.0431, 0.176 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.45318, -15.0431, 0.176 } * 0.0624924 => { -0.340783, -0.940078, 0.0109987 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.340783, -0.940078, 0.0109987 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -1238,12 +1238,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.340824, -0.940192, 0.011 } * 16 => { -5.45318, -15.0431, 0.176 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.45318, -15.0431, 0.176 } - { 0, 0, 0 } => { -5.45318, -15.0431, 0.176 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.45318, -15.0431, 0.176 } * 0.0624924 => { -0.340783, -0.940078, 0.0109987 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.340783, -0.940078, 0.0109987 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -1266,7 +1266,7 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d266 : D6 : add.v (28), (19), (28) : { 20.0319, 19.0274, 23.0456 } + { 2.34398, 2.00912, 3.34854 } => { 22.3759, 21.0365, 26.3942 }
 0x805d26a : 39 : dbnz.i (16), -92 : --1 != 0 => 0 
 0x805d26e : C6 : copy.v (28), (32) : { 22.3759, 21.0365, 26.3942 }
-0x805d271 : 07 : hcall $0002 : GVM::Interpreter::invokeHostFunction(2) { Stack Address 0x8a548e8 }
+0x805d271 : 07 : hcall $0002 : GVM::Interpreter::invokeHostFunction(2) { Stack Address 0x94948e8 }
 0x805d274 : 3A : dbnn.i (15), -108 : --2 >= 0 => jump to 0x805d208
 0x805d208 : C7 : copy.v (i0+18), (28) : { 13, 13, 13 }
 0x805d20b : 28 : copy (i0+31), (16) : 0x00000004
@@ -1293,12 +1293,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.342696, -0.939489, 0.011 } * 16 => { -5.48314, -15.0318, 0.176 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.48314, -15.0318, 0.176 } - { 0, 0, 0 } => { -5.48314, -15.0318, 0.176 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.48314, -15.0318, 0.176 } * 0.0624937 => { -0.342662, -0.939394, 0.0109989 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.342662, -0.939394, 0.0109989 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -1343,12 +1343,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.342696, -0.939489, 0.011 } * 16 => { -5.48314, -15.0318, 0.176 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.48314, -15.0318, 0.176 } - { 0, 0, 0 } => { -5.48314, -15.0318, 0.176 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.48314, -15.0318, 0.176 } * 0.0624937 => { -0.342662, -0.939394, 0.0109989 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.342662, -0.939394, 0.0109989 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -1393,12 +1393,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.342696, -0.939489, 0.011 } * 16 => { -5.48314, -15.0318, 0.176 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.48314, -15.0318, 0.176 } - { 0, 0, 0 } => { -5.48314, -15.0318, 0.176 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.48314, -15.0318, 0.176 } * 0.0624937 => { -0.342662, -0.939394, 0.0109989 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.342662, -0.939394, 0.0109989 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -1443,12 +1443,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.342696, -0.939489, 0.011 } * 16 => { -5.48314, -15.0318, 0.176 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.48314, -15.0318, 0.176 } - { 0, 0, 0 } => { -5.48314, -15.0318, 0.176 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.48314, -15.0318, 0.176 } * 0.0624937 => { -0.342662, -0.939394, 0.0109989 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.342662, -0.939394, 0.0109989 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -1471,7 +1471,7 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d266 : D6 : add.v (28), (19), (28) : { 20.0319, 19.0274, 23.0456 } + { 2.34398, 2.00912, 3.34854 } => { 22.3759, 21.0365, 26.3941 }
 0x805d26a : 39 : dbnz.i (16), -92 : --1 != 0 => 0 
 0x805d26e : C6 : copy.v (28), (32) : { 22.3759, 21.0365, 26.3941 }
-0x805d271 : 07 : hcall $0002 : GVM::Interpreter::invokeHostFunction(2) { Stack Address 0x8a548e8 }
+0x805d271 : 07 : hcall $0002 : GVM::Interpreter::invokeHostFunction(2) { Stack Address 0x94948e8 }
 0x805d274 : 3A : dbnn.i (15), -108 : --1 >= 0 => jump to 0x805d208
 0x805d208 : C7 : copy.v (i0+18), (28) : { 13, 13, 13 }
 0x805d20b : 28 : copy (i0+31), (16) : 0x00000004
@@ -1498,12 +1498,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.344569, -0.938787, 0.011 } * 16 => { -5.51311, -15.0206, 0.176 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.51311, -15.0206, 0.176 } - { 0, 0, 0 } => { -5.51311, -15.0206, 0.176 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.51311, -15.0206, 0.176 } * 0.0624947 => { -0.34454, -0.938707, 0.0109991 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.34454, -0.938707, 0.0109991 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -1548,12 +1548,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.344569, -0.938787, 0.011 } * 16 => { -5.51311, -15.0206, 0.176 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.51311, -15.0206, 0.176 } - { 0, 0, 0 } => { -5.51311, -15.0206, 0.176 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.51311, -15.0206, 0.176 } * 0.0624947 => { -0.34454, -0.938707, 0.0109991 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.34454, -0.938707, 0.0109991 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -1598,12 +1598,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.344569, -0.938787, 0.011 } * 16 => { -5.51311, -15.0206, 0.176 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.51311, -15.0206, 0.176 } - { 0, 0, 0 } => { -5.51311, -15.0206, 0.176 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.51311, -15.0206, 0.176 } * 0.0624947 => { -0.34454, -0.938707, 0.0109991 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.34454, -0.938707, 0.0109991 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -1648,12 +1648,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.344569, -0.938787, 0.011 } * 16 => { -5.51311, -15.0206, 0.176 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.51311, -15.0206, 0.176 } - { 0, 0, 0 } => { -5.51311, -15.0206, 0.176 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.51311, -15.0206, 0.176 } * 0.0624947 => { -0.34454, -0.938707, 0.0109991 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.34454, -0.938707, 0.0109991 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -1676,7 +1676,7 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d266 : D6 : add.v (28), (19), (28) : { 20.0319, 19.0274, 23.0456 } + { 2.34397, 2.00912, 3.34854 } => { 22.3759, 21.0365, 26.3941 }
 0x805d26a : 39 : dbnz.i (16), -92 : --1 != 0 => 0 
 0x805d26e : C6 : copy.v (28), (32) : { 22.3759, 21.0365, 26.3941 }
-0x805d271 : 07 : hcall $0002 : GVM::Interpreter::invokeHostFunction(2) { Stack Address 0x8a548e8 }
+0x805d271 : 07 : hcall $0002 : GVM::Interpreter::invokeHostFunction(2) { Stack Address 0x94948e8 }
 0x805d274 : 3A : dbnn.i (15), -108 : --0 >= 0 => -1 skip
 0x805d278 : 3A : dbnn.i (14), -115 : --2 >= 0 => jump to 0x805d205
 0x805d205 : 27 : copy (0), (15) : 0x00000003
@@ -1705,12 +1705,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.338951, -0.940894, 0.009 } * 16 => { -5.42322, -15.0543, 0.144 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.42322, -15.0543, 0.144 } - { 0, 0, 0 } => { -5.42322, -15.0543, 0.144 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.42322, -15.0543, 0.144 } * 0.0624922 => { -0.338909, -0.940776, 0.00899888 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.338909, -0.940776, 0.00899888 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -1755,12 +1755,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.338951, -0.940894, 0.009 } * 16 => { -5.42322, -15.0543, 0.144 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.42322, -15.0543, 0.144 } - { 0, 0, 0 } => { -5.42322, -15.0543, 0.144 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.42322, -15.0543, 0.144 } * 0.0624922 => { -0.338909, -0.940776, 0.00899888 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.338909, -0.940776, 0.00899888 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -1805,12 +1805,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.338951, -0.940894, 0.009 } * 16 => { -5.42322, -15.0543, 0.144 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.42322, -15.0543, 0.144 } - { 0, 0, 0 } => { -5.42322, -15.0543, 0.144 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.42322, -15.0543, 0.144 } * 0.0624922 => { -0.338909, -0.940776, 0.00899888 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.338909, -0.940776, 0.00899888 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -1855,12 +1855,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.338951, -0.940894, 0.009 } * 16 => { -5.42322, -15.0543, 0.144 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.42322, -15.0543, 0.144 } - { 0, 0, 0 } => { -5.42322, -15.0543, 0.144 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.42322, -15.0543, 0.144 } * 0.0624922 => { -0.338909, -0.940776, 0.00899888 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.338909, -0.940776, 0.00899888 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -1883,7 +1883,7 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d266 : D6 : add.v (28), (19), (28) : { 20.089, 19.0763, 23.1271 } + { 2.36299, 2.02542, 3.37571 } => { 22.452, 21.1017, 26.5028 }
 0x805d26a : 39 : dbnz.i (16), -92 : --1 != 0 => 0 
 0x805d26e : C6 : copy.v (28), (32) : { 22.452, 21.1017, 26.5028 }
-0x805d271 : 07 : hcall $0002 : GVM::Interpreter::invokeHostFunction(2) { Stack Address 0x8a548e8 }
+0x805d271 : 07 : hcall $0002 : GVM::Interpreter::invokeHostFunction(2) { Stack Address 0x94948e8 }
 0x805d274 : 3A : dbnn.i (15), -108 : --3 >= 0 => jump to 0x805d208
 0x805d208 : C7 : copy.v (i0+18), (28) : { 13, 13, 13 }
 0x805d20b : 28 : copy (i0+31), (16) : 0x00000004
@@ -1910,12 +1910,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.340824, -0.940192, 0.009 } * 16 => { -5.45318, -15.0431, 0.144 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.45318, -15.0431, 0.144 } - { 0, 0, 0 } => { -5.45318, -15.0431, 0.144 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.45318, -15.0431, 0.144 } * 0.0624937 => { -0.340789, -0.940097, 0.00899909 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.340789, -0.940097, 0.00899909 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -1960,12 +1960,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.340824, -0.940192, 0.009 } * 16 => { -5.45318, -15.0431, 0.144 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.45318, -15.0431, 0.144 } - { 0, 0, 0 } => { -5.45318, -15.0431, 0.144 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.45318, -15.0431, 0.144 } * 0.0624937 => { -0.340789, -0.940097, 0.00899909 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.340789, -0.940097, 0.00899909 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -2010,12 +2010,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.340824, -0.940192, 0.009 } * 16 => { -5.45318, -15.0431, 0.144 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.45318, -15.0431, 0.144 } - { 0, 0, 0 } => { -5.45318, -15.0431, 0.144 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.45318, -15.0431, 0.144 } * 0.0624937 => { -0.340789, -0.940097, 0.00899909 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.340789, -0.940097, 0.00899909 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -2060,12 +2060,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.340824, -0.940192, 0.009 } * 16 => { -5.45318, -15.0431, 0.144 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.45318, -15.0431, 0.144 } - { 0, 0, 0 } => { -5.45318, -15.0431, 0.144 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.45318, -15.0431, 0.144 } * 0.0624937 => { -0.340789, -0.940097, 0.00899909 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.340789, -0.940097, 0.00899909 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -2088,7 +2088,7 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d266 : D6 : add.v (28), (19), (28) : { 20.089, 19.0763, 23.1271 } + { 2.36299, 2.02542, 3.3757 } => { 22.452, 21.1017, 26.5028 }
 0x805d26a : 39 : dbnz.i (16), -92 : --1 != 0 => 0 
 0x805d26e : C6 : copy.v (28), (32) : { 22.452, 21.1017, 26.5028 }
-0x805d271 : 07 : hcall $0002 : GVM::Interpreter::invokeHostFunction(2) { Stack Address 0x8a548e8 }
+0x805d271 : 07 : hcall $0002 : GVM::Interpreter::invokeHostFunction(2) { Stack Address 0x94948e8 }
 0x805d274 : 3A : dbnn.i (15), -108 : --2 >= 0 => jump to 0x805d208
 0x805d208 : C7 : copy.v (i0+18), (28) : { 13, 13, 13 }
 0x805d20b : 28 : copy (i0+31), (16) : 0x00000004
@@ -2115,12 +2115,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.342696, -0.939489, 0.009 } * 16 => { -5.48314, -15.0318, 0.144 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.48314, -15.0318, 0.144 } - { 0, 0, 0 } => { -5.48314, -15.0318, 0.144 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.48314, -15.0318, 0.144 } * 0.0624949 => { -0.342669, -0.939413, 0.00899927 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.342669, -0.939413, 0.00899927 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -2165,12 +2165,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.342696, -0.939489, 0.009 } * 16 => { -5.48314, -15.0318, 0.144 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.48314, -15.0318, 0.144 } - { 0, 0, 0 } => { -5.48314, -15.0318, 0.144 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.48314, -15.0318, 0.144 } * 0.0624949 => { -0.342669, -0.939413, 0.00899927 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.342669, -0.939413, 0.00899927 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -2215,12 +2215,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.342696, -0.939489, 0.009 } * 16 => { -5.48314, -15.0318, 0.144 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.48314, -15.0318, 0.144 } - { 0, 0, 0 } => { -5.48314, -15.0318, 0.144 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.48314, -15.0318, 0.144 } * 0.0624949 => { -0.342669, -0.939413, 0.00899927 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.342669, -0.939413, 0.00899927 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -2265,12 +2265,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.342696, -0.939489, 0.009 } * 16 => { -5.48314, -15.0318, 0.144 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.48314, -15.0318, 0.144 } - { 0, 0, 0 } => { -5.48314, -15.0318, 0.144 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.48314, -15.0318, 0.144 } * 0.0624949 => { -0.342669, -0.939413, 0.00899927 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.342669, -0.939413, 0.00899927 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -2293,7 +2293,7 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d266 : D6 : add.v (28), (19), (28) : { 20.089, 19.0763, 23.1271 } + { 2.36299, 2.02542, 3.3757 } => { 22.452, 21.1017, 26.5028 }
 0x805d26a : 39 : dbnz.i (16), -92 : --1 != 0 => 0 
 0x805d26e : C6 : copy.v (28), (32) : { 22.452, 21.1017, 26.5028 }
-0x805d271 : 07 : hcall $0002 : GVM::Interpreter::invokeHostFunction(2) { Stack Address 0x8a548e8 }
+0x805d271 : 07 : hcall $0002 : GVM::Interpreter::invokeHostFunction(2) { Stack Address 0x94948e8 }
 0x805d274 : 3A : dbnn.i (15), -108 : --1 >= 0 => jump to 0x805d208
 0x805d208 : C7 : copy.v (i0+18), (28) : { 13, 13, 13 }
 0x805d20b : 28 : copy (i0+31), (16) : 0x00000004
@@ -2320,12 +2320,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.344569, -0.938787, 0.009 } * 16 => { -5.51311, -15.0206, 0.144 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.51311, -15.0206, 0.144 } - { 0, 0, 0 } => { -5.51311, -15.0206, 0.144 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.51311, -15.0206, 0.144 } * 0.0624959 => { -0.344547, -0.938726, 0.00899941 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.344547, -0.938726, 0.00899941 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -2370,12 +2370,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.344569, -0.938787, 0.009 } * 16 => { -5.51311, -15.0206, 0.144 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.51311, -15.0206, 0.144 } - { 0, 0, 0 } => { -5.51311, -15.0206, 0.144 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.51311, -15.0206, 0.144 } * 0.0624959 => { -0.344547, -0.938726, 0.00899941 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.344547, -0.938726, 0.00899941 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -2420,12 +2420,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.344569, -0.938787, 0.009 } * 16 => { -5.51311, -15.0206, 0.144 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.51311, -15.0206, 0.144 } - { 0, 0, 0 } => { -5.51311, -15.0206, 0.144 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.51311, -15.0206, 0.144 } * 0.0624959 => { -0.344547, -0.938726, 0.00899941 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.344547, -0.938726, 0.00899941 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -2470,12 +2470,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.344569, -0.938787, 0.009 } * 16 => { -5.51311, -15.0206, 0.144 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.51311, -15.0206, 0.144 } - { 0, 0, 0 } => { -5.51311, -15.0206, 0.144 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.51311, -15.0206, 0.144 } * 0.0624959 => { -0.344547, -0.938726, 0.00899941 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.344547, -0.938726, 0.00899941 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -2498,7 +2498,7 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d266 : D6 : add.v (28), (19), (28) : { 20.089, 19.0763, 23.1271 } + { 2.36299, 2.02542, 3.3757 } => { 22.452, 21.1017, 26.5028 }
 0x805d26a : 39 : dbnz.i (16), -92 : --1 != 0 => 0 
 0x805d26e : C6 : copy.v (28), (32) : { 22.452, 21.1017, 26.5028 }
-0x805d271 : 07 : hcall $0002 : GVM::Interpreter::invokeHostFunction(2) { Stack Address 0x8a548e8 }
+0x805d271 : 07 : hcall $0002 : GVM::Interpreter::invokeHostFunction(2) { Stack Address 0x94948e8 }
 0x805d274 : 3A : dbnn.i (15), -108 : --0 >= 0 => -1 skip
 0x805d278 : 3A : dbnn.i (14), -115 : --1 >= 0 => jump to 0x805d205
 0x805d205 : 27 : copy (0), (15) : 0x00000003
@@ -2527,12 +2527,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.338951, -0.940894, 0.007 } * 16 => { -5.42322, -15.0543, 0.112 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.42322, -15.0543, 0.112 } - { 0, 0, 0 } => { -5.42322, -15.0543, 0.112 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.42322, -15.0543, 0.112 } * 0.0624932 => { -0.338914, -0.940791, 0.00699924 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.338914, -0.940791, 0.00699924 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -2577,12 +2577,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.338951, -0.940894, 0.007 } * 16 => { -5.42322, -15.0543, 0.112 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.42322, -15.0543, 0.112 } - { 0, 0, 0 } => { -5.42322, -15.0543, 0.112 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.42322, -15.0543, 0.112 } * 0.0624932 => { -0.338914, -0.940791, 0.00699924 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.338914, -0.940791, 0.00699924 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -2627,12 +2627,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.338951, -0.940894, 0.007 } * 16 => { -5.42322, -15.0543, 0.112 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.42322, -15.0543, 0.112 } - { 0, 0, 0 } => { -5.42322, -15.0543, 0.112 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.42322, -15.0543, 0.112 } * 0.0624932 => { -0.338914, -0.940791, 0.00699924 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.338914, -0.940791, 0.00699924 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -2677,12 +2677,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.338951, -0.940894, 0.007 } * 16 => { -5.42322, -15.0543, 0.112 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.42322, -15.0543, 0.112 } - { 0, 0, 0 } => { -5.42322, -15.0543, 0.112 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.42322, -15.0543, 0.112 } * 0.0624932 => { -0.338914, -0.940791, 0.00699924 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.338914, -0.940791, 0.00699924 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -2705,7 +2705,7 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d266 : D6 : add.v (28), (19), (28) : { 20.1464, 19.1255, 23.2091 } + { 2.38212, 2.04182, 3.40303 } => { 22.5285, 21.1673, 26.6121 }
 0x805d26a : 39 : dbnz.i (16), -92 : --1 != 0 => 0 
 0x805d26e : C6 : copy.v (28), (32) : { 22.5285, 21.1673, 26.6121 }
-0x805d271 : 07 : hcall $0002 : GVM::Interpreter::invokeHostFunction(2) { Stack Address 0x8a548e8 }
+0x805d271 : 07 : hcall $0002 : GVM::Interpreter::invokeHostFunction(2) { Stack Address 0x94948e8 }
 0x805d274 : 3A : dbnn.i (15), -108 : --3 >= 0 => jump to 0x805d208
 0x805d208 : C7 : copy.v (i0+18), (28) : { 13, 13, 13 }
 0x805d20b : 28 : copy (i0+31), (16) : 0x00000004
@@ -2732,12 +2732,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.340824, -0.940192, 0.007 } * 16 => { -5.45318, -15.0431, 0.112 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.45318, -15.0431, 0.112 } - { 0, 0, 0 } => { -5.45318, -15.0431, 0.112 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.45318, -15.0431, 0.112 } * 0.0624947 => { -0.340795, -0.940112, 0.00699941 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.340795, -0.940112, 0.00699941 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -2782,12 +2782,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.340824, -0.940192, 0.007 } * 16 => { -5.45318, -15.0431, 0.112 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.45318, -15.0431, 0.112 } - { 0, 0, 0 } => { -5.45318, -15.0431, 0.112 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.45318, -15.0431, 0.112 } * 0.0624947 => { -0.340795, -0.940112, 0.00699941 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.340795, -0.940112, 0.00699941 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -2832,12 +2832,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.340824, -0.940192, 0.007 } * 16 => { -5.45318, -15.0431, 0.112 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.45318, -15.0431, 0.112 } - { 0, 0, 0 } => { -5.45318, -15.0431, 0.112 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.45318, -15.0431, 0.112 } * 0.0624947 => { -0.340795, -0.940112, 0.00699941 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.340795, -0.940112, 0.00699941 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -2882,12 +2882,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.340824, -0.940192, 0.007 } * 16 => { -5.45318, -15.0431, 0.112 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.45318, -15.0431, 0.112 } - { 0, 0, 0 } => { -5.45318, -15.0431, 0.112 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.45318, -15.0431, 0.112 } * 0.0624947 => { -0.340795, -0.940112, 0.00699941 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.340795, -0.940112, 0.00699941 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -2910,7 +2910,7 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d266 : D6 : add.v (28), (19), (28) : { 20.1464, 19.1255, 23.2091 } + { 2.38212, 2.04182, 3.40303 } => { 22.5285, 21.1673, 26.6121 }
 0x805d26a : 39 : dbnz.i (16), -92 : --1 != 0 => 0 
 0x805d26e : C6 : copy.v (28), (32) : { 22.5285, 21.1673, 26.6121 }
-0x805d271 : 07 : hcall $0002 : GVM::Interpreter::invokeHostFunction(2) { Stack Address 0x8a548e8 }
+0x805d271 : 07 : hcall $0002 : GVM::Interpreter::invokeHostFunction(2) { Stack Address 0x94948e8 }
 0x805d274 : 3A : dbnn.i (15), -108 : --2 >= 0 => jump to 0x805d208
 0x805d208 : C7 : copy.v (i0+18), (28) : { 13, 13, 13 }
 0x805d20b : 28 : copy (i0+31), (16) : 0x00000004
@@ -2937,12 +2937,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.342696, -0.939489, 0.007 } * 16 => { -5.48314, -15.0318, 0.112 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.48314, -15.0318, 0.112 } - { 0, 0, 0 } => { -5.48314, -15.0318, 0.112 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.48314, -15.0318, 0.112 } * 0.0624959 => { -0.342674, -0.939428, 0.00699955 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.342674, -0.939428, 0.00699955 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -2987,12 +2987,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.342696, -0.939489, 0.007 } * 16 => { -5.48314, -15.0318, 0.112 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.48314, -15.0318, 0.112 } - { 0, 0, 0 } => { -5.48314, -15.0318, 0.112 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.48314, -15.0318, 0.112 } * 0.0624959 => { -0.342674, -0.939428, 0.00699955 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.342674, -0.939428, 0.00699955 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -3037,12 +3037,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.342696, -0.939489, 0.007 } * 16 => { -5.48314, -15.0318, 0.112 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.48314, -15.0318, 0.112 } - { 0, 0, 0 } => { -5.48314, -15.0318, 0.112 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.48314, -15.0318, 0.112 } * 0.0624959 => { -0.342674, -0.939428, 0.00699955 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.342674, -0.939428, 0.00699955 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -3087,12 +3087,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.342696, -0.939489, 0.007 } * 16 => { -5.48314, -15.0318, 0.112 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.48314, -15.0318, 0.112 } - { 0, 0, 0 } => { -5.48314, -15.0318, 0.112 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.48314, -15.0318, 0.112 } * 0.0624959 => { -0.342674, -0.939428, 0.00699955 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.342674, -0.939428, 0.00699955 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -3115,7 +3115,7 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d266 : D6 : add.v (28), (19), (28) : { 20.1464, 19.1255, 23.2091 } + { 2.38212, 2.04182, 3.40303 } => { 22.5285, 21.1673, 26.6121 }
 0x805d26a : 39 : dbnz.i (16), -92 : --1 != 0 => 0 
 0x805d26e : C6 : copy.v (28), (32) : { 22.5285, 21.1673, 26.6121 }
-0x805d271 : 07 : hcall $0002 : GVM::Interpreter::invokeHostFunction(2) { Stack Address 0x8a548e8 }
+0x805d271 : 07 : hcall $0002 : GVM::Interpreter::invokeHostFunction(2) { Stack Address 0x94948e8 }
 0x805d274 : 3A : dbnn.i (15), -108 : --1 >= 0 => jump to 0x805d208
 0x805d208 : C7 : copy.v (i0+18), (28) : { 13, 13, 13 }
 0x805d20b : 28 : copy (i0+31), (16) : 0x00000004
@@ -3142,12 +3142,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.344569, -0.938787, 0.007 } * 16 => { -5.51311, -15.0206, 0.112 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.51311, -15.0206, 0.112 } - { 0, 0, 0 } => { -5.51311, -15.0206, 0.112 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.51311, -15.0206, 0.112 } * 0.0624969 => { -0.344552, -0.938741, 0.00699966 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.344552, -0.938741, 0.00699966 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -3192,12 +3192,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.344569, -0.938787, 0.007 } * 16 => { -5.51311, -15.0206, 0.112 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.51311, -15.0206, 0.112 } - { 0, 0, 0 } => { -5.51311, -15.0206, 0.112 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.51311, -15.0206, 0.112 } * 0.0624969 => { -0.344552, -0.938741, 0.00699966 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.344552, -0.938741, 0.00699966 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -3242,12 +3242,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.344569, -0.938787, 0.007 } * 16 => { -5.51311, -15.0206, 0.112 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.51311, -15.0206, 0.112 } - { 0, 0, 0 } => { -5.51311, -15.0206, 0.112 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.51311, -15.0206, 0.112 } * 0.0624969 => { -0.344552, -0.938741, 0.00699966 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.344552, -0.938741, 0.00699966 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -3292,12 +3292,12 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d254 : F0 : mulf.v (19), (i0+34), (19) : { -0.344569, -0.938787, 0.007 } * 16 => { -5.51311, -15.0206, 0.112 }
 0x805d258 : DA : sub.v (19), (25), (19) : { -5.51311, -15.0206, 0.112 } - { 0, 0, 0 } => { -5.51311, -15.0206, 0.112 }
 0x805d25c : CE : vnrm.v (19), (38) : { -5.51311, -15.0206, 0.112 } * 0.0624969 => { -0.344552, -0.938741, 0.00699966 }
-0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x8a548e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
+0x805d25f : 04 : call $0003 : GVM::Interpreter::enterFunction(3) { Address: 0x94948e8, Size: 32, Return Address: 0x805d262, PC Entry: 0x805d0e0 }
 
 0x805d0e0 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d0e3 : C6 : copy.v (3), (33) : { 17, 16, 8 }
 0x805d0e6 : C6 : copy.v (6), (36) : { -0.344552, -0.938741, 0.00699966 }
-0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x8a54968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
+0x805d0e9 : 04 : call $0002 : GVM::Interpreter::enterFunction(2) { Address: 0x9494968, Size: 32, Return Address: 0x805d0ec, PC Entry: 0x805d120 }
 
 0x805d120 : 1D : addr $0001, i0 : 0x805d2a0
 0x805d123 : 28 : copy (i0+37), (7) : 0x4E6E6B28
@@ -3320,7 +3320,7 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 0x805d266 : D6 : add.v (28), (19), (28) : { 20.1464, 19.1255, 23.2091 } + { 2.38212, 2.04182, 3.40303 } => { 22.5285, 21.1673, 26.6121 }
 0x805d26a : 39 : dbnz.i (16), -92 : --1 != 0 => 0 
 0x805d26e : C6 : copy.v (28), (32) : { 22.5285, 21.1673, 26.6121 }
-0x805d271 : 07 : hcall $0002 : GVM::Interpreter::invokeHostFunction(2) { Stack Address 0x8a548e8 }
+0x805d271 : 07 : hcall $0002 : GVM::Interpreter::invokeHostFunction(2) { Stack Address 0x94948e8 }
 0x805d274 : 3A : dbnn.i (15), -108 : --0 >= 0 => -1 skip
 0x805d278 : 3A : dbnn.i (14), -115 : --0 >= 0 => -1 skip
 0x805d27c : 08 : ret : GVM::Interpreter::exitFunction(1) { Return to function:0, PC Resume: (nil) }
@@ -3328,7 +3328,7 @@ GVM::Interpreter::enterFunction(1) { Address: 0x8a54868, Size: 32, Return Addres
 Executed: 3052 instructions total.
 GVM::Interpreter::done()
 	Released working set
-Took 0.040793 seconds
+Took 0.041099 seconds
 OUTPUT PPM HEADER {P6 4 4 255}
 OUTPUT PPM PIXEL {22, 20, 26}
 OUTPUT PPM PIXEL {22, 20, 26}

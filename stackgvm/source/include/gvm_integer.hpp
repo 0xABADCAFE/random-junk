@@ -1010,6 +1010,7 @@ IS(OR_LLL) {
         LOC(1).u
     );
     LOC(2).u = LOC(0).u | LOC(1).u;
+    gvmDebugOpcode("0x%08X", LOC(2).u);
     STEP(4);
     NEXT;
 }
@@ -1025,6 +1026,7 @@ IS(OR_ILL) {
         LOC(1).u
     );
     LOC(2).u = IX0(0).u | LOC(1).u;
+    gvmDebugOpcode("0x%08X", LOC(2).u);
     STEP(4);
     NEXT;
 }
@@ -1040,6 +1042,7 @@ IS(OR_LLI) {
         LOC(1).u
     );
     IX0(2).u = LOC(0).u | LOC(1).u;
+    gvmDebugOpcode("0x%08X", IX0(2).u);
     STEP(4);
     NEXT;
 }
@@ -1055,6 +1058,7 @@ IS(OR_ILI) {
         LOC(1).u
     );
     IX1(2).u = IX0(0).u | LOC(1).u;
+    gvmDebugOpcode("0x%08X", IX1(2).u);
     STEP(4);
     NEXT;
 }
@@ -1063,28 +1067,64 @@ IS(OR_ILI) {
 
 IS(XOR_LLL) {
     // Local ^ Local -> Local
+    gvmDebugOpcode(
+        "xor (%d), (%d), (%d) : 0x%08X ^ 0x%08X => ",
+        OPS(0),
+        OPS(1),
+        OPS(2),
+        LOC(0).u,
+        LOC(1).u
+    );
     LOC(2).u = LOC(0).u ^ LOC(1).u;
+    gvmDebugOpcode("0x%08X", LOC(2).u);
     STEP(4);
     NEXT;
 }
 
 IS(XOR_ILL) {
     // Indirect ^ Local -> Local
+    gvmDebugOpcode(
+        "xor (i0+%u), (%d), (%d) : 0x%08X ^ 0x%08X => ",
+        OPU(0),
+        OPS(1),
+        OPS(2),
+        IX0(0).u,
+        LOC(1).u
+    );
     LOC(2).u = IX0(0).u ^ LOC(1).u;
+    gvmDebugOpcode("0x%08X", LOC(2).u);
     STEP(4);
     NEXT;
 }
 
 IS(XOR_LLI) {
     // Local ^ Local -> Indirect
+    gvmDebugOpcode(
+        "xor (%d), (%d), (i0+%u) : 0x%08X ^ 0x%08X => ",
+        OPS(0),
+        OPS(1),
+        OPU(2),
+        LOC(0).u,
+        LOC(1).u
+    );
     IX0(2).u = LOC(0).u ^ LOC(1).u;
+    gvmDebugOpcode("0x%08X", IX0(2).u);
     STEP(4);
     NEXT;
 }
 
 IS(XOR_ILI) {
     // Indirect ^ Local -> Indirect
+    gvmDebugOpcode(
+        "xor (i0+%u), (%d), (i1+%u) : 0x%08X ^ 0x%08X => ",
+        OPU(0),
+        OPS(1),
+        OPU(2),
+        IX0(0).u,
+        LOC(1).u
+    );
     IX1(2).u = IX0(0).u ^ LOC(1).u;
+    gvmDebugOpcode("0x%08X", IX1(2).u);
     STEP(4);
     NEXT;
 }
@@ -1093,28 +1133,64 @@ IS(XOR_ILI) {
 
 IS(LSL_LLL) {
     // Local << Local -> Local
+    gvmDebugOpcode(
+        "lsl (%d), (%d), (%d) : 0x%08X << %u => ",
+        OPS(0),
+        OPS(1),
+        OPS(2),
+        LOC(0).u,
+        LOC(1).u
+    );
     LOC(2).u = LOC(0).u << LOC(1).u;
+    gvmDebugOpcode("0x%08X", LOC(2).u);
     STEP(4);
     NEXT;
 }
 
 IS(LSL_ILL) {
     // Indirect << Local -> Local
+    gvmDebugOpcode(
+        "lsl (i0+%u), (%d), (%d) : 0x%08X << %u => ",
+        OPU(0),
+        OPS(1),
+        OPS(2),
+        IX0(0).u,
+        LOC(1).u
+    );
     LOC(2).u = IX0(0).u << LOC(1).u;
+    gvmDebugOpcode("0x%08X", LOC(2).u);
     STEP(4);
     NEXT;
 }
 
 IS(LSL_LLI) {
     // Local << Local -> Indirect
+    gvmDebugOpcode(
+        "lsl (%d), (%d), (i0+%u) : 0x%08X << %u => ",
+        OPS(0),
+        OPS(1),
+        OPU(2),
+        LOC(0).u,
+        LOC(1).u
+    );
     IX0(2).u = LOC(0).u << LOC(1).u;
+    gvmDebugOpcode("0x%08X", IX0(2).u);
     STEP(4);
     NEXT;
 }
 
 IS(LSL_ILI) {
     // Indirect << Local -> Indirect
+    gvmDebugOpcode(
+        "lsl (i0+%u), (%d), (i1+%u) : 0x%08X << %u => ",
+        OPU(0),
+        OPS(1),
+        OPU(2),
+        IX0(0).u,
+        LOC(1).u
+    );
     IX1(2).u = IX0(0).u << LOC(1).u;
+    gvmDebugOpcode("0x%08X", IX1(2).u);
     STEP(4);
     NEXT;
 }
@@ -1123,28 +1199,64 @@ IS(LSL_ILI) {
 
 IS(LSR_LLL) {
     // Local >> Local -> Local
+    gvmDebugOpcode(
+        "lsr (%d), (%d), (%d) : 0x%08X << %u => ",
+        OPS(0),
+        OPS(1),
+        OPS(2),
+        LOC(0).u,
+        LOC(1).u
+    );
     LOC(2).u = LOC(0).u >> LOC(1).u;
+    gvmDebugOpcode("0x%08X", LOC(2).u);
     STEP(4);
     NEXT;
 }
 
 IS(LSR_ILL) {
     // Indirect >> Local -> Local
+    gvmDebugOpcode(
+        "lsr (i0+%u), (%d), (%d) : 0x%08X >> %u => ",
+        OPU(0),
+        OPS(1),
+        OPS(2),
+        IX0(0).u,
+        LOC(1).u
+    );
     LOC(2).u = IX0(0).u >> LOC(1).u;
+    gvmDebugOpcode("0x%08X", LOC(2).u);
     STEP(4);
     NEXT;
 }
 
 IS(LSR_LLI) {
     // Local >> Local -> Indirect
+    gvmDebugOpcode(
+        "lsr (%d), (%d), (i0+%u) : 0x%08X >> %u => ",
+        OPS(0),
+        OPS(1),
+        OPU(2),
+        LOC(0).u,
+        LOC(1).u
+    );
     IX0(2).u = LOC(0).u >> LOC(1).u;
+    gvmDebugOpcode("0x%08X", IX0(2).u);
     STEP(4);
     NEXT;
 }
 
 IS(LSR_ILI) {
     // Indirect >> Local -> Indirect
+    gvmDebugOpcode(
+        "lsl (i0+%u), (%d), (i1+%u) : 0x%08X >> %u => ",
+        OPU(0),
+        OPS(1),
+        OPU(2),
+        IX0(0).u,
+        LOC(1).u
+    );
     IX1(2).u = IX0(0).u >> LOC(1).u;
+    gvmDebugOpcode("0x%08X", IX1(2).u);
     STEP(4);
     NEXT;
 }
@@ -1155,6 +1267,14 @@ IS(MAX_LLL) {
     // max(Local, Local) -> Local
     int32 i1 = LOC(0).i;
     int32 i2 = LOC(1).i;
+    gvmDebugOpcode(
+        "max.i (%d), (%d), (%d) : max(%d, %d) => ",
+        OPS(0),
+        OPS(1),
+        OPS(2),
+        i1,
+        i2
+    );
     LOC(2).i  = i1 > i2 ? i1 : i2;
     STEP(4);
     NEXT;
@@ -1164,6 +1284,14 @@ IS(MAX_ILL) {
     // max(Indirect, Local) -> Local
     int32 i1 = IX0(0).i;
     int32 i2 = LOC(1).i;
+    gvmDebugOpcode(
+        "max.i (i0+%u), (%d), (%d) : max(%d, %d) => ",
+        OPU(0),
+        OPS(1),
+        OPS(2),
+        i1,
+        i2
+    );
     LOC(2).i  = i1 > i2 ? i1 : i2;
     STEP(4);
     NEXT;
@@ -1173,6 +1301,14 @@ IS(MAX_LLI) {
     // max(Local, Local) -> Indirect
     int32 i1 = LOC(0).i;
     int32 i2 = LOC(1).i;
+    gvmDebugOpcode(
+        "max.i (%d), (%d), (i0+%u) : max(%d, %d) => ",
+        OPS(0),
+        OPS(1),
+        OPU(2),
+        i1,
+        i2
+    );
     IX0(0).i  = i1 > i2 ? i1 : i2;
     STEP(4);
     NEXT;
@@ -1182,6 +1318,14 @@ IS(MAX_ILI) {
     // max(Indirect, Local) -> Indirect
     int32 i1 = IX0(0).i;
     int32 i2 = LOC(1).i;
+    gvmDebugOpcode(
+        "max.i (i0+%u), (%d), (i1+%u) : max(%d, %d) => ",
+        OPU(0),
+        OPS(1),
+        OPU(2),
+        i1,
+        i2
+    );
     IX1(2).i  = i1 > i2 ? i1 : i2;
     STEP(4);
     NEXT;
