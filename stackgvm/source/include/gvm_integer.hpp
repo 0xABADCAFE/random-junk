@@ -5,7 +5,7 @@
 
 IS(BGE_LL) {
     gvmDebugOpcode(
-        "bge (%d), (%d), %d : %d >= %d => ",
+        "bge.i (%d), (%d), %d : %d >= %d => ",
         OPS(0),
         OPS(1),
         (int)J16(2),
@@ -22,7 +22,7 @@ IS(BGE_LL) {
 
 IS(BGE_IL) {
     gvmDebugOpcode(
-        "bge (i0+%u), (%d), %d : %d >= %d => ",
+        "bge.i (i0+%u), (%d), %d : %d >= %d => ",
         OPU(0),
         OPS(1),
         (int)J16(2),
@@ -39,7 +39,7 @@ IS(BGE_IL) {
 
 IS(BGE_LI) {
     gvmDebugOpcode(
-        "bge (%d), (i0+%u), %d : %d >= %d => ",
+        "bge.i (%d), (i0+%u), %d : %d >= %d => ",
         OPS(0),
         OPU(1),
         (int)J16(2),
@@ -56,7 +56,7 @@ IS(BGE_LI) {
 
 IS(BGE_II) {
     gvmDebugOpcode(
-        "bge (i0+%u), (i1+%u), %d : %d >= %d => ",
+        "bge.i (i0+%u), (i1+%u), %d : %d >= %d => ",
         OPU(0),
         OPU(1),
         (int)J16(2),
@@ -75,7 +75,7 @@ IS(BGE_II) {
 
 IS(BGT_LL) {
     gvmDebugOpcode(
-        "bgt (%d), (%d), %d : %d > %d => ",
+        "bgt.i (%d), (%d), %d : %d > %d => ",
         OPS(0),
         OPS(1),
         (int)J16(2),
@@ -92,7 +92,7 @@ IS(BGT_LL) {
 
 IS(BGT_IL) {
     gvmDebugOpcode(
-        "bgt (i0+%u), (%d), %d : %d > %d => ",
+        "bgt.i (i0+%u), (%d), %d : %d > %d => ",
         OPU(0),
         OPS(1),
         (int)J16(2),
@@ -109,7 +109,7 @@ IS(BGT_IL) {
 
 IS(BGT_LI) {
     gvmDebugOpcode(
-        "bgt (%d), (i0+%u), %d : %d > %d => ",
+        "bgt.i (%d), (i0+%u), %d : %d > %d => ",
         OPS(0),
         OPU(1),
         (int)J16(2),
@@ -126,7 +126,7 @@ IS(BGT_LI) {
 
 IS(BGT_II) {
     gvmDebugOpcode(
-        "bgt (i0+%u), (i1+%u), %d : %d > %d => ",
+        "bgt.i (i0+%u), (i1+%u), %d : %d > %d => ",
         OPU(0),
         OPU(1),
         (int)J16(2),
@@ -145,7 +145,7 @@ IS(BGT_II) {
 
 IS(DBNZ_L) {
     gvmDebugOpcode(
-        "dbnz (%d), %d : --%d != 0 => ",
+        "dbnz.i (%d), %d : --%d != 0 => ",
         OPS(0),
         (int)J16(1),
         LOC(0).i
@@ -165,7 +165,7 @@ IS(DBNZ_L) {
 
 IS(DBNN_L) {
     gvmDebugOpcode(
-        "dbnn (%d), %d : --%d >= 0 => ",
+        "dbnn.i (%d), %d : --%d >= 0 => ",
         OPS(0),
         (int)J16(1),
         LOC(0).i
@@ -198,12 +198,24 @@ IS(LOAD_SL) {
 
 IS(LOAD_SI0) {
     IX0(1).i = S8(0);
+    gvmDebugOpcode(
+        "copy %d, (i0+%u) : %d",
+        OPS(0),
+        OPU(1),
+        IX0(1).i
+    );
     STEP(3);
     NEXT;
 }
 
 IS(LOAD_SI1) {
     IX1(1).i = S8(0);
+    gvmDebugOpcode(
+        "copy %d, (i1+%u) : %d",
+        OPS(0),
+        OPU(1),
+        IX1(1).i
+    );
     STEP(3);
     NEXT;
 }
@@ -213,6 +225,12 @@ IS(LOAD_SI1) {
 IS(BSET_SL) {
     // Set bit in local
     LOC(1).u |= 1 << U8(0);
+    gvmDebugOpcode(
+        "bset %u, (%d) : 0x%08X",
+        OPU(0),
+        OPS(1),
+        LOC(1).u
+    );
     STEP(3);
     NEXT;
 }
@@ -220,6 +238,12 @@ IS(BSET_SL) {
 IS(BSET_SI) {
     // Set bit in indirect
     IX0(1).u |= 1 << U8(0);
+    gvmDebugOpcode(
+        "bset %u, (i0+%u) : 0x%08X",
+        OPU(0),
+        OPU(1),
+        IX0(1).u
+    );
     STEP(3);
     NEXT;
 }
@@ -229,6 +253,12 @@ IS(BSET_SI) {
 IS(BCLR_SL) {
     // Clear bit in local
     LOC(1).u &= ~(1 << U8(0));
+    gvmDebugOpcode(
+        "bclr %u, (%d) : 0x%08X",
+        OPU(0),
+        OPS(1),
+        LOC(1).u
+    );
     STEP(3);
     NEXT;
 }
@@ -236,6 +266,12 @@ IS(BCLR_SL) {
 IS(BCLR_SI) {
     // Clear bit in indirect
     IX0(1).u &= ~(1 << U8(0));
+    gvmDebugOpcode(
+        "bclr %u, (i0+%u) : 0x%08X",
+        OPU(0),
+        OPU(1),
+        IX0(1).u
+    );
     STEP(3);
     NEXT;
 }
@@ -244,20 +280,38 @@ IS(BCLR_SI) {
 
 IS(BBS_SL) {
     // Branch if bit is set (local)
+    gvmDebugOpcode(
+        "bbs %u, (%d), %d : 0x%08X => ",
+        OPU(0),
+        OPS(1),
+        (int)J16(2),
+        LOC(1).u
+    );
     if ( LOC(1).u & (1 << U8(0)) ) {
+        gvmDebugJump(2);
         STEP(J16(2));
         NEXT;
     }
+    gvmDebugSkip();
     STEP(3);
     NEXT;
 }
 
 IS(BBS_SI) {
     // Branch if bit is set (indirect)
+    gvmDebugOpcode(
+        "bbs %u, (i0+%u), %d : 0x%08X => ",
+        OPU(0),
+        OPU(1),
+        (int)J16(2),
+        IX0(1).u
+    );
     if ( IX0(1).u & (1 << U8(0)) ) {
+        gvmDebugJump(2);
         STEP(J16(2));
         NEXT;
     }
+    gvmDebugSkip();
     STEP(3);
     NEXT;
 }
@@ -266,20 +320,38 @@ IS(BBS_SI) {
 
 IS(BBC_SL) {
     // Branch if bit is clear (local)
+    gvmDebugOpcode(
+        "bbc %u, (%d), %d : 0x%08X => ",
+        OPU(0),
+        OPS(1),
+        (int)J16(2),
+        LOC(1).u
+    );
     if (!(LOC(1).u & (1 << U8(0)))) {
+        gvmDebugJump(2);
         STEP(J16(2));
         NEXT;
     }
+    gvmDebugSkip();
     STEP(3);
     NEXT;
 }
 
 IS(BBC_SI) {
     // Branch if bit is clear (indirect)
+    gvmDebugOpcode(
+        "bbs %u, (i0+%u), %d : 0x%08X => ",
+        OPU(0),
+        OPU(1),
+        (int)J16(2),
+        IX0(1).u
+    );
     if (!(IX0(1).u & (1 << U8(0)))) {
+        gvmDebugJump(2);
         STEP(J16(2));
         NEXT;
     }
+    gvmDebugSkip();
     STEP(3);
     NEXT;
 }
@@ -340,28 +412,64 @@ IS(NEG_II) {
 
 IS(ADD_LLL) {
     // Local + Local -> Local
+    gvmDebugOpcode(
+        "add.i (%d), (%d), (%d) : %d + %d => ",
+        OPS(0),
+        OPS(1),
+        OPS(2),
+        LOC(0).i,
+        LOC(1).i
+    );
     LOC(2).i = LOC(0).i + LOC(1).i;
+    gvmDebugOpcode("%d", LOC(2).i);
     STEP(4);
     NEXT;
 }
 
 IS(ADD_ILL) {
     // Indirect + Local -> Local
+    gvmDebugOpcode(
+        "add.i (i0+%u), (%d), (%d) : %d + %d => ",
+        OPU(0),
+        OPS(1),
+        OPS(2),
+        IX0(0).i,
+        LOC(1).i
+    );
     LOC(2).i = IX0(0).i + LOC(1).i;
+    gvmDebugOpcode("%d", LOC(2).i);
     STEP(4);
     NEXT;
 }
 
 IS(ADD_LLI) {
     // Local + Local -> Indirect
+    gvmDebugOpcode(
+        "add.i (%d), (%d), (i0+%u) : %d + %d => ",
+        OPS(0),
+        OPS(1),
+        OPU(2),
+        LOC(0).i,
+        LOC(1).i
+    );
     IX0(2).i = LOC(0).i + LOC(1).i;
+    gvmDebugOpcode("%d", IX0(2).i);
     STEP(4);
     NEXT;
 }
 
 IS(ADD_ILI) {
     // Indirect + Local -> Indirect
+    gvmDebugOpcode(
+        "add.i (i0+%u), (%d), (i1+%u) : %d + %d => ",
+        OPU(0),
+        OPS(1),
+        OPU(2),
+        IX0(0).i,
+        LOC(1).i
+    );
     IX1(2).i = IX0(0).i + LOC(1).i;
+    gvmDebugOpcode("%d", IX1(2).i);
     STEP(4);
     NEXT;
 }
@@ -370,49 +478,112 @@ IS(ADD_ILI) {
 
 IS(SUB_LLL) {
     // Local - Local -> Local
+    gvmDebugOpcode(
+        "sub.i (%d), (%d), (%d) : %d - %d => ",
+        OPS(0),
+        OPS(1),
+        OPS(2),
+        LOC(0).i,
+        LOC(1).i
+    );
     LOC(2).i = LOC(0).i - LOC(1).i;
+    gvmDebugOpcode("%d", LOC(2).i);
     STEP(4);
     NEXT;
 }
 
 IS(SUB_ILL) {
     // Indirect - Local -> Local
+    gvmDebugOpcode(
+        "sub.i (i0+%u), (%d), (%d) : %d - %d => ",
+        OPU(0),
+        OPS(1),
+        OPS(2),
+        IX0(0).i,
+        LOC(1).i
+    );
     LOC(2).i = IX0(0).i - LOC(1).i;
+    gvmDebugOpcode("%d", LOC(2).i);
     STEP(4);
     NEXT;
 }
 
 IS(SUB_LLI) {
     // Local - Local -> Indirect
+    gvmDebugOpcode(
+        "sub.i (%d), (%d), (i0+%u) : %d - %d => ",
+        OPS(0),
+        OPS(1),
+        OPU(2),
+        LOC(0).i,
+        LOC(1).i
+    );
     IX0(2).i = LOC(0).i - LOC(1).i;
+    gvmDebugOpcode("%d", IX0(2).i);
     STEP(4);
     NEXT;
 }
 
 IS(SUB_ILI) {
     // Indirect - Local -> Indirect
+    gvmDebugOpcode(
+        "sub.i (i0+%u), (%d), (i1+%u) : %d - %d => ",
+        OPU(0),
+        OPS(1),
+        OPU(2),
+        IX0(0).i,
+        LOC(1).i
+    );
     IX1(2).i = IX0(0).i - LOC(1).i;
+    gvmDebugOpcode("%d", IX1(2).i);
     STEP(4);
     NEXT;
 }
 
 IS(SUB_LIL) {
     // Local - Indirect -> Local
+    gvmDebugOpcode(
+        "sub.i (%d), (i0+%u), (%d) : %d - %d => ",
+        OPS(0),
+        OPU(1),
+        OPS(2),
+        LOC(0).i,
+        IX0(1).i
+    );
     LOC(2).i = LOC(0).i - IX0(0).i;
+    gvmDebugOpcode("%d", LOC(2).i);
     STEP(4);
     NEXT;
 }
 
 IS(SUB_IIL) {
     // Indirect - Indirect -> Local
+    gvmDebugOpcode(
+        "sub.i (i0+%u), (i1+%u), (%d) : %d - %d => ",
+        OPU(0),
+        OPU(1),
+        OPS(2),
+        IX0(0).i,
+        IX1(1).i
+    );
     LOC(2).i = IX0(0).i - IX1(1).i;
+    gvmDebugOpcode("%d", LOC(2).i);
     STEP(4);
     NEXT;
 }
 
 IS(SUB_LII) {
     // Local - Indirect -> Indirect
+    gvmDebugOpcode(
+        "sub.i (i0+%u), (i1+%u), (%d) : %d - %d => ",
+        OPU(0),
+        OPU(1),
+        OPS(2),
+        IX0(0).i,
+        IX1(1).i
+    );
     IX1(2).i = LOC(0).i - IX0(1).i;
+    gvmDebugOpcode("%d", IX1(2).i);
     STEP(4);
     NEXT;
 }
@@ -421,28 +592,64 @@ IS(SUB_LII) {
 
 IS(MUL_LLL) {
     // Local * Local -> Local
+    gvmDebugOpcode(
+        "mul.i (%d), (%d), (%d) : %d * %d => ",
+        OPS(0),
+        OPS(1),
+        OPS(2),
+        LOC(0).i,
+        LOC(1).i
+    );
     LOC(2).i = LOC(0).i * LOC(1).i;
+    gvmDebugOpcode("%d", LOC(2).i);
     STEP(4);
     NEXT;
 }
 
 IS(MUL_ILL) {
     // Indirect * Local -> Local
+    gvmDebugOpcode(
+        "mul.i (i0+%u), (%d), (%d) : %d * %d => ",
+        OPU(0),
+        OPS(1),
+        OPS(2),
+        IX0(0).i,
+        LOC(1).i
+    );
     LOC(2).i = IX0(0).i * LOC(1).i;
+    gvmDebugOpcode("%d", LOC(2).i);
     STEP(4);
     NEXT;
 }
 
 IS(MUL_LLI) {
     // Local * Local -> Indirect
+    gvmDebugOpcode(
+        "mul.i (%d), (%d), (i0+%u) : %d * %d => ",
+        OPS(0),
+        OPS(1),
+        OPU(2),
+        LOC(0).i,
+        LOC(1).i
+    );
     IX0(2).i = LOC(0).i * LOC(1).i;
+    gvmDebugOpcode("%d", IX0(2).i);
     STEP(4);
     NEXT;
 }
 
 IS(MUL_ILI) {
     // Indirect * Local -> Indirect
+    gvmDebugOpcode(
+        "mul.i (i0+%u), (%d), (i1+%u) : %d * %d => ",
+        OPU(0),
+        OPS(1),
+        OPU(2),
+        LOC(0).i,
+        LOC(1).i
+    );
     IX1(2).i = IX0(0).i * LOC(1).i;
+    gvmDebugOpcode("%d", IX1(2).i);
     STEP(4);
     NEXT;
 }
