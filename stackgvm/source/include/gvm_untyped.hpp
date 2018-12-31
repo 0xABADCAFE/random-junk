@@ -13,12 +13,22 @@ IS(HCF) {
 
 IS(BRAS) {
     // Branch to a signed 8-bit offset
+    gvmDebugOpcode(
+        "bra %d : jump to %p",
+        (int)J16(0),
+        PRGC + J8(0)
+    );
     STEP(J8(0));
     NEXT;
 }
 
 IS(BRA) {
     // Branch to a signed 16-bit offset
+    gvmDebugOpcode(
+        "bra %d : jump to %p",
+        (int)J16(0),
+        PRGC + J16(0)
+    );
     STEP(J16(0));
     NEXT;
 }
@@ -692,7 +702,7 @@ IS(COPY_II) {
 IS(ITOF_LL) {
     // Cast integer to float
     gvmDebugOpcode(
-        "itof (%d), (%d) : %d => ",
+        "ito.f (%d), (%d) : %d => ",
         OPU(0),
         OPS(1),
         LOC(0).i
@@ -706,7 +716,7 @@ IS(ITOF_LL) {
 IS(FTOI_LL) {
     // Cast float to integer
     gvmDebugOpcode(
-        "itof (%d), (%d) : %e => ",
+        "fto.i (%d), (%d) : %e => ",
         OPU(0),
         OPS(1),
         LOC(0).f

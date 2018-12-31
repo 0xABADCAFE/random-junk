@@ -565,8 +565,8 @@ GFUNC(sample) {
 
     vcopy_ll    (v_sample_in_origin,    v_sample_origin)                           // 3 [1, 1, 1]
     vcopy_ll    (v_sample_in_direction, v_sample_direction)                        // 3 [1, 1, 1]
-    //call(trace)                                                                    // 3 [1, 2]
-    hcall(shim_trace)
+    call(trace)                                                                    // 3 [1, 2]
+    //hcall(shim_trace)
     bnz_l   (i_sample_material, 27)                                                    // 4 [1, 1, 2]
         load_sl     (1, f_sample_gradient)                                             // 3 [1, 1, 1]
         itof_ll     (f_sample_gradient, f_sample_gradient)                             // 3

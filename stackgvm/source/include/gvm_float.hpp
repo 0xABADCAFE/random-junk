@@ -577,7 +577,7 @@ IS(FDIV_ILL) {
         OPU(0),
         OPS(1),
         OPS(2),
-        LOC(0).f,
+        IX0(0).f,
         LOC(1).f
     );
     // Indirect / Local -> Local
@@ -606,11 +606,11 @@ IS(FDIV_LLI) {
 IS(FDIV_ILI) {
     // Indirect / Local -> Indirect
     gvmDebugOpcode(
-        "div.f (%d), (%d), (%d) : %g / %g => ",
-        OPS(0),
+        "div.f (i0+%u), (%d), (i1+%u) : %g / %g => ",
+        OPU(0),
         OPS(1),
-        OPS(2),
-        LOC(0).f,
+        OPU(2),
+        IX0(0).f,
         LOC(1).f
     );
     IX1(2).f = IX0(0).f / LOC(1).f;

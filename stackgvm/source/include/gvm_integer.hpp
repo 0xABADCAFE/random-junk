@@ -658,12 +658,20 @@ IS(MUL_ILI) {
 
 IS(DIV_LLL) {
     // Local / Local -> Local
-
     int32 denominator = LOC(1).i;
+    gvmDebugOpcode(
+        "div.i (%d), (%d), (%d) : %d / %d => ",
+        OPS(0),
+        OPS(1),
+        OPS(2),
+        LOC(0).i,
+        denominator
+    );
     if (!denominator) {
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
     LOC(2).i = LOC(0).i / denominator;
+    gvmDebugOpcode("%d", LOC(2).i);
     STEP(4);
     NEXT;
 }
@@ -671,10 +679,19 @@ IS(DIV_LLL) {
 IS(DIV_ILL) {
     // Indirect / Local -> Local
     int32 denominator = LOC(1).i;
+    gvmDebugOpcode(
+        "div.i (i0+%u), (%d), (%d) : %d / %d => ",
+        OPU(0),
+        OPS(1),
+        OPS(2),
+        IX0(0).i,
+        denominator
+    );
     if (!denominator) {
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
     LOC(2).i = IX0(0).i / denominator;
+    gvmDebugOpcode("%d", LOC(2).i);
     STEP(4);
     NEXT;
 }
@@ -682,10 +699,19 @@ IS(DIV_ILL) {
 IS(DIV_LLI) {
     // Local / Local -> Indirect
     int32 denominator = LOC(1).i;
+    gvmDebugOpcode(
+        "div.i (%d), (%d), (i0+%u) : %d / %d => ",
+        OPS(0),
+        OPS(1),
+        OPU(2),
+        LOC(0).i,
+        denominator
+    );
     if (!denominator) {
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
     IX0(2).i = LOC(0).i / denominator;
+    gvmDebugOpcode("%d", IX0(2).i);
     STEP(4);
     NEXT;
 }
@@ -693,10 +719,19 @@ IS(DIV_LLI) {
 IS(DIV_ILI) {
     // Indirect / Local -> Indirect
     int32 denominator = LOC(1).i;
+    gvmDebugOpcode(
+        "div.i (i0+%u), (%d), (i1+%u) : %d / %d => ",
+        OPU(0),
+        OPS(1),
+        OPU(2),
+        LOC(0).i,
+        denominator
+    );
     if (!denominator) {
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
     IX1(2).i = IX0(0).i / denominator;
+    gvmDebugOpcode("%d", IX1(2).i);
     STEP(4);
     NEXT;
 }
@@ -704,10 +739,19 @@ IS(DIV_ILI) {
 IS(DIV_LIL) {
     // Local / Indirect -> Local
     int32 denominator = IX0(1).i;
+    gvmDebugOpcode(
+        "div.i (%d), (i0+%u), (%d) : %d / %d => ",
+        OPS(0),
+        OPU(1),
+        OPS(2),
+        LOC(0).i,
+        denominator
+    );
     if (!denominator) {
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
     LOC(2).i = LOC(0).i / denominator;
+    gvmDebugOpcode("%d", LOC(2).i);
     STEP(4);
     NEXT;
 }
@@ -715,10 +759,19 @@ IS(DIV_LIL) {
 IS(DIV_IIL) {
     // Indirect / Indirect -> Local
     int32 denominator = IX1(1).i;
+    gvmDebugOpcode(
+        "div.i (i0+%u), (i1+%u), (%d) : %d / %d => ",
+        OPU(0),
+        OPU(1),
+        OPS(2),
+        IX0(0).i,
+        denominator
+    );
     if (!denominator) {
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
     LOC(2).i = IX0(0).i / denominator;
+    gvmDebugOpcode("%d", LOC(2).i);
     STEP(4);
     NEXT;
 }
@@ -726,10 +779,19 @@ IS(DIV_IIL) {
 IS(DIV_LII) {
     // Local / Indirect -> Indirect
     int32 denominator = IX0(1).i;
+    gvmDebugOpcode(
+        "div.i (%d), (i0+%u), (i1+%u) : %d / %d => ",
+        OPS(0),
+        OPU(1),
+        OPU(2),
+        LOC(0).i,
+        denominator
+    );
     if (!denominator) {
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
     IX1(2).i = LOC(0).i / denominator;
+    gvmDebugOpcode("%d", IX1(2).i);
     STEP(4);
     NEXT;
 }
@@ -739,6 +801,14 @@ IS(DIV_LII) {
 IS(MOD_LLL) {
     // Local % Local -> Local
     int32 denominator = LOC(1).i;
+    gvmDebugOpcode(
+        "mod.i (%d), (%d), (%d) : %d / %d => ",
+        OPS(0),
+        OPS(1),
+        OPS(2),
+        LOC(0).i,
+        denominator
+    );
     if (!denominator) {
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
@@ -750,6 +820,14 @@ IS(MOD_LLL) {
 IS(MOD_ILL) {
     // Indirect % Local -> Local
     int32 denominator = LOC(1).i;
+    gvmDebugOpcode(
+        "mod.i (i0+%u), (%d), (%d) : %d / %d => ",
+        OPU(0),
+        OPS(1),
+        OPS(2),
+        IX0(0).i,
+        denominator
+    );
     if (!denominator) {
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
@@ -761,6 +839,14 @@ IS(MOD_ILL) {
 IS(MOD_LLI) {
     // Local % Local -> Indirect
     int32 denominator = LOC(1).i;
+    gvmDebugOpcode(
+        "mod.i (%d), (%d), (i0+%u) : %d / %d => ",
+        OPS(0),
+        OPS(1),
+        OPU(2),
+        LOC(0).i,
+        denominator
+    );
     if (!denominator) {
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
@@ -772,6 +858,14 @@ IS(MOD_LLI) {
 IS(MOD_ILI) {
     // Indirect % Local -> Indirect
     int32 denominator = LOC(1).i;
+    gvmDebugOpcode(
+        "mod.i (i0+%u), (%d), (i1+%u) : %d / %d => ",
+        OPU(0),
+        OPS(1),
+        OPU(2),
+        LOC(0).i,
+        denominator
+    );
     if (!denominator) {
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
@@ -783,6 +877,14 @@ IS(MOD_ILI) {
 IS(MOD_LIL) {
     // Local % Indirect -> Local
     int32 denominator = IX0(1).i;
+    gvmDebugOpcode(
+        "mod.i (%d), (i0+%u), (%d) : %d / %d => ",
+        OPS(0),
+        OPU(1),
+        OPS(2),
+        LOC(0).i,
+        denominator
+    );
     if (!denominator) {
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
@@ -794,6 +896,14 @@ IS(MOD_LIL) {
 IS(MOD_IIL) {
     // Indirect % Indirect -> Local
     int32 denominator = IX1(1).i;
+    gvmDebugOpcode(
+        "mod.i (i0+%u), (i1+%u), (%d) : %d / %d => ",
+        OPU(0),
+        OPU(1),
+        OPS(2),
+        IX0(0).i,
+        denominator
+    );
     if (!denominator) {
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
@@ -805,6 +915,14 @@ IS(MOD_IIL) {
 IS(MOD_LII) {
     // Local % Indirect -> Indirect
     int32 denominator = IX0(1).i;
+    gvmDebugOpcode(
+        "mod.i (%d), (i0+%u), (i1+%u) : %d / %d => ",
+        OPS(0),
+        OPU(1),
+        OPU(2),
+        LOC(0).i,
+        denominator
+    );
     if (!denominator) {
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
@@ -817,28 +935,64 @@ IS(MOD_LII) {
 
 IS(AND_LLL) {
     // Local & Local -> Local
+    gvmDebugOpcode(
+        "and (%d), (%d), (%d) : 0x%08X & 0x%08X => ",
+        OPS(0),
+        OPS(1),
+        OPS(2),
+        LOC(0).u,
+        LOC(1).u
+    );
     LOC(2).u = LOC(0).u & LOC(1).u;
+    gvmDebugOpcode("0x%08X", LOC(2).u);
     STEP(4);
     NEXT;
 }
 
 IS(AND_ILL) {
     // Indirect & Local -> Local
+    gvmDebugOpcode(
+        "and (i0+%u), (%d), (%d) : 0x%08X & 0x%08X => ",
+        OPU(0),
+        OPS(1),
+        OPS(2),
+        IX0(0).u,
+        LOC(1).u
+    );
     LOC(2).u = IX0(0).u & LOC(1).u;
+    gvmDebugOpcode("0x%08X", LOC(2).u);
     STEP(4);
     NEXT;
 }
 
 IS(AND_LLI) {
     // Local & Local -> Indirect
+    gvmDebugOpcode(
+        "and (%d), (%d), (i0+%u) : 0x%08X & 0x%08X => ",
+        OPS(0),
+        OPS(1),
+        OPU(2),
+        LOC(0).u,
+        LOC(1).u
+    );
     IX0(2).u = LOC(0).u & LOC(1).u;
+    gvmDebugOpcode("0x%08X", IX0(2).u);
     STEP(4);
     NEXT;
 }
 
 IS(AND_ILI) {
     // Indirect & Local -> Indirect
+    gvmDebugOpcode(
+        "and (i0+%u), (%d), (i1+%u) : 0x%08X & 0x%08X => ",
+        OPU(0),
+        OPS(1),
+        OPU(2),
+        IX0(0).u,
+        LOC(1).u
+    );
     IX1(2).u = IX0(0).u & LOC(1).u;
+    gvmDebugOpcode("0x%08X", IX1(2).u);
     STEP(4);
     NEXT;
 }
@@ -847,6 +1001,14 @@ IS(AND_ILI) {
 
 IS(OR_LLL) {
     // Local | Local -> Local
+    gvmDebugOpcode(
+        "or (%d), (%d), (%d) : 0x%08X | 0x%08X => ",
+        OPS(0),
+        OPS(1),
+        OPS(2),
+        LOC(0).u,
+        LOC(1).u
+    );
     LOC(2).u = LOC(0).u | LOC(1).u;
     STEP(4);
     NEXT;
@@ -854,6 +1016,14 @@ IS(OR_LLL) {
 
 IS(OR_ILL) {
     // Indirect | Local -> Local
+    gvmDebugOpcode(
+        "or (i0+%u), (%d), (%d) : 0x%08X | 0x%08X => ",
+        OPU(0),
+        OPS(1),
+        OPS(2),
+        IX0(0).u,
+        LOC(1).u
+    );
     LOC(2).u = IX0(0).u | LOC(1).u;
     STEP(4);
     NEXT;
@@ -861,6 +1031,14 @@ IS(OR_ILL) {
 
 IS(OR_LLI) {
     // Local | Local -> Indirect
+    gvmDebugOpcode(
+        "or (%d), (%d), (i0+%u) : 0x%08X | 0x%08X => ",
+        OPS(0),
+        OPS(1),
+        OPU(2),
+        LOC(0).u,
+        LOC(1).u
+    );
     IX0(2).u = LOC(0).u | LOC(1).u;
     STEP(4);
     NEXT;
@@ -868,6 +1046,14 @@ IS(OR_LLI) {
 
 IS(OR_ILI) {
     // Indirect | Local -> Indirect
+    gvmDebugOpcode(
+        "or (i0+%u), (%d), (i1+%u) : 0x%08X | 0x%08X => ",
+        OPU(0),
+        OPS(1),
+        OPU(2),
+        IX0(0).u,
+        LOC(1).u
+    );
     IX1(2).u = IX0(0).u | LOC(1).u;
     STEP(4);
     NEXT;
