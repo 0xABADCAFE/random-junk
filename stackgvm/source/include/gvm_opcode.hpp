@@ -28,12 +28,17 @@ namespace GVM {
             // Scalar instructions (float or integer) //////////////////////////////////////////////////////////////////
 
             _BEZ_L,    // Branch to a signed 16-bit offset if local is equal to zero
-            _BEZ_I,    // Branch to a signed 16-bit offset if indirect is equal to zero
+            _BEZ_I0,    // Branch to a signed 16-bit offset if indirect is equal to zero
+            _BEZ_I1,
             _BNZ_L,    // Branch to a signed 16-bit offset if local is not equal to zero
-            _BNZ_I,    // Branch to a signed 16-bit offset if indirect is not equal to zero
+            _BNZ_I0,    // Branch to a signed 16-bit offset if indirect is not equal to zero
+            _BNZ_I1,
             _BEQ_LL,   // Branch to a signed 16-bit offset if two local values are equal
             _BEQ_LI,   // Branch to a signed 16-bit offset if local and indirect values are equal
             _BEQ_II,   // Branch to a signed 16-bit offset if two indirect values are equal
+            _BNE_LL,   // Branch to a signed 16-bit offset if two local values are not equal
+            _BNE_LI,   // Branch to a signed 16-bit offset if local and indirect values are not equal
+            _BNE_II,   // Branch to a signed 16-bit offset if two indirect values are not equal
 
             _ADDR_LL,  // Get address of local variable into local variable
             _ADDR_I0L, // Get the address of an indirect[0] variable into local variable
@@ -61,6 +66,9 @@ namespace GVM {
             _COPY_LL,  // Copy a local scalar to a local scalar
             _COPY_I0L,  // Copy an indirect[0] scalar to a local
             _COPY_I1L,  // Copy an indirect[1] scalar to a local
+
+            _CPIX_I0L,
+            _CPIX_I1L,
 
             _COPY_LI0,  // Copy a local scalar to indirect[0] variable
             _COPY_LI1,  // Copy a local scalar to indirect[1] variable
@@ -96,10 +104,10 @@ namespace GVM {
             _BSET_SI, // Set bit in indirect
             _BCLR_SL, // Clear bit in local
             _BCLR_SI, // Clear bit in indirect
-            _BBS_SL,  // Branch if bit is set (local)
+            _BBS_SL,  // Branch if bit is set (fixed in local)
             _BBS_SI,  // Branch if bit is set (indirect)
             _BBC_SL,  // Branch if bit is clear (local)
-            _BBC_SI,  // Branch if bit os clear (indirect)
+            _BBC_SI,  // Branch if bit is clear (indirect)
 
             // Two operand logical negate
             _NOT_LL,

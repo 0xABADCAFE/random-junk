@@ -41,8 +41,8 @@ _ZN3GVM11Interpreter3runEv:
 .L2:
 	addl	$1, %esi
 	cmpb	$-21, (%ebx)
-	ja	.L342
-.L380:
+	ja	.L340
+.L376:
 	movzbl	(%ebx), %eax
 	jmp	*.L5(,%eax,4)
 	.section	.rodata
@@ -297,7 +297,7 @@ _ZN3GVM11Interpreter3runEv:
 	leal	(%edi,%eax,4), %eax
 	.p2align 4,,10
 	.p2align 3
-.L341:
+.L339:
 	movss	(%edx), %xmm1
 	addl	$4, %ebx
 	addl	$1, %esi
@@ -309,8 +309,8 @@ _ZN3GVM11Interpreter3runEv:
 	mulss	8(%edx), %xmm0
 	movss	%xmm0, 8(%eax)
 	cmpb	$-21, (%ebx)
-	jbe	.L380
-.L342:
+	jbe	.L376
+.L340:
 	movl	$2, %eax
 	jmp	.L3
 	.p2align 4,,10
@@ -323,7 +323,7 @@ _ZN3GVM11Interpreter3runEv:
 	movss	0(%ebp,%ecx,4), %xmm0
 	leal	(%edi,%edx,4), %edx
 	leal	(%edi,%eax,4), %eax
-	jmp	.L341
+	jmp	.L339
 .L237:
 	movzbl	1(%ebx), %eax
 	movl	8(%esp), %ecx
@@ -333,7 +333,7 @@ _ZN3GVM11Interpreter3runEv:
 	movss	(%edi,%eax,4), %xmm0
 	movzbl	3(%ebx), %eax
 	leal	(%ecx,%eax,4), %eax
-	jmp	.L341
+	jmp	.L339
 .L236:
 	movl	_ZN3GVM11Interpreter14programCounterE, %eax
 	movsbl	1(%eax), %edx
@@ -342,7 +342,7 @@ _ZN3GVM11Interpreter3runEv:
 	movss	(%edi,%eax,4), %xmm0
 	movzbl	3(%ebx), %eax
 	leal	0(%ebp,%eax,4), %eax
-	jmp	.L341
+	jmp	.L339
 .L235:
 	movzbl	1(%ebx), %eax
 	leal	0(%ebp,%eax,4), %edx
@@ -351,7 +351,7 @@ _ZN3GVM11Interpreter3runEv:
 	movsbl	3(%eax), %eax
 	movss	(%edi,%ecx,4), %xmm0
 	leal	(%edi,%eax,4), %eax
-	jmp	.L341
+	jmp	.L339
 .L234:
 	movl	_ZN3GVM11Interpreter14programCounterE, %eax
 	movsbl	1(%eax), %edx
@@ -360,20 +360,20 @@ _ZN3GVM11Interpreter3runEv:
 	leal	(%edi,%edx,4), %edx
 	movss	(%edi,%ecx,4), %xmm0
 	leal	(%edi,%eax,4), %eax
-	jmp	.L341
+	jmp	.L339
 .L233:
 	movl	_ZN3GVM11Interpreter14programCounterE, %eax
 	movsbl	1(%eax), %eax
 	leal	(%edi,%eax,4), %edx
 	movzbl	2(%ebx), %eax
 	leal	0(%ebp,%eax,4), %eax
-.L371:
+.L370:
 	movl	%eax, 12(%esp)
 	movzbl	3(%ebx), %ecx
 	movl	8(%esp), %eax
 	leal	(%eax,%ecx,4), %ecx
 	movl	12(%esp), %eax
-.L340:
+.L338:
 	movss	4(%edx), %xmm0
 	addl	$4, %ebx
 	mulss	8(%eax), %xmm0
@@ -404,7 +404,7 @@ _ZN3GVM11Interpreter3runEv:
 	movl	%eax, 12(%esp)
 	movsbl	3(%ecx), %ecx
 	leal	(%edi,%ecx,4), %ecx
-	jmp	.L340
+	jmp	.L338
 .L231:
 	movl	_ZN3GVM11Interpreter14programCounterE, %ecx
 	movsbl	1(%ecx), %eax
@@ -414,14 +414,14 @@ _ZN3GVM11Interpreter3runEv:
 	movl	%eax, 12(%esp)
 	movsbl	3(%ecx), %ecx
 	leal	(%edi,%ecx,4), %ecx
-	jmp	.L340
+	jmp	.L338
 .L230:
 	movzbl	1(%ebx), %eax
 	leal	0(%ebp,%eax,4), %edx
 	movl	_ZN3GVM11Interpreter14programCounterE, %eax
 	movsbl	2(%eax), %eax
 	leal	(%edi,%eax,4), %eax
-	jmp	.L371
+	jmp	.L370
 .L229:
 	movl	_ZN3GVM11Interpreter14programCounterE, %eax
 	movzbl	3(%ebx), %ecx
@@ -431,23 +431,23 @@ _ZN3GVM11Interpreter3runEv:
 	leal	(%edi,%edx,4), %edx
 	leal	(%edi,%eax,4), %eax
 	movl	%eax, 12(%esp)
-	jmp	.L340
+	jmp	.L338
 .L228:
 	movzbl	1(%ebx), %eax
 	movl	_ZN3GVM11Interpreter14programCounterE, %ecx
 	leal	0(%ebp,%eax,4), %edx
-.L370:
+.L369:
 	movsbl	2(%ecx), %eax
 	leal	(%edi,%eax,4), %eax
 	movl	%eax, 12(%esp)
 	movsbl	3(%ecx), %ecx
 	leal	(%edi,%ecx,4), %ecx
-	jmp	.L340
+	jmp	.L338
 .L227:
 	movl	_ZN3GVM11Interpreter14programCounterE, %ecx
 	movsbl	1(%ecx), %eax
 	leal	(%edi,%eax,4), %edx
-	jmp	.L370
+	jmp	.L369
 .L226:
 	movzbl	1(%ebx), %eax
 	addl	$4, %ebx
@@ -531,13 +531,13 @@ _ZN3GVM11Interpreter3runEv:
 	leal	(%edi,%eax,4), %ecx
 	movzbl	2(%ebx), %eax
 	leal	0(%ebp,%eax,4), %eax
-.L369:
+.L368:
 	movl	%eax, 12(%esp)
 	movl	8(%esp), %edx
 	movzbl	3(%ebx), %eax
 	leal	(%edx,%eax,4), %eax
 	movl	12(%esp), %edx
-.L339:
+.L337:
 	movss	(%ecx), %xmm0
 	addl	$4, %ebx
 	subss	(%edx), %xmm0
@@ -560,7 +560,7 @@ _ZN3GVM11Interpreter3runEv:
 	movl	12(%esp), %edx
 	movsbl	3(%eax), %eax
 	leal	(%edi,%eax,4), %eax
-	jmp	.L339
+	jmp	.L337
 .L220:
 	movzbl	2(%ebx), %eax
 	leal	0(%ebp,%eax,4), %eax
@@ -571,14 +571,14 @@ _ZN3GVM11Interpreter3runEv:
 	movsbl	3(%eax), %eax
 	leal	(%edi,%ecx,4), %ecx
 	leal	(%edi,%eax,4), %eax
-	jmp	.L339
+	jmp	.L337
 .L219:
 	movzbl	1(%ebx), %eax
 	leal	0(%ebp,%eax,4), %ecx
 	movl	_ZN3GVM11Interpreter14programCounterE, %eax
 	movsbl	2(%eax), %eax
 	leal	(%edi,%eax,4), %eax
-	jmp	.L369
+	jmp	.L368
 .L218:
 	movl	_ZN3GVM11Interpreter14programCounterE, %eax
 	movsbl	1(%eax), %edx
@@ -589,7 +589,7 @@ _ZN3GVM11Interpreter3runEv:
 	movzbl	3(%ebx), %eax
 	movl	12(%esp), %edx
 	leal	0(%ebp,%eax,4), %eax
-	jmp	.L339
+	jmp	.L337
 .L217:
 	movl	_ZN3GVM11Interpreter14programCounterE, %eax
 	movsbl	2(%eax), %edx
@@ -600,7 +600,7 @@ _ZN3GVM11Interpreter3runEv:
 	leal	(%edi,%eax,4), %eax
 	movl	12(%esp), %edx
 	leal	0(%ebp,%ecx,4), %ecx
-	jmp	.L339
+	jmp	.L337
 .L216:
 	movl	_ZN3GVM11Interpreter14programCounterE, %eax
 	movsbl	1(%eax), %edx
@@ -610,7 +610,7 @@ _ZN3GVM11Interpreter3runEv:
 	leal	(%edi,%edx,4), %edx
 	movl	%edx, 12(%esp)
 	leal	(%edi,%eax,4), %eax
-	jmp	.L339
+	jmp	.L337
 .L215:
 	movzbl	1(%ebx), %eax
 	movl	8(%esp), %edx
@@ -622,7 +622,7 @@ _ZN3GVM11Interpreter3runEv:
 	movzbl	3(%ebx), %eax
 	leal	(%edx,%eax,4), %eax
 	movl	12(%esp), %edx
-.L338:
+.L336:
 	movss	(%ecx), %xmm0
 	addl	$4, %ebx
 	addss	(%edx), %xmm0
@@ -644,23 +644,23 @@ _ZN3GVM11Interpreter3runEv:
 	movzbl	3(%ebx), %eax
 	movl	12(%esp), %edx
 	leal	0(%ebp,%eax,4), %eax
-	jmp	.L338
+	jmp	.L336
 .L213:
 	movzbl	1(%ebx), %eax
 	leal	0(%ebp,%eax,4), %ecx
 	movl	_ZN3GVM11Interpreter14programCounterE, %eax
-.L368:
+.L367:
 	movsbl	2(%eax), %edx
 	leal	(%edi,%edx,4), %edx
 	movl	%edx, 12(%esp)
 	movsbl	3(%eax), %eax
 	leal	(%edi,%eax,4), %eax
-	jmp	.L338
+	jmp	.L336
 .L212:
 	movl	_ZN3GVM11Interpreter14programCounterE, %eax
 	movsbl	1(%eax), %edx
 	leal	(%edi,%edx,4), %ecx
-	jmp	.L368
+	jmp	.L367
 .L211:
 	movzbl	1(%ebx), %eax
 	movzbl	2(%ebx), %edx
@@ -677,8 +677,8 @@ _ZN3GVM11Interpreter3runEv:
 	addss	%xmm1, %xmm0
 	sqrtss	%xmm0, %xmm1
 	ucomiss	%xmm1, %xmm1
-	jp	.L381
-.L336:
+	jp	.L377
+.L334:
 	movss	%xmm1, (%edx)
 	addl	$3, %ebx
 	jmp	.L2
@@ -698,8 +698,8 @@ _ZN3GVM11Interpreter3runEv:
 	addss	%xmm1, %xmm0
 	sqrtss	%xmm0, %xmm1
 	ucomiss	%xmm1, %xmm1
-	jp	.L382
-.L334:
+	jp	.L378
+.L332:
 	movss	%xmm1, (%edx)
 	addl	$3, %ebx
 	jmp	.L2
@@ -719,8 +719,8 @@ _ZN3GVM11Interpreter3runEv:
 	addss	%xmm1, %xmm0
 	sqrtss	%xmm0, %xmm1
 	ucomiss	%xmm1, %xmm1
-	jp	.L383
-.L332:
+	jp	.L379
+.L330:
 	movss	%xmm1, (%edx)
 	addl	$3, %ebx
 	jmp	.L2
@@ -740,8 +740,8 @@ _ZN3GVM11Interpreter3runEv:
 	addss	%xmm1, %xmm0
 	sqrtss	%xmm0, %xmm1
 	ucomiss	%xmm1, %xmm1
-	jp	.L384
-.L330:
+	jp	.L380
+.L328:
 	movss	%xmm1, (%edx)
 	addl	$3, %ebx
 	jmp	.L2
@@ -751,7 +751,7 @@ _ZN3GVM11Interpreter3runEv:
 	movl	8(%esp), %ecx
 	leal	0(%ebp,%eax,4), %eax
 	leal	(%ecx,%edx,4), %edx
-.L327:
+.L325:
 	movss	(%eax), %xmm2
 	movss	4(%eax), %xmm1
 	movaps	%xmm2, %xmm3
@@ -763,8 +763,8 @@ _ZN3GVM11Interpreter3runEv:
 	addss	%xmm1, %xmm0
 	sqrtss	%xmm0, %xmm1
 	ucomiss	%xmm1, %xmm1
-	jp	.L385
-.L328:
+	jp	.L381
+.L326:
 	movss	.LC2, %xmm0
 	addl	$3, %ebx
 	divss	%xmm1, %xmm0
@@ -782,28 +782,28 @@ _ZN3GVM11Interpreter3runEv:
 	movsbl	1(%eax), %eax
 	leal	0(%ebp,%edx,4), %edx
 	leal	(%edi,%eax,4), %eax
-	jmp	.L327
+	jmp	.L325
 .L205:
 	movl	_ZN3GVM11Interpreter14programCounterE, %edx
 	movzbl	1(%ebx), %eax
 	movsbl	2(%edx), %edx
 	leal	0(%ebp,%eax,4), %eax
 	leal	(%edi,%edx,4), %edx
-	jmp	.L327
+	jmp	.L325
 .L204:
 	movl	_ZN3GVM11Interpreter14programCounterE, %edx
 	movsbl	1(%edx), %eax
 	movsbl	2(%edx), %edx
 	leal	(%edi,%eax,4), %eax
 	leal	(%edi,%edx,4), %edx
-	jmp	.L327
+	jmp	.L325
 .L203:
 	movzbl	1(%ebx), %eax
 	movl	8(%esp), %ecx
 	leal	0(%ebp,%eax,4), %edx
 	movzbl	2(%ebx), %eax
 	leal	(%ecx,%eax,4), %eax
-.L326:
+.L324:
 	movss	(%edx), %xmm0
 	addl	$3, %ebx
 	xorps	.LC3, %xmm0
@@ -821,28 +821,28 @@ _ZN3GVM11Interpreter3runEv:
 	leal	(%edi,%eax,4), %edx
 	movzbl	2(%ebx), %eax
 	leal	0(%ebp,%eax,4), %eax
-	jmp	.L326
+	jmp	.L324
 .L201:
 	movzbl	1(%ebx), %eax
 	leal	0(%ebp,%eax,4), %edx
 	movl	_ZN3GVM11Interpreter14programCounterE, %eax
 	movsbl	2(%eax), %eax
 	leal	(%edi,%eax,4), %eax
-	jmp	.L326
+	jmp	.L324
 .L200:
 	movl	_ZN3GVM11Interpreter14programCounterE, %eax
 	movsbl	1(%eax), %edx
 	movsbl	2(%eax), %eax
 	leal	(%edi,%edx,4), %edx
 	leal	(%edi,%eax,4), %eax
-	jmp	.L326
+	jmp	.L324
 .L199:
 	movzbl	1(%ebx), %eax
 	movl	8(%esp), %ecx
 	leal	0(%ebp,%eax,4), %edx
 	movzbl	2(%ebx), %eax
 	leal	(%ecx,%eax,4), %eax
-.L325:
+.L323:
 	movl	(%edx), %ecx
 	addl	$3, %ebx
 	movl	%ecx, (%eax)
@@ -857,32 +857,32 @@ _ZN3GVM11Interpreter3runEv:
 	leal	(%edi,%eax,4), %edx
 	movzbl	2(%ebx), %eax
 	leal	0(%ebp,%eax,4), %eax
-	jmp	.L325
+	jmp	.L323
 .L197:
 	movzbl	1(%ebx), %eax
 	leal	0(%ebp,%eax,4), %edx
 	movl	_ZN3GVM11Interpreter14programCounterE, %eax
 	movsbl	2(%eax), %eax
 	leal	(%edi,%eax,4), %eax
-	jmp	.L325
+	jmp	.L323
 .L196:
 	movl	_ZN3GVM11Interpreter14programCounterE, %eax
 	movsbl	1(%eax), %edx
 	movsbl	2(%eax), %eax
 	leal	(%edi,%edx,4), %edx
 	leal	(%edi,%eax,4), %eax
-	jmp	.L325
+	jmp	.L323
 .L195:
 	movzbl	1(%ebx), %eax
 	movzbl	2(%ebx), %edx
 	movl	8(%esp), %ecx
 	leal	0(%ebp,%eax,4), %eax
 	leal	(%ecx,%edx,4), %edx
-.L322:
+.L320:
 	movl	(%eax), %ecx
 	cmpl	%ecx, (%edx)
-	je	.L386
-.L323:
+	je	.L382
+.L321:
 	movzbl	3(%ebx), %eax
 	movzbl	4(%ebx), %edx
 	sall	$8, %eax
@@ -898,14 +898,14 @@ _ZN3GVM11Interpreter3runEv:
 	movl	(%eax), %ecx
 	leal	(%edi,%edx,4), %edx
 	cmpl	%ecx, (%edx)
-	jne	.L323
-.L386:
+	jne	.L321
+.L382:
 	movl	4(%eax), %ecx
 	cmpl	%ecx, 4(%edx)
-	jne	.L323
+	jne	.L321
 	movl	8(%eax), %eax
 	cmpl	%eax, 8(%edx)
-	jne	.L323
+	jne	.L321
 	addl	$5, %ebx
 	jmp	.L2
 	.p2align 4,,10
@@ -1133,8 +1133,8 @@ _ZN3GVM11Interpreter3runEv:
 	leal	(%edi,%edx,4), %edx
 	sqrtss	(%edi,%eax,4), %xmm0
 	ucomiss	%xmm0, %xmm0
-	jp	.L387
-.L308:
+	jp	.L383
+.L306:
 	movss	%xmm0, (%edx)
 	addl	$3, %ebx
 	jmp	.L2
@@ -1153,7 +1153,7 @@ _ZN3GVM11Interpreter3runEv:
 	movl	8(%esp), %ecx
 	movss	0(%ebp,%edx,4), %xmm0
 	ucomiss	(%ecx,%eax,4), %xmm0
-	jbe	.L366
+	jbe	.L364
 	movzbl	3(%ebx), %eax
 	movzbl	4(%ebx), %edx
 	sall	$8, %eax
@@ -1167,7 +1167,7 @@ _ZN3GVM11Interpreter3runEv:
 	movzbl	2(%ebx), %eax
 	movss	(%edi,%edx,4), %xmm0
 	ucomiss	0(%ebp,%eax,4), %xmm0
-	jbe	.L365
+	jbe	.L363
 	movzbl	3(%ebx), %eax
 	movzbl	4(%ebx), %edx
 	sall	$8, %eax
@@ -1181,7 +1181,7 @@ _ZN3GVM11Interpreter3runEv:
 	movsbl	2(%eax), %eax
 	movss	0(%ebp,%edx,4), %xmm0
 	ucomiss	(%edi,%eax,4), %xmm0
-	jbe	.L364
+	jbe	.L362
 	movzbl	3(%ebx), %eax
 	movzbl	4(%ebx), %edx
 	sall	$8, %eax
@@ -1195,7 +1195,7 @@ _ZN3GVM11Interpreter3runEv:
 	movsbl	2(%eax), %eax
 	movss	(%edi,%edx,4), %xmm0
 	ucomiss	(%edi,%eax,4), %xmm0
-	jbe	.L363
+	jbe	.L361
 	movzbl	3(%ebx), %eax
 	movzbl	4(%ebx), %edx
 	sall	$8, %eax
@@ -1209,7 +1209,7 @@ _ZN3GVM11Interpreter3runEv:
 	movl	8(%esp), %ecx
 	movss	0(%ebp,%edx,4), %xmm0
 	ucomiss	(%ecx,%eax,4), %xmm0
-	jb	.L362
+	jb	.L360
 	movzbl	3(%ebx), %eax
 	movzbl	4(%ebx), %edx
 	sall	$8, %eax
@@ -1223,7 +1223,7 @@ _ZN3GVM11Interpreter3runEv:
 	movzbl	2(%ebx), %eax
 	movss	(%edi,%edx,4), %xmm0
 	ucomiss	0(%ebp,%eax,4), %xmm0
-	jb	.L361
+	jb	.L359
 	movzbl	3(%ebx), %eax
 	movzbl	4(%ebx), %edx
 	sall	$8, %eax
@@ -1237,7 +1237,7 @@ _ZN3GVM11Interpreter3runEv:
 	movsbl	2(%eax), %eax
 	movss	0(%ebp,%edx,4), %xmm0
 	ucomiss	(%edi,%eax,4), %xmm0
-	jb	.L360
+	jb	.L358
 	movzbl	3(%ebx), %eax
 	movzbl	4(%ebx), %edx
 	sall	$8, %eax
@@ -1251,7 +1251,7 @@ _ZN3GVM11Interpreter3runEv:
 	movsbl	2(%eax), %eax
 	movss	(%edi,%edx,4), %xmm0
 	ucomiss	(%edi,%eax,4), %xmm0
-	jb	.L359
+	jb	.L357
 	movzbl	3(%ebx), %eax
 	movzbl	4(%ebx), %edx
 	sall	$8, %eax
@@ -1633,11 +1633,11 @@ _ZN3GVM11Interpreter3runEv:
 	movsbl	2(%edx), %edx
 	leal	(%edi,%eax,4), %eax
 	leal	(%edi,%edx,4), %edx
-.L320:
+.L318:
 	movl	(%eax), %ecx
 	cmpl	%ecx, (%edx)
-	je	.L388
-.L321:
+	je	.L384
+.L319:
 	addl	$5, %ebx
 	jmp	.L2
 .L189:
@@ -1676,8 +1676,8 @@ _ZN3GVM11Interpreter3runEv:
 	addss	%xmm1, %xmm4
 	sqrtss	%xmm4, %xmm1
 	ucomiss	%xmm1, %xmm1
-	jp	.L389
-.L318:
+	jp	.L385
+.L316:
 	movss	.LC2, %xmm5
 	addl	$2, %ebx
 	divss	%xmm1, %xmm5
@@ -1718,14 +1718,14 @@ _ZN3GVM11Interpreter3runEv:
 	leal	(%ecx,%edx,4), %edx
 	movl	(%eax), %ecx
 	cmpl	%ecx, (%edx)
-	jne	.L321
-.L388:
+	jne	.L319
+.L384:
 	movl	4(%eax), %ecx
 	cmpl	%ecx, 4(%edx)
-	jne	.L321
+	jne	.L319
 	movl	8(%eax), %eax
 	cmpl	%eax, 8(%edx)
-	jne	.L321
+	jne	.L319
 	movzbl	3(%ebx), %eax
 	movzbl	4(%ebx), %edx
 	sall	$8, %eax
@@ -1741,14 +1741,14 @@ _ZN3GVM11Interpreter3runEv:
 	movsbl	2(%edx), %edx
 	leal	0(%ebp,%eax,4), %eax
 	leal	(%edi,%edx,4), %edx
-	jmp	.L320
+	jmp	.L318
 .L193:
 	movl	_ZN3GVM11Interpreter14programCounterE, %edx
 	movsbl	1(%edx), %eax
 	movsbl	2(%edx), %edx
 	leal	(%edi,%eax,4), %eax
 	leal	(%edi,%edx,4), %edx
-	jmp	.L322
+	jmp	.L320
 .L130:
 	movl	_ZN3GVM11Interpreter14programCounterE, %eax
 	movzbl	1(%ebx), %ecx
@@ -2033,7 +2033,7 @@ _ZN3GVM11Interpreter3runEv:
 	movzbl	2(%ebx), %eax
 	movl	0(%ebp,%eax,4), %ecx
 	testl	%ecx, %ecx
-	je	.L374
+	je	.L373
 	movzbl	3(%ebx), %eax
 	addl	$4, %ebx
 	movl	%eax, 12(%esp)
@@ -2051,7 +2051,7 @@ _ZN3GVM11Interpreter3runEv:
 	movl	8(%esp), %ecx
 	movl	(%ecx,%eax,4), %ecx
 	testl	%ecx, %ecx
-	je	.L374
+	je	.L373
 	movl	_ZN3GVM11Interpreter14programCounterE, %eax
 	addl	$4, %ebx
 	movsbl	3(%eax), %eax
@@ -2067,7 +2067,7 @@ _ZN3GVM11Interpreter3runEv:
 	movzbl	2(%ebx), %eax
 	movl	0(%ebp,%eax,4), %ecx
 	testl	%ecx, %ecx
-	je	.L374
+	je	.L373
 	movl	_ZN3GVM11Interpreter14programCounterE, %eax
 	addl	$4, %ebx
 	movsbl	3(%eax), %edx
@@ -2084,7 +2084,7 @@ _ZN3GVM11Interpreter3runEv:
 	movsbl	2(%eax), %eax
 	movl	(%edi,%eax,4), %ecx
 	testl	%ecx, %ecx
-	je	.L374
+	je	.L373
 	movzbl	3(%ebx), %eax
 	addl	$4, %ebx
 	movl	%eax, 12(%esp)
@@ -2101,7 +2101,7 @@ _ZN3GVM11Interpreter3runEv:
 	movsbl	2(%eax), %edx
 	movl	(%edi,%edx,4), %ecx
 	testl	%ecx, %ecx
-	je	.L374
+	je	.L373
 	movsbl	1(%eax), %eax
 	addl	$4, %ebx
 	movzbl	-1(%ebx), %edx
@@ -2117,7 +2117,7 @@ _ZN3GVM11Interpreter3runEv:
 	movsbl	2(%eax), %edx
 	movl	(%edi,%edx,4), %ecx
 	testl	%ecx, %ecx
-	je	.L374
+	je	.L373
 	movsbl	3(%eax), %eax
 	addl	$4, %ebx
 	movl	%eax, 12(%esp)
@@ -2133,7 +2133,7 @@ _ZN3GVM11Interpreter3runEv:
 	movsbl	2(%eax), %edx
 	movl	(%edi,%edx,4), %ecx
 	testl	%ecx, %ecx
-	je	.L374
+	je	.L373
 	movsbl	3(%eax), %edx
 	addl	$4, %ebx
 	movsbl	1(%eax), %eax
@@ -2148,7 +2148,7 @@ _ZN3GVM11Interpreter3runEv:
 	movzbl	2(%ebx), %eax
 	movl	0(%ebp,%eax,4), %ecx
 	testl	%ecx, %ecx
-	je	.L374
+	je	.L373
 	movzbl	3(%ebx), %eax
 	addl	$4, %ebx
 	movl	%eax, 12(%esp)
@@ -2166,7 +2166,7 @@ _ZN3GVM11Interpreter3runEv:
 	movl	8(%esp), %ecx
 	movl	(%ecx,%eax,4), %ecx
 	testl	%ecx, %ecx
-	je	.L374
+	je	.L373
 	movl	_ZN3GVM11Interpreter14programCounterE, %eax
 	addl	$4, %ebx
 	movsbl	3(%eax), %eax
@@ -2182,7 +2182,7 @@ _ZN3GVM11Interpreter3runEv:
 	movzbl	2(%ebx), %eax
 	movl	0(%ebp,%eax,4), %ecx
 	testl	%ecx, %ecx
-	je	.L374
+	je	.L373
 	movl	_ZN3GVM11Interpreter14programCounterE, %eax
 	addl	$4, %ebx
 	movsbl	3(%eax), %edx
@@ -2199,7 +2199,7 @@ _ZN3GVM11Interpreter3runEv:
 	movsbl	2(%eax), %eax
 	movl	(%edi,%eax,4), %ecx
 	testl	%ecx, %ecx
-	je	.L374
+	je	.L373
 	movzbl	3(%ebx), %eax
 	addl	$4, %ebx
 	movl	%eax, 12(%esp)
@@ -2216,7 +2216,7 @@ _ZN3GVM11Interpreter3runEv:
 	movsbl	2(%eax), %edx
 	movl	(%edi,%edx,4), %ecx
 	testl	%ecx, %ecx
-	je	.L374
+	je	.L373
 	movsbl	1(%eax), %eax
 	addl	$4, %ebx
 	movzbl	-1(%ebx), %edx
@@ -2232,7 +2232,7 @@ _ZN3GVM11Interpreter3runEv:
 	movsbl	2(%eax), %edx
 	movl	(%edi,%edx,4), %ecx
 	testl	%ecx, %ecx
-	je	.L374
+	je	.L373
 	movsbl	3(%eax), %eax
 	addl	$4, %ebx
 	movl	%eax, 12(%esp)
@@ -2248,7 +2248,7 @@ _ZN3GVM11Interpreter3runEv:
 	movsbl	2(%eax), %edx
 	movl	(%edi,%edx,4), %ecx
 	testl	%ecx, %ecx
-	je	.L374
+	je	.L373
 	movsbl	3(%eax), %edx
 	addl	$4, %ebx
 	movsbl	1(%eax), %eax
@@ -2494,7 +2494,7 @@ _ZN3GVM11Interpreter3runEv:
 	movzbl	2(%ebx), %edx
 	sall	%cl, %eax
 	testl	%eax, 0(%ebp,%edx,4)
-	jne	.L277
+	jne	.L275
 	movzbl	3(%ebx), %eax
 	movzbl	4(%ebx), %edx
 	sall	$8, %eax
@@ -2509,7 +2509,7 @@ _ZN3GVM11Interpreter3runEv:
 	movl	$1, %eax
 	sall	%cl, %eax
 	testl	%eax, (%edi,%edx,4)
-	jne	.L276
+	jne	.L274
 	movzbl	3(%ebx), %eax
 	movzbl	4(%ebx), %edx
 	sall	$8, %eax
@@ -2523,7 +2523,7 @@ _ZN3GVM11Interpreter3runEv:
 	movzbl	2(%ebx), %edx
 	sall	%cl, %eax
 	testl	%eax, 0(%ebp,%edx,4)
-	je	.L275
+	je	.L273
 	movzbl	3(%ebx), %eax
 	movzbl	4(%ebx), %edx
 	sall	$8, %eax
@@ -2538,7 +2538,7 @@ _ZN3GVM11Interpreter3runEv:
 	movl	$1, %eax
 	sall	%cl, %eax
 	testl	%eax, (%edi,%edx,4)
-	je	.L274
+	je	.L272
 	movzbl	3(%ebx), %eax
 	movzbl	4(%ebx), %edx
 	sall	$8, %eax
@@ -2605,7 +2605,7 @@ _ZN3GVM11Interpreter3runEv:
 	movsbl	1(%eax), %eax
 	leal	(%edi,%eax,4), %edx
 	subl	$1, (%edx)
-	js	.L273
+	js	.L271
 	movzbl	2(%ebx), %eax
 	movzbl	3(%ebx), %edx
 	sall	$8, %eax
@@ -2618,7 +2618,7 @@ _ZN3GVM11Interpreter3runEv:
 	movsbl	1(%eax), %eax
 	leal	(%edi,%eax,4), %edx
 	subl	$1, (%edx)
-	je	.L272
+	je	.L270
 	movzbl	2(%ebx), %eax
 	movzbl	3(%ebx), %edx
 	sall	$8, %eax
@@ -2632,7 +2632,7 @@ _ZN3GVM11Interpreter3runEv:
 	movl	8(%esp), %ecx
 	movl	(%ecx,%eax,4), %eax
 	cmpl	%eax, 0(%ebp,%edx,4)
-	jle	.L271
+	jle	.L269
 	movzbl	3(%ebx), %eax
 	movzbl	4(%ebx), %edx
 	sall	$8, %eax
@@ -2646,7 +2646,7 @@ _ZN3GVM11Interpreter3runEv:
 	movzbl	2(%ebx), %eax
 	movl	0(%ebp,%eax,4), %eax
 	cmpl	%eax, (%edi,%edx,4)
-	jle	.L270
+	jle	.L268
 	movzbl	3(%ebx), %eax
 	movzbl	4(%ebx), %edx
 	sall	$8, %eax
@@ -2660,7 +2660,7 @@ _ZN3GVM11Interpreter3runEv:
 	movsbl	2(%eax), %eax
 	movl	(%edi,%eax,4), %eax
 	cmpl	%eax, 0(%ebp,%edx,4)
-	jle	.L269
+	jle	.L267
 	movzbl	3(%ebx), %eax
 	movzbl	4(%ebx), %edx
 	sall	$8, %eax
@@ -2674,7 +2674,7 @@ _ZN3GVM11Interpreter3runEv:
 	movsbl	2(%eax), %eax
 	movl	(%edi,%eax,4), %eax
 	cmpl	%eax, (%edi,%edx,4)
-	jle	.L268
+	jle	.L266
 	movzbl	3(%ebx), %eax
 	movzbl	4(%ebx), %edx
 	sall	$8, %eax
@@ -2688,7 +2688,7 @@ _ZN3GVM11Interpreter3runEv:
 	movl	8(%esp), %ecx
 	movl	(%ecx,%eax,4), %eax
 	cmpl	%eax, 0(%ebp,%edx,4)
-	jl	.L267
+	jl	.L265
 	movzbl	3(%ebx), %eax
 	movzbl	4(%ebx), %edx
 	sall	$8, %eax
@@ -2702,7 +2702,7 @@ _ZN3GVM11Interpreter3runEv:
 	movzbl	2(%ebx), %eax
 	movl	0(%ebp,%eax,4), %eax
 	cmpl	%eax, (%edi,%edx,4)
-	jl	.L266
+	jl	.L264
 	movzbl	3(%ebx), %eax
 	movzbl	4(%ebx), %edx
 	sall	$8, %eax
@@ -2716,7 +2716,7 @@ _ZN3GVM11Interpreter3runEv:
 	movsbl	2(%eax), %eax
 	movl	(%edi,%eax,4), %eax
 	cmpl	%eax, 0(%ebp,%edx,4)
-	jl	.L265
+	jl	.L263
 	movzbl	3(%ebx), %eax
 	movzbl	4(%ebx), %edx
 	sall	$8, %eax
@@ -2730,7 +2730,7 @@ _ZN3GVM11Interpreter3runEv:
 	movsbl	2(%eax), %eax
 	movl	(%edi,%eax,4), %eax
 	cmpl	%eax, (%edi,%edx,4)
-	jl	.L264
+	jl	.L262
 	movzbl	3(%ebx), %eax
 	movzbl	4(%ebx), %edx
 	sall	$8, %eax
@@ -2878,7 +2878,7 @@ _ZN3GVM11Interpreter3runEv:
 	rolw	$8, %ax
 	movzwl	%ax, %edx
 	testw	%ax, %ax
-	je	.L376
+	je	.L374
 	movl	_ZN3GVM11Interpreter9dataTableE, %eax
 	addl	$3, %ebx
 	movl	(%eax,%edx,4), %eax
@@ -2892,7 +2892,7 @@ _ZN3GVM11Interpreter3runEv:
 	rolw	$8, %ax
 	movzwl	%ax, %edx
 	testw	%ax, %ax
-	je	.L376
+	je	.L374
 	movl	_ZN3GVM11Interpreter9dataTableE, %eax
 	addl	$3, %ebx
 	movl	(%eax,%edx,4), %ebp
@@ -2904,7 +2904,7 @@ _ZN3GVM11Interpreter3runEv:
 	rolw	$8, %ax
 	movzwl	%ax, %edx
 	testw	%ax, %ax
-	je	.L376
+	je	.L374
 	movl	_ZN3GVM11Interpreter9dataTableE, %eax
 	addl	$4, %ebx
 	movl	8(%esp), %ecx
@@ -2917,7 +2917,7 @@ _ZN3GVM11Interpreter3runEv:
 	rolw	$8, %ax
 	movzwl	%ax, %edx
 	testw	%ax, %ax
-	je	.L376
+	je	.L374
 	movl	_ZN3GVM11Interpreter9dataTableE, %eax
 	addl	$4, %ebx
 	movl	(%eax,%edx,4), %edx
@@ -2929,7 +2929,7 @@ _ZN3GVM11Interpreter3runEv:
 	rolw	$8, %ax
 	movzwl	%ax, %edx
 	testw	%ax, %ax
-	je	.L376
+	je	.L374
 	movl	_ZN3GVM11Interpreter9dataTableE, %eax
 	addl	$4, %ebx
 	movl	(%eax,%edx,4), %edx
@@ -2968,7 +2968,7 @@ _ZN3GVM11Interpreter3runEv:
 	movzbl	1(%ebx), %edx
 	movl	(%ecx,%eax,4), %eax
 	cmpl	%eax, 0(%ebp,%edx,4)
-	je	.L390
+	je	.L386
 	addl	$5, %ebx
 	jmp	.L2
 .L21:
@@ -2977,7 +2977,7 @@ _ZN3GVM11Interpreter3runEv:
 	movsbl	1(%eax), %eax
 	movl	(%edi,%eax,4), %eax
 	cmpl	%eax, 0(%ebp,%edx,4)
-	je	.L391
+	je	.L387
 	addl	$5, %ebx
 	jmp	.L2
 .L20:
@@ -2986,14 +2986,14 @@ _ZN3GVM11Interpreter3runEv:
 	movsbl	1(%eax), %eax
 	movl	(%edi,%eax,4), %eax
 	cmpl	%eax, (%edi,%edx,4)
-	je	.L392
+	je	.L388
 	addl	$5, %ebx
 	jmp	.L2
 .L19:
 	movzbl	2(%ebx), %eax
 	movl	0(%ebp,%eax,4), %eax
 	testl	%eax, %eax
-	je	.L255
+	je	.L253
 	movzbl	3(%ebx), %eax
 	movzbl	4(%ebx), %edx
 	sall	$8, %eax
@@ -3006,7 +3006,7 @@ _ZN3GVM11Interpreter3runEv:
 	movsbl	1(%eax), %eax
 	movl	(%edi,%eax,4), %edx
 	testl	%edx, %edx
-	je	.L254
+	je	.L252
 	movzbl	2(%ebx), %eax
 	movzbl	3(%ebx), %edx
 	sall	$8, %eax
@@ -3018,7 +3018,7 @@ _ZN3GVM11Interpreter3runEv:
 	movzbl	2(%ebx), %eax
 	movl	0(%ebp,%eax,4), %ecx
 	testl	%ecx, %ecx
-	jne	.L253
+	jne	.L251
 	movzbl	3(%ebx), %eax
 	movzbl	4(%ebx), %edx
 	sall	$8, %eax
@@ -3031,7 +3031,7 @@ _ZN3GVM11Interpreter3runEv:
 	movsbl	1(%eax), %eax
 	movl	(%edi,%eax,4), %eax
 	testl	%eax, %eax
-	jne	.L252
+	jne	.L250
 	movzbl	2(%ebx), %eax
 	movzbl	3(%ebx), %edx
 	sall	$8, %eax
@@ -3045,20 +3045,20 @@ _ZN3GVM11Interpreter3runEv:
 	movl	(%ecx,%eax,4), %eax
 	movl	%eax, 8(%esp)
 	testl	%eax, %eax
-	je	.L393
+	je	.L389
 	addl	$3, %ebx
 	jmp	.L2
 .L14:
 	movzbl	1(%ebx), %eax
 	movl	0(%ebp,%eax,4), %ebp
 	testl	%ebp, %ebp
-	je	.L394
+	je	.L390
 	addl	$3, %ebx
 	jmp	.L2
 .L13:
 	call	_ZN3GVM11Interpreter12exitFunctionEv
 	testl	%eax, %eax
-	jne	.L395
+	jne	.L391
 	movl	_ZN3GVM11Interpreter9callStackE, %eax
 	movl	_ZN3GVM11Interpreter10frameStackE, %edi
 	movl	4(%eax), %ebp
@@ -3079,7 +3079,7 @@ _ZN3GVM11Interpreter3runEv:
 	addl	$16, %esp
 	.cfi_def_cfa_offset 64
 	testl	%eax, %eax
-	jne	.L378
+	jne	.L372
 	addl	$3, %ebx
 	jmp	.L2
 .L11:
@@ -3088,9 +3088,10 @@ _ZN3GVM11Interpreter3runEv:
 	movl	%eax, %edx
 	andl	$-1073741824, %edx
 	cmpl	$-2147483648, %edx
-	jne	.L375
+	jne	.L371
 	subl	$8, %esp
 	.cfi_def_cfa_offset 72
+.L366:
 	movzwl	%ax, %eax
 	pushl	%eax
 	.cfi_def_cfa_offset 76
@@ -3100,8 +3101,9 @@ _ZN3GVM11Interpreter3runEv:
 	call	_ZN3GVM11Interpreter13enterFunctionEPKht
 	addl	$16, %esp
 	.cfi_def_cfa_offset 64
+.L242:
 	testl	%eax, %eax
-	jne	.L378
+	jne	.L372
 	movl	_ZN3GVM11Interpreter9callStackE, %eax
 	movl	_ZN3GVM11Interpreter10frameStackE, %edi
 	movl	4(%eax), %ebp
@@ -3115,7 +3117,7 @@ _ZN3GVM11Interpreter3runEv:
 	movl	%eax, %edx
 	andl	$-1073741824, %edx
 	cmpl	$-2147483648, %edx
-	jne	.L375
+	jne	.L371
 	subl	$8, %esp
 	.cfi_def_cfa_offset 72
 	movzwl	%ax, %eax
@@ -3127,39 +3129,18 @@ _ZN3GVM11Interpreter3runEv:
 	call	_ZN3GVM11Interpreter13enterFunctionEPKht
 	addl	$16, %esp
 	.cfi_def_cfa_offset 64
-	testl	%eax, %eax
-	jne	.L378
-	movl	_ZN3GVM11Interpreter9callStackE, %eax
-	movl	_ZN3GVM11Interpreter10frameStackE, %edi
-	movl	4(%eax), %ebp
-	movl	8(%eax), %eax
-	movl	%eax, 8(%esp)
-	jmp	.L2
+	jmp	.L242
 .L9:
 	movzbl	1(%ebx), %eax
 	subl	$8, %esp
+	.cfi_remember_state
 	.cfi_def_cfa_offset 72
 	movzbl	2(%ebx), %edx
 	sall	$8, %eax
 	orl	%edx, %eax
-	movzwl	%ax, %eax
-	pushl	%eax
-	.cfi_def_cfa_offset 76
-	leal	3(%ebx), %eax
-	pushl	%eax
-	.cfi_def_cfa_offset 80
-	call	_ZN3GVM11Interpreter13enterFunctionEPKht
-	addl	$16, %esp
-	.cfi_def_cfa_offset 64
-	testl	%eax, %eax
-	jne	.L378
-	movl	_ZN3GVM11Interpreter9callStackE, %eax
-	movl	_ZN3GVM11Interpreter10frameStackE, %edi
-	movl	4(%eax), %ebp
-	movl	8(%eax), %eax
-	movl	%eax, 8(%esp)
-	jmp	.L2
+	jmp	.L366
 .L8:
+	.cfi_restore_state
 	movzbl	1(%ebx), %eax
 	subl	$4, %esp
 	.cfi_def_cfa_offset 68
@@ -3178,14 +3159,7 @@ _ZN3GVM11Interpreter3runEv:
 	call	_ZN3GVM11Interpreter12enterClosureEPKhsh
 	addl	$16, %esp
 	.cfi_def_cfa_offset 64
-	testl	%eax, %eax
-	jne	.L378
-	movl	_ZN3GVM11Interpreter9callStackE, %eax
-	movl	_ZN3GVM11Interpreter10frameStackE, %edi
-	movl	4(%eax), %ebp
-	movl	8(%eax), %eax
-	movl	%eax, 8(%esp)
-	jmp	.L2
+	jmp	.L242
 .L7:
 	movzbl	1(%ebx), %eax
 	movzbl	2(%ebx), %edx
@@ -3228,17 +3202,23 @@ _ZN3GVM11Interpreter3runEv:
 	movss	0(%ebp,%eax,4), %xmm0
 	movzbl	3(%ebx), %eax
 	leal	(%ecx,%eax,4), %eax
-	jmp	.L341
+	jmp	.L339
+.L250:
+	addl	$4, %ebx
+	jmp	.L2
+.L251:
+	addl	$5, %ebx
+	jmp	.L2
 .L252:
 	addl	$4, %ebx
 	jmp	.L2
 .L253:
 	addl	$5, %ebx
 	jmp	.L2
-.L254:
-	addl	$4, %ebx
+.L262:
+	addl	$5, %ebx
 	jmp	.L2
-.L255:
+.L263:
 	addl	$5, %ebx
 	jmp	.L2
 .L264:
@@ -3260,13 +3240,13 @@ _ZN3GVM11Interpreter3runEv:
 	addl	$5, %ebx
 	jmp	.L2
 .L270:
-	addl	$5, %ebx
-	jmp	.L2
-.L271:
-	addl	$5, %ebx
+	addl	$4, %ebx
 	jmp	.L2
 .L272:
-	addl	$4, %ebx
+	addl	$3, %ebx
+	jmp	.L2
+.L273:
+	addl	$3, %ebx
 	jmp	.L2
 .L274:
 	addl	$3, %ebx
@@ -3274,11 +3254,11 @@ _ZN3GVM11Interpreter3runEv:
 .L275:
 	addl	$3, %ebx
 	jmp	.L2
-.L276:
-	addl	$3, %ebx
+.L357:
+	addl	$5, %ebx
 	jmp	.L2
-.L277:
-	addl	$3, %ebx
+.L358:
+	addl	$5, %ebx
 	jmp	.L2
 .L359:
 	addl	$5, %ebx
@@ -3298,17 +3278,38 @@ _ZN3GVM11Interpreter3runEv:
 .L364:
 	addl	$5, %ebx
 	jmp	.L2
-.L365:
-	addl	$5, %ebx
-	jmp	.L2
-.L366:
-	addl	$5, %ebx
-	jmp	.L2
-.L374:
+.L373:
 	movl	%ebx, _ZN3GVM11Interpreter14programCounterE
 	movl	$10, %eax
 	jmp	.L3
-.L391:
+.L387:
+	movzbl	3(%ebx), %eax
+	movzbl	4(%ebx), %edx
+	sall	$8, %eax
+	orl	%edx, %eax
+	cwtl
+	addl	%eax, %ebx
+	jmp	.L2
+.L386:
+	movzbl	3(%ebx), %eax
+	movzbl	4(%ebx), %edx
+	sall	$8, %eax
+	orl	%edx, %eax
+	cwtl
+	addl	%eax, %ebx
+	jmp	.L2
+.L388:
+	movzbl	3(%ebx), %eax
+	movzbl	4(%ebx), %edx
+	sall	$8, %eax
+	orl	%edx, %eax
+	cwtl
+	addl	%eax, %ebx
+	jmp	.L2
+.L271:
+	addl	$4, %ebx
+	jmp	.L2
+.L389:
 	movzbl	3(%ebx), %eax
 	movzbl	4(%ebx), %edx
 	sall	$8, %eax
@@ -3317,33 +3318,6 @@ _ZN3GVM11Interpreter3runEv:
 	addl	%eax, %ebx
 	jmp	.L2
 .L390:
-	movzbl	3(%ebx), %eax
-	movzbl	4(%ebx), %edx
-	sall	$8, %eax
-	orl	%edx, %eax
-	cwtl
-	addl	%eax, %ebx
-	jmp	.L2
-.L392:
-	movzbl	3(%ebx), %eax
-	movzbl	4(%ebx), %edx
-	sall	$8, %eax
-	orl	%edx, %eax
-	cwtl
-	addl	%eax, %ebx
-	jmp	.L2
-.L273:
-	addl	$4, %ebx
-	jmp	.L2
-.L393:
-	movzbl	3(%ebx), %eax
-	movzbl	4(%ebx), %edx
-	sall	$8, %eax
-	orl	%edx, %eax
-	cwtl
-	addl	%eax, %ebx
-	jmp	.L2
-.L394:
 	movzbl	2(%ebx), %eax
 	movzbl	3(%ebx), %edx
 	sall	$8, %eax
@@ -3351,14 +3325,14 @@ _ZN3GVM11Interpreter3runEv:
 	cwtl
 	addl	%eax, %ebx
 	jmp	.L2
-.L378:
-	movl	%ebx, _ZN3GVM11Interpreter14programCounterE
-	jmp	.L3
-.L376:
+.L374:
 	movl	%ebx, _ZN3GVM11Interpreter14programCounterE
 	movl	$9, %eax
 	jmp	.L3
-.L385:
+.L372:
+	movl	%ebx, _ZN3GVM11Interpreter14programCounterE
+	jmp	.L3
+.L381:
 	movl	%edx, 20(%esp)
 	subl	$16, %esp
 	.cfi_def_cfa_offset 80
@@ -3372,12 +3346,12 @@ _ZN3GVM11Interpreter3runEv:
 	movl	20(%esp), %edx
 	movss	12(%esp), %xmm1
 	movss	(%eax), %xmm2
-	jmp	.L328
-.L375:
+	jmp	.L326
+.L371:
 	movl	%ebx, _ZN3GVM11Interpreter14programCounterE
 	movl	$7, %eax
 	jmp	.L3
-.L395:
+.L391:
 	subl	$4, %esp
 	.cfi_def_cfa_offset 68
 	movl	%eax, %edi
@@ -3393,19 +3367,7 @@ _ZN3GVM11Interpreter3runEv:
 	.cfi_def_cfa_offset 64
 	movl	%edi, %eax
 	jmp	.L3
-.L381:
-	movl	%edx, 16(%esp)
-	subl	$16, %esp
-	.cfi_def_cfa_offset 80
-	movss	%xmm0, (%esp)
-	call	sqrtf
-	addl	$16, %esp
-	.cfi_def_cfa_offset 64
-	movl	16(%esp), %edx
-	fstps	12(%esp)
-	movss	12(%esp), %xmm1
-	jmp	.L336
-.L382:
+.L377:
 	movl	%edx, 16(%esp)
 	subl	$16, %esp
 	.cfi_def_cfa_offset 80
@@ -3417,7 +3379,7 @@ _ZN3GVM11Interpreter3runEv:
 	fstps	12(%esp)
 	movss	12(%esp), %xmm1
 	jmp	.L334
-.L383:
+.L378:
 	movl	%edx, 16(%esp)
 	subl	$16, %esp
 	.cfi_def_cfa_offset 80
@@ -3429,7 +3391,7 @@ _ZN3GVM11Interpreter3runEv:
 	fstps	12(%esp)
 	movss	12(%esp), %xmm1
 	jmp	.L332
-.L384:
+.L379:
 	movl	%edx, 16(%esp)
 	subl	$16, %esp
 	.cfi_def_cfa_offset 80
@@ -3441,7 +3403,19 @@ _ZN3GVM11Interpreter3runEv:
 	fstps	12(%esp)
 	movss	12(%esp), %xmm1
 	jmp	.L330
-.L387:
+.L380:
+	movl	%edx, 16(%esp)
+	subl	$16, %esp
+	.cfi_def_cfa_offset 80
+	movss	%xmm0, (%esp)
+	call	sqrtf
+	addl	$16, %esp
+	.cfi_def_cfa_offset 64
+	movl	16(%esp), %edx
+	fstps	12(%esp)
+	movss	12(%esp), %xmm1
+	jmp	.L328
+.L383:
 	movl	%edx, 16(%esp)
 	subl	$12, %esp
 	.cfi_def_cfa_offset 76
@@ -3453,8 +3427,8 @@ _ZN3GVM11Interpreter3runEv:
 	movl	16(%esp), %edx
 	fstps	12(%esp)
 	movss	12(%esp), %xmm0
-	jmp	.L308
-.L389:
+	jmp	.L306
+.L385:
 	movss	%xmm2, 28(%esp)
 	subl	$16, %esp
 	.cfi_def_cfa_offset 80
@@ -3471,7 +3445,7 @@ _ZN3GVM11Interpreter3runEv:
 	movss	12(%esp), %xmm1
 	movss	24(%esp), %xmm0
 	movss	20(%esp), %xmm3
-	jmp	.L318
+	jmp	.L316
 	.cfi_endproc
 .LFE149:
 	.size	_ZN3GVM11Interpreter3runEv, .-_ZN3GVM11Interpreter3runEv

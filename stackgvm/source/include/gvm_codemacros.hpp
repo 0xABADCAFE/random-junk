@@ -9,6 +9,10 @@
 
 #define vec3(x, y, z) Scalar(x), Scalar(y), Scalar(z)
 
+#define vec3_x(v) (v)
+#define vec3_y(v) ((v)+1)
+#define vec3_z(v) ((v)+2)
+
 #define BEGIN_GDATA_TABLE(name) Scalar* name[] = { 0,
 #define END_GDATA_TABLE ,0 };
 #define BEGIN_GFUNC_TABLE(name) FuncInfo name[] = { { 0, 0, 0, 0, 0 },
@@ -44,9 +48,22 @@
 #define bez_i(i,j)       _OP(BEZ_I),        _D8(i),   _D16(j),
 #define bnz_l(l,j)       _OP(BNZ_L),        _D8(l),   _D16(j),
 #define bnz_i(i,j)       _OP(BNZ_I),        _D8(i),   _D16(j),
+
+// Assembler style "branch if condition true"
 #define beq_ll(l1,l2,j)  _OP(BEQ_LL),       _D8(l1),  _D8(l2), _D16(j),
 #define beq_li(l,i,j)    _OP(BEQ_LI),       _D8(l),   _D8(i),  _D16(j),
 #define beq_ii(i1,i2,j)  _OP(BEQ_II),       _D8(i1),  _D8(i2), _D16(j),
+#define bne_ll(l1,l2,j)  _OP(BNE_LL),       _D8(l1),  _D8(l2), _D16(j),
+#define bne_li(l,i,j)    _OP(BNE_LI),       _D8(l),   _D8(i),  _D16(j),
+#define bne_ii(i1,i2,j)  _OP(BNE_II),       _D8(i1),  _D8(i2), _D16(j),
+
+// C style "continue if condition true"
+#define ceq_ll(l1,l2,j)  _OP(BNE_LL),       _D8(l1),  _D8(l2), _D16(j),
+#define ceq_li(l,i,j)    _OP(BNE_LI),       _D8(l),   _D8(i),  _D16(j),
+#define ceq_ii(i1,i2,j)  _OP(BNE_II),       _D8(i1),  _D8(i2), _D16(j),
+#define cne_ll(l1,l2,j)  _OP(BEQ_LL),       _D8(l1),  _D8(l2), _D16(j),
+#define cne_li(l,i,j)    _OP(BEQ_LI),       _D8(l),   _D8(i),  _D16(j),
+#define cne_ii(i1,i2,j)  _OP(BEQ_II),       _D8(i1),  _D8(i2), _D16(j),
 
 #define addr_ll(l1,l2)   _OP(ADDR_LL),      _D8(l1),  _D8(l2),
 #define addr_il(I,i,l)   _OP(ADDR_I##I##L), _D8(i),   _D8(l),
@@ -55,33 +72,70 @@
 #define addr_cl(f,l)     _OP(ADDR_CL),      _D16(f),  _D8(l),
 #define addr_ci(f,I,i)   _OP(ADDR_CI##I)    _D16(f),  _D8(i),
 
-
 #define load_li(l,I)      _OP(LOAD_L##I),    _D8(l),
 #define save_il(I,l)      _OP(SAVE_##I##L),  _D8(l),
 #define load_hl(h,l)      _OP(LOAD_HL),      _D8(h), _D8(l),
 
-#define copy_ll(l1,l2)    _OP(COPY_LL),      _D8(l1), _D8(l2),
-#define copy_il(I,i,l)    _OP(COPY_I##I##L), _D8(i),  _D8(l),
-#define copy_li(l,I,i)    _OP(COPY_LI##I),   _D8(l),  _D8(i),
-#define copy_ii(i1,i2)    _OP(COPY_II),      _D8(i1), _D8(i2),
+#define copy_ll(l1,l2)      _OP(COPY_LL),      _D8(l1), _D8(l2),
+#define copy_il(I,i,l)      _OP(COPY_I##I##L), _D8(i),  _D8(l),
+#define cpix_il(I,i,l1,l2)  _OP(CPIX_I##I##L), _D8(i),  _D8(l1), _D8(l2),
+#define copy_li(l,I,i)      _OP(COPY_LI##I),   _D8(l),  _D8(i),
+#define copy_ii(i1,i2)      _OP(COPY_II),      _D8(i1), _D8(i2),
 
 #define itof_ll(l1,l2)    _OP(ITOF_LL),      _D8(l1), _D8(l2),
 #define ftoi_ll(l1,l2)    _OP(FTOI_LL),      _D8(l1), _D8(l2),
 
-//
-// // Two operand branch if greater or equal
+// Assembler style "branch if condition true"
+// Two operand branch if greater or equal
 #define bge_ll(l1,l2,j)   _OP(BGE_LL),       _D8(l1), _D8(l2),  _D16(j),
 #define bge_il(i,l,j)     _OP(BGE_IL),       _D8(i),  _D8(l),   _D16(j),
 #define bge_li(l,i,j)     _OP(BGE_LI),       _D8(l),  _D8(i),   _D16(j),
 #define bge_ii(i1,i2,j)   _OP(BGE_II),       _D8(i1), _D8(i2),  _D16(j),
-//
-// // Two operand branch if greater than
+
+// Two operand branch if greater than
 #define bgt_ll(l1,l2,j)   _OP(BGT_LL),       _D8(l1), _D8(l2),  _D16(j),
 #define bgt_il(i,l,j)     _OP(BGT_IL),       _D8(i),  _D8(l),   _D16(j),
 #define bgt_li(l,i,j)     _OP(BGT_LI),       _D8(l),  _D8(i),   _D16(j),
 #define bgt_ii(i1,i2,j)   _OP(BGT_II),       _D8(i1), _D8(i2),  _D16(j),
+
+// Two operand branch if less than - these are operand inverted aliases
+#define blt_ll(l1,l2,j)   _OP(BGT_LL),       _D8(l2), _D8(l1),  _D16(j),
+#define blt_il(i,l,j)     _OP(BGT_LI),       _D8(l),  _D8(i),   _D16(j),
+#define blt_li(l,i,j)     _OP(BGT_IL),       _D8(i),  _D8(l),   _D16(j),
+#define blt_ii(i1,i2,j)   _OP(BGT_II),       _D8(i2), _D8(i1),  _D16(j),
+
+// Two operand branch if less than or equal - these are operand inverted aliases
+#define ble_ll(l1,l2,j)   _OP(BGE_LL),       _D8(l2), _D8(l1),  _D16(j),
+#define ble_il(i,l,j)     _OP(BGE_LI),       _D8(l),  _D8(i),   _D16(j),
+#define ble_li(l,i,j)     _OP(BGE_IL),       _D8(i),  _D8(l),   _D16(j),
+#define ble_ii(i1,i2,j)   _OP(BGE_II),       _D8(i2), _D8(i1),  _D16(j),
+
+// C style "continue if condition true"
+#define clt_ll(l1,l2,j)   _OP(BGE_LL),       _D8(l1), _D8(l2),  _D16(j),
+#define clt_il(i,l,j)     _OP(BGE_IL),       _D8(i),  _D8(l),   _D16(j),
+#define clt_li(l,i,j)     _OP(BGE_LI),       _D8(l),  _D8(i),   _D16(j),
+#define clt_ii(i1,i2,j)   _OP(BGE_II),       _D8(i1), _D8(i2),  _D16(j),
+
+#define cle_ll(l1,l2,j)   _OP(BGT_LL),       _D8(l1), _D8(l2),  _D16(j),
+#define cle_il(i,l,j)     _OP(BGT_IL),       _D8(i),  _D8(l),   _D16(j),
+#define cle_li(l,i,j)     _OP(BGT_LI),       _D8(l),  _D8(i),   _D16(j),
+#define cle_ii(i1,i2,j)   _OP(BGT_II),       _D8(i1), _D8(i2),  _D16(j),
+
+// Operand inverted aliases
+#define cge_ll(l1,l2,j)   _OP(BGT_LL),       _D8(l2), _D8(l1),  _D16(j),
+#define cge_il(i,l,j)     _OP(BGT_LI),       _D8(l),  _D8(i),   _D16(j),
+#define cge_li(l,i,j)     _OP(BGT_IL),       _D8(i),  _D8(l),   _D16(j),
+#define cge_ii(i1,i2,j)   _OP(BGT_II),       _D8(i2), _D8(i1),  _D16(j),
+
+// Operand inverted aliases
+#define cgt_ll(l1,l2,j)   _OP(BGE_LL),       _D8(l2), _D8(l1),  _D16(j),
+#define cgt_il(i,l,j)     _OP(BGE_LI),       _D8(l),  _D8(i),   _D16(j),
+#define cgt_li(l,i,j)     _OP(BGE_IL),       _D8(i),  _D8(l),   _D16(j),
+#define cgt_ii(i1,i2,j)   _OP(BGE_II),       _D8(i2), _D8(i1),  _D16(j),
+
 //
 #define dbnz_l(l,j)       _OP(DBNZ_L),       _D8(l),  _D16(j),
+#define dbnn_l(l,j)       _OP(DBNN_L),       _D8(l),  _D16(j),
 
 //
 // // Load small literal integer
@@ -96,10 +150,10 @@
 #define bclr_l(b,x) _OP(BCLR_SL), _D8(b), _D8(l),
 #define bclr_i(b,x) _OP(BCLR_SI), _D8(b), _D8(i),
 
-#define bbs_l(b,l,j) _OP(BBS_SL), _D8(b), _D8(l), _D16(j),
-#define bbs_i(b,i,j) _OP(BBS_SI), _D8(b), _D8(i), _D16(j),
-#define bbc_l(b,l,j) _OP(BBC_SL), _D8(b), _D8(l), _D16(j),
-#define bbc_i(b,i,j) _OP(BBC_SI), _D8(b), _D8(i), _D16(j),
+#define bbs_sl(b,l,j) _OP(BBS_SL), _D8(b), _D8(l), _D16(j),
+#define bbs_si(b,i,j) _OP(BBS_SI), _D8(b), _D8(i), _D16(j),
+#define bbc_l(b,l,j)  _OP(BBC_SL), _D8(b), _D8(l), _D16(j),
+#define bbc_si(b,i,j) _OP(BBC_SI), _D8(b), _D8(i), _D16(j),
 //
 // // Two operand logical negate
 #define not_ll(l1,l2) _OP(NOT_LL),       _D8(l1), _D8(l2),
@@ -198,6 +252,9 @@
 //
 // // Floating point specific instructions ////////////////////////////////////////////////////////////////////
 //
+
+#define frnd_l(l)            _OP(FRND_L),        _D8(l),
+
 // // Two operand branch if greater or equal
 #define fbge_ll(l1,l2,j)     _OP(FBGE_LL),       _D8(l1), _D8(l2),  _D16(j),
 #define fbge_il(i,l,j)       _OP(FBGE_IL),       _D8(i),  _D8(l),   _D16(j),
@@ -209,6 +266,42 @@
 #define fbgt_il(i,l,j)       _OP(FBGT_IL),       _D8(i),  _D8(l),   _D16(j),
 #define fbgt_li(l,i,j)       _OP(FBGT_LI),       _D8(l),  _D8(i),   _D16(j),
 #define fbgt_ii(i1,i2,j)     _OP(FBGT_II),       _D8(i1), _D8(i2),  _D16(j),
+
+// Two operand branch if less than - these are operand inverted aliases
+#define fblt_ll(l1,l2,j)   _OP(FBGT_LL),       _D8(l2), _D8(l1),  _D16(j),
+#define fblt_il(i,l,j)     _OP(FBGT_LI),       _D8(l),  _D8(i),   _D16(j),
+#define fblt_li(l,i,j)     _OP(FBGT_IL),       _D8(i),  _D8(l),   _D16(j),
+#define fblt_ii(i1,i2,j)   _OP(FBGT_II),       _D8(i2), _D8(i1),  _D16(j),
+
+// Two operand branch if less than or equal - these are operand inverted aliases
+#define fble_ll(l1,l2,j)   _OP(FBGE_LL),       _D8(l2), _D8(l1),  _D16(j),
+#define fble_il(i,l,j)     _OP(FBGE_LI),       _D8(l),  _D8(i),   _D16(j),
+#define fble_li(l,i,j)     _OP(FBGE_IL),       _D8(i),  _D8(l),   _D16(j),
+#define fble_ii(i1,i2,j)   _OP(FBGE_II),       _D8(i2), _D8(i1),  _D16(j),
+
+// C style "continue if condition true"
+#define fclt_ll(l1,l2,j)   _OP(FBGE_LL),       _D8(l1), _D8(l2),  _D16(j),
+#define fclt_il(i,l,j)     _OP(FBGE_IL),       _D8(i),  _D8(l),   _D16(j),
+#define fclt_li(l,i,j)     _OP(FBGE_LI),       _D8(l),  _D8(i),   _D16(j),
+#define fclt_ii(i1,i2,j)   _OP(FBGE_II),       _D8(i1), _D8(i2),  _D16(j),
+
+#define fcle_ll(l1,l2,j)   _OP(FBGT_LL),       _D8(l1), _D8(l2),  _D16(j),
+#define fcle_il(i,l,j)     _OP(FBGT_IL),       _D8(i),  _D8(l),   _D16(j),
+#define fcle_li(l,i,j)     _OP(FBGT_LI),       _D8(l),  _D8(i),   _D16(j),
+#define fcle_ii(i1,i2,j)   _OP(FBGT_II),       _D8(i1), _D8(i2),  _D16(j),
+
+// Operand inverted aliases
+#define fcge_ll(l1,l2,j)   _OP(FBGT_LL),       _D8(l2), _D8(l1),  _D16(j),
+#define fcge_il(i,l,j)     _OP(FBGT_LI),       _D8(l),  _D8(i),   _D16(j),
+#define fcge_li(l,i,j)     _OP(FBGT_IL),       _D8(i),  _D8(l),   _D16(j),
+#define fcge_ii(i1,i2,j)   _OP(FBGT_II),       _D8(i2), _D8(i1),  _D16(j),
+
+// Operand inverted aliases
+#define fcgt_ll(l1,l2,j)   _OP(FBGE_LL),       _D8(l2), _D8(l1),  _D16(j),
+#define fcgt_il(i,l,j)     _OP(FBGE_LI),       _D8(l),  _D8(i),   _D16(j),
+#define fcgt_li(l,i,j)     _OP(FBGE_IL),       _D8(i),  _D8(l),   _D16(j),
+#define fcgt_ii(i1,i2,j)   _OP(FBGE_II),       _D8(i2), _D8(i1),  _D16(j),
+
 //
 // // Two operand, local to local handy maths functions
 #define finv_ll(l1,l2)   _OP(FINV_LL),  _D8(l1), _D8(l2),

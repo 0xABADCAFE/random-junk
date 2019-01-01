@@ -32,7 +32,8 @@ namespace GVM {
         INIT_INVALID_FRAME_DEF     = 102,
 
         // Miscellaneous failures
-        MISC_ILLEGAL_VALUE         = 1000
+        MISC_ILLEGAL_VALUE         = 1000,
+        MISC_ALL_GONE_PETE_TONG    = 9001
 
     } Result;
 

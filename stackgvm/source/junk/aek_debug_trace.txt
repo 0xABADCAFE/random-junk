@@ -1,0 +1,1694 @@
+GVM::Interpreter::init()
+	Require 45840 bytes for working set:
+	1616 bytes for call stack  (100 [+1 redzone] of 16 bytes each)
+	44224 bytes for frame stack (10800 of 4 bytes each, including start and end red zones of 128 entries each)
+GVM::Interpreter::validateTables()
+	Function table has 3 entries
+	Host function table has 3 entries
+	Global data table has 1 entries
+GVM::Interpreter::init()
+	Call Stack          [0x9a4c020 - 0x9a4c650]
+	Frame Stack         [0x9a4c870 - 0x9a5712c]
+	Function Table      [0x8057080] : 4 entries
+	Host Function Table [0x80570a8] : 4 entries
+	Global Data Table   [0x80570bc] : 2 entries
+GVM::Interpreter::enterFunction(2) {
+	Address: 0x9a4c870
+	Size: 32
+	Return Address: (nil)
+	PC Entry: 0x80570e0
+}
+	ADDR_D0      0   1  38
+	COPY_I0L    37   7  57
+	LOAD_SL      0   0 167
+	FDIV_LLL     3   6  11
+	FBGE_IL     38  11   0
+	COPY_LL     11   7 197
+	VCOPY_IL     6   8  57
+	vcopy {0.000000, 0.000000, 1.000000}
+	LOAD_SL      1   0  57
+	LOAD_SL      1  24  57
+	LOAD_SL      0  16  57
+	LOAD_SL      4  27  57
+	LOAD_SL      8  13  40
+	CPIX_I0L    21  13  14
+	LOAD_SL     18  12 117
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {18} => {17} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {17} => {16} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {16} => {15} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {15} => {14} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {14} => {13} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {13} => {12} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {12} => {11} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {11} => {10} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {10} => {9} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {9} => {8} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {8} => {7} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {7} => {6} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {6} => {5} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {5} => {4} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {16} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {4} => {3} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {3} => {2} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {2} => {1} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {1} => {0} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {0} => {-1} branch not taken
+	DBNN_L      13 255 154
+	dbnn {8} => {7} branch taken -102
+	CPIX_I0L    21  13  14
+	LOAD_SL     18  12 117
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {18} => {17} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {17} => {16} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {16} => {15} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {15} => {14} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {14} => {13} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {13} => {12} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {12} => {11} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {11} => {10} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {10} => {9} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {9} => {8} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {8} => {7} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {7} => {6} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {6} => {5} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {5} => {4} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {16} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {4} => {3} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {3} => {2} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {2} => {1} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {1} => {0} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {0} => {-1} branch not taken
+	DBNN_L      13 255 154
+	dbnn {7} => {6} branch taken -102
+	CPIX_I0L    21  13  14
+	LOAD_SL     18  12 117
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {18} => {17} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {131072} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {17} => {16} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {65536} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {16} => {15} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {32768} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {15} => {14} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {14} => {13} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {13} => {12} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {12} => {11} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {11} => {10} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {1024} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {10} => {9} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {512} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {9} => {8} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {256} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {8} => {7} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {7} => {6} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {6} => {5} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {5} => {4} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {16} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {4} => {3} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {3} => {2} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {2} => {1} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {1} => {0} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {0} => {-1} branch not taken
+	DBNN_L      13 255 154
+	dbnn {6} => {5} branch taken -102
+	CPIX_I0L    21  13  14
+	LOAD_SL     18  12 117
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {18} => {17} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {17} => {16} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {16} => {15} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {15} => {14} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {16384} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {14} => {13} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {13} => {12} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {12} => {11} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {2048} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {11} => {10} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {10} => {9} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {9} => {8} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {8} => {7} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {128} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {7} => {6} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {6} => {5} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {5} => {4} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {16} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {4} => {3} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {3} => {2} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {2} => {1} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {1} => {0} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {1} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {0} => {-1} branch not taken
+	DBNN_L      13 255 154
+	dbnn {5} => {4} branch taken -102
+	CPIX_I0L    21  13  14
+	LOAD_SL     18  12 117
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {18} => {17} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {17} => {16} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {16} => {15} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {15} => {14} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {16384} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {14} => {13} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {13} => {12} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {12} => {11} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {2048} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {11} => {10} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {10} => {9} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {9} => {8} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {8} => {7} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {128} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {7} => {6} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {6} => {5} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {5} => {4} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {16} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {4} => {3} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {3} => {2} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {2} => {1} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {2} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {1} => {0} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {0} => {-1} branch not taken
+	DBNN_L      13 255 154
+	dbnn {4} => {3} branch taken -102
+	CPIX_I0L    21  13  14
+	LOAD_SL     18  12 117
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {18} => {17} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {131072} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {17} => {16} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {65536} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {16} => {15} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {32768} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {15} => {14} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {16384} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {14} => {13} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {13} => {12} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {12} => {11} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {2048} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {11} => {10} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {1024} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {10} => {9} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {512} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {9} => {8} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {256} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {8} => {7} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {128} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {7} => {6} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {6} => {5} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {5} => {4} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {16} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {4} => {3} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {3} => {2} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {4} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {2} => {1} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {1} => {0} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {0} => {-1} branch not taken
+	DBNN_L      13 255 154
+	dbnn {3} => {2} branch taken -102
+	CPIX_I0L    21  13  14
+	LOAD_SL     18  12 117
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {262144} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {18} => {17} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {17} => {16} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {16} => {15} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {15} => {14} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {16384} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {14} => {13} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {13} => {12} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {12} => {11} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {2048} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {11} => {10} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {10} => {9} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {9} => {8} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {8} => {7} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {7} => {6} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {6} => {5} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {5} => {4} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {16} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {4} => {3} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {8} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {3} => {2} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {2} => {1} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {1} => {0} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {0} => {-1} branch not taken
+	DBNN_L      13 255 154
+	dbnn {2} => {1} branch taken -102
+	CPIX_I0L    21  13  14
+	LOAD_SL     18  12 117
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {262144} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {18} => {17} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {17} => {16} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {16} => {15} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {15} => {14} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {16384} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {14} => {13} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {13} => {12} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {12} => {11} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {2048} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {11} => {10} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {10} => {9} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {9} => {8} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {8} => {7} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {7} => {6} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {6} => {5} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {5} => {4} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {16} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {4} => {3} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {3} => {2} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {4} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {2} => {1} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {1} => {0} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {0} => {-1} branch not taken
+	DBNN_L      13 255 154
+	dbnn {1} => {0} branch taken -102
+	CPIX_I0L    21  13  14
+	LOAD_SL     18  12 117
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {18} => {17} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {131072} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {17} => {16} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {65536} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {16} => {15} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {32768} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {15} => {14} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {16384} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {14} => {13} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {13} => {12} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {12} => {11} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {11} => {10} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {1024} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {10} => {9} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {512} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {9} => {8} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {256} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {8} => {7} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {7} => {6} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {6} => {5} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {5} => {4} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {16} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {4} => {3} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {3} => {2} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {2} => {1} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {2} => branch not taken
+	ITOF_LL     12  15  76
+	ADD_LLL     13  27  26
+	ITOF_LL     26  17 216
+	VSUB_LLL     1  15  18
+	vsub {0.000000, 0.000000, 0.000000}, {0.000000, 0.000000, 0.000000} => {0.000000, 0.000000, 0.000000}
+	VDOT_LLL    18   4  21
+	ITOF_LL     24  25 223
+	VDOT_LLL    18  18  26
+	FSUB_LLL    26  25  22
+	FMUL_LLL    21  21  26
+	FSUB_LLL    26  22  23
+	FBGE_LL     16  23   0
+	DBNN_L      12 255 165
+	dbnn {1} => {0} branch taken -91
+	LSL_LLL     24  12  25
+	AND_LLL     25  14  26
+	BEZ_L       26   0  83
+	bez {0} => branch taken 83
+	DBNN_L      12 255 165
+	dbnn {0} => {-1} branch not taken
+	DBNN_L      13 255 154
+	dbnn {0} => {-1} branch not taken
+	RET          0   0   0
+GVM::Interpreter::exitFunction(2) {
+	Return to function:0
+	PC Resume: (nil)
+}
+GVM::Interpreter::done()
+	Released working set
+Max Opcode 241
+
+Executed: 1262 instructions total.
+Took 0.011363 seconds
