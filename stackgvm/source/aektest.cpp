@@ -420,7 +420,7 @@ GFUNC(trace) {
         vcopy_il    (gv_normal_up, v_trace_normal)                                          // 3 [1, 1, 1]
         load_sl     (1, i_trace_material)                                                   // 3 [1, 1, 1]
 
-ret
+//ret
 
   // Check if trace maybe hits a sphere
 //     for (int32 j = 9; j--;) {

@@ -360,24 +360,48 @@ IS(BBC_SI) {
 
 IS(NOT_LL) {
     LOC(1).u = ~LOC(0).u;
+    gvmDebugOpcode(
+        "not (%d), (%d) : 0x%08X",
+        OPS(0),
+        OPS(1),
+        LOC(1).u
+    );
     STEP(3);
     NEXT;
 }
 
 IS(NOT_IL) {
     LOC(1).u = ~IX0(0).u;
+    gvmDebugOpcode(
+        "not (i0+%u), (%d) : 0x%08X",
+        OPU(0),
+        OPS(1),
+        LOC(1).u
+    );
     STEP(3);
     NEXT;
 }
 
 IS(NOT_LI) {
     IX0(1).u = ~LOC(0).u;
+    gvmDebugOpcode(
+        "not (%d), (i0+%u) : 0x%08X",
+        OPS(0),
+        OPU(1),
+        IX0(1).u
+    );
     STEP(3);
     NEXT;
 }
 
 IS(NOT_II) {
     IX1(1).u = ~IX0(0).u;
+    gvmDebugOpcode(
+        "not (i0+%u), (i1+%u) : 0x%08X",
+        OPU(0),
+        OPU(1),
+        IX1(1).u
+    );
     STEP(3);
     NEXT;
 }
@@ -385,25 +409,49 @@ IS(NOT_II) {
 // Two Operand Integer Negate //////////////////////////////////////////////////////////////////////////////////////////
 
 IS(NEG_LL) {
-    LOC(1).u = -LOC(0).u;
+    LOC(1).i = -LOC(0).i;
+    gvmDebugOpcode(
+        "neg.i (%d), (%d) : %d",
+        OPS(0),
+        OPS(1),
+        LOC(1).i
+    );
     STEP(3);
     NEXT;
 }
 
 IS(NEG_IL) {
-    LOC(1).u = -IX0(0).u;
+    LOC(1).i = -IX0(0).i;
+    gvmDebugOpcode(
+        "neg.i (i0+%u), (%d) : %d",
+        OPU(0),
+        OPS(1),
+        LOC(1).i
+    );
     STEP(3);
     NEXT;
 }
 
 IS(NEG_LI) {
-    IX0(1).u = -LOC(0).u;
+    IX0(1).i = -LOC(0).i;
+    gvmDebugOpcode(
+        "neg.i (%d), (i0+%u) : %d",
+        OPS(0),
+        OPU(1),
+        IX0(1).i
+    );
     STEP(3);
     NEXT;
 }
 
 IS(NEG_II) {
-    IX1(1).u = -IX0(0).u;
+    IX1(1).i = -IX0(0).i;
+    gvmDebugOpcode(
+        "neg.i (i0+%u), (i1+%u) : %d",
+        OPU(0),
+        OPU(1),
+        IX1(1).i
+    );
     STEP(3);
     NEXT;
 }
@@ -708,6 +756,7 @@ IS(DIV_LLI) {
         denominator
     );
     if (!denominator) {
+        gvmDebugOpcode("Abort with Zero Divide");
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
     IX0(2).i = LOC(0).i / denominator;
@@ -728,6 +777,7 @@ IS(DIV_ILI) {
         denominator
     );
     if (!denominator) {
+        gvmDebugOpcode("Abort with Zero Divide");
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
     IX1(2).i = IX0(0).i / denominator;
@@ -748,6 +798,7 @@ IS(DIV_LIL) {
         denominator
     );
     if (!denominator) {
+        gvmDebugOpcode("Abort with Zero Divide");
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
     LOC(2).i = LOC(0).i / denominator;
@@ -768,6 +819,7 @@ IS(DIV_IIL) {
         denominator
     );
     if (!denominator) {
+        gvmDebugOpcode("Abort with Zero Divide");
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
     LOC(2).i = IX0(0).i / denominator;
@@ -788,6 +840,7 @@ IS(DIV_LII) {
         denominator
     );
     if (!denominator) {
+        gvmDebugOpcode("Abort with Zero Divide");
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
     IX1(2).i = LOC(0).i / denominator;
@@ -810,6 +863,7 @@ IS(MOD_LLL) {
         denominator
     );
     if (!denominator) {
+        gvmDebugOpcode("Abort with Zero Divide");
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
     LOC(2).i = LOC(0).i % denominator;
@@ -829,6 +883,7 @@ IS(MOD_ILL) {
         denominator
     );
     if (!denominator) {
+        gvmDebugOpcode("Abort with Zero Divide");
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
     LOC(2).i = IX0(0).i % denominator;
@@ -848,6 +903,7 @@ IS(MOD_LLI) {
         denominator
     );
     if (!denominator) {
+        gvmDebugOpcode("Abort with Zero Divide");
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
     IX0(2).i = LOC(0).i % denominator;
@@ -867,6 +923,7 @@ IS(MOD_ILI) {
         denominator
     );
     if (!denominator) {
+        gvmDebugOpcode("Abort with Zero Divide");
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
     IX1(2).i = IX0(0).i % denominator;
@@ -886,6 +943,7 @@ IS(MOD_LIL) {
         denominator
     );
     if (!denominator) {
+        gvmDebugOpcode("Abort with Zero Divide");
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
     LOC(2).i = LOC(0).i % denominator;
@@ -905,6 +963,7 @@ IS(MOD_IIL) {
         denominator
     );
     if (!denominator) {
+        gvmDebugOpcode("Abort with Zero Divide");
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
     LOC(2).i = IX0(0).i % denominator;
@@ -924,6 +983,7 @@ IS(MOD_LII) {
         denominator
     );
     if (!denominator) {
+        gvmDebugOpcode("Abort with Zero Divide");
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
     IX1(2).i = LOC(0).i % denominator;
@@ -1276,6 +1336,7 @@ IS(MAX_LLL) {
         i2
     );
     LOC(2).i  = i1 > i2 ? i1 : i2;
+    gvmDebugOpcode("%d", LOC(2).u);
     STEP(4);
     NEXT;
 }
@@ -1293,6 +1354,7 @@ IS(MAX_ILL) {
         i2
     );
     LOC(2).i  = i1 > i2 ? i1 : i2;
+    gvmDebugOpcode("%d", LOC(2).u);
     STEP(4);
     NEXT;
 }
@@ -1310,6 +1372,7 @@ IS(MAX_LLI) {
         i2
     );
     IX0(0).i  = i1 > i2 ? i1 : i2;
+    gvmDebugOpcode("%d", IX0(2).u);
     STEP(4);
     NEXT;
 }
@@ -1327,6 +1390,7 @@ IS(MAX_ILI) {
         i2
     );
     IX1(2).i  = i1 > i2 ? i1 : i2;
+    gvmDebugOpcode("%d", IX1(2).u);
     STEP(4);
     NEXT;
 }
@@ -1338,7 +1402,16 @@ IS(MIN_LLL) {
     // min(Local, Local) -> Local
     int32 i1 = LOC(0).i;
     int32 i2 = LOC(1).i;
+    gvmDebugOpcode(
+        "min.i (%d), (%d), (%d) : max(%d, %d) => ",
+        OPS(0),
+        OPS(1),
+        OPS(2),
+        i1,
+        i2
+    );
     LOC(2).i  = i1 < i2 ? i1 : i2;
+    gvmDebugOpcode("%d", LOC(2).u);
     STEP(4);
     NEXT;
 }
@@ -1347,7 +1420,16 @@ IS(MIN_ILL) {
     // min(Indirect, Local) -> Local
     int32 i1 = IX0(0).i;
     int32 i2 = LOC(1).i;
+    gvmDebugOpcode(
+        "min.i (i0+%u), (%d), (%d) : max(%d, %d) => ",
+        OPU(0),
+        OPS(1),
+        OPS(2),
+        i1,
+        i2
+    );
     LOC(2).i  = i1 < i2 ? i1 : i2;
+    gvmDebugOpcode("%d", LOC(2).u);
     STEP(4);
     NEXT;
 }
@@ -1356,7 +1438,16 @@ IS(MIN_LLI) {
     // min(Local, Local) -> Indirect
     int32 i1 = LOC(0).i;
     int32 i2 = LOC(1).i;
+    gvmDebugOpcode(
+        "min.i (%d), (%d), (i0+%u) : max(%d, %d) => ",
+        OPS(0),
+        OPS(1),
+        OPU(2),
+        i1,
+        i2
+    );
     IX0(0).i  = i1 < i2 ? i1 : i2;
+    gvmDebugOpcode("%d", IX0(2).u);
     STEP(4);
     NEXT;
 }
@@ -1365,7 +1456,16 @@ IS(MIN_ILI) {
     // min(Indirect, Local) -> Indirect
     int32 i1 = IX0(0).i;
     int32 i2 = LOC(1).i;
+    gvmDebugOpcode(
+        "min.i (i0+%u), (%d), (i1+%u) : max(%d, %d) => ",
+        OPU(0),
+        OPS(1),
+        OPU(2),
+        i1,
+        i2
+    );
     IX1(2).i  = i1 < i2 ? i1 : i2;
+    gvmDebugOpcode("%d", IX1(2).u);
     STEP(4);
     NEXT;
 }

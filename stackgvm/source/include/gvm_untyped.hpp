@@ -164,7 +164,7 @@ IS(LI1BNN) {
 
 IS(BEZ_L) {
     gvmDebugOpcode(
-        "bez (%d), %d : %u == 0 => ",
+        "bez (%d), %d : 0x%08X == 0 => ",
         OPS(0),
         (int)J16(1),
         LOC(0).u
@@ -182,7 +182,7 @@ IS(BEZ_L) {
 
 IS(BEZ_I0) {
     gvmDebugOpcode(
-        "bez (i0+%u), %d : %u == 0 => ",
+        "bez (i0+%u), %d : 0x%08X == 0 => ",
         OPU(0),
         (int)J16(1),
         IX0(0).u
@@ -200,7 +200,7 @@ IS(BEZ_I0) {
 
 IS(BEZ_I1) {
     gvmDebugOpcode(
-        "bez (i1+%u), %d : %u == 0 => ",
+        "bez (i1+%u), %d : 0x%08X == 0 => ",
         OPU(0),
         (int)J16(1),
         IX1(0).u
@@ -220,7 +220,7 @@ IS(BEZ_I1) {
 
 IS(BNZ_L) {
     gvmDebugOpcode(
-        "bnz (%d), %d : %u != 0 => ",
+        "bnz (%d), %d : 0x%08X != 0 => ",
         OPS(0),
         (int)J16(1),
         LOC(0).u
@@ -238,7 +238,7 @@ IS(BNZ_L) {
 
 IS(BNZ_I0) {
     gvmDebugOpcode(
-        "bnz (i0+%u), %d : %u != 0 => ",
+        "bnz (i0+%u), %d : 0x%08X != 0 => ",
         OPU(0),
         (int)J16(1),
         IX0(0).u
@@ -256,7 +256,7 @@ IS(BNZ_I0) {
 
 IS(BNZ_I1) {
     gvmDebugOpcode(
-        "bnz (i0+%u), %d : %u != 0 => ",
+        "bnz (i0+%u), %d : 0x%08X != 0 => ",
         OPU(0),
         (int)J16(1),
         IX1(0).u
@@ -631,7 +631,7 @@ IS(COPY_I1L) {
 IS(CPIX_I0L) {
     // Copy indirect indexed by local to local
     gvmDebugOpcode(
-        "copy (i0+%u)[(%d)], (%d) : i0[%u] => 0x%08X",
+        "copy (i0+%u)[(%d)], (%d) : [%u] => 0x%08X",
         OPU(0),
         OPS(1),
         OPS(2),
@@ -646,7 +646,7 @@ IS(CPIX_I0L) {
 IS(CPIX_I1L) {
     // Copy indirect indexed by local to local
     gvmDebugOpcode(
-        "copy (i1+%u)[(%d)], (%d) : i1[%u] => 0x%08X",
+        "copy (i1+%u)[(%d)], (%d) : [%u] => 0x%08X",
         OPU(0),
         OPS(1),
         OPS(2),
@@ -726,5 +726,3 @@ IS(FTOI_LL) {
     STEP(3);
     NEXT;
 }
-
-
