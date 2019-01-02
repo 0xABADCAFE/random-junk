@@ -112,7 +112,7 @@ IS(RET) {
     // Return from the current function
     result = exitFunction();
     if (result != SUCCESS) {
-        std::fprintf(stderr, "\nExecuted: %d instructions total.\n", numExecuted);
+        std::fprintf(stderr, "\nExecuted: %llu instructions total.\n", numExecuted);
         EXIT(result);
     }
     UPDATE_PTRS;

@@ -4,7 +4,7 @@
 // Single Operand Normalised Random Number /////////////////////////////////////////////////////////////////////////////
 
 IS(FRND_L) {
-    LOC(0).f = 0.5f;//invRMax * std::rand();
+    LOC(0).f = invRMax * std::rand();
     gvmDebugOpcode(
         "rnd.f (%d) : %g",
         OPS(0),

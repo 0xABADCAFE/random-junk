@@ -210,14 +210,14 @@ GFUNC(render) {
 
     // (float) -(image_size >> 1)
     load_sl     (1, m_render_temp_1)                                                                // 3 [1, 1, 1]
-    lsl_lll     (i_render_image_size,   m_render_temp_1,            m_render_temp_0)                // 4 [1, 1, 1, 1]
+    lsr_lll     (i_render_image_size,   m_render_temp_1,            m_render_temp_0)                // 4 [1, 1, 1, 1]
     neg_ll      (m_render_temp_0,       m_render_temp_0)                                            // 3 [1, 1, 1]
     itof_ll     (m_render_temp_0,       m_render_temp_0)                                            // 3 [1, 1, 1]
 
     vadd_lll    (v_render_camera_up,    v_render_camera_right,      v_render_eye_offset)            // 4 [1, 1, 1, 1]
     vfmul_lil   (v_render_eye_offset,   m_render_temp_0,            v_render_eye_offset)            // 4 [1, 1, 1, 1]
     vadd_lll    (v_render_eye_offset,   v_render_camera_forward,    v_render_eye_offset)            // 4 [1, 1, 1, 1]
-    vsub_lll    (i_render_image_size,   m_render_temp_1,            i_render_image_size)            // 4 [1, 1, 1, 1]
+    sub_lll     (i_render_image_size,   m_render_temp_1,            i_render_image_size)            // 4 [1, 1, 1, 1]
 
 
 //  for (int32 y = image_size; y--;) {

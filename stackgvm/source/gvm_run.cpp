@@ -44,6 +44,7 @@ using namespace GVM;
     #define IS(opcode)    case Opcode::_##opcode:
     #define gvmDebugOpcode(...)
     #define gvmDebugJump(o)
+    #define gvmDebugSkip()
 #endif
 
 #define FETCH switch (*PRGC)
@@ -103,7 +104,7 @@ Result Interpreter::run() {
 
     UPDATE_PTRS;
 
-    int numExecuted = -1;
+    uint64 numExecuted = -1;
 forever:
     ++numExecuted;
     FETCH {
