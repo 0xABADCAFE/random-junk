@@ -37,7 +37,7 @@ struct vec3 {
     }
 
     void debug(int df) const {
-        std::fprintf(stderr, "{%.6f, %.6f, %.6f}%s", x, y, z, (df & 2 ? "\n" : ""));
+        std::fprintf(stderr, "{ %g, %g, %g }%s", x, y, z, (df & 2 ? "\n" : ""));
     }
 };
 
@@ -124,7 +124,7 @@ static inline vec3 vec3_sub(cvr3 v1, cvr3 v2) {
 static inline vec3 vec3_scale(cvr3 v, float32 s) {
     std::fprintf(stderr, "\tvec3_scale(");
     v.debug(1);
-    std::fprintf(stderr, ", %.6f) -> ", s);
+    std::fprintf(stderr, ", %g) -> ", s);
     return vec3(
         v.x * s,
         v.y * s,
@@ -150,7 +150,7 @@ static inline float32 dot(cvr3 v1, cvr3 v2) {
     std::fprintf(stderr, ", ");
     v2.debug(1);
     float32 res = v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
-    std::fprintf(stderr, ") -> %.6f\n", res);
+    std::fprintf(stderr, ") -> %g\n", res);
     return res;
 }
 
@@ -233,7 +233,7 @@ vec3 sample(cvr3 origin, cvr3 direction) {
 
     std::fprintf(
         stderr,
-        "sample(origin:{%.6f, %.6f, %.6f}, direction:{%.6f, %.6f, %.6f}) => {%.6f, %.6f, %.6f}\n",
+        "sample(origin:{ %g, %g, %g }, direction:{ %g, %g, %g }) => { %g, %g, %g }\n",
         origin.x,    origin.y,    origin.z,
         direction.x, direction.y, direction.z,
         result.x,    result.y,    result.z

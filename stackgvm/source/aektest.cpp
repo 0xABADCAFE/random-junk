@@ -318,8 +318,11 @@ GFUNC(render) {
     vnorm_ll    (v_render_temp_0, v_render_direction)                                               // 3 [1, 1, 1]
 
     // pixel = vec3_add(vec3_scale(sample(orign, direction)), 3.5)                                  // 11
+#ifdef _GVM_DEBUGGING_
+    hcall(shim_sample)
+#else
     call(sample)                                                                                    // 3 [1, 2]
-    //hcall(shim_sample)
+#endif
 
     vfmul_lil   (m_render_sample_return, gf_rgb_scale, v_render_temp_0)                             // 4
     vadd_lll    (v_pixel_accumulator, v_render_temp_0, v_pixel_accumulator)                         // 4
@@ -537,7 +540,7 @@ Result hostShimSample(Scalar* frame) {
 
     std::fprintf(
         stderr,
-        "\nsample(origin:{%.6f, %.6f, %.6f}, direction:{%.6f, %.6f, %.6f}) => {%.6f, %.6f, %.6f}\n\n",
+        "\nsample(origin:{ %g, %g, %g }, direction:{ %g, %g, %g }) => { %g, %g, %g }\n\n",
         frame[vec3_x(v_sample_in_origin)].f,
         frame[vec3_y(v_sample_in_origin)].f,
         frame[vec3_z(v_sample_in_origin)].f,
@@ -565,8 +568,12 @@ GFUNC(sample) {
 
     vcopy_ll    (v_sample_in_origin,    v_sample_origin)                           // 3 [1, 1, 1]
     vcopy_ll    (v_sample_in_direction, v_sample_direction)                        // 3 [1, 1, 1]
+#ifdef _GVM_DEBUGGING_
+    hcall(shim_trace)
+#else
     call(trace)                                                                    // 3 [1, 2]
-    //hcall(shim_trace)
+#endif
+
     bnz_l   (i_sample_material, 27)                                                    // 4 [1, 1, 2]
         load_sl     (1, f_sample_gradient)                                             // 3 [1, 1, 1]
         itof_ll     (f_sample_gradient, f_sample_gradient)                             // 3
