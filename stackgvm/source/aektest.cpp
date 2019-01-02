@@ -36,6 +36,8 @@ typedef enum {
     gf_camera_scale        = 36,
     gf_distance_max        = 37,
     gf_distance_min        = 38,
+
+    gv_temp_floor_rgb      = 39
 } GlobalEnum;
 
 
@@ -76,6 +78,8 @@ Scalar globals[] = {
     0.002f,  // gf_camera_scale
     1e9f,    // gf_distamce_max
     0.01f,   // gf_distance_min
+
+    vec3(0.5f, 0.1f, 0.1f)
 };
 
 
@@ -574,19 +578,6 @@ GFUNC(sample) {
     call(trace)                                                                    // 3 [1, 2]
 #endif
 
-    bnz_l   (i_sample_material, 27)                                                    // 4 [1, 1, 2]
-        load_sl     (1, f_sample_gradient)                                             // 3 [1, 1, 1]
-        itof_ll     (f_sample_gradient, f_sample_gradient)                             // 3
-        fsub_lll    (f_sample_gradient, v_sample_in_direction+2, f_sample_gradient)    // 4
-        fmul_lll    (f_sample_gradient, f_sample_gradient, f_sample_gradient)          // 4
-        fmul_lll    (f_sample_gradient, f_sample_gradient, f_sample_gradient)          // 4
-        vfmul_ill   (gv_sky_rgb,        f_sample_gradient, v_sample_rgb)               // 4
-        ret                                                                            // 1
-    load_sl     (0, 0)
-    load_sl     (0, 1)
-    load_sl     (0, 2)
-    ret
-//
 //   // Hit nothing? Sky shade
 //   if (!material) {
 //     float32 gradient = 1.0 - direction.z;
@@ -597,6 +588,24 @@ GFUNC(sample) {
 //       gradient
 //     );
 //   }
+    bnz_l   (i_sample_material, 27)                                                    // 4 [1, 1, 2]
+        load_sl     (1, f_sample_gradient)                                             // 3 [1, 1, 1]
+        itof_ll     (f_sample_gradient, f_sample_gradient)                             // 3
+        fsub_lll    (f_sample_gradient, v_sample_in_direction+2, f_sample_gradient)    // 4
+        fmul_lll    (f_sample_gradient, f_sample_gradient, f_sample_gradient)          // 4
+        fmul_lll    (f_sample_gradient, f_sample_gradient, f_sample_gradient)          // 4
+        vfmul_ill   (gv_sky_rgb,        f_sample_gradient, v_sample_rgb)               // 4
+        ret                                                                            // 1
+
+    bbc_l       (0,   i_sample_material, 9)                                            // 5
+        vcopy_il    (gv_temp_floor_rgb , v_sample_rgb)                                 // 3
+        ret                                                                            // 1
+    load_sl     (0, 0)
+    load_sl     (0, 1)
+    load_sl     (0, 2)
+    ret
+//
+
 //
 //   vec3
 //     intersection = vec3_add(origin, vec3_scale(direction, distance)),
