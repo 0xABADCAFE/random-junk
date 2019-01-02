@@ -356,7 +356,7 @@ int32 main() {
     std::fprintf(stderr, "camera_forward = "); camera_forward.debug(2);
     std::fprintf(stderr, "camera_up      = "); camera_up.debug(2);
     std::fprintf(stderr, "camera_right   = "); camera_right.debug(2);
-    std::fprintf(stderr, "eye_offset     = "); camera_forward.debug(2);
+    std::fprintf(stderr, "eye_offset     = "); eye_offset.debug(2);
 
 
     for (int32 y = image_size; y--;) {
