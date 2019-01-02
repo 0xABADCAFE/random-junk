@@ -36,6 +36,8 @@ typedef enum {
     gf_camera_scale        = 36,
     gf_distance_max        = 37,
     gf_distance_min        = 38,
+
+    gv_temp_floor_rgb      = 39
 } GlobalEnum;
 
 
@@ -76,6 +78,8 @@ Scalar globals[] = {
     0.002f,  // gf_camera_scale
     1e9f,    // gf_distamce_max
     0.01f,   // gf_distance_min
+
+    vec3(0.5f, 0.1f, 0.1f)
 };
 
 
@@ -210,14 +214,14 @@ GFUNC(render) {
 
     // (float) -(image_size >> 1)
     load_sl     (1, m_render_temp_1)                                                                // 3 [1, 1, 1]
-    lsl_lll     (i_render_image_size,   m_render_temp_1,            m_render_temp_0)                // 4 [1, 1, 1, 1]
+    lsr_lll     (i_render_image_size,   m_render_temp_1,            m_render_temp_0)                // 4 [1, 1, 1, 1]
     neg_ll      (m_render_temp_0,       m_render_temp_0)                                            // 3 [1, 1, 1]
     itof_ll     (m_render_temp_0,       m_render_temp_0)                                            // 3 [1, 1, 1]
 
     vadd_lll    (v_render_camera_up,    v_render_camera_right,      v_render_eye_offset)            // 4 [1, 1, 1, 1]
-    vfmul_lil   (v_render_eye_offset,   m_render_temp_0,            v_render_eye_offset)            // 4 [1, 1, 1, 1]
+    vfmul_lll   (v_render_eye_offset,   m_render_temp_0,            v_render_eye_offset)            // 4 [1, 1, 1, 1]
     vadd_lll    (v_render_eye_offset,   v_render_camera_forward,    v_render_eye_offset)            // 4 [1, 1, 1, 1]
-    vsub_lll    (i_render_image_size,   m_render_temp_1,            i_render_image_size)            // 4 [1, 1, 1, 1]
+    sub_lll     (i_render_image_size,   m_render_temp_1,            i_render_image_size)            // 4 [1, 1, 1, 1]
 
 
 //  for (int32 y = image_size; y--;) {
@@ -318,8 +322,11 @@ GFUNC(render) {
     vnorm_ll    (v_render_temp_0, v_render_direction)                                               // 3 [1, 1, 1]
 
     // pixel = vec3_add(vec3_scale(sample(orign, direction)), 3.5)                                  // 11
+#ifdef _GVM_DEBUGGING_
+    hcall(shim_sample)
+#else
     call(sample)                                                                                    // 3 [1, 2]
-    //hcall(shim_sample)
+#endif
 
     vfmul_lil   (m_render_sample_return, gf_rgb_scale, v_render_temp_0)                             // 4
     vadd_lll    (v_pixel_accumulator, v_render_temp_0, v_pixel_accumulator)                         // 4
@@ -537,7 +544,7 @@ Result hostShimSample(Scalar* frame) {
 
     std::fprintf(
         stderr,
-        "\nsample(origin:{%.6f, %.6f, %.6f}, direction:{%.6f, %.6f, %.6f}) => {%.6f, %.6f, %.6f}\n\n",
+        "\nsample(origin:{ %g, %g, %g }, direction:{ %g, %g, %g }) => { %g, %g, %g }\n\n",
         frame[vec3_x(v_sample_in_origin)].f,
         frame[vec3_y(v_sample_in_origin)].f,
         frame[vec3_z(v_sample_in_origin)].f,
@@ -565,21 +572,12 @@ GFUNC(sample) {
 
     vcopy_ll    (v_sample_in_origin,    v_sample_origin)                           // 3 [1, 1, 1]
     vcopy_ll    (v_sample_in_direction, v_sample_direction)                        // 3 [1, 1, 1]
+#ifdef _GVM_DEBUGGING_
+    hcall(shim_trace)
+#else
     call(trace)                                                                    // 3 [1, 2]
-    //hcall(shim_trace)
-    bnz_l   (i_sample_material, 27)                                                    // 4 [1, 1, 2]
-        load_sl     (1, f_sample_gradient)                                             // 3 [1, 1, 1]
-        itof_ll     (f_sample_gradient, f_sample_gradient)                             // 3
-        fsub_lll    (f_sample_gradient, v_sample_in_direction+2, f_sample_gradient)    // 4
-        fmul_lll    (f_sample_gradient, f_sample_gradient, f_sample_gradient)          // 4
-        fmul_lll    (f_sample_gradient, f_sample_gradient, f_sample_gradient)          // 4
-        vfmul_ill   (gv_sky_rgb,        f_sample_gradient, v_sample_rgb)               // 4
-        ret                                                                            // 1
-    load_sl     (0, 0)
-    load_sl     (0, 1)
-    load_sl     (0, 2)
-    ret
-//
+#endif
+
 //   // Hit nothing? Sky shade
 //   if (!material) {
 //     float32 gradient = 1.0 - direction.z;
@@ -590,6 +588,24 @@ GFUNC(sample) {
 //       gradient
 //     );
 //   }
+    bnz_l   (i_sample_material, 27)                                                    // 4 [1, 1, 2]
+        load_sl     (1, f_sample_gradient)                                             // 3 [1, 1, 1]
+        itof_ll     (f_sample_gradient, f_sample_gradient)                             // 3
+        fsub_lll    (f_sample_gradient, v_sample_in_direction+2, f_sample_gradient)    // 4
+        fmul_lll    (f_sample_gradient, f_sample_gradient, f_sample_gradient)          // 4
+        fmul_lll    (f_sample_gradient, f_sample_gradient, f_sample_gradient)          // 4
+        vfmul_ill   (gv_sky_rgb,        f_sample_gradient, v_sample_rgb)               // 4
+        ret                                                                            // 1
+
+    bbc_l       (0,   i_sample_material, 9)                                            // 5
+        vcopy_il    (gv_temp_floor_rgb , v_sample_rgb)                                 // 3
+        ret                                                                            // 1
+    load_sl     (0, 0)
+    load_sl     (0, 1)
+    load_sl     (0, 2)
+    ret
+//
+
 //
 //   vec3
 //     intersection = vec3_add(origin, vec3_scale(direction, distance)),

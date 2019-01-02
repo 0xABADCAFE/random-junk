@@ -4,7 +4,11 @@
 // Single Operand Normalised Random Number /////////////////////////////////////////////////////////////////////////////
 
 IS(FRND_L) {
-    LOC(0).f = 0.5f;//invRMax * std::rand();
+#ifdef _GVM_DEBUG_OPCODES_
+    LOC(0).f = 0.5f;
+#else
+    LOC(0).f = invRMax * std::rand();
+#endif
     gvmDebugOpcode(
         "rnd.f (%d) : %g",
         OPS(0),

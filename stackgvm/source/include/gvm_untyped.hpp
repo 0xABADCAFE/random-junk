@@ -66,7 +66,7 @@ IS(CALL) {
 IS(ICALL_L) {
     // Call a named function by ID stored in local refrence. Must be tagged with TAG_CODE_REFERENCE
     tag = LOC(0).u;
-    if ((tag & TAG_MASK_REFERENCE) != TAG_CODE_REFERENCE) {
+    if ((tag & TAG_MASK_REFERENCE) != (uint32)TAG_CODE_REFERENCE) {
         EXIT(EXEC_ILLEGAL_CALL_ID);
     }
     result = enterFunction(RTA(2), tag & 0xFFFF);
@@ -80,7 +80,7 @@ IS(ICALL_L) {
 IS(ICALL_I) {
     // Call a named function by ID stored in an indirect reference. Must be tagged with TAG_CODE_REFERENCE
     tag = IX(0, 1).u;
-    if ((tag & TAG_MASK_REFERENCE) != TAG_CODE_REFERENCE) {
+    if ((tag & TAG_MASK_REFERENCE) != (uint32)TAG_CODE_REFERENCE) {
         EXIT(EXEC_ILLEGAL_CALL_ID);
     }
     result = enterFunction(RTA(3), tag & 0xFFFF);
@@ -112,7 +112,7 @@ IS(RET) {
     // Return from the current function
     result = exitFunction();
     if (result != SUCCESS) {
-        std::fprintf(stderr, "\nExecuted: %d instructions total.\n", numExecuted);
+        std::fprintf(stderr, "\nExecuted: %llu instructions total.\n", numExecuted);
         EXIT(result);
     }
     UPDATE_PTRS;

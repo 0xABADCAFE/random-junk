@@ -293,7 +293,7 @@ IS(BBS_SL) {
         NEXT;
     }
     gvmDebugSkip();
-    STEP(3);
+    STEP(5);
     NEXT;
 }
 
@@ -312,7 +312,7 @@ IS(BBS_SI) {
         NEXT;
     }
     gvmDebugSkip();
-    STEP(3);
+    STEP(5);
     NEXT;
 }
 
@@ -333,7 +333,7 @@ IS(BBC_SL) {
         NEXT;
     }
     gvmDebugSkip();
-    STEP(3);
+    STEP(5);
     NEXT;
 }
 
@@ -352,7 +352,7 @@ IS(BBC_SI) {
         NEXT;
     }
     gvmDebugSkip();
-    STEP(3);
+    STEP(5);
     NEXT;
 }
 
