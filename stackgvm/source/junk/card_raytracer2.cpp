@@ -349,6 +349,8 @@ int32 main() {
         );
       }
 
+      
+
       // Convert to integers and push out to ppm outpu stream
       printf("%c%c%c", (int32)pixel.x, (int32)pixel.y, (int32)pixel.z);
     }

@@ -26,18 +26,20 @@ typedef enum {
     gv_floor_red_rgb       = 12,
     gv_floor_white_rgb     = 15,
     gv_const_ambient_rgb   = 18,
-    gi_bitmap              = 21,
-    gi_image_size          = 30,
-    gi_max_rays            = 31,
-    gf_dof_scale           = 32,
-    gf_dof_bias            = 33,
-    gf_accum_scale         = 34,
-    gf_rgb_scale           = 35,
-    gf_camera_scale        = 36,
-    gf_distance_max        = 37,
-    gf_distance_min        = 38,
+    gv_const_light_pos     = 21,
 
-    gv_temp_floor_rgb      = 39
+    gi_bitmap              = 24,
+    gi_image_size          = 33,
+    gi_max_rays            = 34,
+    gf_dof_scale           = 35,
+    gf_dof_bias            = 36,
+    gf_accum_scale         = 37,
+    gf_rgb_scale           = 38,
+    gf_camera_scale        = 39,
+    gf_distance_max        = 40,
+    gf_distance_min        = 41,
+
+    gv_temp_floor_rgb      = 42
 } GlobalEnum;
 
 
@@ -51,6 +53,7 @@ Scalar globals[] = {
     vec3(3.0f, 1.0f, 1.0f),    // gv_floor_red_rgb,
     vec3(3.0f, 3.0f, 3.0f),    // gv_floor_white_rgb
     vec3(13.0f, 13.0f, 13.0f), // gv_const_ambient_rgb
+    vec3(9.0f, 9.0f, 16.0f),   // gv_const_light_pos
 
     // Bitmap
     247570, // 0111100011100010010 gv_bitmap[0]
@@ -322,11 +325,7 @@ GFUNC(render) {
     vnorm_ll    (v_render_temp_0, v_render_direction)                                               // 3 [1, 1, 1]
 
     // pixel = vec3_add(vec3_scale(sample(orign, direction)), 3.5)                                  // 11
-#ifdef _GVM_DEBUGGING_
-    hcall(shim_sample)
-#else
     call(sample)                                                                                    // 3 [1, 2]
-#endif
 
     vfmul_lil   (m_render_sample_return, gf_rgb_scale, v_render_temp_0)                             // 4
     vadd_lll    (v_pixel_accumulator, v_render_temp_0, v_pixel_accumulator)                         // 4
@@ -378,27 +377,7 @@ typedef enum {
     m_trace_temp_3          = 27,
 } TraceLocalsEnum;
 
-// This function serves as a proxy for the virtual code sample function for now
-Result hostShimTrace(Scalar* frame) {
-//  material = 0;
-//  float32 p = -origin.z / direction.z;
-//  if (0.01 < p) {
-//      distance = p,
-//      normal   = normal_up,
-//      material = 1;
-//  }
 
-    frame[i_trace_material].i = 0;
-    float32 p = -frame[vec3_z(v_trace_origin)].f / frame[vec3_z(v_trace_direction)].f;
-    if (0.01 < p) {
-        frame[f_trace_distance].f = p;
-        frame[vec3_x(v_trace_normal)].f = globals[vec3_x(gv_normal_up)].f;
-        frame[vec3_y(v_trace_normal)].f = globals[vec3_y(gv_normal_up)].f;
-        frame[vec3_z(v_trace_normal)].f = globals[vec3_z(gv_normal_up)].f;
-        frame[i_trace_material].i = 1;
-    }
-    return SUCCESS;
-}
 
 GFUNC(trace) {
 // int32 trace(cvr3 origin, cvr3 direction, float32& distance, vec3& normal) {
@@ -516,6 +495,28 @@ GFUNC(trace) {
     ret
 };
 
+// This function serves as a proxy for the virtual code sample function for now
+Result hostShimTrace(Scalar* frame) {
+//  material = 0;
+//  float32 p = -origin.z / direction.z;
+//  if (0.01 < p) {
+//      distance = p,
+//      normal   = normal_up,
+//      material = 1;
+//  }
+
+    frame[i_trace_material].i = 0;
+    float32 p = -frame[vec3_z(v_trace_origin)].f / frame[vec3_z(v_trace_direction)].f;
+    if (0.01 < p) {
+        frame[f_trace_distance].f = p;
+        frame[vec3_x(v_trace_normal)].f = globals[vec3_x(gv_normal_up)].f;
+        frame[vec3_y(v_trace_normal)].f = globals[vec3_y(gv_normal_up)].f;
+        frame[vec3_z(v_trace_normal)].f = globals[vec3_z(gv_normal_up)].f;
+        frame[i_trace_material].i = 1;
+    }
+    return SUCCESS;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 typedef enum {
@@ -536,29 +537,6 @@ typedef enum {
 
 } SampleLocalsEnum;
 
-// This function serves as a proxy for the virtual code sample function for now
-Result hostShimSample(Scalar* frame) {
-    frame[vec3_x(v_sample_rgb)].f = 1.0f;
-    frame[vec3_y(v_sample_rgb)].f = 1.0f;
-    frame[vec3_z(v_sample_rgb)].f = 1.0f;
-
-    std::fprintf(
-        stderr,
-        "\nsample(origin:{ %g, %g, %g }, direction:{ %g, %g, %g }) => { %g, %g, %g }\n\n",
-        frame[vec3_x(v_sample_in_origin)].f,
-        frame[vec3_y(v_sample_in_origin)].f,
-        frame[vec3_z(v_sample_in_origin)].f,
-        frame[vec3_x(v_sample_in_direction)].f,
-        frame[vec3_y(v_sample_in_direction)].f,
-        frame[vec3_z(v_sample_in_direction)].f,
-        frame[vec3_x(v_sample_rgb)].f,
-        frame[vec3_y(v_sample_rgb)].f,
-        frame[vec3_z(v_sample_rgb)].f
-    );
-
-    return SUCCESS;
-}
-
 GFUNC(sample) {
 // vec3 sample(cvr3 origin, cvr3 direction) {
 
@@ -572,11 +550,7 @@ GFUNC(sample) {
 
     vcopy_ll    (v_sample_in_origin,    v_sample_origin)                           // 3 [1, 1, 1]
     vcopy_ll    (v_sample_in_direction, v_sample_direction)                        // 3 [1, 1, 1]
-#ifdef _GVM_DEBUGGING_
-    hcall(shim_trace)
-#else
     call(trace)                                                                    // 3 [1, 2]
-#endif
 
 //   // Hit nothing? Sky shade
 //   if (!material) {
@@ -597,18 +571,21 @@ GFUNC(sample) {
         vfmul_ill   (gv_sky_rgb,        f_sample_gradient, v_sample_rgb)               // 4
         ret                                                                            // 1
 
-    bbc_l       (0,   i_sample_material, 9)                                            // 5
-        vcopy_il    (gv_temp_floor_rgb , v_sample_rgb)                                 // 3
-        ret                                                                            // 1
-    load_sl     (0, 0)
-    load_sl     (0, 1)
-    load_sl     (0, 2)
-    ret
-//
+   bbc_l       (0,   i_sample_material, 9)                                            // 5
+       vcopy_il    (gv_temp_floor_rgb , v_sample_rgb)                                 // 3
+       ret                                                                            // 1
+   load_sl     (0, 0)
+   load_sl     (0, 1)
+   load_sl     (0, 2)
+   ret
+
 
 //
 //   vec3
 //     intersection = vec3_add(origin, vec3_scale(direction, distance)),
+
+    vfmul_lll   (v_sample_in_direction, f_sample_distnace, v_sample_intersection)      // 4 [1, 1, 1, 1]
+    vadd_lll    (v_sample_in_origin, v_sample_intersection, v_sample_intersection)     // 4 [1, 1, 1, 1]
 //
 //     // Calculate the lighting vector
 //     light = vec3_normalize(
@@ -621,6 +598,7 @@ GFUNC(sample) {
 //         intersection
 //       )
 //     ),
+
 //
 //     half_vector = vec3_add(
 //       direction,
@@ -666,6 +644,29 @@ GFUNC(sample) {
 
     ret
 };
+
+// This function serves as a proxy for the virtual code sample function for now
+Result hostShimSample(Scalar* frame) {
+    frame[vec3_x(v_sample_rgb)].f = 1.0f;
+    frame[vec3_y(v_sample_rgb)].f = 1.0f;
+    frame[vec3_z(v_sample_rgb)].f = 1.0f;
+
+    std::fprintf(
+        stderr,
+        "\nsample(origin:{ %g, %g, %g }, direction:{ %g, %g, %g }) => { %g, %g, %g }\n\n",
+        frame[vec3_x(v_sample_in_origin)].f,
+        frame[vec3_y(v_sample_in_origin)].f,
+        frame[vec3_z(v_sample_in_origin)].f,
+        frame[vec3_x(v_sample_in_direction)].f,
+        frame[vec3_y(v_sample_in_direction)].f,
+        frame[vec3_z(v_sample_in_direction)].f,
+        frame[vec3_x(v_sample_rgb)].f,
+        frame[vec3_y(v_sample_rgb)].f,
+        frame[vec3_z(v_sample_rgb)].f
+    );
+
+    return SUCCESS;
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
