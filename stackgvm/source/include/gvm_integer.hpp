@@ -356,6 +356,26 @@ IS(BBC_SI) {
     NEXT;
 }
 
+IS(BBC_LL) {
+    // Branch if bit is clear (local)
+    gvmDebugOpcode(
+        "bbc (%d), (%d), %d : bit:%u 0x%08X => ",
+        OPS(0),
+        OPS(1),
+        (int)J16(2),
+        LOC(0).u,
+        LOC(1).u
+    );
+    if (!(LOC(1).u & (1 << LOC(0).u))) {
+        gvmDebugJump(2);
+        STEP(J16(2));
+        NEXT;
+    }
+    gvmDebugSkip();
+    STEP(5);
+    NEXT;
+}
+
 // Two Operand Logical Inverse /////////////////////////////////////////////////////////////////////////////////////////
 
 IS(NOT_LL) {

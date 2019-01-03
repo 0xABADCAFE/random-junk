@@ -167,10 +167,11 @@ Result Interpreter::validateTables(const FuncInfo* funcTable, const HostCall* ho
     // Function table is terminated by a FuncInfo record having a null entry point. We validate the overall size and
     // additionally that the frame specifcation of each record makes sense.
 
+#ifdef _GVM_DEBUGGING_
     const char* illegalSizeMessageTemplate =
         "GVM::Interpreter::validateTables()\n"
         "\tFunction funcTable entry %d has %s size %d\n";
-
+#endif
     int numFunctions = 1;
     while (funcTable[numFunctions].entryPoint) {
         // Table Size Check
@@ -359,7 +360,9 @@ Result Interpreter::exitFunction() {
 
     if (callStack > callStackBase) {
         const uint8* returnTo = callStack->returnAddress;
+#ifdef _GVM_DEBUG_FUNCTIONS_
         int currentId = callStack->functionId;
+#endif
         --callStack;
         if (frameStack - callStack->frameSize < frameStackBase) {
             gvmDebug("GVM::Interpreter::exitFunction() : Frame Stack Underflow.\n");

@@ -93,6 +93,21 @@ using namespace GVM;
 #define RTA(size)  (PRGC + (size))
 
 
+#ifdef _GVM_PROFILE_OPCODE_COUNTS_
+#define INIT_OPCODE_COUNTS static uint64 perInstructionCounts[256] = { 0 }
+#define UPDATE_OPCODE_COUNTS ++perInstructionCounts[(*PRGC)]
+#define DUMP_OPCODE_COUNTS \
+    for (uint32 i=0; i<256; i++) { \
+        if (perInstructionCounts[i]) { \
+            std::fprintf(stderr, "\t%02X : %llu\n", i, perInstructionCounts[i]); \
+        } \
+    }
+#else
+#define INIT_OPCODE_COUNTS
+#define UPDATE_OPCODE_COUNTS
+#define DUMP_OPCODE_COUNTS
+#endif
+
 const float32 invRMax = 1.0f / (float32)RAND_MAX;
 
 Result Interpreter::run() {
@@ -105,7 +120,10 @@ Result Interpreter::run() {
     UPDATE_PTRS;
 
     uint64 numExecuted = -1;
+    INIT_OPCODE_COUNTS;
+
 forever:
+    UPDATE_OPCODE_COUNTS;
     ++numExecuted;
     FETCH {
         #include "include/gvm_untyped.hpp"
