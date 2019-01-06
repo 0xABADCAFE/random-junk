@@ -229,6 +229,9 @@ namespace GVM {
             _FCOS_LL,  // Cosine
             _FACOS_LL, // Arccosine
 
+            _FCEIL_LL,
+            _FFLOOR_LL,
+
             // Two operand float negate
             _FNEG_LL,
             _FNEG_IL,

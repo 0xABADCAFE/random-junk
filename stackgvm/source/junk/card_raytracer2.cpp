@@ -234,14 +234,6 @@ vec3 sample(cvr3 origin, cvr3 direction) {
                 ),
                 intersection
             )
-        ),
-
-        half_vector = vec3_add(
-            direction,
-            vec3_scale(
-                normal,
-                dot(normal, direction) * -2.0f
-            )
         )
     ;
 
@@ -264,6 +256,14 @@ vec3 sample(cvr3 origin, cvr3 direction) {
             (lambertian * 0.2f + 0.1f)
         );
     }
+
+    vec3 half_vector = vec3_add(
+        direction,
+        vec3_scale(
+            normal,
+            dot(normal, direction) * -2.0f
+        )
+    );
 
     // Compute the specular highlight power
     float32 specular = pow(dot(light, half_vector) * (lambertian > 0.0), 99.0f);

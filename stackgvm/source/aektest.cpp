@@ -39,7 +39,11 @@ typedef enum {
     gf_distance_max        = 40,
     gf_distance_min        = 41,
 
-    gv_temp_floor_rgb      = 42
+    gf_minus_2             = 42,
+    gf_point_2             = 43,
+    gf_point_1             = 44,
+
+    //gv_temp_floor_rgb      = 42
 } GlobalEnum;
 
 
@@ -82,7 +86,10 @@ Scalar globals[] = {
     1e9f,    // gf_distamce_max
     0.01f,   // gf_distance_min
 
-    vec3(0.5f, 0.1f, 0.1f)
+    -2.0f,
+    0.2f,
+    0.1f,
+    //vec3(0.5f, 0.1f, 0.1f)
 };
 
 
@@ -459,7 +466,7 @@ GFUNC(trace) {
 //                     eye_offset = dot(p, p) - 1.0,
 //                     q = b * b - eye_offset
 //                 ;
-    
+
         itof_ll     (f_trace_k, v_trace_sphere)                                                 // 3 [1, 1, 1]
         add_lll     (f_trace_j, m_trace_temp_3, m_trace_temp_2)                                 // 4 [1, 1, 1, 1]
         itof_ll     (m_trace_temp_2, v_trace_sphere + 2)                                        // 3 [1, 1, 1]
@@ -533,6 +540,12 @@ typedef enum {
     v_sample_in_origin    = 3,
     v_sample_in_direction = 6,
     f_sample_gradient     = 9,
+    f_sample_rand         = 9,
+    f_sample_dot_temp     = 9,
+    m_sample_temp_0       = 9,
+    m_sample_temp_1       = 10,
+    f_sample_lambertian   = 11,
+    v_sample_half_vector  = 12,
     m_sample_next_func_p  = 32,
 
     i_sample_material     = m_sample_next_func_p + i_trace_material,
@@ -579,21 +592,12 @@ GFUNC(sample) {
         vfmul_ill   (gv_sky_rgb,        f_sample_gradient, v_sample_rgb)               // 4
         ret                                                                            // 1
 
-   bbc_sl      (0,   i_sample_material, 9)                                            // 5
-       vcopy_il    (gv_temp_floor_rgb , v_sample_rgb)                                 // 3
-       ret                                                                            // 1
-   load_sl     (0, 0)
-   load_sl     (0, 1)
-   load_sl     (0, 2)
-   ret
-
-
-//
 //   vec3
 //     intersection = vec3_add(origin, vec3_scale(direction, distance)),
 
     vfmul_lll   (v_sample_in_direction, f_sample_distnace, v_sample_intersection)      // 4 [1, 1, 1, 1]
     vadd_lll    (v_sample_in_origin, v_sample_intersection, v_sample_intersection)     // 4 [1, 1, 1, 1]
+
 //
 //     // Calculate the lighting vector
 //     light = vec3_normalize(
@@ -607,21 +611,55 @@ GFUNC(sample) {
 //       )
 //     ),
 
-//
-//     half_vector = vec3_add(
-//       direction,
-//       vec3_scale(
-//         normal,
-//         dot(normal, direction) * -2.0
-//       )
-//     )
-//   ;
-//
+    frnd_l      (f_sample_rand)                                                        // 2
+    fadd_ill    (vec3_x(gv_const_light_pos), f_sample_rand, vec3_x(v_sample_light))    // 3
+    frnd_l      (f_sample_rand)                                                        // 2
+    fadd_ill    (vec3_y(gv_const_light_pos), f_sample_rand, vec3_y(v_sample_light))    // 3
+    copy_il     (0, vec3_z(gv_const_light_pos), vec3_z(v_sample_light))                // 3
+    vsub_lll    (v_sample_light, v_sample_intersection, v_sample_light)                // 4
+    vnorm_ll    (v_sample_light, v_sample_light)                                       // 3
+
 //   // Calculate the lambertian illumuination factor
 //   float32 lambertian = dot(light, normal);
+
+    vdot_lll    (v_sample_light, v_sample_normal, f_sample_lambertian)
+
 //   if (lambertian < 0 || trace(intersection, light, distance, normal)) {
 //     lambertian = 0; // in shadow
 //   }
+
+    copy_ll     (i_sample_material, m_sample_temp_1)
+    load_sl     (0, m_sample_temp_0)
+
+    fclt_ll     (f_sample_lambertian, m_sample_temp_0, 8)  // 5
+        bras        (3+3+4)                                // 3
+
+    call(trace)                                            // 3
+    bez_l       (i_trace_material, 7)                      // 4
+        load_sl     (0, f_sample_lambertian)               // 3
+
+    ret
+
+// TODO - if material & 1
+    bbc_sl      (0, m_sample_temp_1, 15) // 5
+    load_sl     (0, 0)                   // 3
+    load_sl     (0, 1)                   // 3
+    load_sl     (0, 2)                   // 3
+    ret                                  // 1
+
+    fmul_ill    (gf_point_2, f_sample_lambertian, f_sample_lambertian)     // 4
+    fadd_ill    (gf_point_1, f_sample_lambertian, f_sample_lambertian)     // 4
+    vfmul_lil   (v_sample_intersection, gf_point_2, v_sample_intersection) // 4
+    fceil_ll    (vec3_x(v_sample_intersection), m_sample_temp_0)
+    itof_ll     (m_sample_temp_0, m_sample_temp_0)
+    fceil_ll    (vec3_y(v_sample_intersection), m_sample_temp_1)
+    itof_ll     (m_sample_temp_1, m_sample_temp_1)
+    add_lll     (m_sample_temp_0, m_sample_temp_1, m_sample_temp_0)
+    cbs_ll      (0, m_sample_temp_0, 10)                                  // 5
+        vfmul_ill   (gv_floor_red_rgb, f_sample_lambertian, v_sample_rgb) // 4
+        ret                                                               // 1
+    vfmul_ill   (gv_floor_white_rgb, f_sample_lambertian, v_sample_rgb)   // 4
+    ret                                                                   // 1
 //
 //   // Hit the floor plane
 //   if (material & 1) {
@@ -636,6 +674,23 @@ GFUNC(sample) {
 //       (lambertian * 0.2 + 0.1)
 //     );
 //   }
+
+//
+//     half_vector = vec3_add(
+//       direction,
+//       vec3_scale(
+//         normal,
+//         dot(normal, direction) * -2.0
+//       )
+//     )
+//   ;
+
+    vdot_lll    (v_sample_normal, v_sample_in_direction, f_sample_dot_temp)           // 4
+    fmul_ill    (gf_minus_2, f_sample_dot_temp, f_sample_dot_temp)                    // 4
+    vfmul_lll   (v_sample_normal, f_sample_dot_temp, v_sample_half_vector)            // 4
+    vadd_lll    (v_sample_in_direction, v_sample_half_vector, v_sample_half_vector)   // 4
+
+
 //
 //   // Compute the specular highlight power
 //   float32 specular = pow(dot(light, half_vector) * (lambertian > 0.0), 99.0);
@@ -714,10 +769,10 @@ int main() {
 //     }
 
     t.set();
-    //Result result =
+    Result result =
     Interpreter::invoke(render);
     float32 elapsed = t.elapsed();
     Interpreter::done();
-    std::fprintf(stderr, "Took %.6f seconds\n", elapsed);
+    std::fprintf(stderr, "Took %.6f seconds [%d]\n", elapsed, (int)result);
     return 0;
 }

@@ -262,6 +262,34 @@ IS(FACOS_LL) {
     NEXT;
 }
 
+IS(FCEIL_LL) {
+    // Arccosine
+    gvmDebugOpcode(
+        "ceil.f (%d), (%d) : ceil(%e) => ",
+        OPS(0),
+        OPS(1),
+        LOC(0).f
+    );
+    LOC(1).f = std::ceil(LOC(0).f);
+    gvmDebugOpcode("%e", LOC(1).f);
+    STEP(3);
+    NEXT;
+}
+
+IS(FFLOOR_LL) {
+    // Arccosine
+    gvmDebugOpcode(
+        "floor.f (%d), (%d) : floor(%e) => ",
+        OPS(0),
+        OPS(1),
+        LOC(0).f
+    );
+    LOC(1).f = std::floor(LOC(0).f);
+    gvmDebugOpcode("%e", LOC(1).f);
+    STEP(3);
+    NEXT;
+}
+
 // Two Operand Float Negate ////////////////////////////////////////////////////////////////////////////////////////////
 
 IS(FNEG_LL) {

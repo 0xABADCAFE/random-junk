@@ -312,7 +312,10 @@
 #define fisqr_ll(l1,l2)  _OP(INVSQ_LL), _D8(l1), _D8(l2),
 #define fsin_ll(l1,l2)   _OP(FSIN_LL),  _D8(l1), _D8(l2),
 #define fcos_ll(l1,l2)   _OP(FCOS_LL),  _D8(l1), _D8(l2),
-#define facos_l(l1,l2)l  _OP(FACOS_LL), _D8(l1), _D8(l2),
+#define facos_l(l1,l2)   _OP(FACOS_LL), _D8(l1), _D8(l2),
+#define fceil_ll(l1,l2)  _OP(FCEIL_LL), _D8(l1), _D8(l2),
+#define ffloor_ll(l1,l2) _OP(FFLOOR_LL), _D8(l1), _D8(l2),
+
 //
 //
 // // Two operand float negate
