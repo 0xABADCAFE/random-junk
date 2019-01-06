@@ -43,7 +43,7 @@ typedef enum {
     gf_point_2             = 43,
     gf_point_1             = 44,
 
-    //gv_temp_floor_rgb      = 42
+    gv_temp_floor_rgb      = 45
 } GlobalEnum;
 
 
@@ -76,12 +76,14 @@ Scalar globals[] = {
     4,       // gi_max_rays
 #else
     512,     // gi_image_size
-    64,      // gi_max_rays
+    //64,      // gi_max_rays
+    1,
 #endif
     99.0f,   // gf_dof_scale
     0.5f,    // gf_dof_bias
     16.0f,   // gf_accum_scale
-    3.5f,    // gf_rgb_scale
+    //3.5f,    // gf_rgb_scale
+    64.f*3.5f,
     0.002f,  // gf_camera_scale
     1e9f,    // gf_distamce_max
     0.01f,   // gf_distance_min
@@ -89,7 +91,7 @@ Scalar globals[] = {
     -2.0f,
     0.2f,
     0.1f,
-    //vec3(0.5f, 0.1f, 0.1f)
+    vec3(0.5f, 0.1f, 0.1f),
 };
 
 
@@ -631,21 +633,20 @@ GFUNC(sample) {
     copy_ll     (i_sample_material, m_sample_temp_1)
     load_sl     (0, m_sample_temp_0)
 
-    fclt_ll     (f_sample_lambertian, m_sample_temp_0, 8)  // 5
-        bras        (3+3+4)                                // 3
+    fclt_ll     (f_sample_lambertian, m_sample_temp_0, 7)  // 5
+        bras        (2+3+4)                                // 2
 
     call(trace)                                            // 3
+
     bez_l       (i_trace_material, 7)                      // 4
         load_sl     (0, f_sample_lambertian)               // 3
 
-    ret
+
 
 // TODO - if material & 1
-    bbc_sl      (0, m_sample_temp_1, 15) // 5
-    load_sl     (0, 0)                   // 3
-    load_sl     (0, 1)                   // 3
-    load_sl     (0, 2)                   // 3
-    ret                                  // 1
+    bbc_sl      (0, m_sample_temp_1, 9)          // 5
+    vcopy_il    (gv_temp_floor_rgb, v_sample_rgb) // 3
+    ret                                           // 1
 
     fmul_ill    (gf_point_2, f_sample_lambertian, f_sample_lambertian)     // 4
     fadd_ill    (gf_point_1, f_sample_lambertian, f_sample_lambertian)     // 4

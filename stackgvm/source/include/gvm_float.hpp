@@ -7,7 +7,8 @@ IS(FRND_L) {
 #ifdef _GVM_DEBUG_OPCODES_
     LOC(0).f = 0.5f;
 #else
-    LOC(0).f = invRMax * std::rand();
+    //LOC(0).f = invRMax * std::rand();
+    LOC(0).f = 0.5f;
 #endif
     gvmDebugOpcode(
         "rnd.f (%d) : %g",
