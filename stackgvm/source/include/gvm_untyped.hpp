@@ -113,6 +113,7 @@ IS(RET) {
     result = exitFunction();
     if (result != SUCCESS) {
         std::fprintf(stderr, "\nExecuted: %llu instructions total.\n", numExecuted);
+        DUMP_OPCODE_COUNTS;
         EXIT(result);
     }
     UPDATE_PTRS;

@@ -109,6 +109,8 @@ namespace GVM {
             _BBC_SL,  // Branch if bit is clear (local)
             _BBC_SI,  // Branch if bit is clear (indirect)
 
+            _BBC_LL,  // Branch if bit clear (local, local)
+
             // Two operand logical negate
             _NOT_LL,
             _NOT_IL,
