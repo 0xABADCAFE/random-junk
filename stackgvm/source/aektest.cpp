@@ -43,7 +43,11 @@ typedef enum {
     gf_point_2             = 43,
     gf_point_1             = 44,
 
-    gv_temp_floor_rgb      = 45
+    gf_reflection_scale    = 36,
+    gf_specular_power      = 35,
+
+    gv_temp_floor_rgb      = 45,
+
 } GlobalEnum;
 
 
@@ -60,14 +64,14 @@ Scalar globals[] = {
     vec3(9.0f, 9.0f, 16.0f),   // gv_const_light_pos
 
     // Bitmap
-    247570, // 0111100011100010010 gv_bitmap[0]
-    280596, // 1000100100000010100
-    280600, // 1000100100000011000
-    249748, // 0111100111110010100
-    18578,  // 0000100100010010010
-    18577,  // 0000100100010010001
-    231184, // 0111000011100010000
-    16,     // 0000000000000010000
+    32768,//247570, // 0111100011100010010 gv_bitmap[0]
+    0,//280596, // 1000100100000010100
+    0,//280600, // 1000100100000011000
+    0,//249748, // 0111100111110010100
+    0,//18578,  // 0000100100010010010
+    0,//18577,  // 0000100100010010001
+    0,//231184, // 0111000011100010000
+    0,//16,     // 0000000000000010000
     16,     // 0000000000000010000
 
     // Other Scalars
@@ -547,7 +551,7 @@ typedef enum {
     m_sample_temp_0       = 9,
     m_sample_temp_1       = 10,
     f_sample_lambertian   = 11,
-    v_sample_half_vector  = 12,
+    v_sample_temp_0       = 12,
     m_sample_next_func_p  = 32,
 
     i_sample_material     = m_sample_next_func_p + i_trace_material,
@@ -558,6 +562,10 @@ typedef enum {
     f_sample_distnace     = m_sample_next_func_p + f_trace_distance,
     v_sample_normal       = m_sample_next_func_p + v_trace_normal,
 
+    v_sample_next_rgb       = m_sample_next_func_p,
+    v_sample_next_origin    = m_sample_next_func_p + v_sample_in_origin,
+    v_sample_next_direction = m_sample_next_func_p + v_sample_in_direction,
+    v_sample_half_vector    = m_sample_next_func_p + v_sample_in_direction,
 } SampleLocalsEnum;
 
 GFUNC(sample) {
@@ -638,7 +646,7 @@ GFUNC(sample) {
 
     call(trace)                                            // 3
 
-    bez_l       (i_trace_material, 7)                      // 4
+    bnz_l       (i_trace_material, 7)                      // 4
         load_sl     (0, f_sample_lambertian)               // 3
 
 
@@ -683,11 +691,15 @@ GFUNC(sample) {
 //     )
 //   ;
 
+    vcopy_ll    (v_sample_intersection, v_sample_temp_0)
     vdot_lll    (v_sample_normal, v_sample_in_direction, f_sample_dot_temp)           // 4
     fmul_ill    (gf_minus_2, f_sample_dot_temp, f_sample_dot_temp)                    // 4
     vfmul_lll   (v_sample_normal, f_sample_dot_temp, v_sample_half_vector)            // 4
     vadd_lll    (v_sample_in_direction, v_sample_half_vector, v_sample_half_vector)   // 4
+    vcopy_ll    (v_sample_temp_0, v_sample_next_origin)                               // 4
 
+    call        (sample)
+    vfmul_lil   (v_sample_next_rgb, gf_reflection_scale, v_sample_rgb)
 
 //
 //   // Compute the specular highlight power
@@ -752,14 +764,14 @@ END_GHOST_TABLE
 BEGIN_GFUNC_TABLE(functionTable)
     { _gvm_render, 32,  0,  0, 32 },
     { _gvm_trace,  32,  1, 10, 21 },
-    { _gvm_sample, 32,   3,  6, 23 }
+    { _gvm_sample, 32,  3,  6, 23 }
 END_GFUNC_TABLE
 
 
 int main() {
     std::fprintf(stderr, "Max Opcode %d\n", Opcode::_MAX);
     FloatClock t;
-    Interpreter::init(100, 0, functionTable, hostFunctionTable, globalData);
+    Interpreter::init(Interpreter::MAX_CALL_DEPTH, 0, functionTable, hostFunctionTable, globalData);
 
 //     Scalar* tmp = Interpreter::stack();
 //     for (int i = 0; i<64; i++) {
