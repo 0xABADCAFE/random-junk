@@ -644,23 +644,6 @@ GFUNC(sample) {
 
 
 // TODO - if material & 1
-    bbc_sl      (0, m_sample_temp_1, 9)          // 5
-    vcopy_il    (gv_temp_floor_rgb, v_sample_rgb) // 3
-    ret                                           // 1
-
-    fmul_ill    (gf_point_2, f_sample_lambertian, f_sample_lambertian)     // 4
-    fadd_ill    (gf_point_1, f_sample_lambertian, f_sample_lambertian)     // 4
-    vfmul_lil   (v_sample_intersection, gf_point_2, v_sample_intersection) // 4
-    fceil_ll    (vec3_x(v_sample_intersection), m_sample_temp_0)
-    itof_ll     (m_sample_temp_0, m_sample_temp_0)
-    fceil_ll    (vec3_y(v_sample_intersection), m_sample_temp_1)
-    itof_ll     (m_sample_temp_1, m_sample_temp_1)
-    add_lll     (m_sample_temp_0, m_sample_temp_1, m_sample_temp_0)
-    cbs_ll      (0, m_sample_temp_0, 10)                                  // 5
-        vfmul_ill   (gv_floor_red_rgb, f_sample_lambertian, v_sample_rgb) // 4
-        ret                                                               // 1
-    vfmul_ill   (gv_floor_white_rgb, f_sample_lambertian, v_sample_rgb)   // 4
-    ret                                                                   // 1
 //
 //   // Hit the floor plane
 //   if (material & 1) {
@@ -675,6 +658,20 @@ GFUNC(sample) {
 //       (lambertian * 0.2 + 0.1)
 //     );
 //   }
+    bbc_sl      (0, m_sample_temp_1, 45)                                    // 5
+    fmul_ill    (gf_point_2, f_sample_lambertian, f_sample_lambertian)      // 4
+    fadd_ill    (gf_point_1, f_sample_lambertian, f_sample_lambertian)      // 4
+    vfmul_lil   (v_sample_intersection, gf_point_2, v_sample_intersection)  // 4
+    fceil_ll    (vec3_x(v_sample_intersection), m_sample_temp_0)            // 3
+    fceil_ll    (vec3_y(v_sample_intersection), m_sample_temp_1)            // 3
+    fadd_lll    (m_sample_temp_0, m_sample_temp_1, m_sample_temp_1)         // 4
+    ftoi_ll     (m_sample_temp_1, m_sample_temp_0)                          // 3
+    bbs_sl      (0, m_sample_temp_0, 10)                                    // 5
+        vfmul_ill   (gv_floor_white_rgb, f_sample_lambertian, v_sample_rgb) // 4
+        ret                                                                 // 1
+    vfmul_ill   (gv_floor_red_rgb, f_sample_lambertian, v_sample_rgb)       // 4
+    ret                                                                     // 1
+
 
 //
 //     half_vector = vec3_add(
