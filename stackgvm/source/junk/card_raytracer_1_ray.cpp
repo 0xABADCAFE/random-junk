@@ -177,8 +177,8 @@ int32 trace(cvr3 origin, cvr3 direction, float32& distance, vec3& normal) {
     // Check if trace maybe hits a sphere
     for (int i = 0; i<num_spheres; i++) {
         vec3 p = vec3_sub(
-        origin,
-        spheres[i] // Sphere coordinate
+	    origin,
+            spheres[i] // Sphere coordinate
         );
 
         float32
