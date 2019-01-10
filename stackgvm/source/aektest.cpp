@@ -76,8 +76,8 @@ Scalar globals[] = {
 
     // Other Scalars
 #ifdef _GVM_DEBUGGING_
-    4,       // gi_image_size
-    4,       // gi_max_rays
+    512,       // gi_image_size
+    1,       // gi_max_rays
 #else
     512,     // gi_image_size
     //64,      // gi_max_rays
@@ -767,20 +767,297 @@ BEGIN_GFUNC_TABLE(functionTable)
     { _gvm_sample, 32,  3,  6, 23 }
 END_GFUNC_TABLE
 
+#ifdef _GVM_DEBUGGING_
+
+#include <cmath>
+
+struct Vec3 {
+    float32 x, y, z;
+
+    // default constructor
+    Vec3() { }
+
+    // constructor
+    Vec3(float32 a, float32 b, float32 c, int df=0) {
+        x = a;
+        y = b;
+        z = c;
+
+        if (df) {
+            debug(df);
+        }
+    }
+
+    void debug(int df) const {
+        std::fprintf(stderr, "{ %g, %g, %g }%s", x, y, z, (df & 2 ? "\n" : ""));
+    }
+};
+
+typedef const Vec3& cvr3;
+
+// Sum two Vec3
+static inline Vec3 vec3_add(cvr3 v1, cvr3 v2) {
+    std::fprintf(stderr, "\tvec3_add(");
+    v1.debug(1);
+    std::fprintf(stderr, ", ");
+    v2.debug(1);
+    std::fprintf(stderr, ") -> ");
+    return Vec3(
+        v1.x + v2.x,
+        v1.y + v2.y,
+        v1.z + v2.z,
+        2
+    );
+}
+
+// Subtract two vec3
+static inline Vec3 vec3_sub(cvr3 v1, cvr3 v2) {
+    std::fprintf(stderr, "\tvec3_sub(");
+    v1.debug(1);
+    std::fprintf(stderr, ", ");
+    v2.debug(1);
+    std::fprintf(stderr, ") -> ");
+    return Vec3(
+        v1.x - v2.x,
+        v1.y - v2.y,
+        v1.z - v2.z,
+        2
+    );
+}
+
+// Scale a vec3 by a float
+static inline Vec3 vec3_scale(cvr3 v, float32 s) {
+    std::fprintf(stderr, "\tvec3_scale(");
+    v.debug(1);
+    std::fprintf(stderr, ", %g) -> ", s);
+    return Vec3(
+        v.x * s,
+        v.y * s,
+        v.z * s,
+        2
+    );
+}
+
+// Get a normalised Vec3
+static inline Vec3 vec3_normalize(cvr3 v) {
+    std::fprintf(stderr, "\tvec3_normalize() => ");
+    return vec3_scale(v, (1.0 / std::sqrt(
+        (v.x * v.x) +
+        (v.y * v.y) +
+        (v.z * v.z)
+    )));
+}
+
+// Get the dot product of two Vec3
+static inline float32 dot(cvr3 v1, cvr3 v2) {
+    std::fprintf(stderr, "\tvec3_dot(");
+    v1.debug(1);
+    std::fprintf(stderr, ", ");
+    v2.debug(1);
+    float32 res = v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+    std::fprintf(stderr, ") -> %g\n", res);
+    return res;
+}
+
+// Get the cross product for two Vec3
+static inline Vec3 vec3_cross(cvr3 v1, cvr3 v2) {
+    std::fprintf(stderr, "\tvec3_cross(");
+    v1.debug(1);
+    std::fprintf(stderr, ", ");
+    v2.debug(1);
+    std::fprintf(stderr, ") -> ");
+    return Vec3(
+        v1.y * v2.z - v1.z * v2.y,
+        v1.z * v2.x - v1.x * v2.z,
+        v1.x * v2.y - v1.y * v2.x,
+        2
+    );
+}
+
+static const float32 invRM = 1.0 / RAND_MAX;
+
+// Get a random number in the range 0.0 - 1.0
+static inline float32 frand() {
+    return 0.5f;//invRM * rand();
+}
+
+const Vec3 camera_dir(
+    -6.0, -16.0, 0.0
+);
+
+const Vec3 focal_point(
+    17.0, 16.0, 8.0
+);
+
+
+const Vec3 normal_up(
+    0.0, 0.0, 1.0
+);
+
+
+int pixel_coordinates[] = {
+    236, 145,   // mid sky
+    377, 492,   // red floor tile, lit
+    456, 477,   // white floor tile, lit
+    256, 417,   // red floor tile, shadow
+    202, 429,   // white floor tile, shadow
+    425, 137,   // sphere, sky reflection, no specular
+    425, 145,   // sphere, sky reflection, strong specular,
+    295, 391,   // sphere, reflect red floor tile, lit
+    280, 388,   // sphere, reflect white floor tile, lit
+    237, 283,   // sphere, reflect adjacent sphere
+};
+
+const char* pixel_descriptions[] = {
+    "Mid sky",
+    "Red floor tile, lit",
+    "White floor tile, lit",
+    "Red floor tile, in shadow",
+    "White floor tile, in shadow",
+    "Sphere, reflecting sky, no specular",
+    "Sphere, reflecting sky, strong specular",
+    "Sphere, refecting red floor tile, lit",
+    "Sphere, reflecting white floor tile, lit",
+    "Sphere, reflecting adjacent sphere"
+};
+
+Vec3 invokeSample(cvr3 origin, cvr3 direction) {
+
+    std::fprintf(stderr,
+        "\nsample(origin:{ %g, %g, %g }, direction:{ %g, %g, %g })\n",
+        origin.x,    origin.y,    origin.z,
+        direction.x, direction.y, direction.z
+    );
+
+    Scalar* tmp =  Interpreter::stack();
+    tmp[0].f = 0;
+    tmp[1].f = 0;
+    tmp[2].f = 0;
+    tmp[3].f = origin.x;
+    tmp[4].f = origin.y;
+    tmp[5].f = origin.z;
+    tmp[6].f = direction.x;
+    tmp[7].f = direction.y;
+    tmp[8].f = direction.z;
+    Interpreter::invoke(sample);
+    return Vec3(tmp[0].f, tmp[1].f, tmp[2].f);
+}
+
+void singlePixelRenderTest() {
+    int image_size = 512;
+
+    std::fprintf(stderr, "Individual Pixel Trace Debugging\n");
+
+    // camera direction vectors
+    Vec3
+        camera_forward = vec3_normalize( // Unit forwards
+            camera_dir
+        ),
+
+        camera_up = vec3_scale( // Unit up - Z is up in this system
+            vec3_normalize(
+                vec3_cross(
+                normal_up,
+                camera_forward
+                )
+            ),
+            0.002f
+        ),
+
+        camera_right = vec3_scale( // Unit right
+            vec3_normalize(
+                vec3_cross(camera_forward, camera_up)
+            ),
+            0.002f
+        ),
+
+        eye_offset = vec3_add( // Offset from eye to coner of focal plane
+            vec3_scale(
+                vec3_add(camera_up, camera_right),
+                -(image_size >> 1)
+            ),
+            camera_forward
+        )
+    ;
+
+    std::fprintf(stderr, "main(): camera_forward = "); camera_forward.debug(2);
+    std::fprintf(stderr, "main(): camera_up      = "); camera_up.debug(2);
+    std::fprintf(stderr, "main(): camera_right   = "); camera_right.debug(2);
+    std::fprintf(stderr, "main(): eye_offset     = "); eye_offset.debug(2);
+    std::fprintf(stderr, "main(): Scene configuration completed.\n");
+
+    for (int n = 0; n < sizeof(pixel_coordinates)/sizeof(int); n+=2) {
+
+        int x = image_size - pixel_coordinates[n];
+        int y = image_size - pixel_coordinates[n+1];
+
+        std::fprintf(stderr,
+            "\n//////////////////////////////////////////////////////////////////////////////////////////////////////\n"
+            "main(): Tracing Pixel at (%d, %d), sampling \"%s\"\n",
+            pixel_coordinates[n], pixel_coordinates[n+1], pixel_descriptions[n>>1]
+        );
+
+        // Random delta to be added for depth of field effects
+        Vec3 delta = vec3_add(
+            vec3_scale(camera_up,    (frand() - 0.5f) * 99.0f),
+            vec3_scale(camera_right, (frand() - 0.5f) * 99.0f)
+        );
+
+        // Accumulate the sample result into the current pixel
+        Vec3 pixel  = vec3_scale(
+            invokeSample(
+                vec3_add(
+                    focal_point,
+                    delta
+                ),
+                vec3_normalize(
+                    vec3_sub(
+                        vec3_scale(
+                            vec3_add(
+                                vec3_scale(camera_up, frand() + x),
+                                vec3_add(
+                                    vec3_scale(camera_right, frand() + y),
+                                    eye_offset
+                                )
+                            ),
+                            16.0f
+                        ),
+                        delta
+                    )
+                )
+            ),
+            64*3.5f
+        );
+
+        pixel = vec3_add(pixel, Vec3(13.0f, 13.0f, 13.0f));
+
+        // Convert to integers and push out to ppm outpu stream
+        std::fprintf(stderr,
+            "\nmain(): Pixel (%d, %d) \"%s\" final RGB => ",
+            pixel_coordinates[n],
+            pixel_coordinates[n+1],
+            pixel_descriptions[n>>1]
+        );
+        pixel.debug(1);
+        std::fprintf(stderr, ": #%02X%02X%02X\n", (unsigned)pixel.x, (unsigned)pixel.y, (unsigned)pixel.z);
+    }
+}
+
+#endif
 
 int main() {
     std::fprintf(stderr, "Max Opcode %d\n", Opcode::_MAX);
     FloatClock t;
-    Interpreter::init(Interpreter::MAX_CALL_DEPTH, 0, functionTable, hostFunctionTable, globalData);
-
-//     Scalar* tmp = Interpreter::stack();
-//     for (int i = 0; i<64; i++) {
-//         tmp[i].u = 0;
-//     }
-
+    Interpreter::init(16, 0, functionTable, hostFunctionTable, globalData);
     t.set();
     Result result =
+
+#ifdef _GVM_DEBUGGING_
+    GVM::EXEC_RETURN_TO_HOST;
+    singlePixelRenderTest();
+#else
     Interpreter::invoke(render);
+#endif
     float32 elapsed = t.elapsed();
     Interpreter::done();
     std::fprintf(stderr, "Took %.6f seconds [%d]\n", elapsed, (int)result);
