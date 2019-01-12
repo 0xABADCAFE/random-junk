@@ -64,15 +64,15 @@ Scalar globals[] = {
     vec3(9.0f, 9.0f, 16.0f),   // gv_const_light_pos
 
     // Bitmap
-    32768,//247570, // 0111100011100010010 gv_bitmap[0]
-    0,//280596, // 1000100100000010100
-    0,//280600, // 1000100100000011000
-    0,//249748, // 0111100111110010100
-    0,//18578,  // 0000100100010010010
-    0,//18577,  // 0000100100010010001
-    0,//231184, // 0111000011100010000
+    16,//247570, // 0111100011100010010 gv_bitmap[0]
+    32,//280596, // 1000100100000010100
+    64,//280600, // 1000100100000011000
+    128,//249748, // 0111100111110010100
+    256,//18578,  // 0000100100010010010
+    512,//18577,  // 0000100100010010001
+    1024,//231184, // 0111000011100010000
     0,//16,     // 0000000000000010000
-    16,     // 0000000000000010000
+    0,//16     // 0000000000000010000
 
     // Other Scalars
 #ifdef _GVM_DEBUGGING_
@@ -108,8 +108,6 @@ Scalar globals[] = {
 typedef enum {
     print_header = 1,
     print_rgb,
-    shim_sample,
-    shim_trace
 } HostFunctionEnum;
 
 Result hostPrintHeader(Scalar* frame) {
@@ -391,7 +389,6 @@ typedef enum {
 } TraceLocalsEnum;
 
 
-
 GFUNC(trace) {
 // int32 trace(cvr3 origin, cvr3 direction, float32& distance, vec3& normal) {
 
@@ -419,9 +416,7 @@ GFUNC(trace) {
         vcopy_il    (gv_normal_up, v_trace_normal)                                          // 3 [1, 1, 1]
         load_sl     (1, i_trace_material)                                                   // 3 [1, 1, 1]
 
-//ret
-
-  // Check if trace maybe hits a sphere
+// Check if trace maybe hits a sphere
 //     for (int32 j = 9; j--;) {
 //         for (int32 k = 19; k--;) {
 //             if (data[j] & 1 << k) {
@@ -449,7 +444,7 @@ GFUNC(trace) {
 //         }
 //     }
 
-    // Check if trace maybe hits a sphere                                                   // Total: 12
+// Check if trace maybe hits a sphere                                                   // Total: 12
     load_sl     (1, m_trace_temp_0)                                                         // 3 [1, 1, 1]
     load_sl     (0, f_trace_zero)                                                           // 3 [1, 1, 1]
     load_sl     (4, m_trace_temp_3)                                                         // 3 [1, 1, 1]
@@ -516,27 +511,6 @@ GFUNC(trace) {
     ret
 };
 
-// This function serves as a proxy for the virtual code sample function for now
-Result hostShimTrace(Scalar* frame) {
-//  material = 0;
-//  float32 p = -origin.z / direction.z;
-//  if (0.01 < p) {
-//      distance = p,
-//      normal   = normal_up,
-//      material = 1;
-//  }
-
-    frame[i_trace_material].i = 0;
-    float32 p = -frame[vec3_z(v_trace_origin)].f / frame[vec3_z(v_trace_direction)].f;
-    if (0.01 < p) {
-        frame[f_trace_distance].f = p;
-        frame[vec3_x(v_trace_normal)].f = globals[vec3_x(gv_normal_up)].f;
-        frame[vec3_y(v_trace_normal)].f = globals[vec3_y(gv_normal_up)].f;
-        frame[vec3_z(v_trace_normal)].f = globals[vec3_z(gv_normal_up)].f;
-        frame[i_trace_material].i = 1;
-    }
-    return SUCCESS;
-}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -646,7 +620,7 @@ GFUNC(sample) {
 
     call(trace)                                            // 3
 
-    bnz_l       (i_trace_material, 7)                      // 4
+    bez_l       (i_sample_material, 7)                     // 4
         load_sl     (0, f_sample_lambertian)               // 3
 
 
@@ -718,29 +692,6 @@ GFUNC(sample) {
     ret
 };
 
-// This function serves as a proxy for the virtual code sample function for now
-Result hostShimSample(Scalar* frame) {
-    frame[vec3_x(v_sample_rgb)].f = 1.0f;
-    frame[vec3_y(v_sample_rgb)].f = 1.0f;
-    frame[vec3_z(v_sample_rgb)].f = 1.0f;
-
-    std::fprintf(
-        stderr,
-        "\nsample(origin:{ %g, %g, %g }, direction:{ %g, %g, %g }) => { %g, %g, %g }\n\n",
-        frame[vec3_x(v_sample_in_origin)].f,
-        frame[vec3_y(v_sample_in_origin)].f,
-        frame[vec3_z(v_sample_in_origin)].f,
-        frame[vec3_x(v_sample_in_direction)].f,
-        frame[vec3_y(v_sample_in_direction)].f,
-        frame[vec3_z(v_sample_in_direction)].f,
-        frame[vec3_x(v_sample_rgb)].f,
-        frame[vec3_y(v_sample_rgb)].f,
-        frame[vec3_z(v_sample_rgb)].f
-    );
-
-    return SUCCESS;
-}
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 BEGIN_GDATA_TABLE(globalData)
@@ -749,9 +700,7 @@ END_GDATA_TABLE
 
 BEGIN_GHOST_TABLE(hostFunctionTable)
     hostPrintHeader,
-    hostPrintRGB,
-    hostShimSample,
-    hostShimTrace
+    hostPrintRGB
 END_GHOST_TABLE
 
 /*
@@ -1048,7 +997,7 @@ void singlePixelRenderTest() {
 int main() {
     std::fprintf(stderr, "Max Opcode %d\n", Opcode::_MAX);
     FloatClock t;
-    Interpreter::init(16, 0, functionTable, hostFunctionTable, globalData);
+    Interpreter::init(128, 0, functionTable, hostFunctionTable, globalData);
     t.set();
     Result result =
 
