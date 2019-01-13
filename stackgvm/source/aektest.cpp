@@ -64,15 +64,15 @@ Scalar globals[] = {
     vec3(9.0f, 9.0f, 16.0f),   // gv_const_light_pos
 
     // Bitmap
-    16,//247570, // 0111100011100010010 gv_bitmap[0]
-    32,//280596, // 1000100100000010100
-    64,//280600, // 1000100100000011000
-    128,//249748, // 0111100111110010100
-    256,//18578,  // 0000100100010010010
-    512,//18577,  // 0000100100010010001
-    1024,//231184, // 0111000011100010000
-    0,//16,     // 0000000000000010000
-    0,//16     // 0000000000000010000
+    0,  // 247570, // 0111100011100010010 gv_bitmap[0]
+    0,  //280596, // 1000100100000010100
+    0, // 280600, // 1000100100000011000
+    0, // 249748, // 0111100111110010100
+    0,   // 18578,  // 0000100100010010010
+    0,// 18577,  // 0000100100010010001
+    0,   //231184, // 0111000011100010000
+    1024, //16,     // 0000000000000010000
+    1024, //16,     // 0000000000000010000
 
     // Other Scalars
 #ifdef _GVM_DEBUGGING_
@@ -80,14 +80,12 @@ Scalar globals[] = {
     1,       // gi_max_rays
 #else
     512,     // gi_image_size
-    //64,      // gi_max_rays
-    1,
+    1,      // gi_max_rays
 #endif
     99.0f,   // gf_dof_scale
     0.5f,    // gf_dof_bias
     16.0f,   // gf_accum_scale
-    //3.5f,    // gf_rgb_scale
-    64.f*3.5f,
+    64.0f*3.5f,    // gf_rgb_scale
     0.002f,  // gf_camera_scale
     1e9f,    // gf_distamce_max
     0.01f,   // gf_distance_min
@@ -414,7 +412,7 @@ GFUNC(trace) {
     fclt_il     (gf_distance_min, f_trace_p, 14)                                            // 5 [1, 1, 1, 2]
         copy_ll     (f_trace_p, f_trace_distance)                                           // 3 [1, 1, 1]
         vcopy_il    (gv_normal_up, v_trace_normal)                                          // 3 [1, 1, 1]
-        load_sl     (1, i_trace_material)                                                   // 3 [1, 1, 1]
+        load_sl     (127, i_trace_material)                                                   // 3 [1, 1, 1]
 
 // Check if trace maybe hits a sphere
 //     for (int32 j = 9; j--;) {
@@ -502,7 +500,7 @@ GFUNC(trace) {
                     vfmul_lll   (v_trace_direction, f_trace_distance, v_trace_temp)             // 4 [1, 1, 1, 1]
                     vadd_lll    (v_trace_temp, v_trace_p, v_trace_temp)                         // 4 [1, 1, 1, 1]
                     vnorm_ll    (v_trace_temp, v_trace_normal)                                  // 3 [1, 1, 1]
-                    load_sl     (2, i_trace_material)                                           // 3 [1, 1, 1]
+                    load_sl     (64, i_trace_material)                                           // 3 [1, 1, 1]
 // k--
     dbnn_l      (f_trace_k, -42-42)                                                         // 4 [1, 1, 2]
 // j--
@@ -640,20 +638,19 @@ GFUNC(sample) {
 //       (lambertian * 0.2 + 0.1)
 //     );
 //   }
-    bbc_sl      (0, m_sample_temp_1, 45)                                    // 5
-    fmul_ill    (gf_point_2, f_sample_lambertian, f_sample_lambertian)      // 4
-    fadd_ill    (gf_point_1, f_sample_lambertian, f_sample_lambertian)      // 4
-    vfmul_lil   (v_sample_intersection, gf_point_2, v_sample_intersection)  // 4
-    fceil_ll    (vec3_x(v_sample_intersection), m_sample_temp_0)            // 3
-    fceil_ll    (vec3_y(v_sample_intersection), m_sample_temp_1)            // 3
-    fadd_lll    (m_sample_temp_0, m_sample_temp_1, m_sample_temp_1)         // 4
-    ftoi_ll     (m_sample_temp_1, m_sample_temp_0)                          // 3
-    bbs_sl      (0, m_sample_temp_0, 10)                                    // 5
-        vfmul_ill   (gv_floor_white_rgb, f_sample_lambertian, v_sample_rgb) // 4
-        ret                                                                 // 1
-    vfmul_ill   (gv_floor_red_rgb, f_sample_lambertian, v_sample_rgb)       // 4
-    ret                                                                     // 1
-
+    bbc_sl      (0, m_sample_temp_1, 45)                                        // 5 [1, 1, 1, 2]
+        fmul_ill    (gf_point_2, f_sample_lambertian, f_sample_lambertian)      // 4 [1, 1, 1, 1]
+        fadd_ill    (gf_point_1, f_sample_lambertian, f_sample_lambertian)      // 4 [1, 1, 1, 1]
+        vfmul_lil   (v_sample_intersection, gf_point_2, v_sample_intersection)  // 4 [1, 1, 1, 1]
+        fceil_ll    (vec3_x(v_sample_intersection), m_sample_temp_0)            // 3 [1, 1, 1]
+        fceil_ll    (vec3_y(v_sample_intersection), m_sample_temp_1)            // 3 [1, 1, 1]
+        fadd_lll    (m_sample_temp_0, m_sample_temp_1, m_sample_temp_1)         // 4 [1, 1, 1, 1]
+        ftoi_ll     (m_sample_temp_1, m_sample_temp_0)                          // 3 [1, 1, 1]
+        bbs_sl      (0, m_sample_temp_0, 10)                                    // 5 [1, 1, 1, 2]
+            vfmul_ill   (gv_floor_white_rgb, f_sample_lambertian, v_sample_rgb) // 4 [1, 1, 1, 1]
+            ret                                                                 // 1
+        vfmul_ill   (gv_floor_red_rgb, f_sample_lambertian, v_sample_rgb)       // 4 [1, 1, 1, 1]
+        ret                                                                     // 1
 
 //
 //     half_vector = vec3_add(
@@ -716,296 +713,26 @@ BEGIN_GFUNC_TABLE(functionTable)
     { _gvm_sample, 32,  3,  6, 23 }
 END_GFUNC_TABLE
 
+int main() {
+    std::fprintf(stderr, "Max Opcode %d\n", Opcode::_MAX);
+    FloatClock t;
+    Interpreter::init(8, 0, functionTable, hostFunctionTable, globalData);
+    t.set();
+
 #ifdef _GVM_DEBUGGING_
-
-#include <cmath>
-
-struct Vec3 {
-    float32 x, y, z;
-
-    // default constructor
-    Vec3() { }
-
-    // constructor
-    Vec3(float32 a, float32 b, float32 c, int df=0) {
-        x = a;
-        y = b;
-        z = c;
-
-        if (df) {
-            debug(df);
-        }
-    }
-
-    void debug(int df) const {
-        std::fprintf(stderr, "{ %g, %g, %g }%s", x, y, z, (df & 2 ? "\n" : ""));
-    }
-};
-
-typedef const Vec3& cvr3;
-
-// Sum two Vec3
-static inline Vec3 vec3_add(cvr3 v1, cvr3 v2) {
-    std::fprintf(stderr, "\tvec3_add(");
-    v1.debug(1);
-    std::fprintf(stderr, ", ");
-    v2.debug(1);
-    std::fprintf(stderr, ") -> ");
-    return Vec3(
-        v1.x + v2.x,
-        v1.y + v2.y,
-        v1.z + v2.z,
-        2
-    );
-}
-
-// Subtract two vec3
-static inline Vec3 vec3_sub(cvr3 v1, cvr3 v2) {
-    std::fprintf(stderr, "\tvec3_sub(");
-    v1.debug(1);
-    std::fprintf(stderr, ", ");
-    v2.debug(1);
-    std::fprintf(stderr, ") -> ");
-    return Vec3(
-        v1.x - v2.x,
-        v1.y - v2.y,
-        v1.z - v2.z,
-        2
-    );
-}
-
-// Scale a vec3 by a float
-static inline Vec3 vec3_scale(cvr3 v, float32 s) {
-    std::fprintf(stderr, "\tvec3_scale(");
-    v.debug(1);
-    std::fprintf(stderr, ", %g) -> ", s);
-    return Vec3(
-        v.x * s,
-        v.y * s,
-        v.z * s,
-        2
-    );
-}
-
-// Get a normalised Vec3
-static inline Vec3 vec3_normalize(cvr3 v) {
-    std::fprintf(stderr, "\tvec3_normalize() => ");
-    return vec3_scale(v, (1.0 / std::sqrt(
-        (v.x * v.x) +
-        (v.y * v.y) +
-        (v.z * v.z)
-    )));
-}
-
-// Get the dot product of two Vec3
-static inline float32 dot(cvr3 v1, cvr3 v2) {
-    std::fprintf(stderr, "\tvec3_dot(");
-    v1.debug(1);
-    std::fprintf(stderr, ", ");
-    v2.debug(1);
-    float32 res = v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
-    std::fprintf(stderr, ") -> %g\n", res);
-    return res;
-}
-
-// Get the cross product for two Vec3
-static inline Vec3 vec3_cross(cvr3 v1, cvr3 v2) {
-    std::fprintf(stderr, "\tvec3_cross(");
-    v1.debug(1);
-    std::fprintf(stderr, ", ");
-    v2.debug(1);
-    std::fprintf(stderr, ") -> ");
-    return Vec3(
-        v1.y * v2.z - v1.z * v2.y,
-        v1.z * v2.x - v1.x * v2.z,
-        v1.x * v2.y - v1.y * v2.x,
-        2
-    );
-}
-
-static const float32 invRM = 1.0 / RAND_MAX;
-
-// Get a random number in the range 0.0 - 1.0
-static inline float32 frand() {
-    return 0.5f;//invRM * rand();
-}
-
-const Vec3 camera_dir(
-    -6.0, -16.0, 0.0
-);
-
-const Vec3 focal_point(
-    17.0, 16.0, 8.0
-);
-
-
-const Vec3 normal_up(
-    0.0, 0.0, 1.0
-);
-
-
-int pixel_coordinates[] = {
-    236, 145,   // mid sky
-    377, 492,   // red floor tile, lit
-    456, 477,   // white floor tile, lit
-    256, 417,   // red floor tile, shadow
-    202, 429,   // white floor tile, shadow
-    425, 137,   // sphere, sky reflection, no specular
-    425, 145,   // sphere, sky reflection, strong specular,
-    295, 391,   // sphere, reflect red floor tile, lit
-    280, 388,   // sphere, reflect white floor tile, lit
-    237, 283,   // sphere, reflect adjacent sphere
-};
-
-const char* pixel_descriptions[] = {
-    "Mid sky",
-    "Red floor tile, lit",
-    "White floor tile, lit",
-    "Red floor tile, in shadow",
-    "White floor tile, in shadow",
-    "Sphere, reflecting sky, no specular",
-    "Sphere, reflecting sky, strong specular",
-    "Sphere, refecting red floor tile, lit",
-    "Sphere, reflecting white floor tile, lit",
-    "Sphere, reflecting adjacent sphere"
-};
-
-Vec3 invokeSample(cvr3 origin, cvr3 direction) {
-
-    std::fprintf(stderr,
-        "\nsample(origin:{ %g, %g, %g }, direction:{ %g, %g, %g })\n",
-        origin.x,    origin.y,    origin.z,
-        direction.x, direction.y, direction.z
-    );
-
     Scalar* tmp =  Interpreter::stack();
     tmp[0].f = 0;
     tmp[1].f = 0;
     tmp[2].f = 0;
-    tmp[3].f = origin.x;
-    tmp[4].f = origin.y;
-    tmp[5].f = origin.z;
-    tmp[6].f = direction.x;
-    tmp[7].f = direction.y;
-    tmp[8].f = direction.z;
-    Interpreter::invoke(sample);
-    return Vec3(tmp[0].f, tmp[1].f, tmp[2].f);
-}
-
-void singlePixelRenderTest() {
-    int image_size = 512;
-
-    std::fprintf(stderr, "Individual Pixel Trace Debugging\n");
-
-    // camera direction vectors
-    Vec3
-        camera_forward = vec3_normalize( // Unit forwards
-            camera_dir
-        ),
-
-        camera_up = vec3_scale( // Unit up - Z is up in this system
-            vec3_normalize(
-                vec3_cross(
-                normal_up,
-                camera_forward
-                )
-            ),
-            0.002f
-        ),
-
-        camera_right = vec3_scale( // Unit right
-            vec3_normalize(
-                vec3_cross(camera_forward, camera_up)
-            ),
-            0.002f
-        ),
-
-        eye_offset = vec3_add( // Offset from eye to coner of focal plane
-            vec3_scale(
-                vec3_add(camera_up, camera_right),
-                -(image_size >> 1)
-            ),
-            camera_forward
-        )
-    ;
-
-    std::fprintf(stderr, "main(): camera_forward = "); camera_forward.debug(2);
-    std::fprintf(stderr, "main(): camera_up      = "); camera_up.debug(2);
-    std::fprintf(stderr, "main(): camera_right   = "); camera_right.debug(2);
-    std::fprintf(stderr, "main(): eye_offset     = "); eye_offset.debug(2);
-    std::fprintf(stderr, "main(): Scene configuration completed.\n");
-
-    for (int n = 0; n < sizeof(pixel_coordinates)/sizeof(int); n+=2) {
-
-        int x = image_size - pixel_coordinates[n];
-        int y = image_size - pixel_coordinates[n+1];
-
-        std::fprintf(stderr,
-            "\n//////////////////////////////////////////////////////////////////////////////////////////////////////\n"
-            "main(): Tracing Pixel at (%d, %d), sampling \"%s\"\n",
-            pixel_coordinates[n], pixel_coordinates[n+1], pixel_descriptions[n>>1]
-        );
-
-        // Random delta to be added for depth of field effects
-        Vec3 delta = vec3_add(
-            vec3_scale(camera_up,    (frand() - 0.5f) * 99.0f),
-            vec3_scale(camera_right, (frand() - 0.5f) * 99.0f)
-        );
-
-        // Accumulate the sample result into the current pixel
-        Vec3 pixel  = vec3_scale(
-            invokeSample(
-                vec3_add(
-                    focal_point,
-                    delta
-                ),
-                vec3_normalize(
-                    vec3_sub(
-                        vec3_scale(
-                            vec3_add(
-                                vec3_scale(camera_up, frand() + x),
-                                vec3_add(
-                                    vec3_scale(camera_right, frand() + y),
-                                    eye_offset
-                                )
-                            ),
-                            16.0f
-                        ),
-                        delta
-                    )
-                )
-            ),
-            64*3.5f
-        );
-
-        pixel = vec3_add(pixel, Vec3(13.0f, 13.0f, 13.0f));
-
-        // Convert to integers and push out to ppm outpu stream
-        std::fprintf(stderr,
-            "\nmain(): Pixel (%d, %d) \"%s\" final RGB => ",
-            pixel_coordinates[n],
-            pixel_coordinates[n+1],
-            pixel_descriptions[n>>1]
-        );
-        pixel.debug(1);
-        std::fprintf(stderr, ": #%02X%02X%02X\n", (unsigned)pixel.x, (unsigned)pixel.y, (unsigned)pixel.z);
-    }
-}
-
-#endif
-
-int main() {
-    std::fprintf(stderr, "Max Opcode %d\n", Opcode::_MAX);
-    FloatClock t;
-    Interpreter::init(128, 0, functionTable, hostFunctionTable, globalData);
-    t.set();
-    Result result =
-
-#ifdef _GVM_DEBUGGING_
-    GVM::EXEC_RETURN_TO_HOST;
-    singlePixelRenderTest();
+    tmp[3].u = 0x41880000; // origin.x = 17;
+    tmp[4].u = 0x41800000; // origin.y = 16;
+    tmp[5].u = 0x41000000; // origin.z = 8;
+    tmp[6].u = 0xBEB0712E; // direction.x = -0.344613;
+    tmp[7].u = 0xBF6A8ADF; // direction.y = -0.916182;
+    tmp[8].u = 0x3E517D4A; // direction.z = 0.20458;
+    Result result = Interpreter::invoke(sample);
 #else
-    Interpreter::invoke(render);
+    Result result = Interpreter::invoke(render);
 #endif
     float32 elapsed = t.elapsed();
     Interpreter::done();

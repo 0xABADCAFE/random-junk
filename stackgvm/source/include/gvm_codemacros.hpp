@@ -72,6 +72,8 @@
 #define addr_cl(f,l)     _OP(ADDR_CL),      _D16(f),  _D8(l),
 #define addr_ci(f,I,i)   _OP(ADDR_CI##I)    _D16(f),  _D8(i),
 
+#define adda_s(s,I)      _OP(ADDA_SI##I),    _S8(s),
+
 #define load_li(l,I)      _OP(LOAD_L##I),    _D8(l),
 #define save_il(I,l)      _OP(SAVE_##I##L),  _D8(l),
 #define load_hl(h,l)      _OP(LOAD_HL),      _D8(h), _D8(l),

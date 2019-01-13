@@ -154,13 +154,13 @@ static const float32 invRM = 1.0 / RAND_MAX;
 
 // Get a random number in the range 0.0 - 1.0
 static inline float32 frand() {
-    return 0.5f;//invRM * rand();
+    return invRM * std::rand();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 // Trace
-int32 trace(cvr3 origin, cvr3 direction, float32& distance, vec3& normal) {
+int32 trace(cvr3 origin, cvr3 direction, float32& distance, vec3& normal, int early) {
     distance         = 1e9f;
 
     // Assume trace hits nothing
@@ -177,23 +177,26 @@ int32 trace(cvr3 origin, cvr3 direction, float32& distance, vec3& normal) {
     // Check if trace maybe hits a sphere
     for (int i = 0; i<num_spheres; i++) {
         vec3 p = vec3_sub(
-	    origin,
+            origin,
             spheres[i] // Sphere coordinate
         );
 
         float32
-        b = dot(p, direction),
-        eye_offset = dot(p, p) - 1.0f,
-        q = b * b - eye_offset
+            b = dot(p, direction),
+            eye_offset = dot(p, p) - 1.0f,
+            q = b * b - eye_offset
         ;
         if (q > 0.0f) {
             float32 sphere_distance = -b - std::sqrt(q);
             if (sphere_distance < distance && sphere_distance > 0.01f) {
-                distance = sphere_distance,
+                distance = sphere_distance;
                 normal   = vec3_normalize(
                     vec3_add(p, vec3_scale(direction, distance))
-                ),
-                material = 2; // Returning here is fast, but we'd get z fighting
+                );
+                if (early) {
+                    return 2;
+                }
+                material = 2;
             }
         }
     }
@@ -208,7 +211,7 @@ vec3 sample(cvr3 origin, cvr3 direction) {
     vec3 normal;
 
     // Find where the ray intersects the world
-    int32 material = trace(origin, direction, distance, normal);
+    int32 material = trace(origin, direction, distance, normal, 0);
 
     // Hit nothing? Sky shade
     if (!material) {
@@ -239,12 +242,12 @@ vec3 sample(cvr3 origin, cvr3 direction) {
 
     // Calculate the lambertian illumuination factor
     float32 lambertian = dot(light, normal);
-    if (lambertian < 0.0f || trace(intersection, light, distance, normal)) {
+    if (lambertian < 0.0f || trace(intersection, light, distance, normal, 1)) {
         lambertian = 0.0f; // in shadow
     }
 
     // Hit the floor plane
-    if (material & 1) {
+    if (material == 1) {
         intersection = vec3_scale(intersection, 0.2f);
         return vec3_scale(
             (
