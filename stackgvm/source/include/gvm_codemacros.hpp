@@ -309,16 +309,16 @@
 
 //
 // // Two operand, local to local handy maths functions
-#define finv_ll(l1,l2)   _OP(FINV_LL),  _D8(l1), _D8(l2),
-#define fsqrt_ll(l1,l2)  _OP(FSQRT_LL), _D8(l1), _D8(l2),
-#define fisqr_ll(l1,l2)  _OP(INVSQ_LL), _D8(l1), _D8(l2),
-#define fsin_ll(l1,l2)   _OP(FSIN_LL),  _D8(l1), _D8(l2),
-#define fcos_ll(l1,l2)   _OP(FCOS_LL),  _D8(l1), _D8(l2),
-#define facos_l(l1,l2)   _OP(FACOS_LL), _D8(l1), _D8(l2),
-#define fceil_ll(l1,l2)  _OP(FCEIL_LL), _D8(l1), _D8(l2),
-#define ffloor_ll(l1,l2) _OP(FFLOOR_LL), _D8(l1), _D8(l2),
+#define finv_ll(l1,l2)     _OP(FINV_LL),   _D8(l1), _D8(l2),
+#define fsqrt_ll(l1,l2)    _OP(FSQRT_LL),  _D8(l1), _D8(l2),
+#define fisqr_ll(l1,l2)    _OP(INVSQ_LL),  _D8(l1), _D8(l2),
+#define fsin_ll(l1,l2)     _OP(FSIN_LL),   _D8(l1), _D8(l2),
+#define fcos_ll(l1,l2)     _OP(FCOS_LL),   _D8(l1), _D8(l2),
+#define facos_l(l1,l2)     _OP(FACOS_LL),  _D8(l1), _D8(l2),
+#define fceil_ll(l1,l2)    _OP(FCEIL_LL),  _D8(l1), _D8(l2),
+#define ffloor_ll(l1,l2)   _OP(FFLOOR_LL), _D8(l1), _D8(l2),
+#define fpow_lll(l1,l2,l3) _OP(FPOW_LLL),  _D8(l1), _D8(l2), _D8(l3),
 
-//
 //
 // // Two operand float negate
 #define fneg_ll(l1,l2)     _OP(FNEG_LL),       _D8(l1), _D8(l2),

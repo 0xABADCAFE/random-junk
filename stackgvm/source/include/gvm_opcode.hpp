@@ -226,15 +226,14 @@ namespace GVM {
             _FBGT_II,
 
             // Two operand, local to local handy maths functions
-            _FINV_LL,  // Reciprocal
-            _FSQRT_LL, // Square root
-            _INVSQ_LL, // Inverse square
-            _FSIN_LL,  // Sine
-            _FCOS_LL,  // Cosine
-            _FACOS_LL, // Arccosine
-
-            _FCEIL_LL,
-            _FFLOOR_LL,
+            _FINV_LL,   // Reciprocal
+            _FSQRT_LL,  // Square root
+            _INVSQ_LL,  // Inverse square
+            _FSIN_LL,   // Sine
+            _FCOS_LL,   // Cosine
+            _FACOS_LL,  // Arccosine
+            _FCEIL_LL,  // Ceiling
+            _FFLOOR_LL, // Floor
 
             // Two operand float negate
             _FNEG_LL,
@@ -292,6 +291,8 @@ namespace GVM {
             _FMIN_ILL,
             _FMIN_LLI,
             _FMIN_ILI,
+
+            _FPOW_LLL,   // Power
 
             // Vector specific instructions ////////////////////////////////////////////////////////////////////////////
 

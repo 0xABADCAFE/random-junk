@@ -64,15 +64,15 @@ Scalar globals[] = {
     vec3(9.0f, 9.0f, 16.0f),   // gv_const_light_pos
 
     // Bitmap
-    0,  // 247570, // 0111100011100010010 gv_bitmap[0]
-    0,  //280596, // 1000100100000010100
-    0, // 280600, // 1000100100000011000
-    0, // 249748, // 0111100111110010100
-    0,   // 18578,  // 0000100100010010010
-    0,// 18577,  // 0000100100010010001
-    0,   //231184, // 0111000011100010000
-    1024, //16,     // 0000000000000010000
-    1024, //16,     // 0000000000000010000
+    247570, // 0111100011100010010 gv_bitmap[0]
+    280596, // 1000100100000010100
+    280600, // 1000100100000011000
+    249748, // 0111100111110010100
+    18578,  // 0000100100010010010
+    18577,  // 0000100100010010001
+    231184, // 0111000011100010000
+    16,     // 0000000000000010000
+    16,     // 0000000000000010000
 
     // Other Scalars
 #ifdef _GVM_DEBUGGING_
@@ -80,12 +80,12 @@ Scalar globals[] = {
     1,       // gi_max_rays
 #else
     512,     // gi_image_size
-    1,      // gi_max_rays
+    64,      // gi_max_rays
 #endif
     99.0f,   // gf_dof_scale
     0.5f,    // gf_dof_bias
     16.0f,   // gf_accum_scale
-    64.0f*3.5f,    // gf_rgb_scale
+    3.5f,    // gf_rgb_scale
     0.002f,  // gf_camera_scale
     1e9f,    // gf_distamce_max
     0.01f,   // gf_distance_min
@@ -374,16 +374,16 @@ typedef enum {
     i_trace_bitmap_row      = 14,
     v_trace_sphere          = 15,
     v_trace_temp            = 15, // Shared with v_trace_sphere
-    f_trace_zero            = 16, // Shared with v_trace_sphere[1]
     v_trace_p               = 18,
     f_trace_b               = 21,
     f_trace_eye_offset      = 22,
     f_trace_q               = 23,
     f_trace_sphere_distance = 23, // Shared with f_trace_q
-    m_trace_temp_0          = 24,
-    m_trace_temp_1          = 25,
-    m_trace_temp_2          = 26,
-    m_trace_temp_3          = 27,
+    f_trace_zero            = 24,
+    m_trace_temp_0          = 25,
+    m_trace_temp_1          = 26,
+    m_trace_temp_2          = 27,
+    m_trace_temp_3          = 28,
 } TraceLocalsEnum;
 
 
@@ -442,7 +442,7 @@ GFUNC(trace) {
 //         }
 //     }
 
-// Check if trace maybe hits a sphere                                                   // Total: 12
+// Check if trace maybe hits a sphere                                                       // Total: 12
     load_sl     (1, m_trace_temp_0)                                                         // 3 [1, 1, 1]
     load_sl     (0, f_trace_zero)                                                           // 3 [1, 1, 1]
     load_sl     (4, m_trace_temp_3)                                                         // 3 [1, 1, 1]
@@ -452,8 +452,8 @@ GFUNC(trace) {
     cpix_il     (0, gi_bitmap, f_trace_j, i_trace_bitmap_row)                               // 4 [1, 1, 1, 1]
     load_sl     (18, f_trace_k)                                                             // 3 [1, 1, 1]
 
-// Loop target for k                                                                        // Total:42
-    cbs_ll      (f_trace_k, i_trace_bitmap_row, 42+42)                                      // 5 [1, 1, 1, 2]
+// Loop target for k                                                                        // Total:45
+    cbs_ll      (f_trace_k, i_trace_bitmap_row, 45+42)                                      // 5 [1, 1, 1, 2]
 
 //                 vec3 p = vec3_sub(
 //                     origin,
@@ -465,10 +465,10 @@ GFUNC(trace) {
 //                     eye_offset = dot(p, p) - 1.0,
 //                     q = b * b - eye_offset
 //                 ;
-
-        itof_ll     (f_trace_k, v_trace_sphere)                                                 // 3 [1, 1, 1]
+        load_sl     (0, vec3_y(v_trace_sphere))                                                 // 3 [1, 1, 1]
+        itof_ll     (f_trace_k, vec3_x(v_trace_sphere))                                         // 3 [1, 1, 1]
         add_lll     (f_trace_j, m_trace_temp_3, m_trace_temp_2)                                 // 4 [1, 1, 1, 1]
-        itof_ll     (m_trace_temp_2, v_trace_sphere + 2)                                        // 3 [1, 1, 1]
+        itof_ll     (m_trace_temp_2, vec3_z(v_trace_sphere))                                    // 3 [1, 1, 1]
         vsub_lll    (v_trace_origin, v_trace_sphere, v_trace_p)                                 // 4 [1, 1, 1, 1]
         vdot_lll    (v_trace_p, v_trace_direction, f_trace_b)                                   // 4 [1, 1, 1, 1]
         itof_ll     (m_trace_temp_0, m_trace_temp_1)                                            // 3 [1, 1, 1]
@@ -502,9 +502,9 @@ GFUNC(trace) {
                     vnorm_ll    (v_trace_temp, v_trace_normal)                                  // 3 [1, 1, 1]
                     load_sl     (64, i_trace_material)                                           // 3 [1, 1, 1]
 // k--
-    dbnn_l      (f_trace_k, -42-42)                                                         // 4 [1, 1, 2]
+    dbnn_l      (f_trace_k, -42-45)                                                         // 4 [1, 1, 2]
 // j--
-    dbnn_l      (f_trace_j, -4 -42-42 -7)                                                   // 4 [1, 1, 2]
+    dbnn_l      (f_trace_j, -4 -42-45 -7)                                                   // 4 [1, 1, 2]
 
     ret
 };
@@ -523,7 +523,9 @@ typedef enum {
     m_sample_temp_0       = 9,
     m_sample_temp_1       = 10,
     f_sample_lambertian   = 11,
-    v_sample_temp_0       = 12,
+    f_sample_specular     = 12,
+    v_sample_temp_0       = 13,
+    v_sample_temp_1       = 16,
     m_sample_next_func_p  = 32,
 
     i_sample_material     = m_sample_next_func_p + i_trace_material,
@@ -543,7 +545,7 @@ typedef enum {
 GFUNC(sample) {
 // vec3 sample(cvr3 origin, cvr3 direction) {
 
-    addr_d      (g_globals, 0)                                                              // 3 [1, 1, 1]
+    addr_d      (g_globals, 0)                                                     // 3 [1, 1, 1]
 
 //   float32 distance;
 //   vec3 normal;
@@ -600,7 +602,7 @@ GFUNC(sample) {
     copy_il     (0, vec3_z(gv_const_light_pos), vec3_z(v_sample_light))                // 3
     vsub_lll    (v_sample_light, v_sample_intersection, v_sample_light)                // 4
     vnorm_ll    (v_sample_light, v_sample_light)                                       // 3
-
+    vcopy_ll    (v_sample_light, v_sample_temp_1)
 //   // Calculate the lambertian illumuination factor
 //   float32 lambertian = dot(light, normal);
 
@@ -621,10 +623,6 @@ GFUNC(sample) {
     bez_l       (i_sample_material, 7)                     // 4
         load_sl     (0, f_sample_lambertian)               // 3
 
-
-
-// TODO - if material & 1
-//
 //   // Hit the floor plane
 //   if (material & 1) {
 //     intersection = vec3_scale(intersection, 0.2);
@@ -652,7 +650,6 @@ GFUNC(sample) {
         vfmul_ill   (gv_floor_red_rgb, f_sample_lambertian, v_sample_rgb)       // 4 [1, 1, 1, 1]
         ret                                                                     // 1
 
-//
 //     half_vector = vec3_add(
 //       direction,
 //       vec3_scale(
@@ -662,17 +659,12 @@ GFUNC(sample) {
 //     )
 //   ;
 
-    vcopy_ll    (v_sample_intersection, v_sample_temp_0)
+    vcopy_ll    (v_sample_intersection, v_sample_temp_0)                              // 3
     vdot_lll    (v_sample_normal, v_sample_in_direction, f_sample_dot_temp)           // 4
     fmul_ill    (gf_minus_2, f_sample_dot_temp, f_sample_dot_temp)                    // 4
     vfmul_lll   (v_sample_normal, f_sample_dot_temp, v_sample_half_vector)            // 4
     vadd_lll    (v_sample_in_direction, v_sample_half_vector, v_sample_half_vector)   // 4
-    vcopy_ll    (v_sample_temp_0, v_sample_next_origin)                               // 4
 
-    call        (sample)
-    vfmul_lil   (v_sample_next_rgb, gf_reflection_scale, v_sample_rgb)
-
-//
 //   // Compute the specular highlight power
 //   float32 specular = pow(dot(light, half_vector) * (lambertian > 0.0), 99.0);
 //
@@ -685,6 +677,19 @@ GFUNC(sample) {
 //     )
 //   );
 // }
+
+    vcopy_ll    (v_sample_temp_0, v_sample_next_origin)                               // 4
+    call        (sample)
+    vfmul_lil   (v_sample_next_rgb, gf_reflection_scale, v_sample_rgb)
+
+    load_sl     (0, m_sample_temp_0)                                                  // 3
+    fcgt_ll     (f_sample_lambertian, m_sample_temp_0, 28)                            // 5
+        vdot_lll    (v_sample_temp_1,   v_sample_half_vector, f_sample_specular)      // 4
+        copy_il     (0, gf_specular_power, m_sample_temp_0)                           // 3
+        fpow_lll    (f_sample_specular, m_sample_temp_0,    f_sample_specular)        // 4
+        fadd_lll    (f_sample_specular, vec3_x(v_sample_rgb), vec3_x(v_sample_rgb))   // 4
+        fadd_lll    (f_sample_specular, vec3_y(v_sample_rgb), vec3_y(v_sample_rgb))   // 4
+        fadd_lll    (f_sample_specular, vec3_z(v_sample_rgb), vec3_z(v_sample_rgb))   // 4
 
     ret
 };
@@ -716,7 +721,7 @@ END_GFUNC_TABLE
 int main() {
     std::fprintf(stderr, "Max Opcode %d\n", Opcode::_MAX);
     FloatClock t;
-    Interpreter::init(8, 0, functionTable, hostFunctionTable, globalData);
+    Interpreter::init(32, 0, functionTable, hostFunctionTable, globalData);
     t.set();
 
 #ifdef _GVM_DEBUGGING_

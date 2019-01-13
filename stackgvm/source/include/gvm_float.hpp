@@ -7,8 +7,8 @@ IS(FRND_L) {
 #ifdef _GVM_DEBUG_OPCODES_
     LOC(0).f = 0.5f;
 #else
-    //LOC(0).f = invRMax * std::rand();
-    LOC(0).f = 0.5f;
+    LOC(0).f = invRMax * std::rand();
+    //LOC(0).f = 0.5f;
 #endif
     gvmDebugOpcode(
         "rnd.f (%d) : %g",
@@ -264,7 +264,7 @@ IS(FACOS_LL) {
 }
 
 IS(FCEIL_LL) {
-    // Arccosine
+    // Ceil
     gvmDebugOpcode(
         "ceil.f (%d), (%d) : ceil(%e) => ",
         OPS(0),
@@ -278,7 +278,7 @@ IS(FCEIL_LL) {
 }
 
 IS(FFLOOR_LL) {
-    // Arccosine
+    // Floor
     gvmDebugOpcode(
         "floor.f (%d), (%d) : floor(%e) => ",
         OPS(0),
@@ -290,6 +290,7 @@ IS(FFLOOR_LL) {
     STEP(3);
     NEXT;
 }
+
 
 // Two Operand Float Negate ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -957,6 +958,22 @@ IS(FMIN_ILI) {
     );
     IX1(2).f  = f1 < f2 ? f1 : f2;
     gvmDebugOpcode("%g", IX1(2).f);
+    STEP(4);
+    NEXT;
+}
+
+IS(FPOW_LLL) {
+    // Power
+    gvmDebugOpcode(
+        "pow.f (%d), (%d), (%d) : pow(%g, %g) => ",
+        OPS(0),
+        OPS(1),
+        OPS(2),
+        LOC(0).f,
+        LOC(1).f
+    );
+    LOC(2).f  = std::pow(LOC(0).f, LOC(1).f);
+    gvmDebugOpcode("%g", LOC(2).f);
     STEP(4);
     NEXT;
 }
