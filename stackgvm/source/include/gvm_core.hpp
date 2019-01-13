@@ -151,6 +151,8 @@ namespace GVM {
             static Result validateTables(const FuncInfo* func, const HostCall* host, Scalar** data);
 
             static void   dumpFrame();
+
+            static void   dumpCallStack();
     };
 
 };

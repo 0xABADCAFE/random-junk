@@ -550,6 +550,22 @@ IS(ADDR_CI1) {
     NEXT;
 }
 
+IS(ADDA_SI0) {
+    // Add small integer offset to indirect[0]
+    IR(0) += S8(0);
+    SAVE_IR(0);
+    STEP(2);
+    NEXT;
+}
+
+IS(ADDA_SI1) {
+    // Add small integer offset to indirect[1]
+    IR(1) += S8(0);
+    SAVE_IR(1);
+    STEP(2);
+    NEXT;
+}
+
 // Data Movement Operations ////////////////////////////////////////////////////////////////////////////////////////////
 
 IS(LOAD_L0) {

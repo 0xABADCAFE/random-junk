@@ -39,7 +39,15 @@ typedef enum {
     gf_distance_max        = 40,
     gf_distance_min        = 41,
 
-    gv_temp_floor_rgb      = 42
+    gf_minus_2             = 42,
+    gf_point_2             = 43,
+    gf_point_1             = 44,
+
+    gf_reflection_scale    = 36,
+    gf_specular_power      = 35,
+
+    gv_temp_floor_rgb      = 45,
+
 } GlobalEnum;
 
 
@@ -68,8 +76,8 @@ Scalar globals[] = {
 
     // Other Scalars
 #ifdef _GVM_DEBUGGING_
-    4,       // gi_image_size
-    4,       // gi_max_rays
+    512,       // gi_image_size
+    1,       // gi_max_rays
 #else
     512,     // gi_image_size
     64,      // gi_max_rays
@@ -82,7 +90,10 @@ Scalar globals[] = {
     1e9f,    // gf_distamce_max
     0.01f,   // gf_distance_min
 
-    vec3(0.5f, 0.1f, 0.1f)
+    -2.0f,
+    0.2f,
+    0.1f,
+    vec3(0.5f, 0.1f, 0.1f),
 };
 
 
@@ -95,8 +106,6 @@ Scalar globals[] = {
 typedef enum {
     print_header = 1,
     print_rgb,
-    shim_sample,
-    shim_trace
 } HostFunctionEnum;
 
 Result hostPrintHeader(Scalar* frame) {
@@ -365,18 +374,17 @@ typedef enum {
     i_trace_bitmap_row      = 14,
     v_trace_sphere          = 15,
     v_trace_temp            = 15, // Shared with v_trace_sphere
-    f_trace_zero            = 16, // Shared with v_trace_sphere[1]
     v_trace_p               = 18,
     f_trace_b               = 21,
     f_trace_eye_offset      = 22,
     f_trace_q               = 23,
     f_trace_sphere_distance = 23, // Shared with f_trace_q
-    m_trace_temp_0          = 24,
-    m_trace_temp_1          = 25,
-    m_trace_temp_2          = 26,
-    m_trace_temp_3          = 27,
+    f_trace_zero            = 24,
+    m_trace_temp_0          = 25,
+    m_trace_temp_1          = 26,
+    m_trace_temp_2          = 27,
+    m_trace_temp_3          = 28,
 } TraceLocalsEnum;
-
 
 
 GFUNC(trace) {
@@ -404,11 +412,9 @@ GFUNC(trace) {
     fclt_il     (gf_distance_min, f_trace_p, 14)                                            // 5 [1, 1, 1, 2]
         copy_ll     (f_trace_p, f_trace_distance)                                           // 3 [1, 1, 1]
         vcopy_il    (gv_normal_up, v_trace_normal)                                          // 3 [1, 1, 1]
-        load_sl     (1, i_trace_material)                                                   // 3 [1, 1, 1]
+        load_sl     (127, i_trace_material)                                                   // 3 [1, 1, 1]
 
-//ret
-
-  // Check if trace maybe hits a sphere
+// Check if trace maybe hits a sphere
 //     for (int32 j = 9; j--;) {
 //         for (int32 k = 19; k--;) {
 //             if (data[j] & 1 << k) {
@@ -436,7 +442,7 @@ GFUNC(trace) {
 //         }
 //     }
 
-    // Check if trace maybe hits a sphere                                                   // Total: 12
+// Check if trace maybe hits a sphere                                                       // Total: 12
     load_sl     (1, m_trace_temp_0)                                                         // 3 [1, 1, 1]
     load_sl     (0, f_trace_zero)                                                           // 3 [1, 1, 1]
     load_sl     (4, m_trace_temp_3)                                                         // 3 [1, 1, 1]
@@ -446,8 +452,8 @@ GFUNC(trace) {
     cpix_il     (0, gi_bitmap, f_trace_j, i_trace_bitmap_row)                               // 4 [1, 1, 1, 1]
     load_sl     (18, f_trace_k)                                                             // 3 [1, 1, 1]
 
-// Loop target for k                                                                        // Total:42
-    cbs_ll      (f_trace_k, i_trace_bitmap_row, 42+42)                                      // 5 [1, 1, 1, 2]
+// Loop target for k                                                                        // Total:45
+    cbs_ll      (f_trace_k, i_trace_bitmap_row, 45+42)                                      // 5 [1, 1, 1, 2]
 
 //                 vec3 p = vec3_sub(
 //                     origin,
@@ -459,10 +465,10 @@ GFUNC(trace) {
 //                     eye_offset = dot(p, p) - 1.0,
 //                     q = b * b - eye_offset
 //                 ;
-    
-        itof_ll     (f_trace_k, v_trace_sphere)                                                 // 3 [1, 1, 1]
+        load_sl     (0, vec3_y(v_trace_sphere))                                                 // 3 [1, 1, 1]
+        itof_ll     (f_trace_k, vec3_x(v_trace_sphere))                                         // 3 [1, 1, 1]
         add_lll     (f_trace_j, m_trace_temp_3, m_trace_temp_2)                                 // 4 [1, 1, 1, 1]
-        itof_ll     (m_trace_temp_2, v_trace_sphere + 2)                                        // 3 [1, 1, 1]
+        itof_ll     (m_trace_temp_2, vec3_z(v_trace_sphere))                                    // 3 [1, 1, 1]
         vsub_lll    (v_trace_origin, v_trace_sphere, v_trace_p)                                 // 4 [1, 1, 1, 1]
         vdot_lll    (v_trace_p, v_trace_direction, f_trace_b)                                   // 4 [1, 1, 1, 1]
         itof_ll     (m_trace_temp_0, m_trace_temp_1)                                            // 3 [1, 1, 1]
@@ -494,36 +500,15 @@ GFUNC(trace) {
                     vfmul_lll   (v_trace_direction, f_trace_distance, v_trace_temp)             // 4 [1, 1, 1, 1]
                     vadd_lll    (v_trace_temp, v_trace_p, v_trace_temp)                         // 4 [1, 1, 1, 1]
                     vnorm_ll    (v_trace_temp, v_trace_normal)                                  // 3 [1, 1, 1]
-                    load_sl     (2, i_trace_material)                                           // 3 [1, 1, 1]
+                    load_sl     (64, i_trace_material)                                           // 3 [1, 1, 1]
 // k--
-    dbnn_l      (f_trace_k, -42-42)                                                         // 4 [1, 1, 2]
+    dbnn_l      (f_trace_k, -42-45)                                                         // 4 [1, 1, 2]
 // j--
-    dbnn_l      (f_trace_j, -4 -42-42 -7)                                                   // 4 [1, 1, 2]
+    dbnn_l      (f_trace_j, -4 -42-45 -7)                                                   // 4 [1, 1, 2]
 
     ret
 };
 
-// This function serves as a proxy for the virtual code sample function for now
-Result hostShimTrace(Scalar* frame) {
-//  material = 0;
-//  float32 p = -origin.z / direction.z;
-//  if (0.01 < p) {
-//      distance = p,
-//      normal   = normal_up,
-//      material = 1;
-//  }
-
-    frame[i_trace_material].i = 0;
-    float32 p = -frame[vec3_z(v_trace_origin)].f / frame[vec3_z(v_trace_direction)].f;
-    if (0.01 < p) {
-        frame[f_trace_distance].f = p;
-        frame[vec3_x(v_trace_normal)].f = globals[vec3_x(gv_normal_up)].f;
-        frame[vec3_y(v_trace_normal)].f = globals[vec3_y(gv_normal_up)].f;
-        frame[vec3_z(v_trace_normal)].f = globals[vec3_z(gv_normal_up)].f;
-        frame[i_trace_material].i = 1;
-    }
-    return SUCCESS;
-}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -533,6 +518,14 @@ typedef enum {
     v_sample_in_origin    = 3,
     v_sample_in_direction = 6,
     f_sample_gradient     = 9,
+    f_sample_rand         = 9,
+    f_sample_dot_temp     = 9,
+    m_sample_temp_0       = 9,
+    m_sample_temp_1       = 10,
+    f_sample_lambertian   = 11,
+    f_sample_specular     = 12,
+    v_sample_temp_0       = 13,
+    v_sample_temp_1       = 16,
     m_sample_next_func_p  = 32,
 
     i_sample_material     = m_sample_next_func_p + i_trace_material,
@@ -543,12 +536,16 @@ typedef enum {
     f_sample_distnace     = m_sample_next_func_p + f_trace_distance,
     v_sample_normal       = m_sample_next_func_p + v_trace_normal,
 
+    v_sample_next_rgb       = m_sample_next_func_p,
+    v_sample_next_origin    = m_sample_next_func_p + v_sample_in_origin,
+    v_sample_next_direction = m_sample_next_func_p + v_sample_in_direction,
+    v_sample_half_vector    = m_sample_next_func_p + v_sample_in_direction,
 } SampleLocalsEnum;
 
 GFUNC(sample) {
 // vec3 sample(cvr3 origin, cvr3 direction) {
 
-    addr_d      (g_globals, 0)                                                              // 3 [1, 1, 1]
+    addr_d      (g_globals, 0)                                                     // 3 [1, 1, 1]
 
 //   float32 distance;
 //   vec3 normal;
@@ -579,21 +576,12 @@ GFUNC(sample) {
         vfmul_ill   (gv_sky_rgb,        f_sample_gradient, v_sample_rgb)               // 4
         ret                                                                            // 1
 
-   bbc_sl      (0,   i_sample_material, 9)                                            // 5
-       vcopy_il    (gv_temp_floor_rgb , v_sample_rgb)                                 // 3
-       ret                                                                            // 1
-   load_sl     (0, 0)
-   load_sl     (0, 1)
-   load_sl     (0, 2)
-   ret
-
-
-//
 //   vec3
 //     intersection = vec3_add(origin, vec3_scale(direction, distance)),
 
     vfmul_lll   (v_sample_in_direction, f_sample_distnace, v_sample_intersection)      // 4 [1, 1, 1, 1]
     vadd_lll    (v_sample_in_origin, v_sample_intersection, v_sample_intersection)     // 4 [1, 1, 1, 1]
+
 //
 //     // Calculate the lighting vector
 //     light = vec3_normalize(
@@ -607,22 +595,34 @@ GFUNC(sample) {
 //       )
 //     ),
 
-//
-//     half_vector = vec3_add(
-//       direction,
-//       vec3_scale(
-//         normal,
-//         dot(normal, direction) * -2.0
-//       )
-//     )
-//   ;
-//
+    frnd_l      (f_sample_rand)                                                        // 2
+    fadd_ill    (vec3_x(gv_const_light_pos), f_sample_rand, vec3_x(v_sample_light))    // 3
+    frnd_l      (f_sample_rand)                                                        // 2
+    fadd_ill    (vec3_y(gv_const_light_pos), f_sample_rand, vec3_y(v_sample_light))    // 3
+    copy_il     (0, vec3_z(gv_const_light_pos), vec3_z(v_sample_light))                // 3
+    vsub_lll    (v_sample_light, v_sample_intersection, v_sample_light)                // 4
+    vnorm_ll    (v_sample_light, v_sample_light)                                       // 3
+    vcopy_ll    (v_sample_light, v_sample_temp_1)
 //   // Calculate the lambertian illumuination factor
 //   float32 lambertian = dot(light, normal);
+
+    vdot_lll    (v_sample_light, v_sample_normal, f_sample_lambertian)
+
 //   if (lambertian < 0 || trace(intersection, light, distance, normal)) {
 //     lambertian = 0; // in shadow
 //   }
-//
+
+    copy_ll     (i_sample_material, m_sample_temp_1)
+    load_sl     (0, m_sample_temp_0)
+
+    fclt_ll     (f_sample_lambertian, m_sample_temp_0, 7)  // 5
+        bras        (2+3+4)                                // 2
+
+    call(trace)                                            // 3
+
+    bez_l       (i_sample_material, 7)                     // 4
+        load_sl     (0, f_sample_lambertian)               // 3
+
 //   // Hit the floor plane
 //   if (material & 1) {
 //     intersection = vec3_scale(intersection, 0.2);
@@ -636,7 +636,35 @@ GFUNC(sample) {
 //       (lambertian * 0.2 + 0.1)
 //     );
 //   }
-//
+    bbc_sl      (0, m_sample_temp_1, 45)                                        // 5 [1, 1, 1, 2]
+        fmul_ill    (gf_point_2, f_sample_lambertian, f_sample_lambertian)      // 4 [1, 1, 1, 1]
+        fadd_ill    (gf_point_1, f_sample_lambertian, f_sample_lambertian)      // 4 [1, 1, 1, 1]
+        vfmul_lil   (v_sample_intersection, gf_point_2, v_sample_intersection)  // 4 [1, 1, 1, 1]
+        fceil_ll    (vec3_x(v_sample_intersection), m_sample_temp_0)            // 3 [1, 1, 1]
+        fceil_ll    (vec3_y(v_sample_intersection), m_sample_temp_1)            // 3 [1, 1, 1]
+        fadd_lll    (m_sample_temp_0, m_sample_temp_1, m_sample_temp_1)         // 4 [1, 1, 1, 1]
+        ftoi_ll     (m_sample_temp_1, m_sample_temp_0)                          // 3 [1, 1, 1]
+        bbs_sl      (0, m_sample_temp_0, 10)                                    // 5 [1, 1, 1, 2]
+            vfmul_ill   (gv_floor_white_rgb, f_sample_lambertian, v_sample_rgb) // 4 [1, 1, 1, 1]
+            ret                                                                 // 1
+        vfmul_ill   (gv_floor_red_rgb, f_sample_lambertian, v_sample_rgb)       // 4 [1, 1, 1, 1]
+        ret                                                                     // 1
+
+//     half_vector = vec3_add(
+//       direction,
+//       vec3_scale(
+//         normal,
+//         dot(normal, direction) * -2.0
+//       )
+//     )
+//   ;
+
+    vcopy_ll    (v_sample_intersection, v_sample_temp_0)                              // 3
+    vdot_lll    (v_sample_normal, v_sample_in_direction, f_sample_dot_temp)           // 4
+    fmul_ill    (gf_minus_2, f_sample_dot_temp, f_sample_dot_temp)                    // 4
+    vfmul_lll   (v_sample_normal, f_sample_dot_temp, v_sample_half_vector)            // 4
+    vadd_lll    (v_sample_in_direction, v_sample_half_vector, v_sample_half_vector)   // 4
+
 //   // Compute the specular highlight power
 //   float32 specular = pow(dot(light, half_vector) * (lambertian > 0.0), 99.0);
 //
@@ -650,31 +678,21 @@ GFUNC(sample) {
 //   );
 // }
 
+    vcopy_ll    (v_sample_temp_0, v_sample_next_origin)                               // 4
+    call        (sample)
+    vfmul_lil   (v_sample_next_rgb, gf_reflection_scale, v_sample_rgb)
+
+    load_sl     (0, m_sample_temp_0)                                                  // 3
+    fcgt_ll     (f_sample_lambertian, m_sample_temp_0, 28)                            // 5
+        vdot_lll    (v_sample_temp_1,   v_sample_half_vector, f_sample_specular)      // 4
+        copy_il     (0, gf_specular_power, m_sample_temp_0)                           // 3
+        fpow_lll    (f_sample_specular, m_sample_temp_0,    f_sample_specular)        // 4
+        fadd_lll    (f_sample_specular, vec3_x(v_sample_rgb), vec3_x(v_sample_rgb))   // 4
+        fadd_lll    (f_sample_specular, vec3_y(v_sample_rgb), vec3_y(v_sample_rgb))   // 4
+        fadd_lll    (f_sample_specular, vec3_z(v_sample_rgb), vec3_z(v_sample_rgb))   // 4
+
     ret
 };
-
-// This function serves as a proxy for the virtual code sample function for now
-Result hostShimSample(Scalar* frame) {
-    frame[vec3_x(v_sample_rgb)].f = 1.0f;
-    frame[vec3_y(v_sample_rgb)].f = 1.0f;
-    frame[vec3_z(v_sample_rgb)].f = 1.0f;
-
-    std::fprintf(
-        stderr,
-        "\nsample(origin:{ %g, %g, %g }, direction:{ %g, %g, %g }) => { %g, %g, %g }\n\n",
-        frame[vec3_x(v_sample_in_origin)].f,
-        frame[vec3_y(v_sample_in_origin)].f,
-        frame[vec3_z(v_sample_in_origin)].f,
-        frame[vec3_x(v_sample_in_direction)].f,
-        frame[vec3_y(v_sample_in_direction)].f,
-        frame[vec3_z(v_sample_in_direction)].f,
-        frame[vec3_x(v_sample_rgb)].f,
-        frame[vec3_y(v_sample_rgb)].f,
-        frame[vec3_z(v_sample_rgb)].f
-    );
-
-    return SUCCESS;
-}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -684,9 +702,7 @@ END_GDATA_TABLE
 
 BEGIN_GHOST_TABLE(hostFunctionTable)
     hostPrintHeader,
-    hostPrintRGB,
-    hostShimSample,
-    hostShimTrace
+    hostPrintRGB
 END_GHOST_TABLE
 
 /*
@@ -699,25 +715,32 @@ END_GHOST_TABLE
 BEGIN_GFUNC_TABLE(functionTable)
     { _gvm_render, 32,  0,  0, 32 },
     { _gvm_trace,  32,  1, 10, 21 },
-    { _gvm_sample, 32,   3,  6, 23 }
+    { _gvm_sample, 32,  3,  6, 23 }
 END_GFUNC_TABLE
-
 
 int main() {
     std::fprintf(stderr, "Max Opcode %d\n", Opcode::_MAX);
     FloatClock t;
-    Interpreter::init(100, 0, functionTable, hostFunctionTable, globalData);
-
-//     Scalar* tmp = Interpreter::stack();
-//     for (int i = 0; i<64; i++) {
-//         tmp[i].u = 0;
-//     }
-
+    Interpreter::init(32, 0, functionTable, hostFunctionTable, globalData);
     t.set();
-    //Result result =
-    Interpreter::invoke(render);
+
+#ifdef _GVM_DEBUGGING_
+    Scalar* tmp =  Interpreter::stack();
+    tmp[0].f = 0;
+    tmp[1].f = 0;
+    tmp[2].f = 0;
+    tmp[3].u = 0x41880000; // origin.x = 17;
+    tmp[4].u = 0x41800000; // origin.y = 16;
+    tmp[5].u = 0x41000000; // origin.z = 8;
+    tmp[6].u = 0xBEB0712E; // direction.x = -0.344613;
+    tmp[7].u = 0xBF6A8ADF; // direction.y = -0.916182;
+    tmp[8].u = 0x3E517D4A; // direction.z = 0.20458;
+    Result result = Interpreter::invoke(sample);
+#else
+    Result result = Interpreter::invoke(render);
+#endif
     float32 elapsed = t.elapsed();
     Interpreter::done();
-    std::fprintf(stderr, "Took %.6f seconds\n", elapsed);
+    std::fprintf(stderr, "Took %.6f seconds [%d]\n", elapsed, (int)result);
     return 0;
 }

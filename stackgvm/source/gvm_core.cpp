@@ -304,12 +304,13 @@ Result Interpreter::enterFunction(const uint8* returnAddress, uint16 functionId)
         programCounter           = functionTable[functionId].entryPoint;
 #ifdef _GVM_DEBUG_FUNCTIONS_
         gvmDebug(
-            "GVM::Interpreter::enterFunction(%d) { Address: %p, Size: %d, Return Address: %p, PC Entry: %p }\n",
+            "GVM::Interpreter::enterFunction(%d) { Address: %p, Size: %d, Return Address: %p, PC Entry: %p, Frame Base: %p }\n",
             (int)functionId,
             frameStack,
             (int)callStack->frameSize,
             returnAddress,
-            programCounter
+            programCounter,
+            frameStack
         );
 #endif
         return SUCCESS;
@@ -432,7 +433,7 @@ void Interpreter::dumpFrame() {
         while (top >= 0) {
             std::fprintf(
                 stderr,
-                "\t%3d : 0x%08X %12d %.7f\n",
+                "\t%3d : 0x%08X %12d %g\n",
                 top,
                 (unsigned)s->u,
                 (int)s->i,
@@ -441,5 +442,52 @@ void Interpreter::dumpFrame() {
             --top;
             --s;
         }
+    }
+}
+
+void Interpreter::dumpCallStack() {
+    std::fprintf(
+        stderr,
+        "Call Stack Dump\n"
+    );
+    CallInfo* call  = callStackBase;
+    Scalar*   frame = frameStackBase;
+    int n = 0;
+    while (call <= callStack) {
+        int frameSize = (int)call->frameSize;
+        std::fprintf(
+            stderr,
+            "Level %d\n"
+            "\tFunction ID    %d\n"
+            "\tIndirection[0] %p\n"
+            "\tIndirection[1] %p\n"
+            "\tReturn Address %p\n"
+            "\tFrameSize      %d\n",
+            n++,
+            (int)call->functionId,
+            call->indirection[0],
+            call->indirection[1],
+            call->returnAddress,
+            frameSize
+        );
+        if (frameSize > 0) {
+            std::fprintf(
+                stderr,
+                "\tFrame Data\n"
+            );
+            for (int i=0; i<frameSize; i++) {
+                std::fprintf(
+                    stderr,
+                    "\t\t%3d | %p | 0x%08X | %12d | %12g\n",
+                    i,
+                    &frame[i],
+                    frame[i].u,
+                    frame[i].i,
+                    frame[i].f
+                );
+            }
+            frame += frameSize;
+        }
+        call++;
     }
 }

@@ -4,7 +4,7 @@
 BIN      = bin/gamevm_aek_x86_exe
 
 # Compiler settings
-CXXFLAGS = -O3 -Wall -W -m32 -march=native -mfpmath=sse -fomit-frame-pointer -fno-exceptions -fexpensive-optimizations -D_GVM_HOST_OS=_GVM_HOST_LINUX_INTEL_32 -D_GVM_CACHE_POINTERS_ -D_GVM_ALLOW_GOTO_
+CXXFLAGS = -O3 -Wall -W -m32 -march=native -mfpmath=sse -fomit-frame-pointer -fno-exceptions -fexpensive-optimizations -D_GVM_HOST_OS=_GVM_HOST_LINUX_INTEL_32 #-D_GVM_CACHE_POINTERS_ -D_GVM_ALLOW_GOTO_
 
 # Makefile settings
 ARCH     = x86_linux

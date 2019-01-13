@@ -55,11 +55,15 @@ namespace GVM {
             _ADDR_CI0, // Load code symbol to an indirect[0] variable
             _ADDR_CI1, // Load code symbol to an indirect[1] variable
 
+            _ADDA_SI0,  // Add small integer to indirect[0]
+            _ADDA_SI1,  // Add small integer to indirect[1]
+
             _LOAD_L0, // Load local reference directly into indirect[0]
             _LOAD_L1, // Load local reference directly into indirect[1]
 
             _SAVE_0L, // Save indirect[0] to local reference
             _SAVE_1L, // Save indirect[1] to local reference
+
 
             _LOAD_HL,  // Load host lookup to local
 
@@ -222,12 +226,14 @@ namespace GVM {
             _FBGT_II,
 
             // Two operand, local to local handy maths functions
-            _FINV_LL,  // Reciprocal
-            _FSQRT_LL, // Square root
-            _INVSQ_LL, // Inverse square
-            _FSIN_LL,  // Sine
-            _FCOS_LL,  // Cosine
-            _FACOS_LL, // Arccosine
+            _FINV_LL,   // Reciprocal
+            _FSQRT_LL,  // Square root
+            _INVSQ_LL,  // Inverse square
+            _FSIN_LL,   // Sine
+            _FCOS_LL,   // Cosine
+            _FACOS_LL,  // Arccosine
+            _FCEIL_LL,  // Ceiling
+            _FFLOOR_LL, // Floor
 
             // Two operand float negate
             _FNEG_LL,
@@ -285,6 +291,8 @@ namespace GVM {
             _FMIN_ILL,
             _FMIN_LLI,
             _FMIN_ILI,
+
+            _FPOW_LLL,   // Power
 
             // Vector specific instructions ////////////////////////////////////////////////////////////////////////////
 
