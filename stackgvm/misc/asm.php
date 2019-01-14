@@ -1,5 +1,6 @@
 <?php
 
+/*
 $aInstMatch = array_flip([
     'hcf',
     'bras\s+(-)?\d+',
@@ -40,3 +41,4 @@ foreach ($aLines as $i => $sLine) {
         }
     }
 }
+*/
