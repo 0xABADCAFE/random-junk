@@ -721,7 +721,7 @@ END_GFUNC_TABLE
 int main() {
     std::fprintf(stderr, "Max Opcode %d\n", Opcode::_MAX);
     FloatClock t;
-    Interpreter::init(32, 0, functionTable, hostFunctionTable, globalData);
+    Interpreter::init(128, 0, functionTable, hostFunctionTable, globalData);
     t.set();
 
 #ifdef _GVM_DEBUGGING_
