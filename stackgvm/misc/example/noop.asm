@@ -1,0 +1,4 @@
+
+@doNothing():void
+    ret
+

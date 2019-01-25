@@ -79,7 +79,7 @@ class vec3 {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-$invRM = 1.0 / (float)getrandmax();
+$invRM = 0.25 / (float)getrandmax();
 
 // Get a random number in the range 0.0 - 1.0
 function frand() : float {
@@ -108,22 +108,24 @@ class Scene {
         $normal_up,
         $red,
         $white,
+        $black,
         $sky
     ;
 
     public static function init() {
 
-        self::$normal_up =  new vec3(0.0, 0.0, 1.0);
-        self::$red   = new vec3(3.0, 1.0, 1.0);
-        self::$white = new vec3(3.0, 3.0, 3.0);
-        self::$sky   = new vec3(0.7, 0.6, 1.0);
+        self::$normal_up = new vec3(0.0, 0.0, 1.0);
+        self::$red       = new vec3(3.0, 1.0, 1.0);
+        self::$white     = new vec3(3.0, 3.0, 3.0);
+        self::$black     = new vec3(0.0, 0.0, 0.0);
+        self::$sky       = new vec3(0.7, 0.6, 1.0);
         // Check if trace maybe hits a sphere
         for ($k = 19; $k--;) {
             for ($j = 9; $j--;) {
                 if (self::$data[$j] & 1 << $k) {
                     self::$objects[] = new vec3(
                         $k,
-                        0.0,
+                        $k/2.5,
                         $j + 4.0
                     );
                 }
@@ -134,7 +136,7 @@ class Scene {
 
 
 // Trace
-function trace(vec3 $origin, vec3 $direction, &$distance, vec3& $normal, $early) : int {
+function trace(vec3 $origin, vec3 $direction, &$distance, &$normal, $early) : int {
 
     $distance = 1e9;
 
@@ -182,7 +184,14 @@ function trace(vec3 $origin, vec3 $direction, &$distance, vec3& $normal, $early)
 // Sampling
 function sample(vec3 $origin, vec3 $direction) : vec3 {
 
-    $normal = new vec3(0.0, 0.0, 0.0);
+    static $level = 0;
+
+    if (++$level > 4) {
+        --$level;
+        return Scene::$black;
+    }
+
+    //$normal = new vec3(0.0, 0.0, 0.0);
 
     // Find where the ray intersects the world
     $material = trace($origin, $direction, $distance, $normal, false);
@@ -192,6 +201,7 @@ function sample(vec3 $origin, vec3 $direction) : vec3 {
         $gradient = 1.0 - $direction->z;
         $gradient *= $gradient;
         $gradient *= $gradient;
+        --$level;
         return vec3::scale(
             Scene::$sky, // Blueish sky colour
             $gradient
@@ -229,6 +239,7 @@ function sample(vec3 $origin, vec3 $direction) : vec3 {
     // Hit the floor plane
     if ($material === 1) {
         $intersection = vec3::scale($intersection, 0.2);
+        --$level;
         return vec3::scale(
             (
                 // Compute check colour based on the position
@@ -240,25 +251,34 @@ function sample(vec3 $origin, vec3 $direction) : vec3 {
         );
     }
 
-    // Compute the specular highlight power
-    $specular = pow(vec3::dot($light, $half_vector) * ($lambertian > 0.0), 99.0);
-
     // Hit a sphere
-    return vec3::add(
-        new vec3($specular, $specular, $specular),
-            vec3::scale(
-            sample($intersection, $half_vector),
+    $rgb = vec3::scale(
+        sample($intersection, $half_vector),
         0.5
-        )
     );
+
+    if ($lambertian > 0) {
+        // Compute the specular highlight power
+        $specular = pow(vec3::dot($light, $half_vector), 99.0);
+        $rgb->x += $specular;
+        $rgb->y += $specular;
+        $rgb->z += $specular;
+    }
+
+    --$level;
+    return $rgb;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 // Main
 function main() {
+    $mark = microtime(true);
     $image_size = 512;
-    printf("P6 %d %d 255 ", $image_size, $image_size);
+
+    $file = fopen("cr2.ppm", "w");
+
+    fprintf($file, "P6 %d %d 255 ", $image_size, $image_size);
 
     Scene::init();
 
@@ -291,14 +311,18 @@ function main() {
         ),
         $camera_forward
     );
+
+    $const_ambient = new vec3(13, 13, 13);
+    $focal_point   = new vec3(17.0, 16.0, 8.0); // Focal point
+
     for ($y = $image_size; $y--;) {
         for ($x = $image_size; $x--;) {
 
             // Use a vector for the pixel. The values here are in the range 0.0 - 255.0 rather than the 0.0 - 1.0
-            $pixel = new vec3(13.0, 13.0, 13.0);
+            $pixel = Scene::$black;
 
             // Cast 64 rays per pixel for sampling
-            for ($ray_count = 64; $ray_count--;) {
+            for ($ray_count = 4; $ray_count--;) {
 
                 // Random delta to be added for depth of field effects
                 $delta = vec3::add(
@@ -308,38 +332,45 @@ function main() {
 
                 // Accumulate the sample result into the current pixel
                 $pixel  = vec3::add(
-                    vec3::scale(
-                        sample(
-                            vec3::add(
-                                new vec3(17.0, 16.0, 8.0), // Focal point
-                                $delta
-                            ),
-                            vec3::normalize(
-                                vec3::sub(
-                                    vec3::scale(
-                                        vec3::add(
-                                            vec3::scale($camera_up, frand() + $x),
-                                            vec3::add(
-                                                vec3::scale($camera_right, frand() + $y),
-                                                $eye_offset
-                                            )
-                                        ),
-                                        16.0
-                                    ),
-                                    $delta
-                                )
-                            )
+                    sample(
+                        vec3::add(
+                            $focal_point,
+                            $delta
                         ),
-                        3.5
+                        vec3::normalize(
+                            vec3::sub(
+                                vec3::scale(
+                                    vec3::add(
+                                        vec3::scale($camera_up, frand() + $x),
+                                        vec3::add(
+                                            vec3::scale($camera_right, frand() + $y),
+                                            $eye_offset
+                                        )
+                                    ),
+                                    16.0
+                                ),
+                                $delta
+                            )
+                        )
                     ),
                     $pixel
                 );
             }
 
+            $pixel = vec3::add(
+                $const_ambient,
+                vec3::scale(
+                    $pixel,
+                    16 * 3.5
+                )
+            );
+
             // Convert to integers and push out to ppm outpu stream
-            printf("%c%c%c", (int)$pixel->x, $pixel->y, $pixel->z);
+            fprintf($file, "%c%c%c", (int)$pixel->x, (int)$pixel->y, (int)$pixel->z);
         }
     }
+    fclose($file);
+    echo "Total time: ", microtime(true) - $mark, " seconds\n";
 }
 
 main();
