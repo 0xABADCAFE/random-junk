@@ -1,0 +1,18 @@
+Processing files in example
+Array
+(
+    [example/aim.asm] => @predictPosition(Actor* actor, float time):vector
+    load (3), i0
+    mulf.v (i0 + 9), (4), (0)
+    loadc F_ONE_HALF, (6)
+    mul.f (4), (4), (5)
+    mul.f (6), (5), (6)
+    mulf.v (i0 + 12), (6), (7)
+    add.v (7), (0), (0)
+    add.v (i0 + 0), (0), (0)
+    ret
+
+    [example/noop.asm] => @doNothing():void
+    ret
+
+)
