@@ -10,6 +10,24 @@ $aOptions = getopt(
     ]
 );
 */
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class Project {
+
+    public function __construct(string $sProjectFile) {
+
+    }
+
+    public function get_source_directory() : string {
+        return $this->sSourceDirectory;
+    }
+
+    public function get_include_paths() : array {
+        return $this->aIncludePaths;
+    }
+}
+
 class SourceLoader {
 
     private $aSource = [];
@@ -66,12 +84,17 @@ class SourceLoader {
     }
 
     private function preprocessFile(string $sCurrentPath) {
-        $sContent = shell_exec('cpp -nostdinc -I' . $this->sIncludeDirectory . ' ' . $sCurrentPath);
+        $sContent = shell_exec('cpp -nostdinc -I' . $this->sIncludeDirectory . ' -Isdk/test_host/include ' . $sCurrentPath);
         $this->aSource[$sCurrentPath] = preg_replace('/^#.*?$\n*/m', '', $sContent);
     }
 
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 (new SourceLoader('example', 'example/include'))
     ->load()
     ->dump();
+

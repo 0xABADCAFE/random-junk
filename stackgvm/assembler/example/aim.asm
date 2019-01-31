@@ -1,4 +1,4 @@
-
+#include <constants_lookup.inc>
 #include <actor.inc>
 
 #define r_actor (3)
@@ -11,7 +11,7 @@
 @predictPosition(Actor* actor, float time):vector
     load   r_actor, i0
     mulf.v (i0 + v_actor_velocity), f_time, v_result
-    loadc  F_ONE_HALF, f_half_time2
+    loadc  F_LOOKUP_ONE_HALF, f_half_time2
     mul.f  f_time, f_time, f_time2
     mul.f  f_half_time2, f_time2, f_half_time2
     mulf.v (i0 + v_actor_acceleration), f_half_time2, v_temp
