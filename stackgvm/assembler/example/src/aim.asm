@@ -1,5 +1,5 @@
 #include <constants_lookup.inc>
-#include <actor.inc>
+#include "include/actor.inc"
 
 #define r_actor (3)
 #define f_time  (4)

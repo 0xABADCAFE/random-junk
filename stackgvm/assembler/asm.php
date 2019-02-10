@@ -32,10 +32,6 @@ class Project {
         return $this->oProjectData->sources;
     }
 
-    public function getIncludePath() : string {
-        return $this->oProjectData->incdir;
-    }
-
     public function getTargetName() : string {
         return $this->oProjectData->host->name;
     }
@@ -54,16 +50,8 @@ class Project {
             },
             $this->oProjectData->sources
         );
-        $sIncludeDir = $this->oProjectData->base . $this->oProjectData->incdir;
-        if (
-            !is_dir($sIncludeDir) ||
-            !is_readable($sIncludeDir)
-        ) {
-            throw new Exception("Invalid include path '" . $sIncludeDir . "'");
-        }
 
         $this->oProjectData->sources = $aFiles;
-        $this->oProjectData->incdir  = $sIncludeDir;
     }
 
     private function load(string $sProjectFile) {
@@ -78,7 +66,6 @@ class Project {
             !($oProjectData instanceof stdClass) ||
             !isset($oProjectData->name) ||
             !is_array($oProjectData->sources) ||
-            !isset($oProjectData->incdir) ||
             !isset($oProjectData->host->name)
         ) {
             throw new Exception("Invalid project file '" . $sProjectFile . "'");
@@ -113,8 +100,8 @@ class SourceLoader {
 
     private function preprocessFile(string $sCurrentPath) {
         $sContent = shell_exec(
-            'cpp -nostdinc -I' . $this->oProject->getIncludePath() .
-            ' -Isdk/' . $this->oProject->getTargetName() . '/include ' .
+            'cpp -nostdinc -Isdk/' .
+            $this->oProject->getTargetName() . '/include ' .
             $sCurrentPath);
         $this->aSource[$sCurrentPath] = preg_replace('/^#.*?$\n*/m', '', $sContent);
     }
