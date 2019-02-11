@@ -1,0 +1,25 @@
+Stack Frame Position Parser Test
+	Parsing '' => ParseException - Malformed stack position '', integer must be enclosed in parenthesis.
+	Parsing ' ' => ParseException - Malformed stack position ' ', integer must be enclosed in parenthesis.
+	Parsing '()' => ParseException - Missing digits in expression ()
+	Parsing '( )' => ParseException - Missing digits in expression ()
+	Parsing '0' => ParseException - Malformed stack position '0', integer must be enclosed in parenthesis.
+	Parsing '1' => ParseException - Malformed stack position '1', integer must be enclosed in parenthesis.
+	Parsing '((1 )' => ParseException - Mismatched Parenthesis in expression ((1)
+	Parsing '(1))' => ParseException - Mismatched Parenthesis in expression (1))
+	Parsing '(0)' => 0
+	Parsing ' ( 0 ) ' => 0
+	Parsing '(1)' => 1
+	Parsing '(-128 - 1)' => RangeException - Value outside allowed range -128...127
+	Parsing '(127 + 2 - 2*1)' => 127
+	Parsing '(1 + 7-2)' => 6
+	Parsing '(1 + (7) - (2*3) )' => 2
+Index Offset Parser Test
+	Parsing '' => ParseException - Malformed index offset '', integer must be enclosed in parenthesis.
+	Parsing '()' => ParseException - Malformed index offset '()', integer must be enclosed in parenthesis.
+	Parsing '(i0)' => ParseException - Malformed index offset '(i0)', integer must be enclosed in parenthesis.
+	Parsing '(i0 + 0)' => 0
+	Parsing '(i0 - 1)' => RangeException - Value outside allowed range 0...255
+	Parsing '(i0 + 255 + 1)' => RangeException - Value outside allowed range 0...255
+	Parsing '(i1 + 1)' => RangeException - Wrong Index Pointer
+	Parsing '(i0 - 1 + 256 - 3*16)' => 207

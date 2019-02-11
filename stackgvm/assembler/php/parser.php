@@ -24,7 +24,7 @@ class ConstIntExpressionParser {
             throw new TypeException("Not a valid integer " . $iVal);
         }
         if ($iVal < $this->iMin || $iVal > $this->iMax) {
-            throw new RangeException("Value outside allowed range ");
+            throw new RangeException("Value outside allowed range " . $this->iMin . "..." . $this->iMax);
         }
         return $iVal;
     }
@@ -64,3 +64,50 @@ class ConstIntExpressionParser {
     }
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class StackFramePositionParser {
+
+    private $oIntExpressionParser;
+
+    public function __construct() {
+        $this->oIntExpressionParser = new ConstIntExpressionParser(-128, 127);
+    }
+
+    public function parse(string $sExpression) : int {
+        $this->assertSyntax($sExpression);
+        return $this->oIntExpressionParser->parse($sExpression);
+    }
+
+    private function assertSyntax(string $sExpression) {
+        if (!preg_match("/^\s*\(.*?\)\s*$/", $sExpression)) {
+            throw new ParseException("Malformed stack position '" . $sExpression. "', integer must be enclosed in parenthesis.");
+        }
+    }
+}
+
+class IndexOffsetParser {
+    private $iReg;
+    private $oIntExpressionParser;
+
+    public function __construct(int $iReg) {
+        $this->iReg = $iReg;
+        $this->oIntExpressionParser = new ConstIntExpressionParser(0, 255);
+    }
+
+    public function parse(string $sExpression) : int {
+        $sSubExpression = $this->assertSyntax($sExpression);
+        return $this->oIntExpressionParser->parse($sSubExpression);
+    }
+
+    private function assertSyntax(string $sExpression) {
+        if (!preg_match("/^\s*\(\s*i(\d)\s*([\+\-]{1}.*?)\)\s*$/", $sExpression, $aMatches)) {
+            throw new ParseException("Malformed index offset '" . $sExpression. "', integer must be enclosed in parenthesis.");
+        }
+        if ($this->iReg != $aMatches[1]) {
+            throw new RangeException("Wrong Index Pointer");
+        }
+        // Return the matched subexpression
+        return $aMatches[2];
+    }
+}
