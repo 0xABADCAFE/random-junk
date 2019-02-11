@@ -5,7 +5,6 @@
         "src/noop.asm",
         "src/aim.asm"
     ],
-    "incdir":"include",
     "host":{
         "name":"TestHost",
         "version":"1.0.*"
