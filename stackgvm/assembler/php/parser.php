@@ -1,6 +1,12 @@
 <?php
 
-class ConstIntExpressionParser {
+interface IntegerExpressionParser {
+    public function parse(string $sExpression) : int;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class ConstIntExpressionParser implements IntegerExpressionParser {
 
     private $iMin, $iMax;
 
@@ -24,7 +30,7 @@ class ConstIntExpressionParser {
             throw new TypeException("Not a valid integer " . $iVal);
         }
         if ($iVal < $this->iMin || $iVal > $this->iMax) {
-            throw new RangeException("Value outside allowed range " . $this->iMin . "..." . $this->iMax);
+            throw new RangeException("Value " . $iVal  . " is outside allowed range " . $this->iMin . "..." . $this->iMax);
         }
         return $iVal;
     }
@@ -66,7 +72,7 @@ class ConstIntExpressionParser {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-class StackFramePositionParser {
+class StackFramePositionParser implements IntegerExpressionParser {
 
     private $oIntExpressionParser;
 
@@ -86,7 +92,9 @@ class StackFramePositionParser {
     }
 }
 
-class IndexOffsetParser {
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class IndexOffsetParser implements IntegerExpressionParser {
     private $iReg;
     private $oIntExpressionParser;
 
@@ -105,7 +113,7 @@ class IndexOffsetParser {
             throw new ParseException("Malformed index offset '" . $sExpression. "', integer must be enclosed in parenthesis.");
         }
         if ($this->iReg != $aMatches[1]) {
-            throw new RangeException("Wrong Index Pointer");
+            throw new RangeException("Wrong Index");
         }
         // Return the matched subexpression
         return $aMatches[2];

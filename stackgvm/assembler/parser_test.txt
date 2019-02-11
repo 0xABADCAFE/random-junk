@@ -10,7 +10,7 @@ Stack Frame Position Parser Test
 	Parsing '(0)' => 0
 	Parsing ' ( 0 ) ' => 0
 	Parsing '(1)' => 1
-	Parsing '(-128 - 1)' => RangeException - Value outside allowed range -128...127
+	Parsing '(-128 - 1)' => RangeException - Value -129 is outside allowed range -128...127
 	Parsing '(127 + 2 - 2*1)' => 127
 	Parsing '(1 + 7-2)' => 6
 	Parsing '(1 + (7) - (2*3) )' => 2
@@ -19,7 +19,8 @@ Index Offset Parser Test
 	Parsing '()' => ParseException - Malformed index offset '()', integer must be enclosed in parenthesis.
 	Parsing '(i0)' => ParseException - Malformed index offset '(i0)', integer must be enclosed in parenthesis.
 	Parsing '(i0 + 0)' => 0
-	Parsing '(i0 - 1)' => RangeException - Value outside allowed range 0...255
-	Parsing '(i0 + 255 + 1)' => RangeException - Value outside allowed range 0...255
-	Parsing '(i1 + 1)' => RangeException - Wrong Index Pointer
+	Parsing '(i0 - 1)' => RangeException - Value -1 is outside allowed range 0...255
+	Parsing '(i0 + 255 + 1)' => RangeException - Value 256 is outside allowed range 0...255
+	Parsing '(i1 + 1)' => RangeException - Wrong Index
 	Parsing '(i0 - 1 + 256 - 3*16)' => 207
+	Parsing '(i0 - (2 * (5 + 256) - 3) + 270 + 256)' => 7

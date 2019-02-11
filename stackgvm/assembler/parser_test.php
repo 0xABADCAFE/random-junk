@@ -30,7 +30,7 @@ $oParser = new IndexOffsetParser(0);
 $aIndexOffsetExamples = [
     '', '()', '(i0)',
     '(i0 + 0)', '(i0 - 1)', '(i0 + 255 + 1)', '(i1 + 1)',
-    '(i0 - 1 + 256 - 3*16)'
+    '(i0 - 1 + 256 - 3*16)', '(i0 - (2 * (5 + 256) - 3) + 270 + 256)'
 ];
 
 foreach ($aIndexOffsetExamples as $sExample) {
