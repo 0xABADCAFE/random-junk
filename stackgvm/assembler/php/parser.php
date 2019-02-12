@@ -119,3 +119,51 @@ class IndexOffsetParser implements IntegerExpressionParser {
         return $aMatches[2];
     }
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class ThreeOperandNonCommutativeParser {
+/*
+            _FSUB_LLL,
+            _FSUB_ILL,
+            _FSUB_LLI,
+            _FSUB_ILI,
+            _FSUB_LIL,
+            _FSUB_IIL,
+            _FSUB_LII,
+*/
+    const
+       KIND_L  = 0,
+       KIND_I0 = 1,
+       KIND_I1 = 2
+    ;
+
+    public function parse(string $sExpression) {
+        $aOperands = explode(',', preg_replace('/\s+/', '', $sExpression));
+        $this->assertOperandCount($aOperands);
+        $aKind = [];
+        foreach ($aOperands as $sOperand) {
+            $aKind[] = $this->determineKind($sOperand);
+        }
+        print_r($aKind);
+    }
+
+    private function determineKind(string $sOperand) {
+        if (!preg_match('/i(\d+)/', $sOperand, $aMatch)) {
+            return self::KIND_L;
+        }
+        switch ($aMatch[1]) {
+            case 0: return self::KIND_I0;
+            case 1: return self::KIND_I1;
+            default:
+                throw new ParseException();
+        }
+    }
+
+    private function assertOperandCount(array $aOperands) {
+        if (count($aOperands) != 3) {
+            throw new Exception();
+        }
+    }
+}
+

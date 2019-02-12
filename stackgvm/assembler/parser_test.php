@@ -41,3 +41,21 @@ foreach ($aIndexOffsetExamples as $sExample) {
         echo get_class($oError), " - ", $oError->getMessage(), "\n";
     }
 }
+
+echo "ThreeOperandNonCommutativeParser test\n";
+
+$aThreeOperandExamples = [
+    '(0), (0), (1)',
+    '(i0 + 2), (0), (i1 + 2)',
+    '(i0 + 2), (3), (i1 + (5 + (7*2) ) )'
+];
+
+$oParser = new ThreeOperandNonCommutativeParser();
+foreach ($aThreeOperandExamples as $sExample) {
+    echo "\tParsing '", $sExample, "' => ";
+    try {
+        echo $oParser->parse($sExample), "\n";
+    } catch (Exception $oError) {
+        echo get_class($oError), " - ", $oError->getMessage(), "\n";
+    }
+}
