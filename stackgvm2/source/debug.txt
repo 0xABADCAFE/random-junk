@@ -1,0 +1,68 @@
+
+FunctionID 1 : {
+    // Stack Size is 3
+    // stack[0] is return
+    // stack[1] is first parameter
+    // stack[2] is second parameter
+    // stack[3] is start of next frame (return/param space)
+
+    // Add first parameters and pass result directly to function 2 for evaluation
+    add.i 1, 2, 3 // frame[3] = frame[1] + frame[2]
+    call  2
+
+    // Copy the return of function 2 back to our return slot
+    copy  3, 0    // frame[0] = frame[3]
+    ret
+};
+
+FunctionID 2 : {
+    // Stack size is 1
+    // Stack[0] is parameter and return
+    lsl.u 0, 0, 0 // frame[0] = frame[0] << frame[0]
+    ret
+};
+
+Max Opcode 230
+GVM::Interpreter::init()
+        Require 45840 bytes for working set:
+        1616 bytes for call stack  (100 [+1 redzone] of 16 bytes each)
+        44224 bytes for frame stack (10800 of 4 bytes each, including start and end red zones of 128 entries each)
+GVM::Interpreter::validateFunctionTable()
+        Function table has 2 callable entries
+GVM::Interpreter::init()
+        Call Stack     [0x8829420 - 0x8829a50]
+        Frame Stack    [0x8829c70 - 0x883452c]
+        Function Table [0x804d060]
+
+Before
+        stack[0] = 0
+        stack[1] = 1
+        stack[2] = 2
+GVM::Interpreter::enterFunction(1) {
+        Address: 0x8829c70
+        Size: 3
+        Return Address: (nil)
+        PC Entry: 0x804d088
+}
+GVM::Interpreter::enterFunction(2) {
+        Address: 0x8829c7c
+        Size: 1
+        Return Address: 0x804d08f
+        PC Entry: 0x804d080
+}
+GVM::Interpreter::exitFunction(2) {
+        Return to function:1
+        PC Resume: 0x804d08f
+}
+GVM::Interpreter::exitFunction(1) {
+        Return to function:0
+        PC Resume: (nil)
+}
+
+After
+        Result = 1
+        stack[0] = 24
+        stack[1] = 1
+        stack[2] = 2
+GVM::Interpreter::done()
+        Released working set

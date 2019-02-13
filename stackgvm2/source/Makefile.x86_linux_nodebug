@@ -1,0 +1,14 @@
+# Project: TOYTL - GVM
+
+# Target
+BIN      = bin/gamevm_x86_nd_exe
+
+# Compiler settings
+CXXFLAGS = -O3 -Wall -W -m32 -march=native -mfpmath=sse -fomit-frame-pointer -fno-exceptions -fexpensive-optimizations -D_GVM_HOST_OS=_GVM_HOST_LINUX_INTEL_32
+
+# Makefile settings
+ARCH     = x86_linux
+MEXT     = $(ARCH)
+
+include interpreter.make
+

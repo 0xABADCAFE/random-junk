@@ -1,0 +1,10 @@
+source/.kdev*
+source/exvm/*
+source/source.kdev4
+source/junk/*.pnm
+source/junk/*.ppm
+source/junk/*.pgm
+source/junk/*.s
+source/junk/bin/*
+source/junk/xhprof
+source/junk/profiling.php
