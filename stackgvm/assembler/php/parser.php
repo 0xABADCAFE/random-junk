@@ -74,10 +74,16 @@ class ConstIntExpressionParser implements IntegerExpressionParser {
 
 class StackFramePositionParser implements IntegerExpressionParser {
 
+    const
+        MIN_POSITION = -128,
+        MAX_POSITION = 127
+    ;
+
+
     private $oIntExpressionParser;
 
     public function __construct() {
-        $this->oIntExpressionParser = new ConstIntExpressionParser(-128, 127);
+        $this->oIntExpressionParser = new ConstIntExpressionParser(self::MIN_POSITION, self::MAX_POSITION);
     }
 
     public function parse(string $sExpression) : int {
@@ -95,12 +101,18 @@ class StackFramePositionParser implements IntegerExpressionParser {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class IndexOffsetParser implements IntegerExpressionParser {
+
+    const
+        MIN_INDEX = 0,
+        MAX_INDEX = 255
+    ;
+
     private $iReg;
     private $oIntExpressionParser;
 
     public function __construct(int $iReg) {
         $this->iReg = $iReg;
-        $this->oIntExpressionParser = new ConstIntExpressionParser(0, 255);
+        $this->oIntExpressionParser = new ConstIntExpressionParser(self::MIN_INDEX, self::MAX_INDEX);
     }
 
     public function parse(string $sExpression) : int {
@@ -122,6 +134,44 @@ class IndexOffsetParser implements IntegerExpressionParser {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+class OperandParserFactory {
+
+    private static $oInstance = null;
+
+    private $oLocalParser  = null;
+    private $oIndex0Parser = null;
+    private $oIndex1Parser = null;
+
+    public static function get() {
+        if (null === self::$oInstance) {
+            self::$oInstance = new self();
+        }
+        return self::$oInstance;
+    }
+
+    public function getLocalParser() {
+        return $this->oLocalParser;
+    }
+
+    public function getIndex0Parser() {
+        return $this->oIndex0Parser;
+
+    }
+
+    public function getIndex1Parser() {
+        return $this->oIndex1Parser;
+    }
+
+    private function __construct() {
+        $this->oLocalParser  = new StackFramePositionParser();
+        $this->oIndex0Parser = new IndexOffsetParser(0);
+        $this->oIndex1Parser = new IndexOffsetParser(1);
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 class ThreeOperandNonCommutativeParser {
 /*
             _FSUB_LLL,
@@ -138,12 +188,24 @@ class ThreeOperandNonCommutativeParser {
        KIND_I1 = 2
     ;
 
+    private $aParsers = [];
+
+    public function __construct() {
+        $this->aParsers[self::KIND_L]  = OperandParserFactory::get()->getLocalParser();
+        $this->aParsers[self::KIND_I0] = OperandParserFactory::get()->getIndex0Parser();
+        $this->aParsers[self::KIND_I1] = OperandParserFactory::get()->getIndex1Parser();
+    }
+
     public function parse(string $sExpression) {
         $aOperands = explode(',', preg_replace('/\s+/', '', $sExpression));
         $this->assertOperandCount($aOperands);
         $aKind = [];
         foreach ($aOperands as $sOperand) {
-            $aKind[] = $this->determineKind($sOperand);
+            $iKind = $this->determineKind($sOperand);
+            $aKind[] = [
+                $iKind,
+                $this->aParsers[$iKind]->parse($sOperand)
+            ];
         }
         print_r($aKind);
     }
