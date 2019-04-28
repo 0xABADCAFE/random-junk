@@ -47,7 +47,8 @@ echo "ThreeOperandNonCommutativeParser test\n";
 $aThreeOperandExamples = [
     '(0), (0), (1)',
     '(i0 + 2), (0), (i1 + 2)',
-    '(i0 + 2), (3), (i1 + (5 + (7*2) ) )'
+    '(i0 + 2), (3), (i1 + (5 + (7*2) ) )',
+    '(i0 + 1), (i0 + 2), (i1 + 3)'
 ];
 
 $oParser = new ThreeOperandNonCommutativeParser();
