@@ -63,6 +63,13 @@ class OperandCaseMap {
     }
 
     /**
+     * @return int[]
+     */
+    public function getKinds() : array {
+        return array_keys($this->aParsers);
+    }
+
+    /**
      * Checks if a given set of OperandKind values (in given order) are within the defined set of cases
      *
      * @param int[] $aOperandCase
