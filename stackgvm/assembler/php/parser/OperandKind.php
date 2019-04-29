@@ -30,6 +30,8 @@ interface OperandKind {
     ];
 
     const
-        BASE_10_LITERAL_PREFIX = '#'
+        MATCH_LOCAL   = '/^\s*\(.*?\)\s*$/',
+        MATCH_INDEX   = '/^\s*\(\s*i(\d)\s*([\+\-]{1}.*?)\)\s*$/',
+        MATCH_BASE_10 = '/^\s*#{1}(.*?)\s*$/'
     ;
 }

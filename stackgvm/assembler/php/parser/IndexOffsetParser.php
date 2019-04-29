@@ -24,7 +24,7 @@ class IndexOffsetParser implements IntegerExpressionParser {
     }
 
     private function assertSyntax(string $sExpression) {
-        if (!preg_match("/^\s*\(\s*i(\d)\s*([\+\-]{1}.*?)\)\s*$/", $sExpression, $aMatches)) {
+        if (!preg_match(OperandKind::MATCH_INDEX, $sExpression, $aMatches)) {
             throw new ParseException("Malformed index offset '" . $sExpression. "', integer must be enclosed in parenthesis.");
         }
         if ($this->iReg != $aMatches[1]) {
