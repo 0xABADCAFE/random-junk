@@ -5,10 +5,12 @@
  */
 class OperandSetParser {
 
-    private $oCaseMap = null;
+    private $oCaseMap    = null;
+    private $oKindParser = null;
 
     public function __construct(OperandCaseMap $oCaseMap) {
-        $this->oCaseMap = $oCaseMap;
+        $this->oCaseMap    = $oCaseMap;
+        $this->oKindParser = OperandParserFactory::get()->getParser(OperandKind::KIND);
     }
 
     public function parse(string $sExpression) {
@@ -16,7 +18,7 @@ class OperandSetParser {
         $this->assertOperandCount($aOperands);
         $aKind = [];
         foreach ($aOperands as $i => $sOperand) {
-            $aKind[$i] = $this->determineKind($sOperand);
+            $aKind[$i] = $this->oKindParser->parse($sOperand);
         }
         $this->assertOperandUseCase($aKind);
         $aParsed = [];
@@ -29,18 +31,6 @@ class OperandSetParser {
             ];
         }
         return $aParsed;
-    }
-
-    private function determineKind(string $sOperand) {
-        if (!preg_match('/i(\d+)/', $sOperand, $aMatch)) {
-            return OperandKind::LOCAL;
-        }
-        switch ($aMatch[1]) {
-            case 0: return OperandKind::INDEX_0;
-            case 1: return OperandKind::INDEX_1;
-            default:
-                throw new ParseException();
-        }
     }
 
     private function assertOperandCount(array $aOperands) {

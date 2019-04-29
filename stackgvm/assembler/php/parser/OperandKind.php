@@ -7,16 +7,17 @@
  */
 interface OperandKind {
     const
-       LOCAL   = 0, // Stack frame position    (-128 ... 127)
-       INDEX_0 = 1, // Index[0] offset         (0 ... 255)
-       INDEX_1 = 2, // Index[1] offset         (0 ... 255)
-       JUMP_8  = 3, // Short jump displacement (-128 ... 127)
-       JUMP_16 = 4, // Jump displacement       (-32768 ... 32767)
-       SMALL_8 = 5, // Small integer literal   (-128 ... 127),
+        KIND    = 0, // Kind (one of the remainder of this list)
+        LOCAL   = 1, // Stack frame position    (-128 ... 127)
+        INDEX_0 = 2, // Index[0] offset         (0 ... 255)
+        INDEX_1 = 3, // Index[1] offset         (0 ... 255)
+        JUMP_8  = 4, // Short jump displacement (-128 ... 127)
+        JUMP_16 = 5, // Jump displacement       (-32768 ... 32767)
+        SMALL_8 = 6, // Small integer literal   (-128 ... 127),
 
        // Kinds
        MIN     = 0,
-       MAX     = 5
+       MAX     = 6
     ;
 
     const LIMITS = [
@@ -27,4 +28,8 @@ interface OperandKind {
         self::JUMP_16 => [-32768, 32767],
         self::SMALL_8 => [-128, 127]
     ];
+
+    const
+        BASE_10_LITERAL_PREFIX = '#'
+    ;
 }

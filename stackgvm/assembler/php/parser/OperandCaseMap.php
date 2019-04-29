@@ -41,14 +41,23 @@ class OperandCaseMap {
         }
     }
 
+    /**
+     * @return int
+     */
     public function getMinOperandCount() : int {
         return $this->iMinOperands;
     }
 
+    /**
+     * @return int
+     */
     public function getMaxOperandCount() : int {
         return $this->iMaxOperands;
     }
 
+    /**
+     * @return Parser[]
+     */
     public function getParsers() : array {
         return $this->aParsers;
     }
@@ -74,6 +83,12 @@ class OperandCaseMap {
         return implode('-', $aOperandCase);
     }
 
+    /**
+     * Assert that a set of operand kind is legal
+     *
+     * @param int[] $aOperandCase
+     * @throw InvalidArgumentException
+     */
     private function assertValid(array $aOperandCase) {
         foreach ($aOperandCase as $iCase) {
             if (

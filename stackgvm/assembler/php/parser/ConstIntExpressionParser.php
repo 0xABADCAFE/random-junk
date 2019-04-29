@@ -41,7 +41,7 @@ class ConstIntExpressionParser implements IntegerExpressionParser {
         }
         $iVal = $cExp();
         if (!is_integer($iVal)) {
-            throw new TypeException("Not a valid integer " . $iVal);
+            throw new TypeException("Expression did not yield a valid integer " . $iVal);
         }
         if ($iVal < $this->iMin || $iVal > $this->iMax) {
             throw new RangeException("Value " . $iVal  . " is outside allowed range " . $this->iMin . "..." . $this->iMax);
@@ -49,12 +49,24 @@ class ConstIntExpressionParser implements IntegerExpressionParser {
         return $iVal;
     }
 
+    /**
+     * Assert the expression is not empty
+     *
+     * @param string $sExpression
+     * @throw InvalidArgumentException
+     */
     private function assertNotEmpty(string $sExpression) {
         if ('0' !== $sExpression && empty($sExpression)) {
             throw new InvalidArgumentException("Empty Expression");
         }
     }
 
+    /**
+     * Assert the expression does not contain any illegal character classes
+     *
+     * @param string $sExpression
+     * @throw ParseException
+     */
     private function assertAllowedCharacters(string $sExpression) {
         if (!preg_match("/^[0-9\s\(\)\+\-\*]+$/", $sExpression)) {
             throw new ParseException("Invalid Characters in expression " . $sExpression);
@@ -64,6 +76,12 @@ class ConstIntExpressionParser implements IntegerExpressionParser {
         }
     }
 
+    /**
+     * Assert the expression contains balanced parenthesis
+     *
+     * @param string $sExpression
+     * @throw ParseException
+     */
     private function assertBalancedParenthesis(string $sExpression) {
         if (preg_match("/\(\)/", $sExpression)) {
             throw new ParseException("Empty Parenthesis in expression " . $sExpression);

@@ -10,6 +10,7 @@ interface IntegerExpressionParser {
      *
      * @param string $sExpression
      * @return int
+     * @throw Exception
      */
     public function parse(string $sExpression) : int;
 }
