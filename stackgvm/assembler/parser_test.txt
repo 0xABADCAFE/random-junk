@@ -1,26 +1,99 @@
-Stack Frame Position Parser Test
-	Parsing '' => ParseException - Malformed stack position '', integer must be enclosed in parenthesis.
-	Parsing ' ' => ParseException - Malformed stack position ' ', integer must be enclosed in parenthesis.
-	Parsing '()' => ParseException - Missing digits in expression ()
-	Parsing '( )' => ParseException - Missing digits in expression ()
-	Parsing '0' => ParseException - Malformed stack position '0', integer must be enclosed in parenthesis.
-	Parsing '1' => ParseException - Malformed stack position '1', integer must be enclosed in parenthesis.
-	Parsing '((1 )' => ParseException - Mismatched Parenthesis in expression ((1)
-	Parsing '(1))' => ParseException - Mismatched Parenthesis in expression (1))
-	Parsing '(0)' => 0
-	Parsing ' ( 0 ) ' => 0
-	Parsing '(1)' => 1
-	Parsing '(-128 - 1)' => RangeException - Value -129 is outside allowed range -128...127
-	Parsing '(127 + 2 - 2*1)' => 127
-	Parsing '(1 + 7-2)' => 6
-	Parsing '(1 + (7) - (2*3) )' => 2
-Index Offset Parser Test
-	Parsing '' => ParseException - Malformed index offset '', integer must be enclosed in parenthesis.
-	Parsing '()' => ParseException - Malformed index offset '()', integer must be enclosed in parenthesis.
-	Parsing '(i0)' => ParseException - Malformed index offset '(i0)', integer must be enclosed in parenthesis.
-	Parsing '(i0 + 0)' => 0
-	Parsing '(i0 - 1)' => RangeException - Value -1 is outside allowed range 0...255
-	Parsing '(i0 + 255 + 1)' => RangeException - Value 256 is outside allowed range 0...255
-	Parsing '(i1 + 1)' => RangeException - Wrong Index
-	Parsing '(i0 - 1 + 256 - 3*16)' => 207
-	Parsing '(i0 - (2 * (5 + 256) - 3) + 270 + 256)' => 7
+Testing non commutative triple operand set
+	Parsing '(0), (0), (1)' => Array
+(
+    [0] => stdClass Object
+        (
+            [iKind] => 1
+            [iValue] => 0
+            [sSource] => (0)
+        )
+
+    [1] => stdClass Object
+        (
+            [iKind] => 1
+            [iValue] => 0
+            [sSource] => (0)
+        )
+
+    [2] => stdClass Object
+        (
+            [iKind] => 1
+            [iValue] => 1
+            [sSource] => (1)
+        )
+
+)
+	Parsing '(i0 + 2), (0), (i1 + 2)' => Array
+(
+    [0] => stdClass Object
+        (
+            [iKind] => 2
+            [iValue] => 2
+            [sSource] => (i0+2)
+        )
+
+    [1] => stdClass Object
+        (
+            [iKind] => 1
+            [iValue] => 0
+            [sSource] => (0)
+        )
+
+    [2] => stdClass Object
+        (
+            [iKind] => 3
+            [iValue] => 2
+            [sSource] => (i1+2)
+        )
+
+)
+	Parsing '(i0 + 2), (3), (i1 + (5 + (7*2) ) )' => Array
+(
+    [0] => stdClass Object
+        (
+            [iKind] => 2
+            [iValue] => 2
+            [sSource] => (i0+2)
+        )
+
+    [1] => stdClass Object
+        (
+            [iKind] => 1
+            [iValue] => 3
+            [sSource] => (3)
+        )
+
+    [2] => stdClass Object
+        (
+            [iKind] => 3
+            [iValue] => 19
+            [sSource] => (i1+(5+(7*2)))
+        )
+
+)
+	Parsing '(i0 + 1), (i0 + 2), (i1 + 3)' => ParseException - Invalid Operand Use Case
+Testing two operand with 16-bit signed offset
+	Parsing '(0), (0), #-32768' => Array
+(
+    [0] => stdClass Object
+        (
+            [iKind] => 1
+            [iValue] => 0
+            [sSource] => (0)
+        )
+
+    [1] => stdClass Object
+        (
+            [iKind] => 1
+            [iValue] => 0
+            [sSource] => (0)
+        )
+
+    [2] => stdClass Object
+        (
+            [iKind] => 5
+            [iValue] => -32768
+            [sSource] => #-32768
+        )
+
+)
