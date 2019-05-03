@@ -11,6 +11,7 @@ class OperandSetParser {
     public function __construct(OperandCaseMap $oCaseMap) {
         $this->oCaseMap    = $oCaseMap;
         $this->oKindParser = OperandParserFactory::get()->getParser(OperandKind::KIND);
+        $this->oKindParser->setKinds($this->oCaseMap->getKinds());
     }
 
     public function parse(string $sExpression) {

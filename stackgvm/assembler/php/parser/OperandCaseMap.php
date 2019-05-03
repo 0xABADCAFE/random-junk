@@ -36,6 +36,8 @@ class OperandCaseMap {
                 $aDistinct[$i] = $i;
             }
         }
+
+
         foreach ($aDistinct as $i) {
             $this->aParsers[$i] = OperandParserFactory::get()->getParser($i);
         }
