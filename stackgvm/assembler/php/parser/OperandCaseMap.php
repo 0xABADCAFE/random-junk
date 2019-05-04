@@ -9,10 +9,10 @@
 class OperandCaseMap {
 
     private
-        $aCaseMap,
-        $iMinOperands,
-        $iMaxOperands,
-        $aParsers
+        $aCaseMap     = [],
+        $iMinOperands = 0,
+        $iMaxOperands = 0,
+        $aParsers     = []
     ;
 
     /**

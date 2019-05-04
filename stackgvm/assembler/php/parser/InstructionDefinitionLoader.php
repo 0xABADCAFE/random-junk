@@ -23,10 +23,8 @@ class InstructionDefinitionLoader {
         if (empty($oDefinition)) {
             throw new Exception("No definitions found in definition file");
         }
-        print_r($oDefinition);
         $aResult = [];
-
-        foreach($oDefinition as $sMnemonic => $aOperandData) {
+        foreach ($oDefinition as $sMnemonic => $aOperandData) {
             $sMnemonic = strtolower(trim($sMnemonic));
             $aResult[$sMnemonic] = $this->processDefinition($aOperandData);
         }
@@ -45,32 +43,32 @@ class InstructionDefinitionLoader {
             // Convert each variant into an OperandCaseMap instance
             function ($oOperandData) {
                 // Instantiate an OperandCaseMap for the described use cases
-                return new OperandCaseMap(
-                    array_map(
-                        // Transform the array of strings into the corresponding array of constant integer
-                        // operand types.
-                        function (array $aKinds) {
-                            return array_map(
-                                // Transform the single string into it's corresponding constant integer operand type.
-                                function (string $sKind) {
-                                    // Sanitise string and check it has an integer mapped value
-                                    $sKind = strtoupper(trim($sKind));
-                                    if (isset(OperandKind::MAPPED[$sKind])) {
-                                        return OperandKind::MAPPED[$sKind];
-                                    }
-                                    throw new Exception("Invalid OperandKind " . $sKind);
-                                },
-                                $aKinds
-                            );
-                        },
-                        (array)$oOperandData
+                return new OperandSetParser(
+                    new OperandCaseMap(
+                        array_map(
+                            // Transform the array of strings into the corresponding array of constant integer
+                            // operand types.
+                            function (array $aKinds) {
+                                return array_map(
+                                    // Transform the single string into it's corresponding constant integer operand type.
+                                    function (string $sKind) {
+                                        // Sanitise string and check it has an integer mapped value
+                                        $sKind = strtoupper(trim($sKind));
+                                        if (isset(OperandKind::MAPPED[$sKind])) {
+                                            return OperandKind::MAPPED[$sKind];
+                                        }
+                                        throw new Exception("Invalid OperandKind " . $sKind);
+                                    },
+                                    $aKinds
+                                );
+                            },
+                            (array)$oOperandData
+                        )
                     )
-                );
+                );//
             },
             $aOperandData
         );
-
-
     }
 }
 

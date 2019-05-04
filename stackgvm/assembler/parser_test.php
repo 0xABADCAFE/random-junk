@@ -4,7 +4,7 @@
 foreach (glob('php/*.php') as $sInclude) {
     require_once($sInclude);
 }
-
+/*
 echo "Testing non commutative triple operand set\n";
 
 $oParser = new OperandSetParser(new OperandCaseMap([
@@ -59,6 +59,6 @@ foreach ($aThreeOperandExamples as $sExample) {
         throw $oError;
     }
 }
-
+*/
 $oLoader = new InstructionDefinitionLoader();
-print_r($oLoader->loadDefinition('config/asm.json'));
+print_r($oLoader->loadDefinition('config/arithmetic.json'));

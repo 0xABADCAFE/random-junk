@@ -1,0 +1,75 @@
+{
+    "neg.i":[
+        {
+            "_NEG_LL": ["LOCAL",   "LOCAL"],
+            "_NEG_IL": ["INDEX_0", "LOCAL"],
+            "_NEG_LI": ["LOCAL",   "INDEX_0"],
+            "_NEG_II": ["INDEX_0", "INDEX_1"]
+        }
+    ],
+    "add.i":[
+        {
+            "_ADD_LLL": ["LOCAL",   "LOCAL", "LOCAL"],
+            "_ADD_ILL": ["INDEX_0", "LOCAL", "LOCAL"],
+            "_ADD_LLI": ["LOCAL",   "LOCAL", "INDEX_0"],
+            "_ADD_ILI": ["INDEX_0", "LOCAL", "INDEX_1"]
+        }
+    ],
+    "sub.i":[
+        {
+            "_SUB_LLL": ["LOCAL",   "LOCAL",   "LOCAL"],
+            "_SUB_ILL": ["INDEX_0", "LOCAL",   "LOCAL"],
+            "_SUB_LLI": ["LOCAL",   "LOCAL",   "INDEX_0"],
+            "_SUB_ILI": ["INDEX_0", "LOCAL",   "INDEX_1"],
+            "_SUB_LIL": ["LOCAL",   "INDEX_0", "LOCAL"],
+            "_SUB_IIL": ["INDEX_0", "INDEX_1", "LOCAL"],
+            "_SUB_LII": ["LOCAL",   "INDEX_0", "INDEX_1"]
+        }
+    ],
+    "mul.i":[
+        {
+            "_MUL_LLL": ["LOCAL",   "LOCAL", "LOCAL"],
+            "_MUL_ILL": ["INDEX_0", "LOCAL", "LOCAL"],
+            "_MUL_LLI": ["LOCAL",   "LOCAL", "INDEX_0"],
+            "_MUL_ILI": ["INDEX_0", "LOCAL", "INDEX_1"]
+        }
+    ],
+    "div.i":[
+        {
+            "_DIV_LLL": ["LOCAL",   "LOCAL",   "LOCAL"],
+            "_DIV_ILL": ["INDEX_0", "LOCAL",   "LOCAL"],
+            "_DIV_LLI": ["LOCAL",   "LOCAL",   "INDEX_0"],
+            "_DIV_ILI": ["INDEX_0", "LOCAL",   "INDEX_1"],
+            "_DIV_LIL": ["LOCAL",   "INDEX_0", "LOCAL"],
+            "_DIV_IIL": ["INDEX_0", "INDEX_1", "LOCAL"],
+            "_DIV_LII": ["LOCAL",   "INDEX_0", "INDEX_1"]
+        }
+    ],
+    "mod.i":[
+        {
+            "_MOD_LLL": ["LOCAL",   "LOCAL",   "LOCAL"],
+            "_MOD_ILL": ["INDEX_0", "LOCAL",   "LOCAL"],
+            "_MOD_LLI": ["LOCAL",   "LOCAL",   "INDEX_0"],
+            "_MOD_ILI": ["INDEX_0", "LOCAL",   "INDEX_1"],
+            "_MOD_LIL": ["LOCAL",   "INDEX_0", "LOCAL"],
+            "_MOD_IIL": ["INDEX_0", "INDEX_1", "LOCAL"],
+            "_MOD_LII": ["LOCAL",   "INDEX_0", "INDEX_1"]
+        }
+    ],
+    "max.i":[
+        {
+            "_MAX_LLL": ["LOCAL",   "LOCAL", "LOCAL"],
+            "_MAX_ILL": ["INDEX_0", "LOCAL", "LOCAL"],
+            "_MAX_LLI": ["LOCAL",   "LOCAL", "INDEX_0"],
+            "_MAX_ILI": ["INDEX_0", "LOCAL", "INDEX_1"]
+        }
+    ],
+    "min.i":[
+        {
+            "_MIN_LLL": ["LOCAL",   "LOCAL", "LOCAL"],
+            "_MIN_ILL": ["INDEX_0", "LOCAL", "LOCAL"],
+            "_MIN_LLI": ["LOCAL",   "LOCAL", "INDEX_0"],
+            "_MIN_ILI": ["INDEX_0", "LOCAL", "INDEX_1"]
+        }
+    ]
+}
