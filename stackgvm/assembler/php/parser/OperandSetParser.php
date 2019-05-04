@@ -25,11 +25,11 @@ class OperandSetParser {
         $aParsed = [];
         $aParsers = $this->oCaseMap->getParsers();
         foreach ($aOperands as $i => $sOperand) {
-            $aParsed[$i] = (object)[
-                'iKind'   => $aKind[$i],
-                'iValue'  => $aParsers[$aKind[$i]]->parse($sOperand),
-                'sSource' => $sOperand
-            ];
+            $aParsed[$i] = new Operand(
+                $aKind[$i],
+                $aParsers[$aKind[$i]]->parse($sOperand),
+                $sOperand
+            );
         }
         return $aParsed;
     }
@@ -50,7 +50,7 @@ class OperandSetParser {
 
     private function assertOperandUseCase(array $aOperands) {
         if (!$this->oCaseMap->check($aOperands)) {
-            throw new ParseException("Invalid Operand Use Case");
+            throw new ParseException("Invalid Operand Use Case {" . implode(", ", $aOperands) . "}");
         }
     }
 }

@@ -6,8 +6,13 @@
 class OperandParserFactory {
 
     private static $oInstance = null;
+    private $aParserInstances;
 
-    private $aParsers;
+    // Parsers for these OperandKind values should always return distinct instances, otherwise a shared instance
+    // will be used.
+    const USE_CLONED_PARSER = [
+        OperandKind::KIND => 1
+    ];
 
     /**
      * Singleton
@@ -26,14 +31,17 @@ class OperandParserFactory {
      * @return Parser
      */
     public function getParser(int $iKind) {
-        if (isset($this->aParsers[$iKind])) {
-            return $this->aParsers[$iKind];
+        if (isset($this->aParserInstances[$iKind])) {
+            if (isset(self::USE_CLONED_PARSER[$iKind])) {
+                return clone $this->aParserInstances[$iKind];
+            }
+            return $this->aParserInstances[$iKind];
         }
         throw new Exception("Uknown Operand Parser for #". $iKind);
     }
 
     private function __construct() {
-        $this->aParsers = [
+        $this->aParserInstances = [
             OperandKind::KIND    => new OperandKindParser(),
 
             OperandKind::LOCAL   => new StackFramePositionParser(

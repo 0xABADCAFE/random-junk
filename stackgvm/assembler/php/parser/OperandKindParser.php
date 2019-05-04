@@ -5,7 +5,7 @@
  *
  * Parses an expression to determine the OperandKind enumeration
  *
- * TODO - improve and generalise this, right now it's an ugly, hacky thing
+ * TODO - improve and generalise this, right now it's an ugly, hacky thin.g
  */
 class OperandKindParser implements IntegerExpressionParser {
 

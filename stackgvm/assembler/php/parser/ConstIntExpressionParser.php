@@ -68,7 +68,7 @@ class ConstIntExpressionParser implements IntegerExpressionParser {
      * @throw ParseException
      */
     private function assertAllowedCharacters(string $sExpression) {
-        if (!preg_match("/^[0-9\s\(\)\+\-\*]+$/", $sExpression)) {
+        if (!preg_match("/^[0-9\s\(\)\+\-\*\\/\%\<\>\&\|\~\?\:\^]+$/", $sExpression)) {
             throw new ParseException("Invalid Characters in expression " . $sExpression);
         }
         if (!preg_match("/\d+/", $sExpression)) {

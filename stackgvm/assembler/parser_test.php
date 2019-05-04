@@ -44,6 +44,8 @@ $oParser = new OperandSetParser(new OperandCaseMap([
 
 $aThreeOperandExamples = [
     '(0), (0), #-32768',
+    '(i0 + 7), (100), #(1<<4)&((1<<15)-1)',
+    '(i0 + 4%3), (1 < 2 ? 10 : 20), #0'
 ];
 
 foreach ($aThreeOperandExamples as $sExample) {

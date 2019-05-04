@@ -9,5 +9,6 @@ require_once 'parser/IndexOffsetParser.php';
 require_once 'parser/Base10IntegerLiteralParser.php';
 require_once 'parser/OperandParserFactory.php';
 require_once 'parser/OperandCaseMap.php';
+require_once 'parser/Operand.php';
 require_once 'parser/OperandSetParser.php';
 
