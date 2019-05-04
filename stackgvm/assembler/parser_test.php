@@ -18,7 +18,9 @@ $oParser = new OperandSetParser(new OperandCaseMap([
 ]));
 
 $aThreeOperandExamples = [
-    '(0), (0), (1)',
+    '(5), (7), (13)',
+    '(5 + 1), (7 - 1), (13 + 1 - 2)',
+    '(5 / 3), (5 * 3), (5 * 2 / 3)',
     '(i0 + 2), (0), (i1 + 2)',
     '(i0 + 2), (3), (i1 + (5 + (7*2) ) )',
     '(i0 + 1), (i0 + 2), (i1 + 3)'
@@ -57,3 +59,6 @@ foreach ($aThreeOperandExamples as $sExample) {
         throw $oError;
     }
 }
+
+$oLoader = new InstructionDefinitionLoader();
+print_r($oLoader->loadDefinition('config/asm.json'));

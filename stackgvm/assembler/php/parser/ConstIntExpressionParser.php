@@ -39,10 +39,17 @@ class ConstIntExpressionParser implements IntegerExpressionParser {
         if (false === $cExp) {
             throw new ParseException("Invalid Expression Structure " . $sExpression);
         }
-        $iVal = $cExp();
-        if (!is_integer($iVal)) {
-            throw new TypeException("Expression did not yield a valid integer " . $iVal);
+        $mVal = $cExp();
+        if (!is_numeric($mVal)) {
+            throw new TypeException("Expression did not yield a valid integer " . $mVal);
         }
+        $iVal = (int)$mVal;
+        if ($iVal != $mVal) {
+            error_log(
+                "Warning: Expression " . $sExpression . " yeilded a non integer value " . $mVal . " which has been truncated to " . $iVal
+            );
+        }
+
         if ($iVal < $this->iMin || $iVal > $this->iMax) {
             throw new RangeException("Value " . $iVal  . " is outside allowed range " . $this->iMin . "..." . $this->iMax);
         }
