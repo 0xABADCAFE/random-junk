@@ -73,12 +73,18 @@ class OperandCaseMap {
 
     /**
      * Checks if a given set of OperandKind values (in given order) are within the defined set of cases
+     * and returns the associated opcode value for the use case.
      *
      * @param int[] $aOperandCase
-     * @return bool
+     * @return int
+     * @throws InvalidArgumentException
      */
-    public function check(array $aOperandCase) : bool {
-        return isset($this->aCaseMap[$this->caseToString($aOperandCase)]);
+    public function getOperandForCase(array $aOperandCase) : int {
+        $sCase = $this->caseToString($aOperandCase);
+        if (isset($this->aCaseMap[$sCase])) {
+            return $this->aCaseMap[$sCase];
+        }
+        throw new InvalidArgumentException("Invalid Operand Case " . implode(",", $aOperandCase));
     }
 
     /**

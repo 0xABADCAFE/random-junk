@@ -29,6 +29,15 @@ interface OperandKind {
         self::SMALL_8 => [-128, 127]
     ];
 
+    const MAPPED = [
+        "LOCAL"   => self::LOCAL,
+        "INDEX_0" => self::INDEX_0,
+        "INDEX_1" => self::INDEX_1,
+        "JUMP_8"  => self::JUMP_8,
+        "JUMP_16" => self::JUMP_16,
+        "SMALL_8" => self::SMALL_8
+    ];
+
     const
         MATCH_LOCAL   = '/^\s*\(.*?\)\s*$/',
         MATCH_INDEX   = '/^\s*\(\s*i(\d)\s*([\+\-]{1}.*?)\)\s*$/',

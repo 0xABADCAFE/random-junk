@@ -21,7 +21,7 @@ class OperandSetParser {
         foreach ($aOperands as $i => $sOperand) {
             $aKind[$i] = $this->oKindParser->parse($sOperand);
         }
-        $this->assertOperandUseCase($aKind);
+        $iOpcode = $this->oCaseMap->getOperandForCase($aKind);
         $aParsed = [];
         $aParsers = $this->oCaseMap->getParsers();
         foreach ($aOperands as $i => $sOperand) {
@@ -31,7 +31,10 @@ class OperandSetParser {
                 $sOperand
             );
         }
-        return $aParsed;
+        return (object)[
+            "opcode"   => $iOpcode,
+            "operands" => $aParsed
+        ];
     }
 
     private function assertOperandCount(array $aOperands) {
@@ -48,10 +51,5 @@ class OperandSetParser {
         }
     }
 
-    private function assertOperandUseCase(array $aOperands) {
-        if (!$this->oCaseMap->check($aOperands)) {
-            throw new ParseException("Invalid Operand Use Case {" . implode(", ", $aOperands) . "}");
-        }
-    }
 }
 

@@ -8,13 +8,13 @@ foreach (glob('php/*.php') as $sInclude) {
 echo "Testing non commutative triple operand set\n";
 
 $oParser = new OperandSetParser(new OperandCaseMap([
-    [OperandKind::LOCAL,   OperandKind::LOCAL,   OperandKind::LOCAL],   // LLL
-    [OperandKind::INDEX_0, OperandKind::LOCAL,   OperandKind::LOCAL],   // ILL
-    [OperandKind::LOCAL,   OperandKind::LOCAL,   OperandKind::INDEX_0], // LLI
-    [OperandKind::INDEX_0, OperandKind::LOCAL,   OperandKind::INDEX_1], // ILI
-    [OperandKind::LOCAL,   OperandKind::INDEX_0, OperandKind::LOCAL],   // LIL
-    [OperandKind::INDEX_0, OperandKind::INDEX_1, OperandKind::LOCAL],   // IIL
-    [OperandKind::LOCAL,   OperandKind::INDEX_0, OperandKind::INDEX_1], // LII
+    40 => [OperandKind::LOCAL,   OperandKind::LOCAL,   OperandKind::LOCAL],   // LLL
+    41 => [OperandKind::INDEX_0, OperandKind::LOCAL,   OperandKind::LOCAL],   // ILL
+    42 => [OperandKind::LOCAL,   OperandKind::LOCAL,   OperandKind::INDEX_0], // LLI
+    43 => [OperandKind::INDEX_0, OperandKind::LOCAL,   OperandKind::INDEX_1], // ILI
+    44 => [OperandKind::LOCAL,   OperandKind::INDEX_0, OperandKind::LOCAL],   // LIL
+    45 => [OperandKind::INDEX_0, OperandKind::INDEX_1, OperandKind::LOCAL],   // IIL
+    46 => [OperandKind::LOCAL,   OperandKind::INDEX_0, OperandKind::INDEX_1], // LII
 ]));
 
 $aThreeOperandExamples = [
@@ -36,10 +36,10 @@ foreach ($aThreeOperandExamples as $sExample) {
 echo "Testing two operand with 16-bit signed offset\n";
 
 $oParser = new OperandSetParser(new OperandCaseMap([
-    [OperandKind::LOCAL,   OperandKind::LOCAL,   OperandKind::JUMP_16], // LLJ
-    [OperandKind::INDEX_0, OperandKind::LOCAL,   OperandKind::JUMP_16], // ILJ
-    [OperandKind::LOCAL,   OperandKind::INDEX_0, OperandKind::JUMP_16], // LIJ
-    [OperandKind::INDEX_0, OperandKind::INDEX_1, OperandKind::JUMP_16], // ILJ
+    100 => [OperandKind::LOCAL,   OperandKind::LOCAL,   OperandKind::JUMP_16], // LLJ
+    101 => [OperandKind::INDEX_0, OperandKind::LOCAL,   OperandKind::JUMP_16], // ILJ
+    102 => [OperandKind::LOCAL,   OperandKind::INDEX_0, OperandKind::JUMP_16], // LIJ
+    103 => [OperandKind::INDEX_0, OperandKind::INDEX_1, OperandKind::JUMP_16], // ILJ
 ]));
 
 $aThreeOperandExamples = [
