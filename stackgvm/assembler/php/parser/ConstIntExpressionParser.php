@@ -37,7 +37,7 @@ class ConstIntExpressionParser implements IntegerExpressionParser {
 
         $cExp = create_function("", 'return ' . $sExpression . ';');
         if (false === $cExp) {
-            throw new ParseException("Invalid Structure");
+            throw new ParseException("Invalid Expression Structure " . $sExpression);
         }
         $iVal = $cExp();
         if (!is_integer($iVal)) {
