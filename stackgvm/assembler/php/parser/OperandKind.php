@@ -16,9 +16,12 @@ interface OperandKind {
         SMALL_8 = 6, // Small integer literal   (-128 ... 127),
         BITPOS  = 7, // Small integer literal   (0 ... 31)
 
+        L_SYMBOL = 8, // Local Symbol
+        G_SYMBOL = 9, // Global Symbol
+
        // Kinds
        MIN     = 0,
-       MAX     = 7
+       MAX     = 9
     ;
 
     const LIMITS = [
@@ -38,12 +41,15 @@ interface OperandKind {
         "JUMP_8"  => self::JUMP_8,
         "JUMP_16" => self::JUMP_16,
         "SMALL_8" => self::SMALL_8,
-        "BITPOS"  => self::BITPOS
+        "BITPOS"  => self::BITPOS,
+        "L_SYMBOL" => self::L_SYMBOL,
+        "G_SYMBOL" => self::G_SYMBOL
     ];
 
     const
-        MATCH_LOCAL   = '/^\s*\(.*?\)\s*$/',
-        MATCH_INDEX   = '/^\s*\(\s*i(\d)\s*([\+\-]{1}.*?)\)\s*$/',
-        MATCH_BASE_10 = '/^\s*#{1}(.*?)\s*$/'
+        MATCH_LOCAL    = '/^\s*\(.*?\)\s*$/',
+        MATCH_INDEX    = '/^\s*\(\s*i(\d)\s*([\+\-]{1}.*?)\)\s*$/',
+        MATCH_BASE_10  = '/^\s*#{1}(.*?)\s*$/',
+        MATCH_L_SYMBOL = '/^\s*\.([A-Za-Z]{1}[0-9A-Za-Z]{0,})\s*/'
     ;
 }

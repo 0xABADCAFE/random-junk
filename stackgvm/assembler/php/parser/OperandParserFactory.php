@@ -87,6 +87,13 @@ class OperandParserFactory {
                     OperandKind::LIMITS[OperandKind::SMALL_8][1]
                 )
             ),
+
+            OperandKind::BITPOS => new Base10IntegerLiteralParser(
+                new ConstIntExpressionParser(
+                    OperandKind::LIMITS[OperandKind::BITPOS][0],
+                    OperandKind::LIMITS[OperandKind::BITPOS][1]
+                )
+            ),
         ];
     }
 }
