@@ -28,7 +28,7 @@ class OperandSetParser {
         $aParsed = [];
         $aParsers = $this->oCaseMap->getParsers();
         foreach ($aOperands as $i => $sOperand) {
-            $aParsed[$i] = new Operand(
+            $aParsed[$i] = Operand::create(
                 $aKind[$i],
                 $aParsers[$aKind[$i]]->parse($sOperand),
                 $sOperand
