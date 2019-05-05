@@ -1,5 +1,5 @@
 {
-    "neg.i":[
+    "neg.i": [
         {
             "_NEG_LL": ["LOCAL",   "LOCAL"],
             "_NEG_IL": ["INDEX_0", "LOCAL"],
@@ -7,7 +7,7 @@
             "_NEG_II": ["INDEX_0", "INDEX_1"]
         }
     ],
-    "add.i":[
+    "add.i": [
         {
             "_ADD_LLL": ["LOCAL",   "LOCAL", "LOCAL"],
             "_ADD_ILL": ["INDEX_0", "LOCAL", "LOCAL"],
@@ -15,7 +15,7 @@
             "_ADD_ILI": ["INDEX_0", "LOCAL", "INDEX_1"]
         }
     ],
-    "sub.i":[
+    "sub.i": [
         {
             "_SUB_LLL": ["LOCAL",   "LOCAL",   "LOCAL"],
             "_SUB_ILL": ["INDEX_0", "LOCAL",   "LOCAL"],
@@ -26,7 +26,7 @@
             "_SUB_LII": ["LOCAL",   "INDEX_0", "INDEX_1"]
         }
     ],
-    "mul.i":[
+    "mul.i": [
         {
             "_MUL_LLL": ["LOCAL",   "LOCAL", "LOCAL"],
             "_MUL_ILL": ["INDEX_0", "LOCAL", "LOCAL"],
@@ -34,7 +34,7 @@
             "_MUL_ILI": ["INDEX_0", "LOCAL", "INDEX_1"]
         }
     ],
-    "div.i":[
+    "div.i": [
         {
             "_DIV_LLL": ["LOCAL",   "LOCAL",   "LOCAL"],
             "_DIV_ILL": ["INDEX_0", "LOCAL",   "LOCAL"],
@@ -45,7 +45,7 @@
             "_DIV_LII": ["LOCAL",   "INDEX_0", "INDEX_1"]
         }
     ],
-    "mod.i":[
+    "mod.i": [
         {
             "_MOD_LLL": ["LOCAL",   "LOCAL",   "LOCAL"],
             "_MOD_ILL": ["INDEX_0", "LOCAL",   "LOCAL"],
@@ -56,7 +56,7 @@
             "_MOD_LII": ["LOCAL",   "INDEX_0", "INDEX_1"]
         }
     ],
-    "max.i":[
+    "max.i": [
         {
             "_MAX_LLL": ["LOCAL",   "LOCAL", "LOCAL"],
             "_MAX_ILL": ["INDEX_0", "LOCAL", "LOCAL"],
@@ -64,12 +64,205 @@
             "_MAX_ILI": ["INDEX_0", "LOCAL", "INDEX_1"]
         }
     ],
-    "min.i":[
+    "min.i": [
         {
             "_MIN_LLL": ["LOCAL",   "LOCAL", "LOCAL"],
             "_MIN_ILL": ["INDEX_0", "LOCAL", "LOCAL"],
             "_MIN_LLI": ["LOCAL",   "LOCAL", "INDEX_0"],
             "_MIN_ILI": ["INDEX_0", "LOCAL", "INDEX_1"]
+        }
+    ],
+
+    "inv.f": [
+        {
+            "_FINV_LL": ["LOCAL", "LOCAL"]
+        }
+    ],
+    "sqrt.f": [
+        {
+            "_FSQRT_LL": ["LOCAL", "LOCAL"]
+        }
+    ],
+    "isqr.f": [
+        {
+            "_INVSQ_LL": ["LOCAL", "LOCAL"]
+        }
+    ],
+    "sin.f": [
+        {
+            "_FSIN_LL": ["LOCAL", "LOCAL"]
+        }
+    ],
+    "cos.f": [
+        {
+            "_FCOS_LL": ["LOCAL", "LOCAL"]
+        }
+    ],
+    "acos.f": [
+        {
+            "_FACOS_LL": ["LOCAL", "LOCAL"]
+        }
+    ],
+    "ceil.f": [
+        {
+            "_FCEIL_LL": ["LOCAL", "LOCAL"]
+        }
+    ],
+    "floor.f": [
+        {
+            "_FFLOOR_LL": ["LOCAL", "LOCAL"]
+        }
+    ],
+    "neg.f": [
+        {
+            "_FNEG_LL": ["LOCAL",   "LOCAL"],
+            "_FNEG_IL": ["INDEX_0", "LOCAL"],
+            "_FNEG_LI": ["LOCAL",   "INDEX_0"],
+            "_FNEG_II": ["INDEX_0", "INDEX_1"]
+        }
+    ],
+    "add.f": [
+        {
+            "_FADD_LLL": ["LOCAL",   "LOCAL", "LOCAL"],
+            "_FADD_ILL": ["INDEX_0", "LOCAL", "LOCAL"],
+            "_FADD_LLI": ["LOCAL",   "LOCAL", "INDEX_0"],
+            "_FADD_ILI": ["INDEX_0", "LOCAL", "INDEX_1"]
+        }
+    ],
+    "sub.f": [
+        {
+            "_FSUB_LLL": ["LOCAL",   "LOCAL",   "LOCAL"],
+            "_FSUB_ILL": ["INDEX_0", "LOCAL",   "LOCAL"],
+            "_FSUB_LLI": ["LOCAL",   "LOCAL",   "INDEX_0"],
+            "_FSUB_ILI": ["INDEX_0", "LOCAL",   "INDEX_1"],
+            "_FSUB_LIL": ["LOCAL",   "INDEX_0", "LOCAL"],
+            "_FSUB_IIL": ["INDEX_0", "INDEX_1", "LOCAL"],
+            "_FSUB_LII": ["LOCAL",   "INDEX_0", "INDEX_1"]
+        }
+    ],
+    "mul.f": [
+        {
+            "_FMUL_LLL": ["LOCAL",   "LOCAL", "LOCAL"],
+            "_FMUL_ILL": ["INDEX_0", "LOCAL", "LOCAL"],
+            "_FMUL_LLI": ["LOCAL",   "LOCAL", "INDEX_0"],
+            "_FMUL_ILI": ["INDEX_0", "LOCAL", "INDEX_1"]
+        }
+    ],
+    "div.f": [
+        {
+            "_FDIV_LLL": ["LOCAL",   "LOCAL",   "LOCAL"],
+            "_FDIV_ILL": ["INDEX_0", "LOCAL",   "LOCAL"],
+            "_FDIV_LLI": ["LOCAL",   "LOCAL",   "INDEX_0"],
+            "_FDIV_ILI": ["INDEX_0", "LOCAL",   "INDEX_1"],
+            "_FDIV_LIL": ["LOCAL",   "INDEX_0", "LOCAL"],
+            "_FDIV_IIL": ["INDEX_0", "INDEX_1", "LOCAL"],
+            "_FDIV_LII": ["LOCAL",   "INDEX_0", "INDEX_1"]
+        }
+    ],
+    "mod.f": [
+        {
+            "_FMOD_LLL": ["LOCAL",   "LOCAL",   "LOCAL"],
+            "_FMOD_ILL": ["INDEX_0", "LOCAL",   "LOCAL"],
+            "_FMOD_LLI": ["LOCAL",   "LOCAL",   "INDEX_0"],
+            "_FMOD_ILI": ["INDEX_0", "LOCAL",   "INDEX_1"],
+            "_FMOD_LIL": ["LOCAL",   "INDEX_0", "LOCAL"],
+            "_FMOD_IIL": ["INDEX_0", "INDEX_1", "LOCAL"],
+            "_FMOD_LII": ["LOCAL",   "INDEX_0", "INDEX_1"]
+        }
+    ],
+    "max.f": [
+        {
+            "_FMAX_LLL": ["LOCAL",   "LOCAL", "LOCAL"],
+            "_FMAX_ILL": ["INDEX_0", "LOCAL", "LOCAL"],
+            "_FMAX_LLI": ["LOCAL",   "LOCAL", "INDEX_0"],
+            "_FMAX_ILI": ["INDEX_0", "LOCAL", "INDEX_1"]
+        }
+    ],
+    "min.f": [
+        {
+            "_FMIN_LLL": ["LOCAL",   "LOCAL", "LOCAL"],
+            "_FMIN_ILL": ["INDEX_0", "LOCAL", "LOCAL"],
+            "_FMIN_LLI": ["LOCAL",   "LOCAL", "INDEX_0"],
+            "_FMIN_ILI": ["INDEX_0", "LOCAL", "INDEX_1"]
+        }
+    ],
+    "pow.f": [
+        {
+            "_FPOW_LLL": ["LOCAL",   "LOCAL", "LOCAL"]
+        }
+    ],
+
+    "neg.v": [
+        {
+            "_VNEG_LL": ["LOCAL",   "LOCAL"],
+            "_VNEG_IL": ["INDEX_0", "LOCAL"],
+            "_VNEG_LI": ["LOCAL",   "INDEX_0"],
+            "_VNEG_II": ["INDEX_0", "INDEX_1"]
+        }
+    ],
+    "norm.v": [
+        {
+            "_VNORM_LL": ["LOCAL",   "LOCAL"],
+            "_VNORM_IL": ["INDEX_0", "LOCAL"],
+            "_VNORM_LI": ["LOCAL",   "INDEX_0"],
+            "_VNORM_II": ["INDEX_0", "INDEX_1"]
+        }
+    ],
+    "mag.v": [
+        {
+            "_VMAG_LL": ["LOCAL",   "LOCAL"],
+            "_VMAG_IL": ["INDEX_0", "LOCAL"],
+            "_VMAG_LI": ["LOCAL",   "INDEX_0"],
+            "_VMAG_II": ["INDEX_0", "INDEX_1"]
+        }
+    ],
+    "add.v": [
+        {
+            "_VADD_LLL": ["LOCAL",   "LOCAL", "LOCAL"],
+            "_VADD_ILL": ["INDEX_0", "LOCAL", "LOCAL"],
+            "_VADD_LLI": ["LOCAL",   "LOCAL", "INDEX_0"],
+            "_VADD_ILI": ["INDEX_0", "LOCAL", "INDEX_1"]
+        }
+    ],
+    "sub.v": [
+        {
+            "_VSUB_LLL": ["LOCAL",   "LOCAL",   "LOCAL"],
+            "_VSUB_ILL": ["INDEX_0", "LOCAL",   "LOCAL"],
+            "_VSUB_LLI": ["LOCAL",   "LOCAL",   "INDEX_0"],
+            "_VSUB_ILI": ["INDEX_0", "LOCAL",   "INDEX_1"],
+            "_VSUB_LIL": ["LOCAL",   "INDEX_0", "LOCAL"],
+            "_VSUB_IIL": ["INDEX_0", "INDEX_1", "LOCAL"],
+            "_VSUB_LII": ["LOCAL",   "INDEX_0", "INDEX_1"]
+        }
+    ],
+    "dot.v": [
+        {
+            "_VDOT_LLL": ["LOCAL",   "LOCAL", "LOCAL"],
+            "_VDOT_ILL": ["INDEX_0", "LOCAL", "LOCAL"],
+            "_VDOT_LLI": ["LOCAL",   "LOCAL", "INDEX_0"],
+            "_VDOT_ILI": ["INDEX_0", "LOCAL", "INDEX_1"]
+        }
+    ],
+    "cross.v": [
+        {
+            "_VCROSS_LLL": ["LOCAL",   "LOCAL",   "LOCAL"],
+            "_VCROSS_ILL": ["INDEX_0", "LOCAL",   "LOCAL"],
+            "_VCROSS_LLI": ["LOCAL",   "LOCAL",   "INDEX_0"],
+            "_VCROSS_ILI": ["INDEX_0", "LOCAL",   "INDEX_1"],
+            "_VCROSS_LIL": ["LOCAL",   "INDEX_0", "LOCAL"],
+            "_VCROSS_IIL": ["INDEX_0", "INDEX_1", "LOCAL"],
+            "_VCROSS_LII": ["LOCAL",   "INDEX_0", "INDEX_1"]
+        }
+    ],
+    "mulf.v": [
+        {
+            "_VFMUL_LLL": ["LOCAL",   "LOCAL",   "LOCAL"],
+            "_VFMUL_ILL": ["INDEX_0", "LOCAL",   "LOCAL"],
+            "_VFMUL_LLI": ["LOCAL",   "LOCAL",   "INDEX_0"],
+            "_VFMUL_ILI": ["INDEX_0", "LOCAL",   "INDEX_1"],
+            "_VFMUL_LIL": ["LOCAL",   "INDEX_0", "LOCAL"],
+            "_VFMUL_IIL": ["INDEX_0", "INDEX_1", "LOCAL"],
+            "_VFMUL_LII": ["LOCAL",   "INDEX_0", "INDEX_1"]
         }
     ]
 }
