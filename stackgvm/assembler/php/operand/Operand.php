@@ -12,12 +12,12 @@ abstract class Operand {
     ;
 
     const MAPPED = [
-        OperandKind::LOCAL   => 'ResolvedOperand',
-        OperandKind::INDEX_0 => 'ResolvedOperand',
-        OperandKind::INDEX_1 => 'ResolvedOperand',
-        OperandKind::JUMP_8  => 'ResolvedOperand',
-        OperandKind::JUMP_16 => 'ResolvedOperand',
-        OperandKind::SMALL_8 => 'ResolvedOperand',
+        OperandKind::LOCAL   => 'LocalOperand',
+        OperandKind::INDEX_0 => 'IndirectOperand',
+        OperandKind::INDEX_1 => 'IndirectOperand',
+        OperandKind::JUMP_8  => 'ResolvedBranchTargetOperand',
+        OperandKind::JUMP_16 => 'ResolvedBranchTargetOperand',
+        OperandKind::SMALL_8 => 'SmallLiteralIntegerOperand',
         OperandKind::BITPOS  => 'ResolvedOperand',
         OperandKind::LABEL   => 'UnresolvedOperand',
         OperandKind::SYMBOL  => 'UnresolvedOperand'
