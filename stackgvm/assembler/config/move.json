@@ -1,0 +1,85 @@
+{
+    "addr": [
+        {
+            "_ADDR_LL":  ["LOCAL",   "LOCAL"],
+            "_ADDR_I0L": ["INDEX_0", "LOCAL"],
+            "_ADDR_I1L": ["INDEX_1", "LOCAL"]
+        },{
+            "_ADDR_DL": [],
+            "_ADDR_DI0": [],
+            "_ADDR_DI1": [],
+            "_ADDR_D0": [],
+            "_ADDR_D1": [],
+            "_ADDR_CL": [],
+            "_ADDR_CI0": [],
+            "_ADDR_CI1": []
+        }
+    ],
+    "add.a": [
+        {
+            "_ADDA_SI0": [],
+            "_ADDA_SI1": []
+        }
+    ],
+    "load": [
+        {
+            "_LOAD_L0": [],
+            "_LOAD_L1": [],
+            "_LOAD_HL": []
+        },{
+            "_LOAD_SL":  ["SMALL_8", "LOCAL"],
+            "_LOAD_SI0": ["SMALL_8", "INDEX_0"],
+            "_LOAD_SI1": ["SMALL_8", "INDEX_1"]
+        }
+    ],
+    "save": [
+        {
+            "_SAVE_0L": [],
+            "_SAVE_1L": []
+        }
+    ],
+    "copy": [
+        {
+            "_COPY_LL":  ["LOCAL",   "LOCAL"],
+            "_COPY_I0L": ["INDEX_0", "LOCAL"],
+            "_COPY_I1L": ["INDEX_1", "LOCAL"],
+            "_COPY_LI0": ["LOCAL",   "INDEX_0"],
+            "_COPY_LI1": ["LOCAL",   "INDEX_1"],
+            "_COPY_II":  ["INDEX_0", "INDEX_1"]
+        }
+    ],
+    "cpix": [
+        {
+            "_CPIX_I0L": ["INDEX_0", "LOCAL", "LOCAL"],
+            "_CPIX_I1L": ["INDEX_1", "LOCAL", "LOCAL"]
+        }
+    ],
+    "itof": [
+        {
+            "_ITOF_LL": ["LOCAL", "LOCAL"]
+        }
+    ],
+    "ftoi": [
+        {
+            "_FTOI_LL": ["LOCAL", "LOCAL"]
+        }
+    ],
+    "copy.v": [
+        {
+            "_VCOPY_LL": ["LOCAL", "LOCAL"],
+            "_VCOPY_IL": ["INDEX_0", "LOCAL"],
+            "_VCOPY_LI": ["INDEX_1", "LOCAL"],
+            "_VCOPY_II": ["INDEX_0", "INDEX_1"]
+       }
+    ],
+    "rnd.f": [
+        {
+            "_FRND_L": ["LOCAL"]
+        }
+    ],
+    "rnd.v": [
+        {
+            "_VRND_L": ["LOCAL"]
+        }
+    ]
+}
