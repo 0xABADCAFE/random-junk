@@ -11,6 +11,7 @@ class OperandKindParser implements IntegerExpressionParser {
 
     // An operand can not be more than one of the following kinds
     const MUTUALLY_EXCLUSIVE_KINDS = [
+        OperandKind::BITPOS,
         OperandKind::SMALL_8,
         OperandKind::JUMP_8,
         OperandKind::JUMP_16

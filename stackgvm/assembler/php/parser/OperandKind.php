@@ -14,10 +14,11 @@ interface OperandKind {
         JUMP_8  = 4, // Short jump displacement (-128 ... 127)
         JUMP_16 = 5, // Jump displacement       (-32768 ... 32767)
         SMALL_8 = 6, // Small integer literal   (-128 ... 127),
+        BITPOS  = 7, // Small integer literal   (0 ... 31)
 
        // Kinds
        MIN     = 0,
-       MAX     = 6
+       MAX     = 7
     ;
 
     const LIMITS = [
@@ -26,7 +27,8 @@ interface OperandKind {
         self::INDEX_1 => [0, 255],
         self::JUMP_8  => [-128, 127],
         self::JUMP_16 => [-32768, 32767],
-        self::SMALL_8 => [-128, 127]
+        self::SMALL_8 => [-128, 127],
+        self::BITPOS  => [0, 31]
     ];
 
     const MAPPED = [
@@ -35,7 +37,8 @@ interface OperandKind {
         "INDEX_1" => self::INDEX_1,
         "JUMP_8"  => self::JUMP_8,
         "JUMP_16" => self::JUMP_16,
-        "SMALL_8" => self::SMALL_8
+        "SMALL_8" => self::SMALL_8,
+        "BITPOS"  => self::BITPOS
     ];
 
     const
