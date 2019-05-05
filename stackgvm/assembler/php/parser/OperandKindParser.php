@@ -40,9 +40,18 @@ class OperandKindParser implements IntegerExpressionParser {
             return $this->iDefaultBase10Kind;
         }
 
+        if (preg_match(OperandKind::MATCH_LABEL, $sOperand)) {
+            return OperandKind::LABEL;
+        }
+
+        if (preg_match(OperandKind::MATCH_SYMBOL, $sOperand)) {
+            return OperandKind::SYMBOL;
+        }
+
         if (!preg_match('/i(\d+)/', $sOperand, $aMatch)) {
             return OperandKind::LOCAL;
         }
+        
         switch ($aMatch[1]) {
             case 0: return OperandKind::INDEX_0;
             case 1: return OperandKind::INDEX_1;

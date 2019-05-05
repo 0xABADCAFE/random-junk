@@ -9,6 +9,8 @@
             "_BRAS": ["JUMP_8"]
         },{
             "_BRA": ["JUMP_16"]
+        },{
+            "_BRA": ["LABEL"]
         }
     ],
     "call": [

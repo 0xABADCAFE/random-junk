@@ -24,7 +24,7 @@ class OperandSetParser {
         foreach ($aOperands as $i => $sOperand) {
             $aKind[$i] = $this->oKindParser->parse($sOperand);
         }
-        $iOpcode = $this->oCaseMap->getOperandForCase($aKind);
+        $sOpcode = $this->oCaseMap->getOperandForCase($aKind);
         $aParsed = [];
         $aParsers = $this->oCaseMap->getParsers();
         foreach ($aOperands as $i => $sOperand) {
@@ -35,7 +35,7 @@ class OperandSetParser {
             );
         }
         return (object)[
-            "opcode"   => $iOpcode,
+            "opcode"   => $sOpcode,
             "operands" => $aParsed
         ];
     }

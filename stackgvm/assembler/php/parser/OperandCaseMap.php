@@ -37,7 +37,6 @@ class OperandCaseMap {
             }
         }
 
-
         foreach ($aDistinct as $i) {
             $this->aParsers[$i] = OperandParserFactory::get()->getParser($i);
         }
@@ -73,13 +72,13 @@ class OperandCaseMap {
 
     /**
      * Checks if a given set of OperandKind values (in given order) are within the defined set of cases
-     * and returns the associated opcode value for the use case.
+     * and returns the associated opcode name for the use case.
      *
      * @param int[] $aOperandCase
-     * @return int
+     * @return string
      * @throws InvalidArgumentException
      */
-    public function getOperandForCase(array $aOperandCase) : int {
+    public function getOperandForCase(array $aOperandCase) : string {
         $sCase = $this->caseToString($aOperandCase);
         if (isset($this->aCaseMap[$sCase])) {
             return $this->aCaseMap[$sCase];

@@ -94,6 +94,9 @@ class OperandParserFactory {
                     OperandKind::LIMITS[OperandKind::BITPOS][1]
                 )
             ),
+
+            OperandKind::LABEL  => new LabelParser(),
+            OperandKind::SYMBOL => new SymbolParser(),
         ];
     }
 }
