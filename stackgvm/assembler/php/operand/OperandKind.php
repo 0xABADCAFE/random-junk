@@ -34,6 +34,18 @@ interface OperandKind {
         self::BITPOS  => [0, 31]
     ];
 
+    const SIZES = [
+        self::LOCAL   => 1,
+        self::INDEX_0 => 1,
+        self::INDEX_1 => 1,
+        self::JUMP_8  => 1,
+        self::SMALL_8 => 1,
+        self::BITPOS  => 1,
+        self::JUMP_16 => 2,
+        self::LABEL   => 2,
+        self::SYMBOL  => 2
+    ];
+
     const MAPPED = [
         "LOCAL"   => self::LOCAL,
         "INDEX_0" => self::INDEX_0,

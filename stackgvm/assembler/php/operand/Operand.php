@@ -7,7 +7,9 @@
 abstract class Operand {
     public
         $iKind,
+        $iSize,
         $value,
+        $sBytes,
         $sSource
     ;
 
@@ -31,9 +33,11 @@ abstract class Operand {
         return new $sKind($iKind, $value, $sSource);
     }
 
-    public function __construct(int $iKind, $value, string $sSource) {
+
+    protected function __construct(int $iKind, $value, string $sSource) {
         $this->iKind   = $iKind;
         $this->value   = $value;
         $this->sSource = $sSource;
+        $this->iSize   = OperandKind::SIZES[$iKind];
     }
 };
