@@ -1,7 +1,7 @@
 <?php
 
 /**
- *
+ * SourceLoader
  */
 
 class SourceLoader {
@@ -34,7 +34,7 @@ class SourceLoader {
             'cpp -nostdinc -Isdk/' .
             $this->oProject->getTargetName() . '/include ' .
             $sCurrentPath);
-        $this->aSource[$sCurrentPath] = preg_replace('/^#.*?$\n*/m', '', $sContent);
+        $this->aSource[$sCurrentPath] = explode("\n", preg_replace('/^#.*?$\n*/m', '', $sContent));
     }
 
 }

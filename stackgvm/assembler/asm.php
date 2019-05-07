@@ -17,7 +17,22 @@ $aOptions = getopt(
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+const LINE_KIND_NAMES = [
+    LineKind::BLANK       => "Blank",
+    LineKind::LABEL       => "Label",
+    LineKind::CODE_SYMBOL => "Function Definition",
+    LineKind::DATA_SYMBOL => "Data Definition",
+    LineKind::INSTRUCTION => "Instruction"
+];
 
-(new SourceLoader(new Project('example/project.json')))
+$oLineParser = new LineKindParser();
+$aSources = (new SourceLoader(new Project('example/project.json')))
     ->load()
-    ->dump();
+    ->getSource();
+
+foreach ($aSources as $sFile => $aLines) {
+    echo $sFile, ":\n";
+    foreach ($aLines as $iNum => $sLine) {
+        printf("\t%2d %-40s -> %s\n", $iNum, $sLine, LINE_KIND_NAMES[$oLineParser->parse($sLine)]);
+    }
+}
