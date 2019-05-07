@@ -1,0 +1,19 @@
+/data/prj/random-junk/stackgvm/assembler/example/src/noop.asm:
+	 0 @doNothing:                              -> Function Definition
+	 1     ret                                  -> Instruction
+	 2                                          -> Blank
+/data/prj/random-junk/stackgvm/assembler/example/src/aim.asm:
+	 0 @predictPosition:                        -> Function Definition
+	 1     load (3), i0                         -> Instruction
+	 2     mulf.v (i0 + 9), (4), (0)            -> Instruction
+	 3     loadc 0, (6)                         -> Instruction
+	 4     mul.f (4), (4), (5)                  -> Instruction
+	 5     mul.f (6), (5), (6)                  -> Instruction
+	 6     mulf.v (i0 + 12), (6), (7)           -> Instruction
+	 7     add.v (7), (0), (0)                  -> Instruction
+	 8     add.v (i0 + 0), (0), (0)             -> Instruction
+	 9     ret                                  -> Instruction
+	10                                          -> Blank
+	11 @boom:                                   -> Function Definition
+	12     ret                                  -> Instruction
+	13                                          -> Blank
