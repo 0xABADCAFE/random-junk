@@ -1,4 +1,4 @@
 
-@doNothing():void
+@doNothing: // ():void
     ret
 
