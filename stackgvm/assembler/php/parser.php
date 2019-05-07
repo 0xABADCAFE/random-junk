@@ -1,6 +1,8 @@
 <?php
 
+require_once 'line/LineKind.php';
 require_once 'parser/IntegerExpressionParser.php';
+require_once 'parser/LineKindParser.php';
 require_once 'parser/OperandKindParser.php';
 require_once 'parser/ConstIntExpressionParser.php';
 require_once 'parser/StackFramePositionParser.php';
