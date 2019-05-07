@@ -7,14 +7,17 @@ foreach (glob('php/*.php') as $sInclude) {
 
 $oParser = new OperandSetParser(
     new OperandCaseMap([
-        "_CALL" => [OperandKind::SYMBOL],
+        "A" => [OperandKind::SYMBOL],
+        "B" => [OperandKind::LABEL],
+        "C" => [OperandKind::JUMP_16]
     ])
 );
 
 $aOperanExamples = [
-    '@helloWorld',
     'helloWorld',
-    '.helloWorld'
+    '@helloWorld',
+    '.helloWorld',
+    '#32767'
 ];
 
 foreach ($aOperanExamples as $sExample) {
@@ -23,7 +26,6 @@ foreach ($aOperanExamples as $sExample) {
         print_r($oParser->parse($sExample));
     } catch (Exception $oError) {
         echo get_class($oError), " - ", $oError->getMessage(), "\n";
-        throw $oError;
     }
 }
 

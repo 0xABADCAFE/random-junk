@@ -20,7 +20,7 @@ abstract class Operand {
         OperandKind::JUMP_8  => 'ResolvedBranchTargetOperand',
         OperandKind::JUMP_16 => 'ResolvedBranchTargetOperand',
         OperandKind::SMALL_8 => 'SmallLiteralIntegerOperand',
-        OperandKind::BITPOS  => 'ResolvedOperand',
+        OperandKind::BITPOS  => 'SmallLiteralIntegerOperand',
         OperandKind::LABEL   => 'UnresolvedOperand',
         OperandKind::SYMBOL  => 'UnresolvedOperand'
     ];

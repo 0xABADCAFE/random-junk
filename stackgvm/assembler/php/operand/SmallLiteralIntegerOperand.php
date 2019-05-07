@@ -6,11 +6,8 @@
 
 class SmallLiteralIntegerOperand extends ResolvedOperand {
 
-    public function getValue() : int {
-        return $this->value;
-    }
-
-    public function getBytes() : string {
-        return chr($this->value);
+    protected function __construct(int $iKind, $value, string $sSource) {
+        parent::__construct($iKind, $value, $sSource);
+        $this->sBytes = chr((int)$value);
     }
 };
