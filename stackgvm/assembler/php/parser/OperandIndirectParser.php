@@ -5,7 +5,7 @@
  *
  * Parses string expressions for index pointer offsets
  */
-class IndexOffsetParser implements IntegerExpressionParser {
+class OperandIndirectParser implements OperandParser {
 
     private $iReg;
     private $oIntExpressionParser;
@@ -16,7 +16,7 @@ class IndexOffsetParser implements IntegerExpressionParser {
     }
 
     /**
-     * @implements IntegerExpressionParser::parse()
+     * @implements OperandParser::parse()
      */
     public function parse(string $sExpression) : int {
         $sSubExpression = $this->assertSyntax($sExpression);

@@ -5,7 +5,7 @@
  *
  * Parses string expressions for stack frame positions
  */
-class StackFramePositionParser implements IntegerExpressionParser {
+class OperandLocalParser implements OperandParser {
 
     /** @var ConstIntExpressionParser $oIntExpressionParser */
     private $oIntExpressionParser;
@@ -15,7 +15,7 @@ class StackFramePositionParser implements IntegerExpressionParser {
     }
 
     /**
-     * @implements IntegerExpressionParser::parse()
+     * @implements OperandParser::parse()
      */
     public function parse(string $sExpression) : int {
         $this->assertSyntax($sExpression);

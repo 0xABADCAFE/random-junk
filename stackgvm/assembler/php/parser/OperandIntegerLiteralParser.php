@@ -5,7 +5,7 @@
  *
  * Parses string expressions for base-10 integer literals
  */
-class Base10IntegerLiteralParser implements IntegerExpressionParser {
+class OperandIntegerLiteralParser implements OperandParser {
 
     /** @var ConstIntExpressionParser $oIntExpressionParser */
     private $oIntExpressionParser;
@@ -20,7 +20,7 @@ class Base10IntegerLiteralParser implements IntegerExpressionParser {
     }
 
     /**
-     * @implements IntegerExpressionParser::parse()
+     * @implements OperandParser::parse()
      */
     public function parse(string $sExpression) : int {
         return $this->oIntExpressionParser->parse($this->assertSyntax($sExpression));

@@ -19,7 +19,7 @@ class OperandParserFactory {
      *
      * @return OperandParserFactory
      */
-    public static function get() {
+    public static function get() : OperandParserFactory {
         if (null === self::$oInstance) {
             self::$oInstance = new self;
         }
@@ -30,7 +30,7 @@ class OperandParserFactory {
      * @param int $iKind
      * @return Parser
      */
-    public function getParser(int $iKind) {
+    public function getParser(int $iKind) : OperandParser {
         if (isset($this->aParserInstances[$iKind])) {
             if (isset(self::USE_CLONED_PARSER[$iKind])) {
                 return clone $this->aParserInstances[$iKind];
@@ -44,14 +44,14 @@ class OperandParserFactory {
         $this->aParserInstances = [
             OperandKind::KIND    => new OperandKindParser(),
 
-            OperandKind::LOCAL   => new StackFramePositionParser(
+            OperandKind::LOCAL   => new OperandLocalParser(
                 new ConstIntExpressionParser(
                     OperandKind::LIMITS[OperandKind::LOCAL][0],
                     OperandKind::LIMITS[OperandKind::LOCAL][1]
                 )
             ),
 
-            OperandKind::INDEX_0 => new IndexOffsetParser(
+            OperandKind::INDEX_0 => new OperandIndirectParser(
                 0,
                 new ConstIntExpressionParser(
                     OperandKind::LIMITS[OperandKind::INDEX_0][0],
@@ -59,7 +59,7 @@ class OperandParserFactory {
                 )
             ),
 
-            OperandKind::INDEX_1 => new IndexOffsetParser(
+            OperandKind::INDEX_1 => new OperandIndirectParser(
                 1,
                 new ConstIntExpressionParser(
                     OperandKind::LIMITS[OperandKind::INDEX_1][0],
@@ -67,36 +67,36 @@ class OperandParserFactory {
                 )
             ),
 
-            OperandKind::JUMP_8  => new Base10IntegerLiteralParser(
+            OperandKind::JUMP_8  => new OperandIntegerLiteralParser(
                 new ConstIntExpressionParser(
                     OperandKind::LIMITS[OperandKind::JUMP_8][0],
                     OperandKind::LIMITS[OperandKind::JUMP_8][1]
                 )
             ),
 
-            OperandKind::JUMP_16 => new Base10IntegerLiteralParser(
+            OperandKind::JUMP_16 => new OperandIntegerLiteralParser(
                 new ConstIntExpressionParser(
                     OperandKind::LIMITS[OperandKind::JUMP_16][0],
                     OperandKind::LIMITS[OperandKind::JUMP_16][1]
                 )
             ),
 
-            OperandKind::SMALL_8 => new Base10IntegerLiteralParser(
+            OperandKind::SMALL_8 => new OperandIntegerLiteralParser(
                 new ConstIntExpressionParser(
                     OperandKind::LIMITS[OperandKind::SMALL_8][0],
                     OperandKind::LIMITS[OperandKind::SMALL_8][1]
                 )
             ),
 
-            OperandKind::BITPOS => new Base10IntegerLiteralParser(
+            OperandKind::BITPOS => new OperandIntegerLiteralParser(
                 new ConstIntExpressionParser(
                     OperandKind::LIMITS[OperandKind::BITPOS][0],
                     OperandKind::LIMITS[OperandKind::BITPOS][1]
                 )
             ),
 
-            OperandKind::LABEL  => new LabelParser(),
-            OperandKind::SYMBOL => new SymbolParser(),
+            OperandKind::LABEL  => new OperandLabelParser(),
+            OperandKind::SYMBOL => new OperandSymbolParser(),
         ];
     }
 }

@@ -7,7 +7,7 @@
  *
  * TODO - improve and generalise this, right now it's an ugly, hacky thin.g
  */
-class OperandKindParser implements IntegerExpressionParser {
+class OperandKindParser implements OperandParser {
 
     // An operand can not be more than one of the following kinds
     const MUTUALLY_EXCLUSIVE_KINDS = [
@@ -33,7 +33,7 @@ class OperandKindParser implements IntegerExpressionParser {
     }
 
     /**
-     * @implements IntegerExpressionParser::parse()
+     * @implements OperandParser::parse()
      */
     public function parse(string $sOperand) : int {
         if (preg_match(OperandKind::MATCH_BASE_10, $sOperand, $aMatch)) {
@@ -51,7 +51,7 @@ class OperandKindParser implements IntegerExpressionParser {
         if (!preg_match('/i(\d+)/', $sOperand, $aMatch)) {
             return OperandKind::LOCAL;
         }
-        
+
         switch ($aMatch[1]) {
             case 0: return OperandKind::INDEX_0;
             case 1: return OperandKind::INDEX_1;
