@@ -5,7 +5,7 @@
  *
  * Parses string expressions for stack frame positions
  */
-class OperandLocalParser implements OperandParser {
+class OperandLocalParser implements Parser {
 
     /** @var ConstIntExpressionParser $oIntExpressionParser */
     private $oIntExpressionParser;

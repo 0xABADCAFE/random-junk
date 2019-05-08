@@ -1,6 +1,6 @@
 <?php
 
-class LineCodeSymbolParser {
+class LineCodeSymbolParser implements Parser {
 
     public function parse(string $sLine) {
 

@@ -1,5 +1,5 @@
 <?php
-
+require_once 'parser/Parser.php';
 require_once 'line/LineKind.php';
 require_once 'parser/IntegerExpressionParser.php';
 require_once 'parser/LineKindParser.php';
@@ -8,6 +8,8 @@ require_once 'parser/LineLabelParser.php';
 require_once 'parser/LineCodeSymbolParser.php';
 require_once 'parser/LineDataSymbolParser.php';
 require_once 'parser/LineInstructionParser.php';
+require_once 'parser/LineParser.php';
+require_once 'parser/LineParserFactory.php';
 require_once 'parser/OperandParser.php';
 require_once 'parser/OperandKindParser.php';
 require_once 'parser/ConstIntExpressionParser.php';

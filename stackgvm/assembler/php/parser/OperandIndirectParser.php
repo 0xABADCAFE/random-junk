@@ -5,7 +5,7 @@
  *
  * Parses string expressions for index pointer offsets
  */
-class OperandIndirectParser implements OperandParser {
+class OperandIndirectParser implements Parser {
 
     private $iReg;
     private $oIntExpressionParser;

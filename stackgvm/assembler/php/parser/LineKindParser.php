@@ -4,7 +4,7 @@
  * LineKindParser
  *
  */
-class LineKindParser implements IntegerExpressionParser {
+class LineKindParser implements Parser {
 
     const MATCHED = [
         LineKind::MATCH_INSTRUCTION => LineKind::INSTRUCTION,

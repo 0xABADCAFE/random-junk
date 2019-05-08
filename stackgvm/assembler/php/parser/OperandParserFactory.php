@@ -30,7 +30,7 @@ class OperandParserFactory {
      * @param int $iKind
      * @return Parser
      */
-    public function getParser(int $iKind) : OperandParser {
+    public function getParser(int $iKind) : Parser {
         if (isset($this->aParserInstances[$iKind])) {
             if (isset(self::USE_CLONED_PARSER[$iKind])) {
                 return clone $this->aParserInstances[$iKind];

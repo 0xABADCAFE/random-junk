@@ -15,6 +15,16 @@ $aOptions = getopt(
 );
 */
 
+//$oLoader = new InstructionDefinitionLoader();
+//print_r($oLoader->loadDefinition('config/arithmetic.json'));
+
+LineParserFactory::get()->getParser(LineKind::INSTRUCTION)->importDefinitions([
+    'config/flow.json',
+    'config/move.json',
+    'config/arithmetic.json',
+    'config/logic.json'
+]);
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 const LINE_KIND_NAMES = [
@@ -25,14 +35,17 @@ const LINE_KIND_NAMES = [
     LineKind::INSTRUCTION => "Instruction"
 ];
 
-$oLineParser = new LineKindParser();
 $aSources = (new SourceLoader(new Project('example/project.json')))
     ->load()
     ->getSource();
 
+$oLineParser = LineParserFactory::get()->getParser(LineKind::KIND);
+
 foreach ($aSources as $sFile => $aLines) {
     echo $sFile, ":\n";
     foreach ($aLines as $iNum => $sLine) {
+        $iKind = $oLineParser->parse($sLine);
         printf("\t%2d %-40s -> %s\n", $iNum, $sLine, LINE_KIND_NAMES[$oLineParser->parse($sLine)]);
+        print_r(LineParserFactory::get()->getParser($iKind)->parse($sLine));
     }
 }

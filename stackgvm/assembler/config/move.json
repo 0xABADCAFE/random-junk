@@ -24,12 +24,17 @@
     "load": [
         {
             "_LOAD_L0": [],
-            "_LOAD_L1": [],
-            "_LOAD_HL": []
+            "_LOAD_L1": []
+
         },{
             "_LOAD_SL":  ["SMALL_8", "LOCAL"],
             "_LOAD_SI0": ["SMALL_8", "INDEX_0"],
             "_LOAD_SI1": ["SMALL_8", "INDEX_1"]
+        }
+    ],
+    "loadc":[
+        {
+            "_LOAD_HL": ["SMALL_8", "LOCAL"]
         }
     ],
     "save": [

@@ -5,7 +5,7 @@
  *
  * Parses string expressions for base-10 integer literals
  */
-class OperandIntegerLiteralParser implements OperandParser {
+class OperandIntegerLiteralParser implements Parser {
 
     /** @var ConstIntExpressionParser $oIntExpressionParser */
     private $oIntExpressionParser;

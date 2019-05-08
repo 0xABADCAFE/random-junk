@@ -23,7 +23,7 @@ class LineParserFactory {
         return self::$oInstance;
     }
 
-    public function getParser(int $iKind) : LineParser {
+    public function getParser(int $iKind) : Parser {
         if (isset($this->aParserInstances[$iKind])) {
             if (isset(self::USE_CLONED_PARSER[$iKind])) {
                 return clone $this->aParserInstances[$iKind];
@@ -41,6 +41,6 @@ class LineParserFactory {
             LineKind::CODE_SYMBOL => new LineCodeSymbolParser(),
             LineKind::DATA_SYMBOL => new LineDataSymbolParser(),
             LineKind::INSTRUCTION => new LineInstructionParser()
-        ]
+        ];
     }
 }

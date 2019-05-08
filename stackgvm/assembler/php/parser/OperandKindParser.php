@@ -7,7 +7,7 @@
  *
  * TODO - improve and generalise this, right now it's an ugly, hacky thin.g
  */
-class OperandKindParser implements OperandParser {
+class OperandKindParser implements Parser {
 
     // An operand can not be more than one of the following kinds
     const MUTUALLY_EXCLUSIVE_KINDS = [

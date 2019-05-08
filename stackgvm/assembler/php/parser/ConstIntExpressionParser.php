@@ -8,6 +8,7 @@
 class ConstIntExpressionParser implements IntegerExpressionParser {
 
     private
+
         /** @var int $iMin */
         $iMin,
 

@@ -6,7 +6,7 @@
  * Given an input OperandCaseMap, translates a comma separated operand string into a the expected opcode and operand
  * data suitable for the next stage of processing.
  */
-class OperandSetParser {
+class OperandSetParser implements Parser {
 
     private $oCaseMap    = null;
     private $oKindParser = null;
