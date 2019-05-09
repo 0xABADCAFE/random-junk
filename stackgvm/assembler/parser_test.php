@@ -7,17 +7,14 @@ foreach (glob('php/*.php') as $sInclude) {
 
 $oParser = new OperandSetParser(
     new OperandCaseMap([
-        "A" => [OperandKind::SYMBOL],
-        "B" => [OperandKind::LABEL],
-        "C" => [OperandKind::JUMP_16]
+        "A" => [],
     ])
 );
 
+print_r($oParser);
+
 $aOperanExamples = [
-    'helloWorld',
-    '@helloWorld',
-    '.helloWorld',
-    '#32767'
+    '',
 ];
 
 foreach ($aOperanExamples as $sExample) {
@@ -29,5 +26,3 @@ foreach ($aOperanExamples as $sExample) {
     }
 }
 
-//$oLoader = new InstructionDefinitionLoader();
-//print_r($oLoader->loadDefinition('config/arithmetic.json'));

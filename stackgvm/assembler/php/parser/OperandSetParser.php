@@ -18,7 +18,12 @@ class OperandSetParser implements Parser {
     }
 
     public function parse(string $sExpression) {
-        $aOperands = explode(',', preg_replace('/\s+/', '', $sExpression));
+        $aOperands = array_filter(
+            explode(',', preg_replace('/\s+/', '', $sExpression)),
+            function(string $sOperand) {
+                return !empty($sOperand);
+            }
+        );
         $this->assertOperandCount($aOperands);
         $aKind = [];
         foreach ($aOperands as $i => $sOperand) {
