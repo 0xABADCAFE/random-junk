@@ -9,8 +9,8 @@ class IndirectOperand extends ResolvedOperand {
     public $iIndex;
 
     const INDEX = [
-        OperandKind::INDEX_0 => 0,
-        OperandKind::INDEX_1 => 1
+        OperandKind::INDIR_0 => 0,
+        OperandKind::INDIR_1 => 1
     ];
 
     protected function __construct(int $iKind, $value, string $sSource) {

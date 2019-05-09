@@ -1,7 +1,7 @@
 <?php
 
 /**
- *
+ * Parses a blank line. A no-op, basically.
  */
 class LineBlankParser implements Parser {
 

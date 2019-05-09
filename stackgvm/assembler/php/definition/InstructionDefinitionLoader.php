@@ -1,10 +1,18 @@
 <?php
 
 /**
+/**
+ * InstructionDefinitionLoader
  *
+ * Loads a set of instruction definitions from an external JSON definition file and uses them to parameterise a set
+ * of OperandSetParsers for each defined instruction mnemonic,
  */
 class InstructionDefinitionLoader {
 
+    /**
+     * @param string $sPath
+     * return OperandSetParser[][]
+     */
     public function loadDefinition(string $sPath) {
         if (
             !file_exists($sPath) ||

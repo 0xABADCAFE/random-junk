@@ -45,7 +45,10 @@ foreach ($aSources as $sFile => $aLines) {
     echo $sFile, ":\n";
     foreach ($aLines as $iNum => $sLine) {
         $iKind = $oLineParser->parse($sLine);
-        printf("\t%2d %-40s -> %s\n", $iNum, $sLine, LINE_KIND_NAMES[$oLineParser->parse($sLine)]);
-        print_r(LineParserFactory::get()->getParser($iKind)->parse($sLine));
+        printf("\t%02d %-40s\n\n\t\t%s:", $iNum, $sLine, LINE_KIND_NAMES[$oLineParser->parse($sLine)]);
+        echo str_replace(
+            "\n", "\n\t\t",
+            ("\n" . print_r(LineParserFactory::get()->getParser($iKind)->parse($sLine),1))
+        ), "\n";
     }
 }

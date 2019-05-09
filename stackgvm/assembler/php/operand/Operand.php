@@ -15,8 +15,8 @@ abstract class Operand {
 
     const MAPPED = [
         OperandKind::LOCAL   => 'LocalOperand',
-        OperandKind::INDEX_0 => 'IndirectOperand',
-        OperandKind::INDEX_1 => 'IndirectOperand',
+        OperandKind::INDIR_0 => 'IndirectOperand',
+        OperandKind::INDIR_1 => 'IndirectOperand',
         OperandKind::JUMP_8  => 'ResolvedBranchTargetOperand',
         OperandKind::JUMP_16 => 'ResolvedBranchTargetOperand',
         OperandKind::SMALL_8 => 'SmallLiteralIntegerOperand',

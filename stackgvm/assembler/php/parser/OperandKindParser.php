@@ -53,8 +53,8 @@ class OperandKindParser implements Parser {
         }
 
         switch ($aMatch[1]) {
-            case 0: return OperandKind::INDEX_0;
-            case 1: return OperandKind::INDEX_1;
+            case 0: return OperandKind::INDIR_0;
+            case 1: return OperandKind::INDIR_1;
             default:
                 throw new ParseException();
         }

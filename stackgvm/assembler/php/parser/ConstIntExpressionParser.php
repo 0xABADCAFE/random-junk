@@ -5,7 +5,7 @@
  *
  * Parses constant integer expressions of the form expected to comprise operands in source
  */
-class ConstIntExpressionParser implements IntegerExpressionParser {
+class ConstIntExpressionParser implements Parser {
 
     private
 

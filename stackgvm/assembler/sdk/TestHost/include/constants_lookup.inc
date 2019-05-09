@@ -1,14 +1,5 @@
 #ifndef _HOST_TEST_LOOKUP_
-
 #define _HOST_TEST_LOOKUP_
-
-#define F_LOOKUP_ONE_HALF 0
-#define F_LOOKUP_ONE_THIRD 1
-#define F_LOOKUP_ONE_QUARTER 2
-#define F_LOOKUP_ONE_FITH 3
-#define F_LOOKUP_ONE_SIXTH 4
-#define F_LOOKUP_ONE_SEVENTH 5
-#define F_LOOKUP_ONE_EIGTH 6
-
-
+#define F_LOOKUP_ONE_HALF    #0
+#define I_FRAME_NUMBER       #1
 #endif

@@ -24,7 +24,7 @@ class OperandIndirectParser implements Parser {
     }
 
     private function assertSyntax(string $sExpression) {
-        if (!preg_match(OperandKind::MATCH_INDEX, $sExpression, $aMatches)) {
+        if (!preg_match(OperandKind::MATCH_INDIR, $sExpression, $aMatches)) {
             throw new ParseException("Malformed index offset '" . $sExpression. "', integer must be enclosed in parenthesis.");
         }
         if ($this->iReg != $aMatches[1]) {

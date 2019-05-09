@@ -17,7 +17,7 @@
         {
             "_BCALL":   ["JUMP_16"],
             "_ICALL_L": ["LOCAL"],
-            "_ICALL_I": ["INDEX_0"],
+            "_ICALL_I": ["INDIR_0"],
             "_CALL":    [],
             "_HCALL":   []
         }
@@ -29,52 +29,52 @@
     ],
     "llbnn": [
         {
-            "_LI0BNN": ["INDEX_0", "JUMP_16"],
-            "_LI1BNN": ["INDEX_1", "JUMP_16"]
+            "_LI0BNN": ["INDIR_0", "JUMP_16"],
+            "_LI1BNN": ["INDIR_1", "JUMP_16"]
         }
     ],
     "bez": [
         {
             "_BEZ_L":  ["LOCAL",   "JUMP_16"],
-            "_BEZ_I0": ["INDEX_0", "JUMP_16"],
-            "_BEZ_I1": ["INDEX_1", "JUMP_16"]
+            "_BEZ_I0": ["INDIR_0", "JUMP_16"],
+            "_BEZ_I1": ["INDIR_1", "JUMP_16"]
         }
     ],
     "bnz": [
         {
             "_BNZ_L":  ["LOCAL",   "JUMP_16"],
-            "_BNZ_I0": ["INDEX_0", "JUMP_16"],
-            "_BNZ_I1": ["INDEX_1", "JUMP_16"]
+            "_BNZ_I0": ["INDIR_0", "JUMP_16"],
+            "_BNZ_I1": ["INDIR_1", "JUMP_16"]
         }
     ],
     "beq": [
         {
             "_BEQ_LL": ["LOCAL", "LOCAL",   "JUMP_16"],
-            "_BEQ_LI": ["LOCAL", "INDEX_0", "JUMP_16"],
-            "_BEQ_II": ["LOCAL", "INDEX_1", "JUMP_16"]
+            "_BEQ_LI": ["LOCAL", "INDIR_0", "JUMP_16"],
+            "_BEQ_II": ["LOCAL", "INDIR_1", "JUMP_16"]
         }
     ],
     "bne": [
         {
             "_BNE_LL": ["LOCAL", "LOCAL",   "JUMP_16"],
-            "_BNE_LI": ["LOCAL", "INDEX_0", "JUMP_16"],
-            "_BNE_II": ["LOCAL", "INDEX_1", "JUMP_16"]
+            "_BNE_LI": ["LOCAL", "INDIR_0", "JUMP_16"],
+            "_BNE_II": ["LOCAL", "INDIR_1", "JUMP_16"]
         }
     ],
     "bge.i": [
         {
             "_BGE_LL": ["LOCAL",   "LOCAL",   "JUMP_16"],
-            "_BGE_IL": ["INDEX_0", "LOCAL",   "JUMP_16"],
-            "_BGE_LI": ["LOCAL",   "INDEX_0", "JUMP_16"],
-            "_BGE_II": ["INDEX_0", "INDEX_1", "JUMP_16"]
+            "_BGE_IL": ["INDIR_0", "LOCAL",   "JUMP_16"],
+            "_BGE_LI": ["LOCAL",   "INDIR_0", "JUMP_16"],
+            "_BGE_II": ["INDIR_0", "INDIR_1", "JUMP_16"]
         }
     ],
     "bgt.i": [
         {
             "_BGT_LL": ["LOCAL",   "LOCAL",   "JUMP_16"],
-            "_BGT_IL": ["INDEX_0", "LOCAL",   "JUMP_16"],
-            "_BGT_LI": ["LOCAL",   "INDEX_0", "JUMP_16"],
-            "_BGT_II": ["INDEX_0", "INDEX_1", "JUMP_16"]
+            "_BGT_IL": ["INDIR_0", "LOCAL",   "JUMP_16"],
+            "_BGT_LI": ["LOCAL",   "INDIR_0", "JUMP_16"],
+            "_BGT_II": ["INDIR_0", "INDIR_1", "JUMP_16"]
         }
     ],
     "dbnz.i": [
@@ -90,7 +90,7 @@
     "bbs": [
         {
             "_BBS_SL": ["BITPOS", "LOCAL"],
-            "_BBS_SI": ["BITPOS", "INDEX_0"]
+            "_BBS_SI": ["BITPOS", "INDIR_0"]
         }
     ],
     "bbc": [
@@ -103,31 +103,31 @@
     "bge.f": [
         {
             "_FBGE_LL": ["LOCAL",   "LOCAL",   "JUMP_16"],
-            "_FBGE_IL": ["INDEX_0", "LOCAL",   "JUMP_16"],
-            "_FBGE_LI": ["LOCAL",   "INDEX_0", "JUMP_16"],
-            "_FBGE_II": ["INDEX_0", "INDEX_1", "JUMP_16"]
+            "_FBGE_IL": ["INDIR_0", "LOCAL",   "JUMP_16"],
+            "_FBGE_LI": ["LOCAL",   "INDIR_0", "JUMP_16"],
+            "_FBGE_II": ["INDIR_0", "INDIR_1", "JUMP_16"]
         }
     ],
     "bgt.f": [
         {
             "_FBGT_LL": ["LOCAL",   "LOCAL",   "JUMP_16"],
-            "_FBGT_IL": ["INDEX_0", "LOCAL",   "JUMP_16"],
-            "_FBGT_LI": ["LOCAL",   "INDEX_0", "JUMP_16"],
-            "_FBGT_II": ["INDEX_0", "INDEX_1", "JUMP_16"]
+            "_FBGT_IL": ["INDIR_0", "LOCAL",   "JUMP_16"],
+            "_FBGT_LI": ["LOCAL",   "INDIR_0", "JUMP_16"],
+            "_FBGT_II": ["INDIR_0", "INDIR_1", "JUMP_16"]
         }
     ],
     "beq.v": [
         {
             "_VBEQ_LL": ["LOCAL", "LOCAL",   "JUMP_16"],
-            "_VBEQ_IL": ["LOCAL", "INDEX_0", "JUMP_16"],
-            "_VBEQ_II": ["LOCAL", "INDEX_1", "JUMP_16"]
+            "_VBEQ_IL": ["LOCAL", "INDIR_0", "JUMP_16"],
+            "_VBEQ_II": ["LOCAL", "INDIR_1", "JUMP_16"]
         }
     ],
     "bne.v": [
         {
             "_VBNE_LL": ["LOCAL", "LOCAL",   "JUMP_16"],
-            "_VBNE_IL": ["LOCAL", "INDEX_0", "JUMP_16"],
-            "_VBNE_II": ["LOCAL", "INDEX_1", "JUMP_16"]
+            "_VBNE_IL": ["LOCAL", "INDIR_0", "JUMP_16"],
+            "_VBNE_II": ["LOCAL", "INDIR_1", "JUMP_16"]
         }
     ]
 }

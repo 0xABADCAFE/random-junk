@@ -51,19 +51,19 @@ class OperandParserFactory {
                 )
             ),
 
-            OperandKind::INDEX_0 => new OperandIndirectParser(
+            OperandKind::INDIR_0 => new OperandIndirectParser(
                 0,
                 new ConstIntExpressionParser(
-                    OperandKind::LIMITS[OperandKind::INDEX_0][0],
-                    OperandKind::LIMITS[OperandKind::INDEX_0][1]
+                    OperandKind::LIMITS[OperandKind::INDIR_0][0],
+                    OperandKind::LIMITS[OperandKind::INDIR_0][1]
                 )
             ),
 
-            OperandKind::INDEX_1 => new OperandIndirectParser(
+            OperandKind::INDIR_1 => new OperandIndirectParser(
                 1,
                 new ConstIntExpressionParser(
-                    OperandKind::LIMITS[OperandKind::INDEX_1][0],
-                    OperandKind::LIMITS[OperandKind::INDEX_1][1]
+                    OperandKind::LIMITS[OperandKind::INDIR_1][0],
+                    OperandKind::LIMITS[OperandKind::INDIR_1][1]
                 )
             ),
 
