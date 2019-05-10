@@ -81,10 +81,17 @@ class OperandParserFactory {
                 )
             ),
 
-            OperandKind::SMALL_8 => new OperandIntegerLiteralParser(
+            OperandKind::SMALL_S8 => new OperandIntegerLiteralParser(
                 new ConstIntExpressionParser(
-                    OperandKind::LIMITS[OperandKind::SMALL_8][0],
-                    OperandKind::LIMITS[OperandKind::SMALL_8][1]
+                    OperandKind::LIMITS[OperandKind::SMALL_S8][0],
+                    OperandKind::LIMITS[OperandKind::SMALL_S8][1]
+                )
+            ),
+
+            OperandKind::SMALL_U8 => new OperandIntegerLiteralParser(
+                new ConstIntExpressionParser(
+                    OperandKind::LIMITS[OperandKind::SMALL_U8][0],
+                    OperandKind::LIMITS[OperandKind::SMALL_U8][1]
                 )
             ),
 

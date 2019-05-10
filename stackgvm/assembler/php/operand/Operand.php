@@ -14,15 +14,18 @@ abstract class Operand {
     ;
 
     const MAPPED = [
-        OperandKind::LOCAL   => 'LocalOperand',
-        OperandKind::INDIR_0 => 'IndirectOperand',
-        OperandKind::INDIR_1 => 'IndirectOperand',
-        OperandKind::JUMP_8  => 'ResolvedBranchTargetOperand',
-        OperandKind::JUMP_16 => 'ResolvedBranchTargetOperand',
-        OperandKind::SMALL_8 => 'SmallLiteralIntegerOperand',
-        OperandKind::BITPOS  => 'SmallLiteralIntegerOperand',
-        OperandKind::LABEL   => 'UnresolvedOperand',
-        OperandKind::SYMBOL  => 'UnresolvedOperand'
+        OperandKind::LOCAL    => 'LocalOperand',
+        OperandKind::INDIR_0  => 'IndirectOperand',
+        OperandKind::INDIR_1  => 'IndirectOperand',
+        OperandKind::IDX_0_PH => 'PlaceholderIndexOperand',
+        OperandKind::IDX_1_PH => 'PlaceHolderIndexOperand',
+        OperandKind::JUMP_8   => 'ResolvedBranchTargetOperand',
+        OperandKind::JUMP_16  => 'ResolvedBranchTargetOperand',
+        OperandKind::SMALL_S8 => 'SmallLiteralIntegerOperand',
+        OperandKind::SMALL_U8 => 'SmallLiteralIntegerOperand',
+        OperandKind::BITPOS   => 'SmallLiteralIntegerOperand',
+        OperandKind::LABEL    => 'UnresolvedOperand',
+        OperandKind::SYMBOL   => 'UnresolvedOperand'
     ];
 
     public static function create(int $iKind, $value, string $sSource) {

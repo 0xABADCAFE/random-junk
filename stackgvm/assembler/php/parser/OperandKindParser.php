@@ -12,12 +12,13 @@ class OperandKindParser implements Parser {
     // An operand can not be more than one of the following kinds
     const MUTUALLY_EXCLUSIVE_KINDS = [
         OperandKind::BITPOS,
-        OperandKind::SMALL_8,
+        OperandKind::SMALL_S8,
+        OperandKind::SMALL_U8,
         OperandKind::JUMP_8,
         OperandKind::JUMP_16
     ];
 
-    private $iDefaultBase10Kind = OperandKind::SMALL_8;
+    private $iDefaultBase10Kind = OperandKind::SMALL_S8;
 
     public function setKinds(array $aKinds) {
         $aDistinct = array_intersect($aKinds, self::MUTUALLY_EXCLUSIVE_KINDS);

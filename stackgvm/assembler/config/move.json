@@ -27,14 +27,14 @@
             "_LOAD_L1": []
 
         },{
-            "_LOAD_SL":  ["SMALL_8", "LOCAL"],
-            "_LOAD_SI0": ["SMALL_8", "INDIR_0"],
-            "_LOAD_SI1": ["SMALL_8", "INDIR_1"]
+            "_LOAD_SL":  ["SMALL_S8", "LOCAL"],
+            "_LOAD_SI0": ["SMALL_S8", "INDIR_0"],
+            "_LOAD_SI1": ["SMALL_S8", "INDIR_1"]
         }
     ],
     "loadc":[
         {
-            "_LOAD_HL": ["SMALL_8", "LOCAL"]
+            "_LOAD_HL": ["SMALL_U8", "LOCAL"]
         }
     ],
     "save": [
