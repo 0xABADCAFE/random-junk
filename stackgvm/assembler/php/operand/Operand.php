@@ -2,6 +2,8 @@
 
 /**
  * Operand
+ *
+ * Base class for parsed operand data
  */
 
 abstract class Operand {
@@ -25,7 +27,8 @@ abstract class Operand {
         OperandKind::SMALL_U8 => 'SmallLiteralIntegerOperand',
         OperandKind::BITPOS   => 'SmallLiteralIntegerOperand',
         OperandKind::LABEL    => 'UnresolvedOperand',
-        OperandKind::SYMBOL   => 'UnresolvedOperand'
+        OperandKind::DATA_SYM => 'UnresolvedOperand',
+        OperandKind::CODE_SYM => 'UnresolvedOperand'
     ];
 
     public static function create(int $iKind, $value, string $sSource) {

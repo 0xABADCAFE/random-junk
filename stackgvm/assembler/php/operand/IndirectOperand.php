@@ -1,7 +1,9 @@
 <?php
 
 /**
- * Operand
+ * IndirectOperand
+ *
+ * Represents a fixed, unsigned 8-bit offset from an index pointer.
  */
 
 class IndirectOperand extends ResolvedOperand {

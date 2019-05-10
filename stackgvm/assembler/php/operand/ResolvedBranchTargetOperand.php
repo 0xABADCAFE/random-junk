@@ -1,7 +1,9 @@
 <?php
 
 /**
- * Operand
+ * ResolvedBranchTargetOperand
+ *
+ * Represents an already resolved 8 or 16-bit signed branch target.
  */
 
 class ResolvedBranchTargetOperand extends ResolvedOperand {

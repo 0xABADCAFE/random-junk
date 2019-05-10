@@ -20,11 +20,12 @@ interface OperandKind {
         BITPOS   = 10, // Small integer literal   (0 ... 31)
 
         LABEL    = 11, // Local Label
-        SYMBOL   = 12, // Global Symbol
+        DATA_SYM = 12, // Global Data Symbol
+        CODE_SYM = 13, // Global Code Symbol
 
         // Kinds
         MIN      = 0,
-        MAX      = 12
+        MAX      = 13
     ;
 
     const LIMITS = [
@@ -50,7 +51,8 @@ interface OperandKind {
         self::BITPOS   => 1,
         self::JUMP_16  => 2,
         self::LABEL    => 2,
-        self::SYMBOL   => 2
+        self::DATA_SYM => 2,
+        self::CODE_SYM => 2
     ];
 
     const MAPPED = [
@@ -65,14 +67,17 @@ interface OperandKind {
         "SMALL_U8" => self::SMALL_U8,
         "BITPOS"   => self::BITPOS,
         "LABEL"    => self::LABEL,
-        "SYMBOL"   => self::SYMBOL
+        "DATA_SYM" => self::DATA_SYM,
+        "CODE_SYM" => self::CODE_SYM,
     ];
 
     const
         MATCH_LOCAL    = '/^\s*\(.*?\)\s*$/',
         MATCH_INDIR    = '/^\s*\(\s*i(\d)\s*([\+\-]{1}.*?)\)\s*$/',
+        MATCH_IDX      = '/^\s*i(\d)\s*$/',
         MATCH_BASE_10  = '/^\s*#{1}(.*?)\s*$/',
         MATCH_LABEL    = '/^\s*\.([A-Za-z]{1}[0-9A-Za-z]{0,})\s*$/',
-        MATCH_SYMBOL   = '/^\s*\@([A-Za-z]{1}[0-9A-Za-z]{0,})\s*$/'
+        MATCH_CODE_SYM = '/^\s*\@([A-Za-z]{1}[0-9A-Za-z]{0,})\s*$/',
+        MATCH_DATA_SYM = '/^\s*\$([A-Za-z]{1}[0-9A-Za-z]{0,})\s*$/'
     ;
 }

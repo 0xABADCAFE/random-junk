@@ -18,6 +18,16 @@ class OperandKindParser implements Parser {
         OperandKind::JUMP_16
     ];
 
+    const INDIR_MAPPED = [
+        0 => OperandKind::INDIR_0,
+        1 => OperandKind::INDIR_1
+    ];
+
+    const IDX_PH_MAPPED = [
+        0 => OperandKind::IDX_0_PH,
+        1 => OperandKind::IDX_1_PH
+    ];
+
     private $iDefaultBase10Kind = OperandKind::SMALL_S8;
 
     public function setKinds(array $aKinds) {
@@ -45,8 +55,19 @@ class OperandKindParser implements Parser {
             return OperandKind::LABEL;
         }
 
-        if (preg_match(OperandKind::MATCH_SYMBOL, $sOperand)) {
-            return OperandKind::SYMBOL;
+        if (preg_match(OperandKind::MATCH_DATA_SYM, $sOperand)) {
+            return OperandKind::DATA_SYM;
+        }
+
+        if (preg_match(OperandKind::MATCH_CODE_SYM, $sOperand)) {
+            return OperandKind::CODE_SYM;
+        }
+
+        if (preg_match(OperandKind::MATCH_IDX, $sOperand, $aMatch)) {
+            if (isset(self::IDX_PH_MAPPED[$aMatch[1]])) {
+                return self::IDX_PH_MAPPED[$aMatch[1]];
+            }
+            throw new ParseException("Invalid idx register spec: " . $aMatch[1]);
         }
 
         if (!preg_match('/i(\d+)/', $sOperand, $aMatch)) {

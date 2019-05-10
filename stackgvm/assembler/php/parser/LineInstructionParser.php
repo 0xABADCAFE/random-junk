@@ -16,20 +16,22 @@ class LineInstructionParser implements Parser {
         if (!preg_match(LineKind::MATCH_INSTRUCTION, $sLine, $aMatches)) {
             throw new ParseException();
         }
-        $sMenomic = strtolower($aMatches[1]);
-        if (!isset($this->aOperandSetParsers[$sMenomic])) {
-            throw new ParseException("Unknown menomic " . $sMenomic);
+        $sMnemonic = strtolower($aMatches[1]);
+        if (!isset($this->aOperandSetParsers[$sMnemonic])) {
+            throw new ParseException("Unknown mnemonic " . $sMnemonic);
         }
 
         $sOperands = trim(str_replace($aMatches[1], '', $sLine));
         $aParsed   = null;
-        foreach ($this->aOperandSetParsers[$sMenomic] as $oParser) {
+        foreach ($this->aOperandSetParsers[$sMnemonic] as $oParser) {
             try {
                 $oParsed = $oParser->parse($sOperands);
                 $oParsed->source = $sLine;
                 return $oParsed;
+            } catch(InvalidArgumentException $oException) {
+                // do nothing here
             } catch (Exception $oException) {
-                echo "Error: " . $oException->getMessage(), "\n";
+                echo "Error: ", get_class($oException), ":", $oException->getMessage(), "\n";
             }
         }
         return null;

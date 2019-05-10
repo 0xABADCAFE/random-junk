@@ -1,7 +1,9 @@
 <?php
 
 /**
- * Operand
+ * UnresolvedOperand
+ *
+ * Intermediate class from which all unresolved Operand types are derived.
  */
 
 class UnresolvedOperand extends Operand {

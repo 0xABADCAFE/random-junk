@@ -14,6 +14,7 @@ require_once 'parser/OperandLocalParser.php';
 require_once 'parser/OperandIndirectParser.php';
 require_once 'parser/OperandIntegerLiteralParser.php';
 require_once 'parser/OperandLabelParser.php';
+require_once 'parser/OperandNoOpParser.php';
 require_once 'parser/OperandSymbolParser.php';
 require_once 'parser/OperandParserFactory.php';
 require_once 'parser/OperandSetParser.php';

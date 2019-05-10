@@ -67,6 +67,9 @@ class OperandParserFactory {
                 )
             ),
 
+            OperandKind::IDX_0_PH => new OperandNoOpParser(),
+            OperandKind::IDX_1_PH => new OperandNoOpParser(),
+
             OperandKind::JUMP_8  => new OperandIntegerLiteralParser(
                 new ConstIntExpressionParser(
                     OperandKind::LIMITS[OperandKind::JUMP_8][0],
@@ -102,8 +105,11 @@ class OperandParserFactory {
                 )
             ),
 
-            OperandKind::LABEL  => new OperandLabelParser(),
-            OperandKind::SYMBOL => new OperandSymbolParser(),
+
+
+            OperandKind::LABEL    => new OperandLabelParser(),
+            OperandKind::DATA_SYM => new OperandSymbolParser(),
+            OperandKind::CODE_SYM => new OperandSymbolParser(),
         ];
     }
 }

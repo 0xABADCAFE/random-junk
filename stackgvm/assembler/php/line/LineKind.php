@@ -1,8 +1,9 @@
 <?php
 
 /**
+ * LineKind
  *
- *
+ * Enumerates the different kinds of lines expected within source code and defines high level matching expressions.
  */
 interface LineKind {
     const

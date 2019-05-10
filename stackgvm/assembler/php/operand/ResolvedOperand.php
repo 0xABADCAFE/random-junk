@@ -1,9 +1,11 @@
 <?php
 
 /**
- * Operand
+ * ResolvedOperand
+ *
+ * Intermediate class from which all resolved Operands are derived.
  */
 
-class ResolvedOperand extends Operand {
+abstract class ResolvedOperand extends Operand {
 
 };

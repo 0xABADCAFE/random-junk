@@ -5,27 +5,26 @@
             "_ADDR_I0L": ["INDIR_0", "LOCAL"],
             "_ADDR_I1L": ["INDIR_1", "LOCAL"]
         },{
-            "_ADDR_DL": [],
-            "_ADDR_DI0": [],
-            "_ADDR_DI1": [],
-            "_ADDR_D0": [],
-            "_ADDR_D1": [],
-            "_ADDR_CL": [],
-            "_ADDR_CI0": [],
-            "_ADDR_CI1": []
+            "_ADDR_DL": ["DATA_SYM", "LOCAL"],
+            "_ADDR_DI0": ["DATA_SYM", "INDIR_0"],
+            "_ADDR_DI1": ["DATA_SYM", "INDIR_1"],
+            "_ADDR_D0": ["DATA_SYM", "IDX_0_PH"],
+            "_ADDR_D1": ["DATA_SYM", "IDX_1_PH"],
+            "_ADDR_CL": ["CODE_SYM", "LOCAL"],
+            "_ADDR_CI0": ["CODE_SYM", "INDIR_0"],
+            "_ADDR_CI1": ["CODE_SYM", "INDIR_1"]
         }
     ],
     "add.a": [
         {
-            "_ADDA_SI0": [],
-            "_ADDA_SI1": []
+            "_ADDA_SI0": ["SMALL_S8", "IDX_0_PH"],
+            "_ADDA_SI1": ["SMALL_S8", "IDX_1_PH"]
         }
     ],
     "load": [
         {
-            "_LOAD_L0": [],
-            "_LOAD_L1": []
-
+            "_LOAD_L0": ["LOCAL", "IDX_0_PH"],
+            "_LOAD_L1": ["LOCAL", "IDX_1_PH"]
         },{
             "_LOAD_SL":  ["SMALL_S8", "LOCAL"],
             "_LOAD_SI0": ["SMALL_S8", "INDIR_0"],
@@ -39,8 +38,8 @@
     ],
     "save": [
         {
-            "_SAVE_0L": [],
-            "_SAVE_1L": []
+            "_SAVE_0L": ["IDX_0_PH", "LOCAL"],
+            "_SAVE_1L": ["IDX_1_PH", "LOCAL"]
         }
     ],
     "copy": [

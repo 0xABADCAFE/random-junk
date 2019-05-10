@@ -1,7 +1,9 @@
 <?php
 
 /**
- * Operand
+ * SmallLiteralIntegerOperand
+ *
+ * Represents a single byte (signed or unsigned) small integer literal
  */
 
 class SmallLiteralIntegerOperand extends ResolvedOperand {
