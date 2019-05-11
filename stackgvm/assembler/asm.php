@@ -25,30 +25,12 @@ LineParserFactory::get()->getParser(LineKind::INSTRUCTION)->importDefinitions([
     'config/logic.json'
 ]);
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+require_once('php/assembler/Assembler.php');
 
-const LINE_KIND_NAMES = [
-    LineKind::BLANK       => "Blank",
-    LineKind::LABEL       => "Label",
-    LineKind::CODE_SYMBOL => "Function Definition",
-    LineKind::DATA_SYMBOL => "Data Definition",
-    LineKind::INSTRUCTION => "Instruction"
-];
-
-$aSources = (new SourceLoader(new Project('example/project.json')))
-    ->load()
-    ->getSource();
-
-$oLineParser = LineParserFactory::get()->getParser(LineKind::KIND);
-
-foreach ($aSources as $sFile => $aLines) {
-    echo $sFile, ":\n";
-    foreach ($aLines as $iNum => $sLine) {
-        $iKind = $oLineParser->parse($sLine);
-        printf("\t%02d %-40s\n\n\t\t%s:", $iNum, $sLine, LINE_KIND_NAMES[$oLineParser->parse($sLine)]);
-        echo str_replace(
-            "\n", "\n\t\t",
-            ("\n" . print_r(LineParserFactory::get()->getParser($iKind)->parse($sLine),1))
-        ), "\n";
-    }
-}
+$oAssebler = new Assembler(
+    new SourceLoader(
+        new Project('example/project.json')
+    ),
+    LineParserFactory::get()
+);
+$oAssebler->assemble();
