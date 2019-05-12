@@ -15,7 +15,9 @@ class Assembler {
 
     private
         $oSourceLoader,
-        $oLineParserFactory
+        $oLineParserFactory,
+        $sBuffer,
+        $iPosition
     ;
 
     public function __construct(SourceLoader $oLoader, LineParserFactory $oLineParserFactory) {
@@ -24,36 +26,32 @@ class Assembler {
     }
 
     public function assemble() {
+        $this->initBinaryBuffer();
         $aSources = $this->oSourceLoader
             ->load()
             ->getSource();
-
         $oLineParser = $this->oLineParserFactory->getParser(LineKind::KIND);
-
         foreach ($aSources as $sFile => $aLines) {
             echo $sFile, ":\n";
             foreach ($aLines as $iNum => $sLine) {
                 $iKind = $oLineParser->parse($sLine);
-                printf(
-                    "\t%02d %-40s\n\n\t\t%s:",
-                    $iNum,
-                    $sLine,
-                    self::LINE_KIND_NAMES[
-                        $oLineParser->parse($sLine)
-                    ]
-                );
-                echo str_replace(
-                    "\n", "\n\t\t",
-                    ("\n" .
-                        print_r(
-                            $this->oLineParserFactory
-                                ->getParser($iKind)
-                                ->parse($sLine),
-                            1
-                        )
-                    )
-                ), "\n";
+                $oResult = $this->oLineParserFactory
+                    ->getParser($iKind)
+                    ->parse($sLine);
+
+                if ($iKind == LineKind::INSTRUCTION) {
+                    print_r($oResult);
+                    $this->iPosition++;
+                    foreach ($oResult->aOperands as $oOperand) {
+                        $this->iPosition += $oOperand->iSize;
+                    }
+                }
             }
         }
+    }
+
+    private function initBinaryBuffer() {
+        $this->sBuffer   = '';
+        $this->iPosition = 0;
     }
 }

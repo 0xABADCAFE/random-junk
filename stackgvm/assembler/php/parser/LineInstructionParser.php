@@ -30,10 +30,14 @@ class LineInstructionParser implements Parser {
         $aParsed   = null;
         foreach ($this->aOperandSetParsers[$sMnemonic] as $oParser) {
             try {
-                $oParsed = $oParser->parse($sOperands);
-                if (!isset($this->aOpcodeDefs[$oParsed->opcode])) {
-                    throw new ParseException("Unknown Opcode ", $oParsed->opcode);
+                $oParsed     = $oParser->parse($sOperands);
+                $sOpcodeEnum = $oParsed->oOpcode->sEnum;
+                if (!isset($this->aOpcodeDefs[$sOpcodeEnum])) {
+                    throw new ParseException("Unknown Opcode ", $sOpcodeEnum);
                 }
+                $iValue = $this->aOpcodeDefs[$sOpcodeEnum];
+                $oParsed->oOpcode->iValue = $iValue;
+                $oParsed->oOpcode->sBytes = chr($iValue);
                 return $oParsed;
             } catch(InvalidArgumentException $oException) {
                 // do nothing here

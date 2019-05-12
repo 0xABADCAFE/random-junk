@@ -40,8 +40,8 @@ class OperandSetParser implements Parser {
             );
         }
         return (object)[
-            "opcode"   => $sOpcode,
-            "operands" => $aParsed
+            "oOpcode"  => (object)['sEnum' => $sOpcode],
+            "aOperands"=> $aParsed
         ];
     }
 
