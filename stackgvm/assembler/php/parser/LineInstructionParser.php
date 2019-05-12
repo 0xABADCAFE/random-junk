@@ -2,9 +2,14 @@
 
 class LineInstructionParser implements Parser {
 
-    private $aOperandSets = [];
+    private
+        $aOpcodeDefs  = [],
+        $aOperandSets = []
+    ;
 
-    public function importDefinitions(array $aDefinitions) {
+    public function importDefinitions(string $sOpcodeDefinition, array $aDefinitions) {
+        $oLoader = new OpcodeDefinitionLoader();
+        $this->aOpcodeDefs = $oLoader->loadDefinition($sOpcodeDefinition);
         $this->aOperandSetParsers = [];
         $oLoader = new InstructionDefinitionLoader();
         foreach ($aDefinitions as $sDefinitionPath) {
@@ -26,7 +31,9 @@ class LineInstructionParser implements Parser {
         foreach ($this->aOperandSetParsers[$sMnemonic] as $oParser) {
             try {
                 $oParsed = $oParser->parse($sOperands);
-                $oParsed->source = $sLine;
+                if (!isset($this->aOpcodeDefs[$oParsed->opcode])) {
+                    throw new ParseException("Unknown Opcode ", $oParsed->opcode);
+                }
                 return $oParsed;
             } catch(InvalidArgumentException $oException) {
                 // do nothing here

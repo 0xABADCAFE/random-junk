@@ -15,15 +15,16 @@ $aOptions = getopt(
 );
 */
 
-//$oLoader = new InstructionDefinitionLoader();
-//print_r($oLoader->loadDefinition('config/arithmetic.json'));
 
-LineParserFactory::get()->getParser(LineKind::INSTRUCTION)->importDefinitions([
-    'config/flow.json',
-    'config/move.json',
-    'config/arithmetic.json',
-    'config/logic.json'
-]);
+LineParserFactory::get()->getParser(LineKind::INSTRUCTION)->importDefinitions(
+    'config/opcode.json',
+    [
+        'config/flow.json',
+        'config/move.json',
+        'config/arithmetic.json',
+        'config/logic.json'
+    ]
+);
 
 require_once('php/assembler/Assembler.php');
 

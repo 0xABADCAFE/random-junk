@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Assembler class
+ */
 class Assembler {
 
     const LINE_KIND_NAMES = [
