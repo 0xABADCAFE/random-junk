@@ -12,8 +12,18 @@ interface LineKind {
         LABEL       = 2,
         CODE_SYMBOL = 3,
         DATA_SYMBOL = 4,
-        INSTRUCTION = 5
+        INSTRUCTION = 5,
+        DATA_RECORD = 6
     ;
+
+    const NAMES = [
+        self::BLANK       => 'Blank',
+        self::LABEL       => 'Local label',
+        self::CODE_SYMBOL => 'Function declaration',
+        self::DATA_SYMBOL => 'Data declaration',
+        self::INSTRUCTION => 'Instruction statement',
+        self::DATA_RECORD => 'Data record'
+    ];
 
     const
         MATCH_LABEL       = '/^(\.[_A-Za-z]{1}[_0-9A-Za-z]{0,})\:\s*$/',

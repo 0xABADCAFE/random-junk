@@ -56,19 +56,19 @@ interface OperandKind {
     ];
 
     const MAPPED = [
-        "LOCAL"    => self::LOCAL,
-        "INDIR_0"  => self::INDIR_0,
-        "INDIR_1"  => self::INDIR_1,
-        "IDX_0_PH" => self::IDX_0_PH,
-        "IDX_1_PH" => self::IDX_1_PH,
-        "JUMP_8"   => self::JUMP_8,
-        "JUMP_16"  => self::JUMP_16,
-        "SMALL_S8" => self::SMALL_S8,
-        "SMALL_U8" => self::SMALL_U8,
-        "BITPOS"   => self::BITPOS,
-        "LABEL"    => self::LABEL,
-        "DATA_SYM" => self::DATA_SYM,
-        "CODE_SYM" => self::CODE_SYM,
+        'LOCAL'    => self::LOCAL,
+        'INDIR_0'  => self::INDIR_0,
+        'INDIR_1'  => self::INDIR_1,
+        'IDX_0_PH' => self::IDX_0_PH,
+        'IDX_1_PH' => self::IDX_1_PH,
+        'JUMP_8'   => self::JUMP_8,
+        'JUMP_16'  => self::JUMP_16,
+        'SMALL_S8' => self::SMALL_S8,
+        'SMALL_U8' => self::SMALL_U8,
+        'BITPOS'   => self::BITPOS,
+        'LABEL'    => self::LABEL,
+        'DATA_SYM' => self::DATA_SYM,
+        'CODE_SYM' => self::CODE_SYM,
     ];
 
     const

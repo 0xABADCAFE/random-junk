@@ -16,13 +16,19 @@ class Assembler {
     private
         $oSourceLoader,
         $oLineParserFactory,
+        $oLineProcessingState,
         $sBuffer,
         $iPosition
     ;
 
-    public function __construct(SourceLoader $oLoader, LineParserFactory $oLineParserFactory) {
-        $this->oSourceLoader      = $oLoader;
-        $this->oLineParserFactory = $oLineParserFactory;
+    public function __construct(
+        SourceLoader $oLoader,
+        LineParserFactory $oLineParserFactory,
+        AssemblerLineProcessingState $oLineProcessingState
+    ) {
+        $this->oSourceLoader        = $oLoader;
+        $this->oLineParserFactory   = $oLineParserFactory;
+        $this->oLineProcessingState = $oLineProcessingState;
     }
 
     public function assemble() {
@@ -31,21 +37,31 @@ class Assembler {
             ->load()
             ->getSource();
         $oLineParser = $this->oLineParserFactory->getParser(LineKind::KIND);
+
         foreach ($aSources as $sFile => $aLines) {
             echo $sFile, ":\n";
-            foreach ($aLines as $iNum => $sLine) {
-                $iKind = $oLineParser->parse($sLine);
-                $oResult = $this->oLineParserFactory
-                    ->getParser($iKind)
-                    ->parse($sLine);
+            $this->oLineProcessingState = $this->oLineProcessingState->reset();
 
-                if ($iKind == LineKind::INSTRUCTION) {
-                    print_r($oResult);
-                    $this->iPosition++;
-                    foreach ($oResult->aOperands as $oOperand) {
-                        $this->iPosition += $oOperand->iSize;
+            try {
+                foreach ($aLines as $iNum => $sLine) {
+                    $iKind = $oLineParser->parse($sLine);
+
+                    $this->oLineProcessingState = $this->oLineProcessingState->getStateForLineKind($iKind);
+
+                    $oResult = $this->oLineParserFactory
+                        ->getParser($iKind)
+                        ->parse($sLine);
+
+                    if ($iKind == LineKind::INSTRUCTION) {
+                        print_r($oResult);
+                        $this->iPosition++;
+                        foreach ($oResult->aOperands as $oOperand) {
+                            $this->iPosition += $oOperand->iSize;
+                        }
                     }
                 }
+            } catch (Exception $oError) {
+                echo "Caught unexpected ", get_class($oError), " - ", $oError->getMessage(), ". Aborting file.\n";
             }
         }
     }

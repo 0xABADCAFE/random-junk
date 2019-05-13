@@ -26,12 +26,11 @@ LineParserFactory::get()->getParser(LineKind::INSTRUCTION)->importDefinitions(
     ]
 );
 
-require_once('php/assembler/Assembler.php');
-
 $oAssebler = new Assembler(
     new SourceLoader(
         new Project('example/project.json')
     ),
-    LineParserFactory::get()
+    LineParserFactory::get(),
+    AssemblerLineProcessingState::create()
 );
 $oAssebler->assemble();

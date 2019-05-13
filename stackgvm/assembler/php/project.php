@@ -1,5 +1,5 @@
 <?php
 
-include_once 'project/Project.php';
-include_once 'project/SourceLoader.php';
+require_once 'assembler/AssemblerLineProcessingState.php';
+require_once 'assembler/Assembler.php';
 

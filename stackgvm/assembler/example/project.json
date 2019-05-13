@@ -3,7 +3,10 @@
     "description":"simple example",
     "sources":[
         "src/noop.asm",
-        "src/aim.asm"
+        "src/aim.asm",
+        "src/illegal_0.asm",
+        "src/illegal_1.asm",
+        "src/illegal_2.asm"
     ],
     "host":{
         "name":"TestHost",
