@@ -36,8 +36,7 @@ class LineInstructionParser implements Parser {
                     throw new ParseException("Unknown Opcode ", $sOpcodeEnum);
                 }
                 $iValue = $this->aOpcodeDefs[$sOpcodeEnum];
-                $oParsed->oOpcode->iValue = $iValue;
-                $oParsed->oOpcode->sBytes = chr($iValue);
+                $oParsed->oOpcode->iByte = $iValue;
                 return $oParsed;
             } catch(InvalidArgumentException $oException) {
                 // do nothing here

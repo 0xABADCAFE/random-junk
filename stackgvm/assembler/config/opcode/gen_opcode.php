@@ -5,7 +5,7 @@
  * we can export them into a definitions file.
  */
 
-$aSource = explode("\n", file_get_contents('../../source/include/gvm_opcode.hpp'));
+$aSource = explode("\n", file_get_contents('../../../source/include/gvm_opcode.hpp'));
 
 $sMatch = '';
 foreach ($aSource as $sSource) {

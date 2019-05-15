@@ -1,0 +1,11 @@
+{
+    "name":"StackGVM Config",
+    "version":"1.0.0",
+    "mnemonics":[
+        "config/mnemonics/flow.json",
+        "config/mnemonics/arithmetic.json",
+        "config/mnemonics/logic.json",
+        "config/mnemonics/move.json"
+    ],
+    "opcodes":"config/opcode/opcode.json"
+}

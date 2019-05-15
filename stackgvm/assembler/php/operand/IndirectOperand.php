@@ -20,7 +20,7 @@ class IndirectOperand extends ResolvedOperand {
             throw new InvalidArgumentException();
         }
         parent::__construct($iKind, (int)$value, $sSource);
-        $this->sBytes = chr($value);
+        $this->aBytes = [(int)$value];
         $this->iIndex = self::INDEX[$iKind];
     }
 };

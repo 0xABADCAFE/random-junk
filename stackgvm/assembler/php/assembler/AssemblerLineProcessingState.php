@@ -1,6 +1,6 @@
 <?php
 /**
- * AssemblerLineProcessingStatse
+ * AssemblerLineProcessingState
  *
  * Simple state machine that keeps track of what the current statements being
  * assebmled represent and validates that each new line is of an appropriate
@@ -19,7 +19,7 @@ class AssemblerLineProcessingState {
     ;
 
     /**
-     * @var AssemblerState[] $aStates
+     * @var AssemblerLineProcessingState[] $aStates
      */
     private static $aStates = null;
 
@@ -34,9 +34,9 @@ class AssemblerLineProcessingState {
     private $sStateName = null;
 
     /**
-     * Get the initial AssemblerState, used at the start of processing
+     * Get the initial AssemblerLineProcessingState, used at the start of processing
      *
-     * @return AssemblerState
+     * @return AssemblerLineProcessingState
      */
     public static function create() {
         if (null === self::$aStates) {
@@ -46,12 +46,12 @@ class AssemblerLineProcessingState {
     }
 
     /**
-     * Get the AssemblerState implied by the next line. This is where the validation happens. If the provided Kind is
-     * not in the set allowed for the current state, an exception is thrown. Otherwise the AssembkerState to use for
-     * the next test is returned.
+     * Get the AssemblerLineProcessingState implied by the next line. This is where the validation happens. If the
+     * provided Kind is not in the set allowed for the current state, an exception is thrown. Otherwise the
+     * AssemblerLineProcessingState to use for the next test is returned.
      *
      * @param int $iLineKind
-     * @return AssemblerState
+     * @return AssemblerLineProcessingState
      */
     public function getStateForLineKind(int $iLineKind) : self {
         if (isset($this->aAllowedLineKinds[$iLineKind])) {

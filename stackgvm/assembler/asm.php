@@ -15,7 +15,7 @@ $aOptions = getopt(
 );
 */
 
-
+/*
 LineParserFactory::get()->getParser(LineKind::INSTRUCTION)->importDefinitions(
     'config/opcode.json',
     [
@@ -25,12 +25,11 @@ LineParserFactory::get()->getParser(LineKind::INSTRUCTION)->importDefinitions(
         'config/logic.json'
     ]
 );
-
+*/
 $oAssebler = new Assembler(
+    new AssemblerConfig("config/config.json"),
     new SourceLoader(
         new Project('example/project.json')
-    ),
-    LineParserFactory::get(),
-    AssemblerLineProcessingState::create()
+    )
 );
 $oAssebler->assemble();

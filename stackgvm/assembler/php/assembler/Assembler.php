@@ -5,14 +5,6 @@
  */
 class Assembler {
 
-    const LINE_KIND_NAMES = [
-        LineKind::BLANK       => "Blank",
-        LineKind::LABEL       => "Label",
-        LineKind::CODE_SYMBOL => "Function Definition",
-        LineKind::DATA_SYMBOL => "Data Definition",
-        LineKind::INSTRUCTION => "Instruction"
-    ];
-
     private
         $oSourceLoader,
         $oLineParserFactory,
@@ -22,13 +14,12 @@ class Assembler {
     ;
 
     public function __construct(
-        SourceLoader $oLoader,
-        LineParserFactory $oLineParserFactory,
-        AssemblerLineProcessingState $oLineProcessingState
+        AssemblerConfig $oConfig,
+        SourceLoader $oLoader
     ) {
         $this->oSourceLoader        = $oLoader;
-        $this->oLineParserFactory   = $oLineParserFactory;
-        $this->oLineProcessingState = $oLineProcessingState;
+        $this->oLineParserFactory   = $oConfig->getLineParserFactory();
+        $this->oLineProcessingState = $oConfig->getLineProcessingState();
     }
 
     public function assemble() {
@@ -44,6 +35,7 @@ class Assembler {
 
             try {
                 foreach ($aLines as $iNum => $sLine) {
+                    echo $sLine, "\n";
                     $iKind = $oLineParser->parse($sLine);
 
                     $this->oLineProcessingState = $this->oLineProcessingState->getStateForLineKind($iKind);

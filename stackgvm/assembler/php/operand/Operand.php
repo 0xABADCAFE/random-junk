@@ -11,8 +11,7 @@ abstract class Operand {
         $iKind,
         $iSize,
         $value,
-        $sBytes,
-        $sSource
+        $aBytes
     ;
 
     const MAPPED = [
@@ -43,7 +42,6 @@ abstract class Operand {
     protected function __construct(int $iKind, $value, string $sSource) {
         $this->iKind   = $iKind;
         $this->value   = $value;
-        $this->sSource = $sSource;
         $this->iSize   = OperandKind::SIZES[$iKind];
     }
 };
