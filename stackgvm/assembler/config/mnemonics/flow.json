@@ -6,11 +6,11 @@
     ],
     "bra": [
         {
+            "_BRA": ["LABEL"]
+        },{
             "_BRAS": ["JUMP_8"]
         },{
             "_BRA": ["JUMP_16"]
-        },{
-            "_BRA": ["LABEL"]
         }
     ],
     "call": [
@@ -29,12 +29,19 @@
     ],
     "llbnn": [
         {
+            "_LI0BNN": ["INDIR_0", "LABEL"],
+            "_LI1BNN": ["INDIR_1", "LABEL"]
+        },{
             "_LI0BNN": ["INDIR_0", "JUMP_16"],
             "_LI1BNN": ["INDIR_1", "JUMP_16"]
         }
     ],
     "bez": [
         {
+            "_BEZ_L":  ["LOCAL",   "LABEL"],
+            "_BEZ_I0": ["INDIR_0", "LABEL"],
+            "_BEZ_I1": ["INDIR_1", "LABEL"]
+        },{
             "_BEZ_L":  ["LOCAL",   "JUMP_16"],
             "_BEZ_I0": ["INDIR_0", "JUMP_16"],
             "_BEZ_I1": ["INDIR_1", "JUMP_16"]
@@ -42,6 +49,10 @@
     ],
     "bnz": [
         {
+            "_BNZ_L":  ["LOCAL",   "LABEL"],
+            "_BNZ_I0": ["INDIR_0", "LABEL"],
+            "_BNZ_I1": ["INDIR_1", "LABEL"]
+        },{
             "_BNZ_L":  ["LOCAL",   "JUMP_16"],
             "_BNZ_I0": ["INDIR_0", "JUMP_16"],
             "_BNZ_I1": ["INDIR_1", "JUMP_16"]
@@ -49,6 +60,10 @@
     ],
     "beq": [
         {
+            "_BEQ_LL": ["LOCAL", "LOCAL",   "LABEL"],
+            "_BEQ_LI": ["LOCAL", "INDIR_0", "LABEL"],
+            "_BEQ_II": ["LOCAL", "INDIR_1", "LABEL"]
+        },{
             "_BEQ_LL": ["LOCAL", "LOCAL",   "JUMP_16"],
             "_BEQ_LI": ["LOCAL", "INDIR_0", "JUMP_16"],
             "_BEQ_II": ["LOCAL", "INDIR_1", "JUMP_16"]
@@ -56,6 +71,10 @@
     ],
     "bne": [
         {
+            "_BNE_LL": ["LOCAL", "LOCAL",   "LABEL"],
+            "_BNE_LI": ["LOCAL", "INDIR_0", "LABEL"],
+            "_BNE_II": ["LOCAL", "INDIR_1", "LABEL"]
+        },{
             "_BNE_LL": ["LOCAL", "LOCAL",   "JUMP_16"],
             "_BNE_LI": ["LOCAL", "INDIR_0", "JUMP_16"],
             "_BNE_II": ["LOCAL", "INDIR_1", "JUMP_16"]
@@ -63,6 +82,11 @@
     ],
     "bge.i": [
         {
+            "_BGE_LL": ["LOCAL",   "LOCAL",   "LABEL"],
+            "_BGE_IL": ["INDIR_0", "LOCAL",   "LABEL"],
+            "_BGE_LI": ["LOCAL",   "INDIR_0", "LABEL"],
+            "_BGE_II": ["INDIR_0", "INDIR_1", "LABEL"]
+        },{
             "_BGE_LL": ["LOCAL",   "LOCAL",   "JUMP_16"],
             "_BGE_IL": ["INDIR_0", "LOCAL",   "JUMP_16"],
             "_BGE_LI": ["LOCAL",   "INDIR_0", "JUMP_16"],
@@ -71,6 +95,11 @@
     ],
     "bgt.i": [
         {
+            "_BGT_LL": ["LOCAL",   "LOCAL",   "LABEL"],
+            "_BGT_IL": ["INDIR_0", "LOCAL",   "LABEL"],
+            "_BGT_LI": ["LOCAL",   "INDIR_0", "LABEL"],
+            "_BGT_II": ["INDIR_0", "INDIR_1", "LABEL"]
+        },{
             "_BGT_LL": ["LOCAL",   "LOCAL",   "JUMP_16"],
             "_BGT_IL": ["INDIR_0", "LOCAL",   "JUMP_16"],
             "_BGT_LI": ["LOCAL",   "INDIR_0", "JUMP_16"],
@@ -79,29 +108,38 @@
     ],
     "dbnz.i": [
         {
+            "_DBNZ_L": ["LOCAL", "LABEL"]
+        },{
             "_DBNZ_L": ["LOCAL", "JUMP_16"]
         }
     ],
     "dbnn.i": [
         {
+            "_DBNN_L": ["LOCAL", "LABEL"]
+        },{
             "_DBNN_L": ["LOCAL", "JUMP_16"]
         }
     ],
     "bbs": [
         {
-            "_BBS_SL": ["BITPOS", "LOCAL"],
-            "_BBS_SI": ["BITPOS", "INDIR_0"]
+            "_BBS_SL": ["BITPOS", "LOCAL",   "LABEL"],
+            "_BBS_SI": ["BITPOS", "INDIR_0", "LABEL"]
         }
     ],
     "bbc": [
         {
-            "_BBC_SL": ["BITPOS", "LOCAL"],
-            "_BBC_SI": ["BITPOS", "LOCAL"],
-            "_BBC_LL": ["LOCAL",  "LOCAL"]
+            "_BBC_SL": ["BITPOS", "LOCAL", "LABEL"],
+            "_BBC_SI": ["BITPOS", "LOCAL", "LABEL"],
+            "_BBC_LL": ["LOCAL",  "LOCAL", "LABEL"]
         }
     ],
     "bge.f": [
         {
+            "_FBGE_LL": ["LOCAL",   "LOCAL",   "LABEL"],
+            "_FBGE_IL": ["INDIR_0", "LOCAL",   "LABEL"],
+            "_FBGE_LI": ["LOCAL",   "INDIR_0", "LABEL"],
+            "_FBGE_II": ["INDIR_0", "INDIR_1", "LABEL"]
+        },{
             "_FBGE_LL": ["LOCAL",   "LOCAL",   "JUMP_16"],
             "_FBGE_IL": ["INDIR_0", "LOCAL",   "JUMP_16"],
             "_FBGE_LI": ["LOCAL",   "INDIR_0", "JUMP_16"],
@@ -110,6 +148,11 @@
     ],
     "bgt.f": [
         {
+            "_FBGT_LL": ["LOCAL",   "LOCAL",   "LABEL"],
+            "_FBGT_IL": ["INDIR_0", "LOCAL",   "LABEL"],
+            "_FBGT_LI": ["LOCAL",   "INDIR_0", "LABEL"],
+            "_FBGT_II": ["INDIR_0", "INDIR_1", "LABEL"]
+        },{
             "_FBGT_LL": ["LOCAL",   "LOCAL",   "JUMP_16"],
             "_FBGT_IL": ["INDIR_0", "LOCAL",   "JUMP_16"],
             "_FBGT_LI": ["LOCAL",   "INDIR_0", "JUMP_16"],
@@ -118,6 +161,10 @@
     ],
     "beq.v": [
         {
+            "_VBEQ_LL": ["LOCAL", "LOCAL",   "LABEL"],
+            "_VBEQ_IL": ["LOCAL", "INDIR_0", "LABEL"],
+            "_VBEQ_II": ["LOCAL", "INDIR_1", "LABEL"]
+        },{
             "_VBEQ_LL": ["LOCAL", "LOCAL",   "JUMP_16"],
             "_VBEQ_IL": ["LOCAL", "INDIR_0", "JUMP_16"],
             "_VBEQ_II": ["LOCAL", "INDIR_1", "JUMP_16"]
@@ -125,6 +172,10 @@
     ],
     "bne.v": [
         {
+            "_VBNE_LL": ["LOCAL", "LOCAL",   "LABEL"],
+            "_VBNE_IL": ["LOCAL", "INDIR_0", "LABEL"],
+            "_VBNE_II": ["LOCAL", "INDIR_1", "LABEL"]
+        },{
             "_VBNE_LL": ["LOCAL", "LOCAL",   "JUMP_16"],
             "_VBNE_IL": ["LOCAL", "INDIR_0", "JUMP_16"],
             "_VBNE_II": ["LOCAL", "INDIR_1", "JUMP_16"]
