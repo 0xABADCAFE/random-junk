@@ -9,7 +9,8 @@ class AssemblerConfig {
         $oConfigData = $this->load($sConfigFile);
         LineParserFactory::get()->getParser(LineKind::INSTRUCTION)->importDefinitions(
             $oConfigData->opcodes,
-            $oConfigData->mnemonics
+            $oConfigData->mnemonics,
+            $oConfigData->aliases
         );
     }
 
@@ -36,6 +37,7 @@ print_r($oConfigData);
             !($oConfigData instanceof stdClass) ||
             !isset($oConfigData->name) ||
             !is_array($oConfigData->mnemonics) ||
+            !is_array($oConfigData->aliases) ||
             !isset($oConfigData->opcodes)
         ) {
             throw new Exception("Invalid project file '" . $sConfigFile . "'");

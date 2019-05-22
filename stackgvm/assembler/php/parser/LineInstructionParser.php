@@ -4,10 +4,11 @@ class LineInstructionParser implements Parser {
 
     private
         $aOpcodeDefs  = [],
-        $aOperandSets = []
+        $aOperandSets = [],
+        $aAliases     = []
     ;
 
-    public function importDefinitions(string $sOpcodeDefinition, array $aDefinitions) {
+    public function importDefinitions(string $sOpcodeDefinition, array $aDefinitions, array $aAliasDefinitions) {
         $oLoader = new OpcodeDefinitionLoader();
         $this->aOpcodeDefs = $oLoader->loadDefinition($sOpcodeDefinition);
         $this->aOperandSetParsers = [];
@@ -15,6 +16,12 @@ class LineInstructionParser implements Parser {
         foreach ($aDefinitions as $sDefinitionPath) {
             $this->aOperandSetParsers += $oLoader->loadDefinition($sDefinitionPath);
         }
+        $this->aAliases = [];
+        $oLoader = new AliasDefinitionLoader();
+        foreach ($aAliasDefinitions as $sDefinitionPath) {
+            $this->aAliases += $oLoader->loadDefinition($sDefinitionPath);
+        }
+
     }
 
     public function parse(string $sLine) {
@@ -22,6 +29,14 @@ class LineInstructionParser implements Parser {
             throw new ParseException();
         }
         $sMnemonic = strtolower($aMatches[1]);
+
+        $oAlias = null;
+
+        if (isset($this->aAliases[$sMnemonic])) {
+            $oAlias = $this->aAliases[$sMnemonic];
+            $sMnemonic = $oAlias->alias;
+        }
+
         if (!isset($this->aOperandSetParsers[$sMnemonic])) {
             throw new ParseException("Unknown mnemonic " . $sMnemonic);
         }
@@ -37,6 +52,11 @@ class LineInstructionParser implements Parser {
                 }
                 $iValue = $this->aOpcodeDefs[$sOpcodeEnum];
                 $oParsed->oOpcode->iByte = $iValue;
+
+                if ($oAlias) {
+                    $this->permuteOperandsForAlias($oParsed, $oAlias);
+                }
+
                 return $oParsed;
             } catch(InvalidArgumentException $oException) {
                 // do nothing here
@@ -47,6 +67,12 @@ class LineInstructionParser implements Parser {
         return null;
     }
 
-
+    private function permuteOperandsForAlias($oParsed, $oAlias) {
+        $aOperands = [];
+        foreach ($oAlias->permute as $iTo => $iFrom) {
+            $aOperands[$iTo] = $oParsed->aOperands[$iFrom];
+        }
+        $oParsed->aOperands = $aOperands;
+    }
 }
 
