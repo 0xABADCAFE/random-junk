@@ -5,7 +5,7 @@
 @doSomething: // ():void
     call @doNothing
     addr $testData, i1
-    cgt.f (0), (1), #100
+    cgt.f (0), (i0+1), .dummy
     ret
 
 $testData:

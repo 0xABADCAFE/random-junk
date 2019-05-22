@@ -29,19 +29,24 @@ class LineInstructionParser implements Parser {
             throw new ParseException();
         }
         $sMnemonic = strtolower($aMatches[1]);
+        $sOperands = trim(str_replace($aMatches[1], '', $sLine));
 
-        $oAlias = null;
-
+        // If the mnemonic matches an alias, then we have some shuffling to do
         if (isset($this->aAliases[$sMnemonic])) {
             $oAlias = $this->aAliases[$sMnemonic];
             $sMnemonic = $oAlias->alias;
+            $aOpBefore = explode(',', $sOperands);
+            $aOpAfter  = [];
+            foreach ($oAlias->permute as $iTo => $iFrom) {
+                $aOpAfter[$iTo] = $aOpBefore[$iFrom];
+            }
+            $sOperands = implode(',', $aOpAfter);
         }
 
         if (!isset($this->aOperandSetParsers[$sMnemonic])) {
             throw new ParseException("Unknown mnemonic " . $sMnemonic);
         }
 
-        $sOperands = trim(str_replace($aMatches[1], '', $sLine));
         $aParsed   = null;
         foreach ($this->aOperandSetParsers[$sMnemonic] as $oParser) {
             try {
@@ -53,10 +58,6 @@ class LineInstructionParser implements Parser {
                 $iValue = $this->aOpcodeDefs[$sOpcodeEnum];
                 $oParsed->oOpcode->iByte = $iValue;
 
-                if ($oAlias) {
-                    $this->permuteOperandsForAlias($oParsed, $oAlias);
-                }
-
                 return $oParsed;
             } catch(InvalidArgumentException $oException) {
                 // do nothing here
@@ -67,12 +68,5 @@ class LineInstructionParser implements Parser {
         return null;
     }
 
-    private function permuteOperandsForAlias($oParsed, $oAlias) {
-        $aOperands = [];
-        foreach ($oAlias->permute as $iTo => $iFrom) {
-            $aOperands[$iTo] = $oParsed->aOperands[$iFrom];
-        }
-        $oParsed->aOperands = $aOperands;
-    }
 }
 
