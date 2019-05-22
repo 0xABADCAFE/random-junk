@@ -39,7 +39,7 @@ class OperandKindParser implements Parser {
                 $this->iDefaultBase10Kind = (int)reset($aDistinct);
                 break;
             default:
-                throw new Exception();
+                throw new Exception("Unsuported: " . print_r($aDistinct, 1));
         }
     }
 
