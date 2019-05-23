@@ -35,8 +35,7 @@
 #define IND(x)  I, x
 
 #define hcf              _OP(HCF),
-#define bras(j)          _OP(BRAS),         _D8(j),
-#define bra(j)           _OP(BRA),          _D8(j),
+#define bra(j)           _OP(BRA),          _D16(j),
 #define bcall(j)         _OP(BCALL),        _D16(j),
 #define call(f)          _OP(CALL),         _D16(f),
 #define icall_l(l)       _OP(ICALL_L),      _D8(l),

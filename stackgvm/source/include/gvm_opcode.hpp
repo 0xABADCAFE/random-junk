@@ -13,7 +13,6 @@ namespace GVM {
             // Untyped instructions ////////////////////////////////////////////////////////////////////////////////////
 
             _HCF = 0, // Halt and catch fire
-            _BRAS,    // Branch to a signed 8-bit offset
             _BRA,     // Branch to a signed 16-bit offset
             _BCALL,   // Call an anonymous local function
             _CALL,    // Call a named function by ID
