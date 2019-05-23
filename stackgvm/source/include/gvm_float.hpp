@@ -97,6 +97,25 @@ IS(FBGE_II) {
     NEXT;
 }
 
+IS(FBLE_II) {
+    gvmDebugOpcode(
+        "ble.f (i0+%u), (i1+%u), %d : %e <= %e => ",
+        OPU(0),
+        OPU(1),
+        (int)J16(2),
+        IX0(0).f,
+        IX1(1).f
+    );
+    if (IX0(0).f <= IX1(1).f) {
+        gvmDebugJump(2);
+        STEP(J16(2));
+        NEXT;
+    }
+    gvmDebugSkip();
+    STEP(5);
+    NEXT;
+}
+
 // Two Operand Branch If Float Greater Than ////////////////////////////////////////////////////////////////////////////
 
 IS(FBGT_LL) {
@@ -166,6 +185,25 @@ IS(FBGT_II) {
         IX1(1).f
     );
     if (IX0(0).f > IX1(1).f) {
+        STEP(J16(2));
+        gvmDebugJump(2);
+        NEXT;
+    }
+    gvmDebugSkip();
+    STEP(5);
+    NEXT;
+}
+
+IS(FBLT_II) {
+    gvmDebugOpcode(
+        "blt.f (i0+%u), (i1+%u), %d : %e < %e => ",
+        OPU(0),
+        OPU(1),
+        (int)J16(2),
+        IX0(0).f,
+        IX1(1).f
+    );
+    if (IX0(0).f < IX1(1).f) {
         STEP(J16(2));
         gvmDebugJump(2);
         NEXT;

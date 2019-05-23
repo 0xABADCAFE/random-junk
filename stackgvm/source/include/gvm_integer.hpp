@@ -71,6 +71,23 @@ IS(BGE_II) {
     NEXT;
 }
 
+IS(BLE_II) {
+    gvmDebugOpcode(
+        "ble.i (i0+%u), (i1+%u), %d : %d <= %d => ",
+        OPU(0),
+        OPU(1),
+        (int)J16(2),
+        IX0(0).i,
+        IX1(1).i
+    );
+    if (IX0(0).i <= IX1(1).i) {
+        STEP(J16(2));
+        NEXT;
+    }
+    STEP(5);
+    NEXT;
+}
+
 // Two Operand Branch If Integer Greater Than //////////////////////////////////////////////////////////////////////////
 
 IS(BGT_LL) {
@@ -134,6 +151,23 @@ IS(BGT_II) {
         IX1(1).i
     );
     if (IX0(0).i > IX1(1).i) {
+        STEP(J16(2));
+        NEXT;
+    }
+    STEP(5);
+    NEXT;
+}
+
+IS(BLT_II) {
+    gvmDebugOpcode(
+        "blt.i (i0+%u), (i1+%u), %d : %d < %d => ",
+        OPU(0),
+        OPU(1),
+        (int)J16(2),
+        IX0(0).i,
+        IX1(1).i
+    );
+    if (IX0(0).i < IX1(1).i) {
         STEP(J16(2));
         NEXT;
     }

@@ -103,13 +103,17 @@
 #define blt_ll(l1,l2,j)   _OP(BGT_LL),       _D8(l2), _D8(l1),  _D16(j),
 #define blt_il(i,l,j)     _OP(BGT_LI),       _D8(l),  _D8(i),   _D16(j),
 #define blt_li(l,i,j)     _OP(BGT_IL),       _D8(i),  _D8(l),   _D16(j),
-#define blt_ii(i1,i2,j)   _OP(BGT_II),       _D8(i2), _D8(i1),  _D16(j),
+
+// Cannot invert two indirect operands
+#define blt_ii(i1,i2,j)   _OP(BLT_II),       _D8(i1), _D8(i2),  _D16(j),
 
 // Two operand branch if less than or equal - these are operand inverted aliases
 #define ble_ll(l1,l2,j)   _OP(BGE_LL),       _D8(l2), _D8(l1),  _D16(j),
 #define ble_il(i,l,j)     _OP(BGE_LI),       _D8(l),  _D8(i),   _D16(j),
 #define ble_li(l,i,j)     _OP(BGE_IL),       _D8(i),  _D8(l),   _D16(j),
-#define ble_ii(i1,i2,j)   _OP(BGE_II),       _D8(i2), _D8(i1),  _D16(j),
+
+// Cannot invert two indirect operands
+#define ble_ii(i1,i2,j)   _OP(BLE_II),       _D8(i1), _D8(i2),  _D16(j),
 
 // C style "continue if condition true"
 #define clt_ll(l1,l2,j)   _OP(BGE_LL),       _D8(l1), _D8(l2),  _D16(j),
@@ -126,13 +130,17 @@
 #define cge_ll(l1,l2,j)   _OP(BGT_LL),       _D8(l2), _D8(l1),  _D16(j),
 #define cge_il(i,l,j)     _OP(BGT_LI),       _D8(l),  _D8(i),   _D16(j),
 #define cge_li(l,i,j)     _OP(BGT_IL),       _D8(i),  _D8(l),   _D16(j),
-#define cge_ii(i1,i2,j)   _OP(BGT_II),       _D8(i2), _D8(i1),  _D16(j),
+
+// Cannot invert two indirect operands
+#define cge_ii(i1,i2,j)   _OP(BLT_II),       _D8(i1), _D8(i2),  _D16(j),
 
 // Operand inverted aliases
 #define cgt_ll(l1,l2,j)   _OP(BGE_LL),       _D8(l2), _D8(l1),  _D16(j),
 #define cgt_il(i,l,j)     _OP(BGE_LI),       _D8(l),  _D8(i),   _D16(j),
 #define cgt_li(l,i,j)     _OP(BGE_IL),       _D8(i),  _D8(l),   _D16(j),
-#define cgt_ii(i1,i2,j)   _OP(BGE_II),       _D8(i2), _D8(i1),  _D16(j),
+
+// Cannot invert two indirect operands
+#define cgt_ii(i1,i2,j)   _OP(BLE_II),       _D8(i1), _D8(i2),  _D16(j),
 
 //
 #define dbnz_l(l,j)       _OP(DBNZ_L),       _D8(l),  _D16(j),
@@ -141,7 +149,7 @@
 //
 // // Load small literal integer
 #define load_sl(v,l)      _OP(LOAD_SL),      _D8(v),  _D8(l),
-#define load_si(v,I,i)    _OP(LOAD_SI##I),      _D8(v),  _D8(l),
+#define load_si(v,I,i)    _OP(LOAD_SI##I),   _D8(v),  _D8(l),
 
 //
 // // Single bit operations
@@ -275,13 +283,17 @@
 #define fblt_ll(l1,l2,j)   _OP(FBGT_LL),       _D8(l2), _D8(l1),  _D16(j),
 #define fblt_il(i,l,j)     _OP(FBGT_LI),       _D8(l),  _D8(i),   _D16(j),
 #define fblt_li(l,i,j)     _OP(FBGT_IL),       _D8(i),  _D8(l),   _D16(j),
-#define fblt_ii(i1,i2,j)   _OP(FBGT_II),       _D8(i2), _D8(i1),  _D16(j),
+
+// Cannot invert indirect operands
+#define fblt_ii(i1,i2,j)   _OP(FBLT_II),       _D8(i1), _D8(i2),  _D16(j),
 
 // Two operand branch if less than or equal - these are operand inverted aliases
 #define fble_ll(l1,l2,j)   _OP(FBGE_LL),       _D8(l2), _D8(l1),  _D16(j),
 #define fble_il(i,l,j)     _OP(FBGE_LI),       _D8(l),  _D8(i),   _D16(j),
 #define fble_li(l,i,j)     _OP(FBGE_IL),       _D8(i),  _D8(l),   _D16(j),
-#define fble_ii(i1,i2,j)   _OP(FBGE_II),       _D8(i2), _D8(i1),  _D16(j),
+
+// Cannot invert indirect operands
+#define fble_ii(i1,i2,j)   _OP(FBLE_II),       _D8(i1), _D8(i2),  _D16(j),
 
 // C style "continue if condition true"
 #define fclt_ll(l1,l2,j)   _OP(FBGE_LL),       _D8(l1), _D8(l2),  _D16(j),
@@ -298,13 +310,17 @@
 #define fcge_ll(l1,l2,j)   _OP(FBGT_LL),       _D8(l2), _D8(l1),  _D16(j),
 #define fcge_il(i,l,j)     _OP(FBGT_LI),       _D8(l),  _D8(i),   _D16(j),
 #define fcge_li(l,i,j)     _OP(FBGT_IL),       _D8(i),  _D8(l),   _D16(j),
-#define fcge_ii(i1,i2,j)   _OP(FBGT_II),       _D8(i2), _D8(i1),  _D16(j),
+
+// Cannot invert indirect operands
+#define fcge_ii(i1,i2,j)   _OP(FBLT_II),       _D8(i1), _D8(i2),  _D16(j),
 
 // Operand inverted aliases
 #define fcgt_ll(l1,l2,j)   _OP(FBGE_LL),       _D8(l2), _D8(l1),  _D16(j),
 #define fcgt_il(i,l,j)     _OP(FBGE_LI),       _D8(l),  _D8(i),   _D16(j),
 #define fcgt_li(l,i,j)     _OP(FBGE_IL),       _D8(i),  _D8(l),   _D16(j),
-#define fcgt_ii(i1,i2,j)   _OP(FBGE_II),       _D8(i2), _D8(i1),  _D16(j),
+
+// Cannot invert indirect operands
+#define fcgt_ii(i1,i2,j)   _OP(FBLE_II),       _D8(i1), _D8(i2),  _D16(j),
 
 //
 // // Two operand, local to local handy maths functions

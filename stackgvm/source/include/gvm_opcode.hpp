@@ -88,11 +88,17 @@ namespace GVM {
             _BGE_LI,
             _BGE_II,
 
+            // Two operand branch if less than or equal
+            _BLE_II,
+
             // Two operand branch if greater than
             _BGT_LL,
             _BGT_IL,
             _BGT_LI,
             _BGT_II,
+
+            // Two operand branch if less than
+            _BLT_II,
 
             _DBNZ_L,   // Decrement local and branch if not zero
             _DBNN_L,   // Decrement local and branch if not negative
@@ -218,11 +224,17 @@ namespace GVM {
             _FBGE_LI,
             _FBGE_II,
 
+            // Two operand branch if less than or equal
+            _FBLE_II,
+
             // Two operand branch if greater than
             _FBGT_LL,
             _FBGT_IL,
             _FBGT_LI,
             _FBGT_II,
+
+            // Two operand branch if less than
+            _FBLT_II,
 
             // Two operand, local to local handy maths functions
             _FINV_LL,   // Reciprocal
