@@ -76,8 +76,8 @@ interface OperandKind {
         MATCH_INDIR    = '/^\s*\(\s*i(\d)\s*([\+\-]{1}.*?)\)\s*$/',
         MATCH_IDX      = '/^\s*i(\d)\s*$/',
         MATCH_BASE_10  = '/^\s*#{1}(.*?)\s*$/',
-        MATCH_LABEL    = '/^\s*\.([A-Za-z]{1}[0-9A-Za-z]{0,})\s*$/',
-        MATCH_CODE_SYM = '/^\s*\@([A-Za-z]{1}[0-9A-Za-z]{0,})\s*$/',
-        MATCH_DATA_SYM = '/^\s*\$([A-Za-z]{1}[0-9A-Za-z]{0,})\s*$/'
+        MATCH_LABEL    = '/^\s*\.([A-Za-z_]{1}[0-9A-Za-z_]{0,})\s*$/',
+        MATCH_CODE_SYM = '/^\s*\@([A-Za-z_]{1}[0-9A-Za-z_]{0,})\s*$/',
+        MATCH_DATA_SYM = '/^\s*\$([A-Za-z_]{1}[0-9A-Za-z_]{0,})\s*$/'
     ;
 }

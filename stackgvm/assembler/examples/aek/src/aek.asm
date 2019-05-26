@@ -9,7 +9,7 @@
     copy    (i0 + gi_image_size),  i_main_image_size
     copy    i_main_image_size,     m_next_func_param_space
 
-    //host   @print_header
+    host    @print_header
 
     // Camera vectprs
     norm.v  (i0 + gv_camera_dir),  v_main_camera_forward
@@ -78,3 +78,48 @@
     dbnn.i  i_main_pixel_x_pos,    .pixel
     dbnn.i  i_main_pixel_y_pos,    .scanline
     ret
+
+$aekGlobals:
+/*
+    // Vectors
+    vec3(-6.0f, -16.0f, 0.0f), // gv_camera_dir
+    vec3(17.0f, 16.0f, 8.0f),  // gv_focal_point
+    vec3(0.0f, 0.0f, 1.0f),    // gv_normal_up
+    vec3(0.7f, 0.6f, 1.0f),    // gv_sky_rgb
+    vec3(3.0f, 1.0f, 1.0f),    // gv_floor_red_rgb,
+    vec3(3.0f, 3.0f, 3.0f),    // gv_floor_white_rgb
+    vec3(13.0f, 13.0f, 13.0f), // gv_const_ambient_rgb
+    vec3(9.0f, 9.0f, 16.0f),   // gv_const_light_pos
+
+    // Bitmap
+    247570, // 0111100011100010010 gv_bitmap[0]
+    280596, // 1000100100000010100
+    280600, // 1000100100000011000
+    249748, // 0111100111110010100
+    18578,  // 0000100100010010010
+    18577,  // 0000100100010010001
+    231184, // 0111000011100010000
+    16,     // 0000000000000010000
+    16,     // 0000000000000010000
+
+    // Other Scalars
+#ifdef _GVM_DEBUGGING_
+    512,       // gi_image_size
+    1,       // gi_max_rays
+#else
+    512,     // gi_image_size
+    64,      // gi_max_rays
+#endif
+    99.0f,   // gf_dof_scale
+    0.5f,    // gf_dof_bias
+    16.0f,   // gf_accum_scale
+    3.5f,    // gf_rgb_scale
+    0.002f,  // gf_camera_scale
+    1e9f,    // gf_distamce_max
+    0.01f,   // gf_distance_min
+
+    -2.0f,
+    0.2f,
+    0.1f,
+    vec3(0.5f, 0.1f, 0.1f),
+*/

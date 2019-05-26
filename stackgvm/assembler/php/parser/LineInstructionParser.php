@@ -67,7 +67,9 @@ class LineInstructionParser implements Parser {
         if (!isset($this->aOperandSetParsers[$sMnemonic])) {
             throw new ParseException("Unknown mnemonic " . $sMnemonic);
         }
+
         foreach ($this->aOperandSetParsers[$sMnemonic] as $oParser) {
+
             try {
                 $oParsed     = $oParser->parse($sOperands);
                 $sOpcodeEnum = $oParsed->oOpcode->sEnum;

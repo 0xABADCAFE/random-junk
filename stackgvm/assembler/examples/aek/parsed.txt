@@ -1,0 +1,2348 @@
+stdClass Object
+(
+    [name] => StackGVM Config
+    [version] => 1.0.0
+    [mnemonics] => Array
+        (
+            [0] => config/mnemonics/flow.json
+            [1] => config/mnemonics/arithmetic.json
+            [2] => config/mnemonics/logic.json
+            [3] => config/mnemonics/move.json
+        )
+
+    [aliases] => Array
+        (
+            [0] => config/mnemonics/alias.json
+        )
+
+    [opcodes] => config/opcode/opcode.json
+)
+/home/hamza/projects/cppproj/random-junk/stackgvm/assembler/examples/aek/src/aek.asm:
+@main:
+
+    addr $aekGlobals, i0
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _ADDR_D0
+            [iByte] => 28
+        )
+
+    [aOperands] => Array
+        (
+            [0] => UnresolvedOperand Object
+                (
+                    [iKind] => 12
+                    [iSize] => 2
+                    [value] => $aekGlobals
+                    [aBytes] => Array
+                        (
+                            [0] => -1
+                            [1] => -1
+                        )
+
+                )
+
+            [1] => PlaceholderIndexOperand Object
+                (
+                    [iIndex] => 0
+                    [iKind] => 4
+                    [iSize] => 0
+                    [value] => 0
+                    [aBytes] => Array
+                        (
+                            [0] => -1
+                            [1] => -1
+                        )
+
+                )
+
+        )
+
+)
+
+
+    copy (i0 + 33), (0)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _COPY_I0L
+            [iByte] => 41
+        )
+
+    [aOperands] => Array
+        (
+            [0] => IndirectOperand Object
+                (
+                    [iIndex] => 0
+                    [iKind] => 2
+                    [iSize] => 1
+                    [value] => 33
+                    [aBytes] => Array
+                        (
+                            [0] => 33
+                        )
+
+                )
+
+            [1] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 0
+                    [aBytes] => Array
+                        (
+                            [0] => 0
+                        )
+
+                )
+
+        )
+
+)
+    copy (0), (32)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _COPY_LL
+            [iByte] => 40
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 0
+                    [aBytes] => Array
+                        (
+                            [0] => 0
+                        )
+
+                )
+
+            [1] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 32
+                    [aBytes] => Array
+                        (
+                            [0] => 32
+                        )
+
+                )
+
+        )
+
+)
+
+    host @print_header
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _HCALL
+            [iByte] => 6
+        )
+
+    [aOperands] => Array
+        (
+            [0] => UnresolvedOperand Object
+                (
+                    [iKind] => 13
+                    [iSize] => 2
+                    [value] => @print_header
+                    [aBytes] => Array
+                        (
+                            [0] => -1
+                            [1] => -1
+                        )
+
+                )
+
+        )
+
+)
+
+
+    norm.v (i0 + 0), (2)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _VNORM_IL
+            [iByte] => 216
+        )
+
+    [aOperands] => Array
+        (
+            [0] => IndirectOperand Object
+                (
+                    [iIndex] => 0
+                    [iKind] => 2
+                    [iSize] => 1
+                    [value] => 0
+                    [aBytes] => Array
+                        (
+                            [0] => 0
+                        )
+
+                )
+
+            [1] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 2
+                    [aBytes] => Array
+                        (
+                            [0] => 2
+                        )
+
+                )
+
+        )
+
+)
+    cross.v (i0 + 6), (2), (8)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _VCROSS_ILL
+            [iByte] => 239
+        )
+
+    [aOperands] => Array
+        (
+            [0] => IndirectOperand Object
+                (
+                    [iIndex] => 0
+                    [iKind] => 2
+                    [iSize] => 1
+                    [value] => 6
+                    [aBytes] => Array
+                        (
+                            [0] => 6
+                        )
+
+                )
+
+            [1] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 2
+                    [aBytes] => Array
+                        (
+                            [0] => 2
+                        )
+
+                )
+
+            [2] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 8
+                    [aBytes] => Array
+                        (
+                            [0] => 8
+                        )
+
+                )
+
+        )
+
+)
+    norm.v (8), (8)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _VNORM_LL
+            [iByte] => 215
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 8
+                    [aBytes] => Array
+                        (
+                            [0] => 8
+                        )
+
+                )
+
+            [1] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 8
+                    [aBytes] => Array
+                        (
+                            [0] => 8
+                        )
+
+                )
+
+        )
+
+)
+    mulf.v (8), (i0 + 39), (8)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _VFMUL_LIL
+            [iByte] => 249
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 8
+                    [aBytes] => Array
+                        (
+                            [0] => 8
+                        )
+
+                )
+
+            [1] => IndirectOperand Object
+                (
+                    [iIndex] => 0
+                    [iKind] => 2
+                    [iSize] => 1
+                    [value] => 39
+                    [aBytes] => Array
+                        (
+                            [0] => 39
+                        )
+
+                )
+
+            [2] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 8
+                    [aBytes] => Array
+                        (
+                            [0] => 8
+                        )
+
+                )
+
+        )
+
+)
+    cross.v (2), (8), (5)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _VCROSS_LLL
+            [iByte] => 238
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 2
+                    [aBytes] => Array
+                        (
+                            [0] => 2
+                        )
+
+                )
+
+            [1] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 8
+                    [aBytes] => Array
+                        (
+                            [0] => 8
+                        )
+
+                )
+
+            [2] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 5
+                    [aBytes] => Array
+                        (
+                            [0] => 5
+                        )
+
+                )
+
+        )
+
+)
+    norm.v (5), (5)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _VNORM_LL
+            [iByte] => 215
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 5
+                    [aBytes] => Array
+                        (
+                            [0] => 5
+                        )
+
+                )
+
+            [1] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 5
+                    [aBytes] => Array
+                        (
+                            [0] => 5
+                        )
+
+                )
+
+        )
+
+)
+    mulf.v (5), (i0 + 39), (5)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _VFMUL_LIL
+            [iByte] => 249
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 5
+                    [aBytes] => Array
+                        (
+                            [0] => 5
+                        )
+
+                )
+
+            [1] => IndirectOperand Object
+                (
+                    [iIndex] => 0
+                    [iKind] => 2
+                    [iSize] => 1
+                    [value] => 39
+                    [aBytes] => Array
+                        (
+                            [0] => 39
+                        )
+
+                )
+
+            [2] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 5
+                    [aBytes] => Array
+                        (
+                            [0] => 5
+                        )
+
+                )
+
+        )
+
+)
+    load #1, (18)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _LOAD_SL
+            [iByte] => 62
+        )
+
+    [aOperands] => Array
+        (
+            [0] => SmallLiteralIntegerOperand Object
+                (
+                    [iKind] => 8
+                    [iSize] => 1
+                    [value] => 1
+                    [aBytes] => Array
+                        (
+                            [0] => 1
+                        )
+
+                )
+
+            [1] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 18
+                    [aBytes] => Array
+                        (
+                            [0] => 18
+                        )
+
+                )
+
+        )
+
+)
+    lsr (0), (18), (17)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _LSR_LLL
+            [iByte] => 127
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 0
+                    [aBytes] => Array
+                        (
+                            [0] => 0
+                        )
+
+                )
+
+            [1] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 18
+                    [aBytes] => Array
+                        (
+                            [0] => 18
+                        )
+
+                )
+
+            [2] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 17
+                    [aBytes] => Array
+                        (
+                            [0] => 17
+                        )
+
+                )
+
+        )
+
+)
+    neg.i (17), (17)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _NEG_LL
+            [iByte] => 78
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 17
+                    [aBytes] => Array
+                        (
+                            [0] => 17
+                        )
+
+                )
+
+            [1] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 17
+                    [aBytes] => Array
+                        (
+                            [0] => 17
+                        )
+
+                )
+
+        )
+
+)
+    itof (17), (17)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _ITOF_LL
+            [iByte] => 48
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 17
+                    [aBytes] => Array
+                        (
+                            [0] => 17
+                        )
+
+                )
+
+            [1] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 17
+                    [aBytes] => Array
+                        (
+                            [0] => 17
+                        )
+
+                )
+
+        )
+
+)
+    add.v (8), (5), (11)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _VADD_LLL
+            [iByte] => 223
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 8
+                    [aBytes] => Array
+                        (
+                            [0] => 8
+                        )
+
+                )
+
+            [1] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 5
+                    [aBytes] => Array
+                        (
+                            [0] => 5
+                        )
+
+                )
+
+            [2] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 11
+                    [aBytes] => Array
+                        (
+                            [0] => 11
+                        )
+
+                )
+
+        )
+
+)
+    mulf.v (11), (17), (11)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _VFMUL_LLL
+            [iByte] => 245
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 11
+                    [aBytes] => Array
+                        (
+                            [0] => 11
+                        )
+
+                )
+
+            [1] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 17
+                    [aBytes] => Array
+                        (
+                            [0] => 17
+                        )
+
+                )
+
+            [2] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 11
+                    [aBytes] => Array
+                        (
+                            [0] => 11
+                        )
+
+                )
+
+        )
+
+)
+    add.v (11), (2), (11)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _VADD_LLL
+            [iByte] => 223
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 11
+                    [aBytes] => Array
+                        (
+                            [0] => 11
+                        )
+
+                )
+
+            [1] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 2
+                    [aBytes] => Array
+                        (
+                            [0] => 2
+                        )
+
+                )
+
+            [2] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 11
+                    [aBytes] => Array
+                        (
+                            [0] => 11
+                        )
+
+                )
+
+        )
+
+)
+    sub.i (0), (18), (0)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _SUB_LLL
+            [iByte] => 86
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 0
+                    [aBytes] => Array
+                        (
+                            [0] => 0
+                        )
+
+                )
+
+            [1] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 18
+                    [aBytes] => Array
+                        (
+                            [0] => 18
+                        )
+
+                )
+
+            [2] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 0
+                    [aBytes] => Array
+                        (
+                            [0] => 0
+                        )
+
+                )
+
+        )
+
+)
+
+
+
+    copy (0), (14)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _COPY_LL
+            [iByte] => 40
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 0
+                    [aBytes] => Array
+                        (
+                            [0] => 0
+                        )
+
+                )
+
+            [1] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 14
+                    [aBytes] => Array
+                        (
+                            [0] => 14
+                        )
+
+                )
+
+        )
+
+)
+
+.scanline:
+    copy (0), (15)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _COPY_LL
+            [iByte] => 40
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 0
+                    [aBytes] => Array
+                        (
+                            [0] => 0
+                        )
+
+                )
+
+            [1] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 15
+                    [aBytes] => Array
+                        (
+                            [0] => 15
+                        )
+
+                )
+
+        )
+
+)
+
+.pixel:
+    copy.v (i0 + 18), (28)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _VCOPY_IL
+            [iByte] => 208
+        )
+
+    [aOperands] => Array
+        (
+            [0] => IndirectOperand Object
+                (
+                    [iIndex] => 0
+                    [iKind] => 2
+                    [iSize] => 1
+                    [value] => 18
+                    [aBytes] => Array
+                        (
+                            [0] => 18
+                        )
+
+                )
+
+            [1] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 28
+                    [aBytes] => Array
+                        (
+                            [0] => 28
+                        )
+
+                )
+
+        )
+
+)
+
+
+    copy (i0 + 34), (16)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _COPY_I0L
+            [iByte] => 41
+        )
+
+    [aOperands] => Array
+        (
+            [0] => IndirectOperand Object
+                (
+                    [iIndex] => 0
+                    [iKind] => 2
+                    [iSize] => 1
+                    [value] => 34
+                    [aBytes] => Array
+                        (
+                            [0] => 34
+                        )
+
+                )
+
+            [1] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 16
+                    [aBytes] => Array
+                        (
+                            [0] => 16
+                        )
+
+                )
+
+        )
+
+)
+
+.ray:
+    rnd.f (17)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _FRND_L
+            [iByte] => 139
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 17
+                    [aBytes] => Array
+                        (
+                            [0] => 17
+                        )
+
+                )
+
+        )
+
+)
+    sub.f (17), (i0 + 36), (17)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _FSUB_LIL
+            [iByte] => 170
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 17
+                    [aBytes] => Array
+                        (
+                            [0] => 17
+                        )
+
+                )
+
+            [1] => IndirectOperand Object
+                (
+                    [iIndex] => 0
+                    [iKind] => 2
+                    [iSize] => 1
+                    [value] => 36
+                    [aBytes] => Array
+                        (
+                            [0] => 36
+                        )
+
+                )
+
+            [2] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 17
+                    [aBytes] => Array
+                        (
+                            [0] => 17
+                        )
+
+                )
+
+        )
+
+)
+    mul.f (i0 + 35), (17), (17)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _FMUL_ILL
+            [iByte] => 174
+        )
+
+    [aOperands] => Array
+        (
+            [0] => IndirectOperand Object
+                (
+                    [iIndex] => 0
+                    [iKind] => 2
+                    [iSize] => 1
+                    [value] => 35
+                    [aBytes] => Array
+                        (
+                            [0] => 35
+                        )
+
+                )
+
+            [1] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 17
+                    [aBytes] => Array
+                        (
+                            [0] => 17
+                        )
+
+                )
+
+            [2] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 17
+                    [aBytes] => Array
+                        (
+                            [0] => 17
+                        )
+
+                )
+
+        )
+
+)
+    mulf.v (8), (17), (19)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _VFMUL_LLL
+            [iByte] => 245
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 8
+                    [aBytes] => Array
+                        (
+                            [0] => 8
+                        )
+
+                )
+
+            [1] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 17
+                    [aBytes] => Array
+                        (
+                            [0] => 17
+                        )
+
+                )
+
+            [2] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 19
+                    [aBytes] => Array
+                        (
+                            [0] => 19
+                        )
+
+                )
+
+        )
+
+)
+    rnd.f (17)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _FRND_L
+            [iByte] => 139
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 17
+                    [aBytes] => Array
+                        (
+                            [0] => 17
+                        )
+
+                )
+
+        )
+
+)
+    sub.f (17), (i0 + 36), (17)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _FSUB_LIL
+            [iByte] => 170
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 17
+                    [aBytes] => Array
+                        (
+                            [0] => 17
+                        )
+
+                )
+
+            [1] => IndirectOperand Object
+                (
+                    [iIndex] => 0
+                    [iKind] => 2
+                    [iSize] => 1
+                    [value] => 36
+                    [aBytes] => Array
+                        (
+                            [0] => 36
+                        )
+
+                )
+
+            [2] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 17
+                    [aBytes] => Array
+                        (
+                            [0] => 17
+                        )
+
+                )
+
+        )
+
+)
+    mul.f (i0 + 35), (17), (17)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _FMUL_ILL
+            [iByte] => 174
+        )
+
+    [aOperands] => Array
+        (
+            [0] => IndirectOperand Object
+                (
+                    [iIndex] => 0
+                    [iKind] => 2
+                    [iSize] => 1
+                    [value] => 35
+                    [aBytes] => Array
+                        (
+                            [0] => 35
+                        )
+
+                )
+
+            [1] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 17
+                    [aBytes] => Array
+                        (
+                            [0] => 17
+                        )
+
+                )
+
+            [2] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 17
+                    [aBytes] => Array
+                        (
+                            [0] => 17
+                        )
+
+                )
+
+        )
+
+)
+    mulf.v (5), (17), (22)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _VFMUL_LLL
+            [iByte] => 245
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 5
+                    [aBytes] => Array
+                        (
+                            [0] => 5
+                        )
+
+                )
+
+            [1] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 17
+                    [aBytes] => Array
+                        (
+                            [0] => 17
+                        )
+
+                )
+
+            [2] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 22
+                    [aBytes] => Array
+                        (
+                            [0] => 22
+                        )
+
+                )
+
+        )
+
+)
+    add.v (19), (22), (25)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _VADD_LLL
+            [iByte] => 223
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 19
+                    [aBytes] => Array
+                        (
+                            [0] => 19
+                        )
+
+                )
+
+            [1] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 22
+                    [aBytes] => Array
+                        (
+                            [0] => 22
+                        )
+
+                )
+
+            [2] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 25
+                    [aBytes] => Array
+                        (
+                            [0] => 25
+                        )
+
+                )
+
+        )
+
+)
+    add.v (i0 + 3), (25), (35)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _VADD_ILL
+            [iByte] => 224
+        )
+
+    [aOperands] => Array
+        (
+            [0] => IndirectOperand Object
+                (
+                    [iIndex] => 0
+                    [iKind] => 2
+                    [iSize] => 1
+                    [value] => 3
+                    [aBytes] => Array
+                        (
+                            [0] => 3
+                        )
+
+                )
+
+            [1] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 25
+                    [aBytes] => Array
+                        (
+                            [0] => 25
+                        )
+
+                )
+
+            [2] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 35
+                    [aBytes] => Array
+                        (
+                            [0] => 35
+                        )
+
+                )
+
+        )
+
+)
+    itof (14), (17)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _ITOF_LL
+            [iByte] => 48
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 14
+                    [aBytes] => Array
+                        (
+                            [0] => 14
+                        )
+
+                )
+
+            [1] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 17
+                    [aBytes] => Array
+                        (
+                            [0] => 17
+                        )
+
+                )
+
+        )
+
+)
+    rnd.f (18)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _FRND_L
+            [iByte] => 139
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 18
+                    [aBytes] => Array
+                        (
+                            [0] => 18
+                        )
+
+                )
+
+        )
+
+)
+    add.f (17), (18), (17)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _FADD_LLL
+            [iByte] => 162
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 17
+                    [aBytes] => Array
+                        (
+                            [0] => 17
+                        )
+
+                )
+
+            [1] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 18
+                    [aBytes] => Array
+                        (
+                            [0] => 18
+                        )
+
+                )
+
+            [2] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 17
+                    [aBytes] => Array
+                        (
+                            [0] => 17
+                        )
+
+                )
+
+        )
+
+)
+    mulf.v (5), (17), (19)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _VFMUL_LLL
+            [iByte] => 245
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 5
+                    [aBytes] => Array
+                        (
+                            [0] => 5
+                        )
+
+                )
+
+            [1] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 17
+                    [aBytes] => Array
+                        (
+                            [0] => 17
+                        )
+
+                )
+
+            [2] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 19
+                    [aBytes] => Array
+                        (
+                            [0] => 19
+                        )
+
+                )
+
+        )
+
+)
+    add.v (19), (11), (19)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _VADD_LLL
+            [iByte] => 223
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 19
+                    [aBytes] => Array
+                        (
+                            [0] => 19
+                        )
+
+                )
+
+            [1] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 11
+                    [aBytes] => Array
+                        (
+                            [0] => 11
+                        )
+
+                )
+
+            [2] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 19
+                    [aBytes] => Array
+                        (
+                            [0] => 19
+                        )
+
+                )
+
+        )
+
+)
+    itof (15), (17)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _ITOF_LL
+            [iByte] => 48
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 15
+                    [aBytes] => Array
+                        (
+                            [0] => 15
+                        )
+
+                )
+
+            [1] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 17
+                    [aBytes] => Array
+                        (
+                            [0] => 17
+                        )
+
+                )
+
+        )
+
+)
+    rnd.f (18)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _FRND_L
+            [iByte] => 139
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 18
+                    [aBytes] => Array
+                        (
+                            [0] => 18
+                        )
+
+                )
+
+        )
+
+)
+    add.f (17), (18), (17)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _FADD_LLL
+            [iByte] => 162
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 17
+                    [aBytes] => Array
+                        (
+                            [0] => 17
+                        )
+
+                )
+
+            [1] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 18
+                    [aBytes] => Array
+                        (
+                            [0] => 18
+                        )
+
+                )
+
+            [2] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 17
+                    [aBytes] => Array
+                        (
+                            [0] => 17
+                        )
+
+                )
+
+        )
+
+)
+    mulf.v (8), (17), (22)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _VFMUL_LLL
+            [iByte] => 245
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 8
+                    [aBytes] => Array
+                        (
+                            [0] => 8
+                        )
+
+                )
+
+            [1] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 17
+                    [aBytes] => Array
+                        (
+                            [0] => 17
+                        )
+
+                )
+
+            [2] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 22
+                    [aBytes] => Array
+                        (
+                            [0] => 22
+                        )
+
+                )
+
+        )
+
+)
+    add.v (19), (22), (19)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _VADD_LLL
+            [iByte] => 223
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 19
+                    [aBytes] => Array
+                        (
+                            [0] => 19
+                        )
+
+                )
+
+            [1] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 22
+                    [aBytes] => Array
+                        (
+                            [0] => 22
+                        )
+
+                )
+
+            [2] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 19
+                    [aBytes] => Array
+                        (
+                            [0] => 19
+                        )
+
+                )
+
+        )
+
+)
+    mulf.v (19), (i0 + 37), (19)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _VFMUL_LIL
+            [iByte] => 249
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 19
+                    [aBytes] => Array
+                        (
+                            [0] => 19
+                        )
+
+                )
+
+            [1] => IndirectOperand Object
+                (
+                    [iIndex] => 0
+                    [iKind] => 2
+                    [iSize] => 1
+                    [value] => 37
+                    [aBytes] => Array
+                        (
+                            [0] => 37
+                        )
+
+                )
+
+            [2] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 19
+                    [aBytes] => Array
+                        (
+                            [0] => 19
+                        )
+
+                )
+
+        )
+
+)
+    sub.v (19), (25), (19)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _VSUB_LLL
+            [iByte] => 227
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 19
+                    [aBytes] => Array
+                        (
+                            [0] => 19
+                        )
+
+                )
+
+            [1] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 25
+                    [aBytes] => Array
+                        (
+                            [0] => 25
+                        )
+
+                )
+
+            [2] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 19
+                    [aBytes] => Array
+                        (
+                            [0] => 19
+                        )
+
+                )
+
+        )
+
+)
+    norm.v (19), (38)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _VNORM_LL
+            [iByte] => 215
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 19
+                    [aBytes] => Array
+                        (
+                            [0] => 19
+                        )
+
+                )
+
+            [1] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 38
+                    [aBytes] => Array
+                        (
+                            [0] => 38
+                        )
+
+                )
+
+        )
+
+)
+
+    call @sample
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _CALL
+            [iByte] => 3
+        )
+
+    [aOperands] => Array
+        (
+            [0] => UnresolvedOperand Object
+                (
+                    [iKind] => 13
+                    [iSize] => 2
+                    [value] => @sample
+                    [aBytes] => Array
+                        (
+                            [0] => -1
+                            [1] => -1
+                        )
+
+                )
+
+        )
+
+)
+
+    mulf.v (32), (i0 + 38), (19)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _VFMUL_LIL
+            [iByte] => 249
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 32
+                    [aBytes] => Array
+                        (
+                            [0] => 32
+                        )
+
+                )
+
+            [1] => IndirectOperand Object
+                (
+                    [iIndex] => 0
+                    [iKind] => 2
+                    [iSize] => 1
+                    [value] => 38
+                    [aBytes] => Array
+                        (
+                            [0] => 38
+                        )
+
+                )
+
+            [2] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 19
+                    [aBytes] => Array
+                        (
+                            [0] => 19
+                        )
+
+                )
+
+        )
+
+)
+    add.v (28), (19), (28)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _VADD_LLL
+            [iByte] => 223
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 28
+                    [aBytes] => Array
+                        (
+                            [0] => 28
+                        )
+
+                )
+
+            [1] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 19
+                    [aBytes] => Array
+                        (
+                            [0] => 19
+                        )
+
+                )
+
+            [2] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 28
+                    [aBytes] => Array
+                        (
+                            [0] => 28
+                        )
+
+                )
+
+        )
+
+)
+    dbnz.i (16), .ray
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _DBNZ_L
+            [iByte] => 60
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 16
+                    [aBytes] => Array
+                        (
+                            [0] => 16
+                        )
+
+                )
+
+            [1] => UnresolvedOperand Object
+                (
+                    [iKind] => 11
+                    [iSize] => 2
+                    [value] => .ray
+                    [aBytes] => Array
+                        (
+                            [0] => -1
+                            [1] => -1
+                        )
+
+                )
+
+        )
+
+)
+
+    copy.v (28), (32)
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _VCOPY_LL
+            [iByte] => 207
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 28
+                    [aBytes] => Array
+                        (
+                            [0] => 28
+                        )
+
+                )
+
+            [1] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 32
+                    [aBytes] => Array
+                        (
+                            [0] => 32
+                        )
+
+                )
+
+        )
+
+)
+
+
+    dbnn.i (15), .pixel
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _DBNN_L
+            [iByte] => 61
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 15
+                    [aBytes] => Array
+                        (
+                            [0] => 15
+                        )
+
+                )
+
+            [1] => UnresolvedOperand Object
+                (
+                    [iKind] => 11
+                    [iSize] => 2
+                    [value] => .pixel
+                    [aBytes] => Array
+                        (
+                            [0] => -1
+                            [1] => -1
+                        )
+
+                )
+
+        )
+
+)
+    dbnn.i (14), .scanline
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _DBNN_L
+            [iByte] => 61
+        )
+
+    [aOperands] => Array
+        (
+            [0] => LocalOperand Object
+                (
+                    [iKind] => 1
+                    [iSize] => 1
+                    [value] => 14
+                    [aBytes] => Array
+                        (
+                            [0] => 14
+                        )
+
+                )
+
+            [1] => UnresolvedOperand Object
+                (
+                    [iKind] => 11
+                    [iSize] => 2
+                    [value] => .scanline
+                    [aBytes] => Array
+                        (
+                            [0] => -1
+                            [1] => -1
+                        )
+
+                )
+
+        )
+
+)
+    ret
+stdClass Object
+(
+    [oOpcode] => stdClass Object
+        (
+            [sEnum] => _RET
+            [iByte] => 7
+        )
+
+    [aOperands] => Array
+        (
+        )
+
+)
+
+$aekGlobals:
+
