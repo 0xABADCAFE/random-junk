@@ -1,5 +1,5 @@
 {
-    "name":"Example",
+    "name":"Dummy",
     "description":"simple example",
     "sources":[
         "src/noop.asm",

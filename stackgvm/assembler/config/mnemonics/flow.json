@@ -70,6 +70,11 @@
             "_BLE_II": ["INDIR_0", "INDIR_1", "LABEL"]
         }
     ],
+    "cgt.i": [
+        {
+            "_BLE_II": ["INDIR_0", "INDIR_1", "LABEL"]
+        }
+    ],
     "bgt.i": [
         {
             "_BGT_LL": ["LOCAL",   "LOCAL",   "LABEL"],
@@ -79,6 +84,11 @@
         }
     ],
     "blt.i": [
+        {
+            "_BLT_II": ["INDIR_0", "INDIR_1", "LABEL"]
+        }
+    ],
+    "cge.i": [
         {
             "_BLT_II": ["INDIR_0", "INDIR_1", "LABEL"]
         }
@@ -119,6 +129,11 @@
             "_FBLE_II": ["INDIR_0", "INDIR_1", "LABEL"]
         }
     ],
+    "cgt.f": [
+        {
+            "_FBLE_II": ["INDIR_0", "INDIR_1", "LABEL"]
+        }
+    ],
     "bgt.f": [
         {
             "_FBGT_LL": ["LOCAL",   "LOCAL",   "LABEL"],
@@ -128,6 +143,11 @@
         }
     ],
     "blt.f": [
+        {
+            "_FBLT_II": ["INDIR_0", "INDIR_1", "LABEL"]
+        }
+    ],
+    "cge.f": [
         {
             "_FBLT_II": ["INDIR_0", "INDIR_1", "LABEL"]
         }

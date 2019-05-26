@@ -29,7 +29,7 @@ LineParserFactory::get()->getParser(LineKind::INSTRUCTION)->importDefinitions(
 $oAssebler = new Assembler(
     new AssemblerConfig("config/config.json"),
     new SourceLoader(
-        new Project('example/project.json')
+        new Project('examples/dummy/project.json')
     )
 );
 $oAssebler->assemble();
