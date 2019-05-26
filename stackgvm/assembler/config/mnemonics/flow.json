@@ -14,8 +14,12 @@
             "_BCALL":   ["LABEL"],
             "_ICALL_L": ["LOCAL"],
             "_ICALL_I": ["INDIR_0"],
-            "_CALL":    ["CODE_SYM"],
-            "_HCALL":   []
+            "_CALL":    ["CODE_SYM"]
+        }
+    ],
+    "host": [
+        {
+            "_HCALL":   ["CODE_SYM"]
         }
     ],
     "ret": [
