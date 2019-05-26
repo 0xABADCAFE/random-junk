@@ -28,18 +28,23 @@ class LineInstructionParser implements Parser {
         if (!preg_match(LineKind::MATCH_INSTRUCTION, $sLine, $aMatches)) {
             throw new ParseException();
         }
+
         $sMnemonic = strtolower($aMatches[1]);
         $sOperands = trim(str_replace($aMatches[1], '', $sLine));
 
+        // Try to use an aliased mnemonic interpretation first. This will return null if there is no such alias or
+        // if there are no operand use cases for the aliased version.
         $oParsed = $this->attemptAliasedMnemonic($sMnemonic, $sOperands);
         if ($oParsed) {
             return $oParsed;
         }
+
+        // Try to ue a non-aliased mnemonic.
         $oParsed = $this->attemptDirectMnemonic($sMnemonic, $sOperands);
         if ($oParsed) {
             return $oParsed;
         }
-        throw new ParseException();
+        throw new ParseException("Unknown or unimplemented instruction");
     }
 
     private function attemptAliasedMnemonic(string $sMnemonic, string $sOperands) {
