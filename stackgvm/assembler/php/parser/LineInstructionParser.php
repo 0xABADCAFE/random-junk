@@ -31,6 +31,18 @@ class LineInstructionParser implements Parser {
         $sMnemonic = strtolower($aMatches[1]);
         $sOperands = trim(str_replace($aMatches[1], '', $sLine));
 
+        $oParsed = $this->attemptAliasedMnemonic($sMnemonic, $sOperands);
+        if ($oParsed) {
+            return $oParsed;
+        }
+        $oParsed = $this->attemptDirectMnemonic($sMnemonic, $sOperands);
+        if ($oParsed) {
+            return $oParsed;
+        }
+        throw new ParseException();
+    }
+
+    private function attemptAliasedMnemonic(string $sMnemonic, string $sOperands) {
         // If the mnemonic matches an alias, then we have some shuffling to do
         if (isset($this->aAliases[$sMnemonic])) {
             $oAlias = $this->aAliases[$sMnemonic];
@@ -41,13 +53,15 @@ class LineInstructionParser implements Parser {
                 $aOpAfter[$iTo] = $aOpBefore[$iFrom];
             }
             $sOperands = implode(',', $aOpAfter);
+            return $this->attemptDirectMnemonic($sMnemonic, $sOperands);
         }
+        return null;
+    }
 
+    private function attemptDirectMnemonic(string $sMnemonic, string $sOperands) {
         if (!isset($this->aOperandSetParsers[$sMnemonic])) {
             throw new ParseException("Unknown mnemonic " . $sMnemonic);
         }
-
-        $aParsed   = null;
         foreach ($this->aOperandSetParsers[$sMnemonic] as $oParser) {
             try {
                 $oParsed     = $oParser->parse($sOperands);
@@ -67,6 +81,5 @@ class LineInstructionParser implements Parser {
         }
         return null;
     }
-
 }
 

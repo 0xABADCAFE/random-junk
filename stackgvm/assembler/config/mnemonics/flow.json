@@ -65,12 +65,22 @@
             "_BGE_II": ["INDIR_0", "INDIR_1", "LABEL"]
         }
     ],
+    "ble.i": [
+        {
+            "_BLE_II": ["INDIR_0", "INDIR_1", "LABEL"]
+        }
+    ],
     "bgt.i": [
         {
             "_BGT_LL": ["LOCAL",   "LOCAL",   "LABEL"],
             "_BGT_IL": ["INDIR_0", "LOCAL",   "LABEL"],
             "_BGT_LI": ["LOCAL",   "INDIR_0", "LABEL"],
             "_BGT_II": ["INDIR_0", "INDIR_1", "LABEL"]
+        }
+    ],
+    "blt.i": [
+        {
+            "_BLT_II": ["INDIR_0", "INDIR_1", "LABEL"]
         }
     ],
     "dbnz.i": [
@@ -104,12 +114,22 @@
             "_FBGE_II": ["INDIR_0", "INDIR_1", "LABEL"]
         }
     ],
+    "ble.f": [
+        {
+            "_FBLE_II": ["INDIR_0", "INDIR_1", "LABEL"]
+        }
+    ],
     "bgt.f": [
         {
             "_FBGT_LL": ["LOCAL",   "LOCAL",   "LABEL"],
             "_FBGT_IL": ["INDIR_0", "LOCAL",   "LABEL"],
             "_FBGT_LI": ["LOCAL",   "INDIR_0", "LABEL"],
             "_FBGT_II": ["INDIR_0", "INDIR_1", "LABEL"]
+        }
+    ],
+    "blt.f": [
+        {
+            "_FBLT_II": ["INDIR_0", "INDIR_1", "LABEL"]
         }
     ],
     "beq.v": [
