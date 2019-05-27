@@ -1,5 +1,4 @@
-#include "include/globals.i"
-#include "include/main.i"
+#include "include/defines.i"
 
 @main:
     // Get the globals into i0 index for dereferencing
@@ -73,11 +72,110 @@
     dbnz.i  i_main_ray_count,      .ray
 
     copy.v  v_pixel_accumulator,   m_next_func_param_space
-    //host    @print_rgb
+    host    @print_rgb
 
     dbnn.i  i_main_pixel_x_pos,    .pixel
     dbnn.i  i_main_pixel_y_pos,    .scanline
     ret
+
+@sample: // vec3 sample(cvr3 origin, cvr3 direction)
+
+    addr    $aekGlobals, i0
+
+
+    // Find where the ray intersects the world
+    copy.v  v_sample_in_origin,    v_sample_origin
+    copy.v  v_sample_in_direction, v_sample_direction
+
+    call    @trace
+
+    //   // Hit nothing? Sky shade
+
+    bnz     i_sample_material, .notsky
+        load    #1, f_sample_gradient
+        itof    f_sample_gradient, f_sample_gradient
+        sub.f   f_sample_gradient, vec3_z(v_sample_in_direction), f_sample_gradient
+        mul.f   f_sample_gradient, f_sample_gradient, f_sample_gradient
+        mul.f   f_sample_gradient, f_sample_gradient, f_sample_gradient
+        mulf.v  (i0 + gv_sky_rgb), f_sample_gradient, v_sample_rgb
+        ret
+
+.notsky:
+    mulf.v   v_sample_in_direction, f_sample_distnace,     v_sample_intersection
+    add.v    v_sample_in_origin,    v_sample_intersection, v_sample_intersection
+
+    // Calculate the lighting vector, adding a little randomness to x and y components
+    rnd.f   f_sample_rand
+    add.f   (i0 + vec3_x(gv_const_light_pos)), f_sample_rand, vec3_x(v_sample_light)
+
+    rnd.f   f_sample_rand
+    add.f   (i0 + vec3_y(gv_const_light_pos)), f_sample_rand, vec3_y(v_sample_light)
+    copy    (i0 + vec3_z(gv_const_light_pos)), vec3_z(v_sample_light)
+
+    sub.v   v_sample_light, v_sample_intersection, v_sample_light
+    norm.v  v_sample_light, v_sample_light
+    copy.v  v_sample_light, v_sample_temp_1
+
+    // Calculate the lambertian illumuination factor
+    dot.v   v_sample_light, v_sample_normal, f_sample_lambertian
+    copy    i_sample_material, m_sample_temp_1
+    load    #0, m_sample_temp_0
+    clt.f   f_sample_lambertian, m_sample_temp_0, .tracetolight
+        bra     .shadowed
+
+.tracetolight:
+    call    @trace
+    bez     i_sample_material, .illuminated
+
+.shadowed:
+    load    #0, f_sample_lambertian
+
+.illumuinated:
+
+    // Hit floor or sphere?
+    bbc     #0, m_sample_temp_1, .sphere
+.floor:
+        mul.f    (i0 + gf_point_2), f_sample_lambertian, f_sample_lambertian
+        add.f    (i0 + gf_point_1), f_sample_lambertian, f_sample_lambertian
+        mulf.v   v_sample_intersection, (i0 + gf_point_2), v_sample_intersection
+        ceil.f   vec3_x(v_sample_intersection), m_sample_temp_0
+        ceil.f   vec3_y(v_sample_intersection), m_sample_temp_1
+        add.f    m_sample_temp_0, m_sample_temp_1, m_sample_temp_1
+        ftoi     m_sample_temp_1, m_sample_temp_0
+
+        bbs      #0, m_sample_temp_0, .redtile
+
+.whitetile:
+            mulf.v   (i0 + gv_floor_white_rgb), f_sample_lambertian, v_sample_rgb
+            ret
+
+.redtile:
+            mulf.v   (i0 + gv_floor_red_rgb),   f_sample_lambertian, v_sample_rgb
+        ret
+
+.sphere:
+    copy.v  v_sample_intersection, v_sample_temp_0
+    dot.v   v_sample_normal,       v_sample_in_direction, f_sample_dot_temp
+    mul.f   (i0 + gf_minus_2),     f_sample_dot_temp,     f_sample_dot_temp
+    mulf.v  v_sample_normal,       f_sample_dot_temp,     v_sample_half_vector
+    add.v   v_sample_in_direction, v_sample_half_vector,  v_sample_half_vector
+
+    // Compute the specular highlight power
+.specular:
+    copy.v  v_sample_temp_0, v_sample_next_origin
+    call    @sample
+    mulf.v  v_sample_next_rgb, (i0 + gf_reflection_scale), v_sample_rgb
+    load    #0, m_sample_temp_0
+    cgt.f   f_sample_lambertian, m_sample_temp_0, .done
+        dot.v   v_sample_temp_1,   v_sample_half_vector, f_sample_specular
+        copy    (i0 + gf_specular_power), m_sample_temp_0
+        pow.f   f_sample_specular, m_sample_temp_0,      f_sample_specular
+        add.f   f_sample_specular, vec3_x(v_sample_rgb), vec3_x(v_sample_rgb)
+        add.f   f_sample_specular, vec3_y(v_sample_rgb), vec3_y(v_sample_rgb)
+        add.f   f_sample_specular, vec3_z(v_sample_rgb), vec3_z(v_sample_rgb)
+.done:
+    ret
+
 
 $aekGlobals:
 /*
