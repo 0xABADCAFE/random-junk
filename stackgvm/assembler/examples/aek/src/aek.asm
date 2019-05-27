@@ -1,5 +1,10 @@
 #include "include/defines.i"
 
+/**
+ * main()
+ *
+ * Main entry point
+ */
 @main:
     // Get the globals into i0 index for dereferencing
     addr    $aekGlobals, i0
@@ -78,6 +83,11 @@
     dbnn.i  i_main_pixel_y_pos,    .scanline
     ret
 
+/**
+ * vec3 sample(vec3 origin, vec3 direction)
+ *
+ * Calculates the colour value associated with a traced ray
+ */
 @sample: // vec3 sample(cvr3 origin, cvr3 direction)
 
     addr    $aekGlobals, i0
@@ -176,6 +186,69 @@
 .done:
     ret
 
+/**
+ * int trace(vec3 origin, vec3 direction, float& distance, vec3& normal)
+ *
+ * Traces a ray, returning the material kind and setting the distance to intersection and normal
+ */
+@trace: // int32 trace(cvr3 origin, cvr3 direction, float32& distance, vec3& normal)
+
+    addr    $aekGlobals, i0
+
+    // Assume trace hits nothing
+    copy    (i0 + gf_distance_max), f_trace_distance
+    load    #0,                     i_trace_material
+    div.f   vec3_z(v_trace_origin), vec3_z(v_trace_direction),  f_trace_p
+    neg.f   f_trace_p, f_trace_p
+
+    // Check if trace maybe hits floor
+.checkfloor:
+    clt.f   (i0 + gf_distance_min),     f_trace_p,              .checksphere
+        copy    f_trace_p,              f_trace_distance
+        copy.v  (i0 + gv_normal_up),    v_trace_normal
+        load    #127,                   i_trace_material
+
+    // Check if trace maybe hits a sphere
+.checksphere:
+    load    #1, m_trace_temp_0
+    load    #0, f_trace_zero
+    load    #4, m_trace_temp_3
+    load    #8, f_trace_j
+
+.nextj:
+    cpix    (i0 + gi_bitmap), f_trace_j, i_trace_bitmap_row
+    load    #18, f_trace_k
+
+.nextk:
+    cbs     f_trace_k, i_trace_bitmap_row, .nextsphere
+        load    #0,             vec3_y(v_trace_sphere)
+        itof    f_trace_k,      vec3_x(v_trace_sphere)
+        add.i   f_trace_j,      m_trace_temp_3,         m_trace_temp_2
+        itof    m_trace_temp_2, vec3_z(v_trace_sphere)
+        sub.v   v_trace_origin, v_trace_sphere,         v_trace_p
+        dot.v   v_trace_p,      v_trace_direction,      f_trace_b
+        itof    m_trace_temp_0, m_trace_temp_1
+        dot.v   v_trace_p,      v_trace_p,              m_trace_temp_2
+        sub.v   m_trace_temp_2, m_trace_temp_1,         f_trace_eye_offset
+        mul.f   f_trace_b,      f_trace_b,              m_trace_temp_2
+        sub.f   m_trace_temp_2, f_trace_eye_offset,     f_trace_q
+
+        cgt.f   f_trace_q,      f_trace_zero,           .nextsphere
+            sqrt.f  f_trace_q,               f_trace_q
+            add.f   f_trace_b, f_trace_q,    f_trace_sphere_distance
+            neg.f   f_trace_sphere_distance, f_trace_sphere_distance
+
+            clt.f   f_trace_sphere_distance, f_trace_distance, .nextsphere
+                cgt.f   f_trace_sphere_distance,    (i0 + gf_distance_min), .nextsphere
+                    copy    f_trace_sphere_distance,    f_trace_distance
+                    mulf.v  v_trace_direction,          f_trace_distance,   v_trace_temp
+                    add.v   v_trace_temp,               v_trace_p,          v_trace_temp
+                    norm.v  v_trace_temp,               v_trace_normal
+                    load    #64, i_trace_material
+.nextsphere:
+    dbnn.i      f_trace_k, .nextk
+    dbnn.i      f_trace_j, .nextj
+    ret
 
 $aekGlobals:
 /*
