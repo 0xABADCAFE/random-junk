@@ -5,7 +5,7 @@
         "src/aek.asm"
     ],
     "host":{
-        "name":"TestHost",
+        "name":"AEKHost",
         "version":"1.0.*"
     }
 }

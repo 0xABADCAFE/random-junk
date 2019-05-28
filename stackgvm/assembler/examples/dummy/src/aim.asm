@@ -1,4 +1,4 @@
-#include <constants_lookup.inc>
+#include <host.i>
 #include "include/actor.inc"
 
 #define r_actor (3)

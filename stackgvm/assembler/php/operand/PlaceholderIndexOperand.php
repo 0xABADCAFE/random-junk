@@ -21,7 +21,7 @@ class PlaceholderIndexOperand extends ResolvedOperand {
             throw new InvalidArgumentException();
         }
         parent::__construct($iKind, (int)$value, $sSource);
-        $this->aBytes = [-1, -1];
+        $this->aBytes = [];
         $this->iIndex = self::INDEX[$iKind];
     }
 };

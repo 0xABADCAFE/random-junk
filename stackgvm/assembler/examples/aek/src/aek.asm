@@ -1,3 +1,4 @@
+#include <host.i>
 #include "include/defines.i"
 
 /**
@@ -7,13 +8,12 @@
  */
 @main:
     // Get the globals into i0 index for dereferencing
-    addr    $aekGlobals, i0
+    addr    $aek_globals, i0
 
     // Image header
     copy    (i0 + gi_image_size),  i_main_image_size
     copy    i_main_image_size,     m_next_func_param_space
-
-    host    @print_header
+    host    #host_print_header
 
     // Camera vectprs
     norm.v  (i0 + gv_camera_dir),  v_main_camera_forward
@@ -77,7 +77,7 @@
     dbnz.i  i_main_ray_count,      .ray
 
     copy.v  v_pixel_accumulator,   m_next_func_param_space
-    host    @print_rgb
+    host    #host_print_rgb
 
     dbnn.i  i_main_pixel_x_pos,    .pixel
     dbnn.i  i_main_pixel_y_pos,    .scanline
@@ -90,17 +90,14 @@
  */
 @sample: // vec3 sample(cvr3 origin, cvr3 direction)
 
-    addr    $aekGlobals, i0
-
+    addr    $aek_globals, i0
 
     // Find where the ray intersects the world
     copy.v  v_sample_in_origin,    v_sample_origin
     copy.v  v_sample_in_direction, v_sample_direction
-
     call    @trace
 
     //   // Hit nothing? Sky shade
-
     bnz     i_sample_material, .notsky
         load    #1, f_sample_gradient
         itof    f_sample_gradient, f_sample_gradient
@@ -117,11 +114,9 @@
     // Calculate the lighting vector, adding a little randomness to x and y components
     rnd.f   f_sample_rand
     add.f   (i0 + vec3_x(gv_const_light_pos)), f_sample_rand, vec3_x(v_sample_light)
-
     rnd.f   f_sample_rand
     add.f   (i0 + vec3_y(gv_const_light_pos)), f_sample_rand, vec3_y(v_sample_light)
     copy    (i0 + vec3_z(gv_const_light_pos)), vec3_z(v_sample_light)
-
     sub.v   v_sample_light, v_sample_intersection, v_sample_light
     norm.v  v_sample_light, v_sample_light
     copy.v  v_sample_light, v_sample_temp_1
@@ -156,11 +151,11 @@
         bbs      #0, m_sample_temp_0, .redtile
 
 .whitetile:
-            mulf.v   (i0 + gv_floor_white_rgb), f_sample_lambertian, v_sample_rgb
-            ret
+        mulf.v   (i0 + gv_floor_white_rgb), f_sample_lambertian, v_sample_rgb
+        ret
 
 .redtile:
-            mulf.v   (i0 + gv_floor_red_rgb),   f_sample_lambertian, v_sample_rgb
+        mulf.v   (i0 + gv_floor_red_rgb),   f_sample_lambertian, v_sample_rgb
         ret
 
 .sphere:
@@ -193,7 +188,7 @@
  */
 @trace: // int32 trace(cvr3 origin, cvr3 direction, float32& distance, vec3& normal)
 
-    addr    $aekGlobals, i0
+    addr    $aek_globals, i0
 
     // Assume trace hits nothing
     copy    (i0 + gf_distance_max), f_trace_distance
@@ -250,7 +245,7 @@
     dbnn.i      f_trace_j, .nextj
     ret
 
-$aekGlobals:
+$aek_globals:
 /*
     // Vectors
     vec3(-6.0f, -16.0f, 0.0f), // gv_camera_dir

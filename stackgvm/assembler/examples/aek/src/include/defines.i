@@ -99,8 +99,4 @@
     #define v_sample_next_direction (m_sample_next_func_p + v_sample_in_direction)
     #define v_sample_half_vector    (m_sample_next_func_p + v_sample_in_direction)
 
-    #define vec3(x, y, z) x, y, z
-    #define vec3_x(v) (v + 0)
-    #define vec3_y(v) (v + 1)
-    #define vec3_z(v) (v + 2)
 #endif

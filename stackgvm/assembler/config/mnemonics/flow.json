@@ -19,7 +19,7 @@
     ],
     "host": [
         {
-            "_HCALL":   ["CODE_SYM"]
+            "_HCALL":   ["JUMP_16"]
         }
     ],
     "ret": [
