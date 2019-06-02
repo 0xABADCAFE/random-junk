@@ -48,6 +48,8 @@ using namespace GVM;
 #endif
 
 #define FETCH switch (*PRGC)
+#define BOC switch (PRGC[1])
+#define CC(cond) case Condition::_##condition:
 #define NEXT          goto forever
 #define STEP(size)    PRGC += (size)
 #define EXIT(code)    SAVE_PRGC; return ((code))
