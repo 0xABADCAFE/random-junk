@@ -108,7 +108,6 @@ namespace GVM {
                 return frameStack;
             }
 
-
         private:
             /**
              * CallInfo
@@ -124,21 +123,18 @@ namespace GVM {
             };
 
             // Primary allocation for all stack data
-            static void*     workingSet;
-
-            static CallInfo* callStack;
-            static CallInfo* callStackBase;
-            static CallInfo* callStackTop;
-            static Scalar*   frameStack;
-            static Scalar*   frameStackBase;
-            static Scalar*   frameStackTop;
-
+            static void*           workingSet;
+            static CallInfo*       callStack;
+            static CallInfo*       callStackBase;
+            static CallInfo*       callStackTop;
+            static Scalar*         frameStack;
+            static Scalar*         frameStackBase;
+            static Scalar*         frameStackTop;
             static const uint8*    programCounter;
             static const FuncInfo* functionTable;
             static uint32          functionTableSize;
             static const HostCall* hostFunctionTable;
             static uint32          hostFunctionTableSize;
-
             static Scalar**        dataTable;
             static uint32          dataTableSize;
 
@@ -146,14 +142,9 @@ namespace GVM {
             static Result enterClosure(const uint8* returnAddress, int16 branch, uint8 frameSize);
             static Result exitFunction();
             static Result invokeHostFunction(uint16 functionId);
-
-            static int16  branchConditional(const uint8* currentPC);
-
             static Result run();
             static Result validateTables(const FuncInfo* func, const HostCall* host, Scalar** data);
-
             static void   dumpFrame();
-
             static void   dumpCallStack();
     };
 
