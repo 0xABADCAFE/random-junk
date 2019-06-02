@@ -2,14 +2,25 @@
 
 /**
  * Assembler class
+ *
+ * Main process, coordinates the conversion of source to opcode.
  */
 class Assembler {
 
     private
+        /** @var SourceLoader $oSourceLoader */
         $oSourceLoader,
+
+        /** @var LineParserFactory $oLineParserFactory */
         $oLineParserFactory,
+
+        /** @var AssemblerLineProcessingState $oLineProcessingState */
         $oLineProcessingState,
+
+        /** @var string $sBuffer */
         $sBuffer,
+
+        /** @var int $iPosition */
         $iPosition
     ;
 
@@ -22,6 +33,9 @@ class Assembler {
         $this->oLineProcessingState = $oConfig->getLineProcessingState();
     }
 
+    /**
+     * Main entry point.
+     */
     public function assemble() {
         $this->initBinaryBuffer();
         $aSources = $this->oSourceLoader
@@ -35,11 +49,8 @@ class Assembler {
 
             try {
                 foreach ($aLines as $iNum => $sLine) {
-
                     $iKind = $oLineParser->parse($sLine);
-
                     $this->oLineProcessingState = $this->oLineProcessingState->getStateForLineKind($iKind);
-
                     $oResult = $this->oLineParserFactory
                         ->getParser($iKind)
                         ->parse($sLine);

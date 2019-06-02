@@ -30,9 +30,6 @@ class AssemblerConfig {
             throw new Exception("Unable to open config file '" . $sConfigFile . "' for reading.\n");
         }
         $oConfigData = json_decode(file_get_contents($sConfigFile));
-
-print_r($oConfigData);
-
         if (
             !($oConfigData instanceof stdClass) ||
             !isset($oConfigData->name) ||
