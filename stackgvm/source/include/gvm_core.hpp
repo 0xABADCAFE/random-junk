@@ -147,6 +147,8 @@ namespace GVM {
             static Result exitFunction();
             static Result invokeHostFunction(uint16 functionId);
 
+            static int16  branchConditional(const uint8* currentPC);
+
             static Result run();
             static Result validateTables(const FuncInfo* func, const HostCall* host, Scalar** data);
 
