@@ -31,7 +31,7 @@ class SourceLoader {
 
     private function preprocessFile(string $sCurrentPath) {
         $sContent = shell_exec(
-            'cpp -nostdinc -Isdk/' .
+            'cpp -xc -nostdinc -Isdk/' .
             $this->oProject->getTargetName() . '/include ' .
             $sCurrentPath);
         $this->aSource[$sCurrentPath] = explode("\n", preg_replace('/^#.*?$\n*/m', '', $sContent));
