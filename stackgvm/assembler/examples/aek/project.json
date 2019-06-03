@@ -1,0 +1,11 @@
+{
+    "name":"AEK",
+    "description":"AEK card raytracer",
+    "sources":[
+        "src/aek.asm"
+    ],
+    "host":{
+        "name":"AEKHost",
+        "version":"1.0.*"
+    }
+}

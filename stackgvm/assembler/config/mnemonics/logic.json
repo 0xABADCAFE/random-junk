@@ -1,0 +1,64 @@
+{
+    "bset": [
+        {
+            "_BSET_SL": ["BITPOS", "LOCAL"],
+            "_BSET_SI": ["BITPOS", "INDIR_0"]
+        }
+    ],
+    "bclr": [
+        {
+            "_BCLR_SL": ["BITPOS", "LOCAL"],
+            "_BCLR_SI": ["BITPOS", "LOCAL"]
+        }
+    ],
+    "not": [
+        {
+            "_NOT_LL": ["LOCAL",   "LOCAL"],
+            "_NOT_IL": ["INDIR_0", "LOCAL"],
+            "_NOT_LI": ["LOCAL",   "INDIR_0"],
+            "_NOT_II": ["INDIR_0", "INDIR_1"]
+        }
+    ],
+    "and": [
+        {
+            "_AND_LLL": ["LOCAL",   "LOCAL", "LOCAL"],
+            "_AND_ILL": ["INDIR_0", "LOCAL", "LOCAL"],
+            "_AND_LLI": ["LOCAL",   "LOCAL", "INDIR_0"],
+            "_AND_ILI": ["INDIR_0", "LOCAL", "INDIR_1"]
+        }
+    ],
+
+    "or": [
+        {
+            "_OR_LLL": ["LOCAL",   "LOCAL", "LOCAL"],
+            "_OR_ILL": ["INDIR_0", "LOCAL", "LOCAL"],
+            "_OR_LLI": ["LOCAL",   "LOCAL", "INDIR_0"],
+            "_OR_ILI": ["INDIR_0", "LOCAL", "INDIR_1"]
+        }
+    ],
+    "xor": [
+        {
+            "_XOR_LLL": ["LOCAL",   "LOCAL", "LOCAL"],
+            "_XOR_ILL": ["INDIR_0", "LOCAL", "LOCAL"],
+            "_XOR_LLI": ["LOCAL",   "LOCAL", "INDIR_0"],
+            "_XOR_ILI": ["INDIR_0", "LOCAL", "INDIR_1"]
+        }
+    ],
+    "lsl": [
+        {
+            "_LSL_LLL": ["LOCAL",   "LOCAL", "LOCAL"],
+            "_LSL_ILL": ["INDIR_0", "LOCAL", "LOCAL"],
+            "_LSL_LLI": ["LOCAL",   "LOCAL", "INDIR_0"],
+            "_LSL_ILI": ["INDIR_0", "LOCAL", "INDIR_1"]
+        }
+
+    ],
+    "lsr": [
+        {
+            "_LSR_LLL": ["LOCAL",   "LOCAL", "LOCAL"],
+            "_LSR_ILL": ["INDIR_0", "LOCAL", "LOCAL"],
+            "_LSR_LLI": ["LOCAL",   "LOCAL", "INDIR_0"],
+            "_LSR_ILI": ["INDIR_0", "LOCAL", "INDIR_1"]
+        }
+    ]
+}

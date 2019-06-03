@@ -1,0 +1,2 @@
+// This is an illegal example that contains code outside of a declaration
+    ret

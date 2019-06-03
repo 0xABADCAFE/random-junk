@@ -615,8 +615,8 @@ GFUNC(sample) {
     copy_ll     (i_sample_material, m_sample_temp_1)
     load_sl     (0, m_sample_temp_0)
 
-    fclt_ll     (f_sample_lambertian, m_sample_temp_0, 7)  // 5
-        bras        (2+3+4)                                // 2
+    fclt_ll     (f_sample_lambertian, m_sample_temp_0, 8)  // 5
+        bra         (3+3+4)                                // 3
 
     call(trace)                                            // 3
 

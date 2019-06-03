@@ -1,0 +1,89 @@
+{
+    "addr": [
+        {
+            "_ADDR_LL":  ["LOCAL",   "LOCAL"],
+            "_ADDR_I0L": ["INDIR_0", "LOCAL"],
+            "_ADDR_I1L": ["INDIR_1", "LOCAL"]
+        },{
+            "_ADDR_DL": ["DATA_SYM", "LOCAL"],
+            "_ADDR_DI0": ["DATA_SYM", "INDIR_0"],
+            "_ADDR_DI1": ["DATA_SYM", "INDIR_1"],
+            "_ADDR_D0": ["DATA_SYM", "IDX_0_PH"],
+            "_ADDR_D1": ["DATA_SYM", "IDX_1_PH"],
+            "_ADDR_CL": ["CODE_SYM", "LOCAL"],
+            "_ADDR_CI0": ["CODE_SYM", "INDIR_0"],
+            "_ADDR_CI1": ["CODE_SYM", "INDIR_1"]
+        }
+    ],
+    "add.a": [
+        {
+            "_ADDA_SI0": ["SMALL_S8", "IDX_0_PH"],
+            "_ADDA_SI1": ["SMALL_S8", "IDX_1_PH"]
+        }
+    ],
+    "load": [
+        {
+            "_LOAD_L0": ["LOCAL", "IDX_0_PH"],
+            "_LOAD_L1": ["LOCAL", "IDX_1_PH"]
+        },{
+            "_LOAD_SL":  ["SMALL_S8", "LOCAL"],
+            "_LOAD_SI0": ["SMALL_S8", "INDIR_0"],
+            "_LOAD_SI1": ["SMALL_S8", "INDIR_1"]
+        }
+    ],
+    "loadc":[
+        {
+            "_LOAD_HL": ["SMALL_U8", "LOCAL"]
+        }
+    ],
+    "save": [
+        {
+            "_SAVE_0L": ["IDX_0_PH", "LOCAL"],
+            "_SAVE_1L": ["IDX_1_PH", "LOCAL"]
+        }
+    ],
+    "copy": [
+        {
+            "_COPY_LL":  ["LOCAL",   "LOCAL"],
+            "_COPY_I0L": ["INDIR_0", "LOCAL"],
+            "_COPY_I1L": ["INDIR_1", "LOCAL"],
+            "_COPY_LI0": ["LOCAL",   "INDIR_0"],
+            "_COPY_LI1": ["LOCAL",   "INDIR_1"],
+            "_COPY_II":  ["INDIR_0", "INDIR_1"]
+        }
+    ],
+    "cpix": [
+        {
+            "_CPIX_I0L": ["INDIR_0", "LOCAL", "LOCAL"],
+            "_CPIX_I1L": ["INDIR_1", "LOCAL", "LOCAL"]
+        }
+    ],
+    "itof": [
+        {
+            "_ITOF_LL": ["LOCAL", "LOCAL"]
+        }
+    ],
+    "ftoi": [
+        {
+            "_FTOI_LL": ["LOCAL", "LOCAL"]
+        }
+    ],
+    "copy.v": [
+        {
+            "_VCOPY_LL": ["LOCAL", "LOCAL"],
+            "_VCOPY_IL": ["INDIR_0", "LOCAL"],
+            "_VCOPY_LI": ["INDIR_1", "LOCAL"],
+            "_VCOPY_II": ["INDIR_0", "INDIR_1"]
+       }
+    ],
+    "rnd.f": [
+        {
+            "_FRND_L": ["LOCAL"]
+        }
+    ],
+    "rnd.v": [
+        {
+            "_VRND_L": ["LOCAL"]
+        }
+    ]
+}
