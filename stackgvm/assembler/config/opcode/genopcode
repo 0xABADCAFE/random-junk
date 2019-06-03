@@ -1,0 +1,40 @@
+#!/usr/bin/php
+<?php
+
+/**
+ * Quick utility script that parses the vm_opcodes C++ header to extract the expected enumeration values so that
+ * we can export them into a definitions file.
+ */
+
+$sSource = file_get_contents('../../../source/include/gvm_opcode.hpp');
+
+preg_match_all('/namespace\s+(Opcode|Condition)\s*\{.*?\}/s', $sSource, $aMatches);
+
+foreach ($aMatches[1] as $i => $sSection) {
+    $sOutputFile = strtolower($sSection) . '.json';
+
+    echo "Generating ", $sOutputFile, "...";
+
+    $aSource = explode("\n", $aMatches[0][$i]);
+
+    $sMatch = '';
+    foreach ($aSource as $sSource) {
+      if (preg_match('<^\s*_>', $sSource)) {
+        $sMatch .= $sSource . "\n";
+      }
+    }
+
+    $aMatch = array_flip(explode(
+      ',',
+      rtrim(
+        preg_replace(
+          ['<//.*?$>m', '<\s*#.*?$>m','<\s+>','<=0>'],
+          [''],
+          $sMatch
+        ),
+        ','
+      )
+    ));
+    file_put_contents($sOutputFile, json_encode($aMatch, JSON_PRETTY_PRINT));
+    echo "done.\n";
+}

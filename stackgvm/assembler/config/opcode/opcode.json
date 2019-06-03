@@ -251,5 +251,6 @@
     "_VFMUL_LIL": 249,
     "_VFMUL_IIL": 250,
     "_VFMUL_LII": 251,
-    "_MAX": 252
+    "_BOC": 252,
+    "_MAX": 253
 }
