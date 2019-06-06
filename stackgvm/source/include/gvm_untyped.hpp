@@ -40,7 +40,7 @@ IS(BCALL) {
 
 IS(CALL) {
     gvmDebugOpcode(
-        "call $%04X : ",
+        "call @%04X : ",
         (unsigned)SYM(0)
     );
     // Call a named function by ID
@@ -81,7 +81,7 @@ IS(ICALL_I) {
 
 IS(HCALL) {
     gvmDebugOpcode(
-        "hcall $%04X : ",
+        "host #%04X : ",
         (int)SYM(0)
     );
     // Call a host function by ID

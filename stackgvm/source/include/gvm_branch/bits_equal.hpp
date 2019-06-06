@@ -9,7 +9,6 @@ BCC(X_EQ_LS) {
         LOC(1).i,
         S8(2)
     );
-    // Branch to a signed 16-bit offset if two local values are equal
     if (LOC(1).i == S8(2)) {
         gvmDebugJump(2);
         STEP(J16(3));
@@ -30,7 +29,6 @@ BCC(X_EQ_I0S) {
         IX0(1).i,
         S8(2)
     );
-    // Branch to a signed 16-bit offset if two local values are equal
     if (IX0(1).i == S8(2)) {
         gvmDebugJump(2);
         STEP(J16(3));
@@ -51,7 +49,6 @@ BCC(X_EQ_I1S) {
         IX1(1).i,
         S8(2)
     );
-    // Branch to a signed 16-bit offset if two local values are equal
     if (IX1(1).i == S8(2)) {
         gvmDebugJump(2);
         STEP(J16(3));
@@ -72,7 +69,6 @@ BCC(X_EQ_LL) {
         LOC(1).u,
         LOC(2).u
     );
-    // Branch to a signed 16-bit offset if two local values are equal
     if (LOC(1).u == LOC(2).u) {
         gvmDebugJump(2);
         STEP(J16(3));
@@ -93,7 +89,6 @@ BCC(X_EQ_LI0) {
         LOC(1).u,
         IX0(2).u
     );
-    // Branch to a signed 16-bit offset if two local values are equal
     if (LOC(1).u == IX0(2).u) {
         gvmDebugJump(2);
         STEP(J16(3));
@@ -114,7 +109,6 @@ BCC(X_EQ_LI1) {
         LOC(1).u,
         IX1(2).u
     );
-    // Branch to a signed 16-bit offset if two local values are equal
     if (LOC(1).u == IX1(2).u) {
         gvmDebugJump(2);
         STEP(J16(3));
@@ -135,7 +129,6 @@ BCC(X_EQ_II) {
         IX0(1).u,
         IX1(2).u
     );
-    // Branch to a signed 16-bit offset if two local values are equal
     if (IX0(1).u == IX1(2).u) {
         gvmDebugJump(2);
         STEP(J16(3));
