@@ -47,9 +47,9 @@ using namespace GVM;
     #define gvmDebugSkip()
 #endif
 
-#define FETCH switch (*PRGC)
-#define BOC switch (PRGC[1])
-#define CC(cond) case Condition::_##condition:
+#define FETCH   switch (*PRGC)
+#define FETCHC  switch (PRGC[1])
+#define WHEN(cond) case Condition::_##condition:
 #define NEXT          goto forever
 #define STEP(size)    PRGC += (size)
 #define EXIT(code)    SAVE_PRGC; return ((code))
@@ -132,6 +132,7 @@ forever:
         #include "include/gvm_integer.hpp"
         #include "include/gvm_float.hpp"
         #include "include/gvm_vector.hpp"
+        #include "include/gvm_conditional_branch.hpp"
         default:
             return EXEC_HALT_AND_CATCH_FIRE;
     }
