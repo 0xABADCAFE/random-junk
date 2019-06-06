@@ -2,9 +2,9 @@
 // Local !== Small Integer Literal
 BCC(X_NE_LS) {
     gvmDebugOpcode(
-        "bcc.i eq (%d), #%d, %d : %d != %d => ",
+        "bcc ne.i (%d), #%d, %d : %d != %d => ",
         OPS(1),
-        OPS(2),
+        S8(2),
         (int)J16(3),
         LOC(1).i,
         S8(2)
@@ -23,9 +23,9 @@ BCC(X_NE_LS) {
 // Indirect[0] !== Small Integer Literal
 BCC(X_NE_I0S) {
     gvmDebugOpcode(
-        "bcc.i eq (i0 + %u), #%d, %d : %d != %d => ",
+        "bcc.i ne.i (i0 + %u), #%d, %d : %d != %d => ",
         OPU(1),
-        OPS(2),
+        S8(2),
         (int)J16(3),
         IX0(1).i,
         S8(2)
@@ -44,9 +44,9 @@ BCC(X_NE_I0S) {
 // Indirect[1] !== Small Integer Literal
 BCC(X_NE_I1S) {
     gvmDebugOpcode(
-        "bcc.i eq (i1 + %u), #%d, %d : %d != %d => ",
+        "bcc ne.i (i1 + %u), #%d, %d : %d != %d => ",
         OPU(1),
-        OPS(2),
+        S8(2),
         (int)J16(3),
         IX1(1).i,
         S8(2)
@@ -65,7 +65,7 @@ BCC(X_NE_I1S) {
 // Local !== Local
 BCC(X_NE_LL) {
     gvmDebugOpcode(
-        "bcc eq (%d), (%d), %d : 0x%08X != 0x%08X => ",
+        "bcc ne (%d), (%d), %d : 0x%08X != 0x%08X => ",
         OPS(1),
         OPS(2),
         (int)J16(3),
@@ -86,7 +86,7 @@ BCC(X_NE_LL) {
 // Local !== Indirect[0]
 BCC(X_NE_LI0) {
     gvmDebugOpcode(
-        "bcc eq (%d), (i0 + %u), %d : 0x%08X != 0x%08X => ",
+        "bcc ne (%d), (i0 + %u), %d : 0x%08X != 0x%08X => ",
         OPS(1),
         OPU(2),
         (int)J16(3),
@@ -105,9 +105,9 @@ BCC(X_NE_LI0) {
 }
 
 // Local !== Indirect[1]
-BCC(X_NE_LI0) {
+BCC(X_NE_LI1) {
     gvmDebugOpcode(
-        "bcc eq (%d), (i1 + %u), %d : 0x%08X != 0x%08X => ",
+        "bcc ne (%d), (i1 + %u), %d : 0x%08X != 0x%08X => ",
         OPS(1),
         OPU(2),
         (int)J16(3),
@@ -126,9 +126,9 @@ BCC(X_NE_LI0) {
 }
 
 // Indirect[0] !== Indirect[1]
-BCC(X_NE_LII) {
+BCC(X_NE_II) {
     gvmDebugOpcode(
-        "bcc eq (i0 + %u), (i1 + %u), %d : 0x%08X != 0x%08X => ",
+        "bcc ne (i0 + %u), (i1 + %u), %d : 0x%08X != 0x%08X => ",
         OPU(1),
         OPU(2),
         (int)J16(3),

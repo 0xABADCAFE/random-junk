@@ -49,7 +49,7 @@ using namespace GVM;
 
 #define FETCH   switch (*PRGC)
 #define FETCHC  switch (PRGC[1])
-#define WHEN(cond) case Condition::_##condition:
+#define BCC(c)  case Condition::_##c:
 #define NEXT          goto forever
 #define STEP(size)    PRGC += (size)
 #define EXIT(code)    SAVE_PRGC; return ((code))
