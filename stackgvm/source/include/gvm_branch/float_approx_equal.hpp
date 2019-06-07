@@ -9,7 +9,7 @@ BCC(F_AE_LL) {
         LOC(1).f,
         LOC(2).f
     );
-    float32 diff = (LOC(1).f <= LOC(2).f);
+    float32 diff = (LOC(1).f - LOC(2).f);
     if (diff > -FLT_EPSILON && diff < FLT_EPSILON) {
         gvmDebugJump(3);
         STEP(J16(3));
@@ -30,7 +30,7 @@ BCC(F_AE_LI0) {
         LOC(1).f,
         IX0(2).f
     );
-    float32 diff = (LOC(1).f <= IX0(2).f);
+    float32 diff = (LOC(1).f - IX0(2).f);
     if (diff > -FLT_EPSILON && diff < FLT_EPSILON) {
         gvmDebugJump(3);
         STEP(J16(3));
@@ -51,7 +51,7 @@ BCC(F_AE_LI1) {
         LOC(1).f,
         IX1(2).f
     );
-    float32 diff = (LOC(1).f <= IX1(2).f);
+    float32 diff = (LOC(1).f - IX1(2).f);
     if (diff > -FLT_EPSILON && diff < FLT_EPSILON) {
         gvmDebugJump(3);
         STEP(J16(3));
@@ -72,7 +72,7 @@ BCC(F_AE_II) {
         IX0(1).f,
         IX1(2).f
     );
-    float32 diff = (IX0(1).f <= IX1(2).f);
+    float32 diff = (IX0(1).f - IX1(2).f);
     if (diff > -FLT_EPSILON && diff < FLT_EPSILON) {
         gvmDebugJump(3);
         STEP(J16(3));
