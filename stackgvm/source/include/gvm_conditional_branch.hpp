@@ -10,9 +10,9 @@ IS(BOC) {
         #include "gvm_branch/int_less_or_equal.hpp"
         #include "gvm_branch/int_greater_or_equal.hpp"
         #include "gvm_branch/int_greater_than.hpp"
-        /*
         #include "gvm_branch/bit_set.hpp"
         #include "gvm_branch/bit_not_set.hpp"
+/*
         #include "gvm_branch/float_less_than.hpp"
         #include "gvm_branch/float_less_or_equal.hpp"
         #include "gvm_branch/float_greater_or_equal.hpp"

@@ -10,7 +10,7 @@ BCC(I_LE_LS) {
         S8(2)
     );
     if (LOC(1).i <= S8(2)) {
-        gvmDebugJump(2);
+        gvmDebugJump(3);
         STEP(J16(3));
         NEXT;
     }
@@ -30,7 +30,7 @@ BCC(I_LE_I0S) {
         S8(2)
     );
     if (IX0(1).i <= S8(2)) {
-        gvmDebugJump(2);
+        gvmDebugJump(3);
         STEP(J16(3));
         NEXT;
     }
@@ -50,7 +50,7 @@ BCC(I_LE_I1S) {
         S8(2)
     );
     if (IX1(1).i <= S8(2)) {
-        gvmDebugJump(2);
+        gvmDebugJump(3);
         STEP(J16(3));
         NEXT;
     }
@@ -70,7 +70,7 @@ BCC(I_LE_LL) {
         LOC(2).u
     );
     if (LOC(1).u <= LOC(2).u) {
-        gvmDebugJump(2);
+        gvmDebugJump(3);
         STEP(J16(3));
         NEXT;
     }
@@ -90,7 +90,7 @@ BCC(I_LE_LI0) {
         IX0(2).u
     );
     if (LOC(1).u <= IX0(2).u) {
-        gvmDebugJump(2);
+        gvmDebugJump(3);
         STEP(J16(3));
         NEXT;
     }
@@ -110,7 +110,7 @@ BCC(I_LE_LI1) {
         IX1(2).u
     );
     if (LOC(1).u <= IX1(2).u) {
-        gvmDebugJump(2);
+        gvmDebugJump(3);
         STEP(J16(3));
         NEXT;
     }
@@ -130,7 +130,7 @@ BCC(I_LE_II) {
         IX1(2).u
     );
     if (IX0(1).u <= IX1(2).u) {
-        gvmDebugJump(2);
+        gvmDebugJump(3);
         STEP(J16(3));
         NEXT;
     }
