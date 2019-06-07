@@ -62,14 +62,14 @@ BCC(I_LE_I1S) {
 // Local <= Local
 BCC(I_LE_LL) {
     gvmDebugOpcode(
-        "bcc le.i (%d), (%d), %d : 0x%08X <= 0x%08X => ",
+        "bcc le.i (%d), (%d), %d : %d <= %d => ",
         OPS(1),
         OPS(2),
         (int)J16(3),
-        LOC(1).u,
-        LOC(2).u
+        LOC(1).i,
+        LOC(2).i
     );
-    if (LOC(1).u <= LOC(2).u) {
+    if (LOC(1).i <= LOC(2).i) {
         gvmDebugJump(3);
         STEP(J16(3));
         NEXT;
@@ -82,14 +82,14 @@ BCC(I_LE_LL) {
 // Local <= Indirect[0]
 BCC(I_LE_LI0) {
     gvmDebugOpcode(
-        "bcc le.i (%d), (i0 + %u), %d : 0x%08X <= 0x%08X => ",
+        "bcc le.i (%d), (i0 + %u), %d : %d <= %d => ",
         OPS(1),
         OPU(2),
         (int)J16(3),
-        LOC(1).u,
-        IX0(2).u
+        LOC(1).i,
+        IX0(2).i
     );
-    if (LOC(1).u <= IX0(2).u) {
+    if (LOC(1).i <= IX0(2).i) {
         gvmDebugJump(3);
         STEP(J16(3));
         NEXT;
@@ -102,14 +102,14 @@ BCC(I_LE_LI0) {
 // Local <= Indirect[1]
 BCC(I_LE_LI1) {
     gvmDebugOpcode(
-        "bcc le.i (%d), (i1 + %u), %d : 0x%08X <= 0x%08X => ",
+        "bcc le.i (%d), (i1 + %u), %d : %d <= %d => ",
         OPS(1),
         OPU(2),
         (int)J16(3),
-        LOC(1).u,
-        IX1(2).u
+        LOC(1).i,
+        IX1(2).i
     );
-    if (LOC(1).u <= IX1(2).u) {
+    if (LOC(1).i <= IX1(2).i) {
         gvmDebugJump(3);
         STEP(J16(3));
         NEXT;
@@ -122,14 +122,14 @@ BCC(I_LE_LI1) {
 // Indirect[0] <= Indirect[1]
 BCC(I_LE_II) {
     gvmDebugOpcode(
-        "bcc le.i (i0 + %u), (i1 + %u), %d : 0x%08X <= 0x%08X => ",
+        "bcc le.i (i0 + %u), (i1 + %u), %d : %d <= %d => ",
         OPU(1),
         OPU(2),
         (int)J16(3),
-        IX0(1).u,
-        IX1(2).u
+        IX0(1).i,
+        IX1(2).i
     );
-    if (IX0(1).u <= IX1(2).u) {
+    if (IX0(1).i <= IX1(2).i) {
         gvmDebugJump(3);
         STEP(J16(3));
         NEXT;
