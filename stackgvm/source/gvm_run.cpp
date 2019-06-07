@@ -7,6 +7,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cmath>
+#include <cfloat>
 #include "include/gvm_core.hpp"
 #include "include/gvm_debug.hpp"
 
