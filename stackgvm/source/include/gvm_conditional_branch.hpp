@@ -3,6 +3,13 @@
 // Branch on Condition ///////// ///////////////////////////////////////////////////////////////////////////////////////
 
 IS(BOC) {
+
+    /**
+     * Branch On Condition
+     * Instruction layout:
+     * [Opcode] [Condition] [Operand 1] [Operand 2] [Jump MSB] [Jump LSB]
+     *
+     */
     FETCHC {
         #include "gvm_branch/bits_equal.hpp"
         #include "gvm_branch/bits_not_equal.hpp"
