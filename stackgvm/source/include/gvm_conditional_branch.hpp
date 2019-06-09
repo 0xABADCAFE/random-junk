@@ -24,10 +24,8 @@ IS(BOC) {
         #include "gvm_branch/float_greater_or_equal.hpp"
         #include "gvm_branch/float_greater_than.hpp"
         #include "gvm_branch/float_approx_equal.hpp"
-        /*
         #include "gvm_branch/vector_equal.hpp"
         #include "gvm_branch/vector_approx_equal.hpp"
         #include "gvm_branch/vector_not_equal.hpp"
-        */
     }
 }
