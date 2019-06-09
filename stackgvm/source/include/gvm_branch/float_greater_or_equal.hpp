@@ -3,8 +3,8 @@
 BCC(F_GE_LL) {
     gvmDebugOpcode(
         "bcc ge.f (%d), (%d), %d : %e >= %e => ",
-        OPS(1),
-        OPS(2),
+        (int)OPS(1),
+        (int)OPS(2),
         (int)J16(3),
         LOC(1).f,
         LOC(2).f
@@ -23,8 +23,8 @@ BCC(F_GE_LL) {
 BCC(F_GE_LI0) {
     gvmDebugOpcode(
         "bcc ge.f (%d), (i0 + %u), %d : %e >= %e => ",
-        OPS(1),
-        OPU(2),
+        (int)OPS(1),
+        (unsigned)OPU(2),
         (int)J16(3),
         LOC(1).f,
         IX0(2).f
@@ -43,8 +43,8 @@ BCC(F_GE_LI0) {
 BCC(F_GE_LI1) {
     gvmDebugOpcode(
         "bcc ge.f (%d), (i1 + %u), %d : %e >= %e => ",
-        OPS(1),
-        OPU(2),
+        (int)OPS(1),
+        (unsigned)OPU(2),
         (int)J16(3),
         LOC(1).f,
         IX1(2).f
@@ -63,8 +63,8 @@ BCC(F_GE_LI1) {
 BCC(F_GE_II) {
     gvmDebugOpcode(
         "bcc ge.f (i0 + %u), (i1 + %u), %d : %e >= %e => ",
-        OPU(1),
-        OPU(2),
+        (unsigned)OPU(1),
+        (unsigned)OPU(2),
         (int)J16(3),
         IX0(1).f,
         IX1(2).f
