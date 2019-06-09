@@ -6,11 +6,11 @@
 IS(BGE_LL) {
     gvmDebugOpcode(
         "bge.i (%d), (%d), %d : %d >= %d => ",
-        OPS(0),
-        OPS(1),
+        (int)OPS(0),
+        (int)OPS(1),
         (int)J16(2),
-        LOC(0).i,
-        LOC(1).i
+        (int)LOC(0).i,
+        (int)LOC(1).i
     );
     if (LOC(0).i >= LOC(1).i) {
         STEP(J16(2));
@@ -23,11 +23,11 @@ IS(BGE_LL) {
 IS(BGE_IL) {
     gvmDebugOpcode(
         "bge.i (i0+%u), (%d), %d : %d >= %d => ",
-        OPU(0),
-        OPS(1),
+        (unsigned)OPU(0),
+        (int)OPS(1),
         (int)J16(2),
-        IX0(0).i,
-        LOC(1).i
+        (int)IX0(0).i,
+        (int)LOC(1).i
     );
     if (IX0(0).i >= LOC(1).i) {
         STEP(J16(2));
@@ -40,11 +40,11 @@ IS(BGE_IL) {
 IS(BGE_LI) {
     gvmDebugOpcode(
         "bge.i (%d), (i0+%u), %d : %d >= %d => ",
-        OPS(0),
-        OPU(1),
+        (int)OPS(0),
+        (unsigned)OPU(1),
         (int)J16(2),
-        LOC(0).i,
-        IX0(1).i
+        (int)LOC(0).i,
+        (int)IX0(1).i
     );
     if (LOC(0).i >= IX0(1).i) {
         STEP(J16(2));
@@ -57,11 +57,11 @@ IS(BGE_LI) {
 IS(BGE_II) {
     gvmDebugOpcode(
         "bge.i (i0+%u), (i1+%u), %d : %d >= %d => ",
-        OPU(0),
-        OPU(1),
+        (unsigned)OPU(0),
+        (unsigned)OPU(1),
         (int)J16(2),
-        IX0(0).i,
-        IX1(1).i
+        (int)IX0(0).i,
+        (int)IX1(1).i
     );
     if (IX0(0).i >= IX1(1).i) {
         STEP(J16(2));
@@ -74,11 +74,11 @@ IS(BGE_II) {
 IS(BLE_II) {
     gvmDebugOpcode(
         "ble.i (i0+%u), (i1+%u), %d : %d <= %d => ",
-        OPU(0),
-        OPU(1),
+        (unsigned)OPU(0),
+        (unsigned)OPU(1),
         (int)J16(2),
-        IX0(0).i,
-        IX1(1).i
+        (int)IX0(0).i,
+        (int)IX1(1).i
     );
     if (IX0(0).i <= IX1(1).i) {
         STEP(J16(2));
@@ -93,11 +93,11 @@ IS(BLE_II) {
 IS(BGT_LL) {
     gvmDebugOpcode(
         "bgt.i (%d), (%d), %d : %d > %d => ",
-        OPS(0),
-        OPS(1),
+        (int)OPS(0),
+        (int)OPS(1),
         (int)J16(2),
-        LOC(0).i,
-        LOC(1).i
+        (int)LOC(0).i,
+        (int)LOC(1).i
     );
     if (LOC(0).i > LOC(1).i) {
         STEP(J16(2));
@@ -110,11 +110,11 @@ IS(BGT_LL) {
 IS(BGT_IL) {
     gvmDebugOpcode(
         "bgt.i (i0+%u), (%d), %d : %d > %d => ",
-        OPU(0),
-        OPS(1),
+        (unsigned)OPU(0),
+        (int)OPS(1),
         (int)J16(2),
-        IX0(0).i,
-        LOC(1).i
+        (int)IX0(0).i,
+        (int)LOC(1).i
     );
     if (IX0(0).i > LOC(1).i) {
         STEP(J16(2));
@@ -127,11 +127,11 @@ IS(BGT_IL) {
 IS(BGT_LI) {
     gvmDebugOpcode(
         "bgt.i (%d), (i0+%u), %d : %d > %d => ",
-        OPS(0),
-        OPU(1),
+        (int)OPS(0),
+        (unsigned)OPU(1),
         (int)J16(2),
-        LOC(0).i,
-        IX0(1).i
+        (int)LOC(0).i,
+        (int)IX0(1).i
     );
     if (LOC(0).i > IX0(1).i) {
         STEP(J16(2));
@@ -144,11 +144,11 @@ IS(BGT_LI) {
 IS(BGT_II) {
     gvmDebugOpcode(
         "bgt.i (i0+%u), (i1+%u), %d : %d > %d => ",
-        OPU(0),
-        OPU(1),
+        (unsigned)OPU(0),
+        (unsigned)OPU(1),
         (int)J16(2),
-        IX0(0).i,
-        IX1(1).i
+        (int)IX0(0).i,
+        (int)IX1(1).i
     );
     if (IX0(0).i > IX1(1).i) {
         STEP(J16(2));
@@ -161,11 +161,11 @@ IS(BGT_II) {
 IS(BLT_II) {
     gvmDebugOpcode(
         "blt.i (i0+%u), (i1+%u), %d : %d < %d => ",
-        OPU(0),
-        OPU(1),
+        (unsigned)OPU(0),
+        (unsigned)OPU(1),
         (int)J16(2),
-        IX0(0).i,
-        IX1(1).i
+        (int)IX0(0).i,
+        (int)IX1(1).i
     );
     if (IX0(0).i < IX1(1).i) {
         STEP(J16(2));
@@ -180,9 +180,9 @@ IS(BLT_II) {
 IS(DBNZ_L) {
     gvmDebugOpcode(
         "dbnz.i (%d), %d : --%d != 0 => ",
-        OPS(0),
+        (int)OPS(0),
         (int)J16(1),
-        LOC(0).i
+        (int)LOC(0).i
     );
     // Decrement local and branch if not zero
     if (--LOC(0).i) {
@@ -200,9 +200,9 @@ IS(DBNZ_L) {
 IS(DBNN_L) {
     gvmDebugOpcode(
         "dbnn.i (%d), %d : --%d >= 0 => ",
-        OPS(0),
+        (int)OPS(0),
         (int)J16(1),
-        LOC(0).i
+        (int)LOC(0).i
     );
     // Decrement local and branch if not negative
     if (--LOC(0).i >= 0) {
@@ -222,9 +222,9 @@ IS(LOAD_SL) {
     LOC(1).i = S8(0);
     gvmDebugOpcode(
         "copy %d, (%d) : %d",
-        OPS(0),
-        OPS(1),
-        LOC(1).i
+        (int)OPS(0),
+        (int)OPS(1),
+        (int)LOC(1).i
     );
     STEP(3);
     NEXT;
@@ -234,9 +234,9 @@ IS(LOAD_SI0) {
     IX0(1).i = S8(0);
     gvmDebugOpcode(
         "copy %d, (i0+%u) : %d",
-        OPS(0),
-        OPU(1),
-        IX0(1).i
+        (int)OPS(0),
+        (unsigned)OPU(1),
+        (int)IX0(1).i
     );
     STEP(3);
     NEXT;
@@ -246,9 +246,9 @@ IS(LOAD_SI1) {
     IX1(1).i = S8(0);
     gvmDebugOpcode(
         "copy %d, (i1+%u) : %d",
-        OPS(0),
-        OPU(1),
-        IX1(1).i
+        (int)OPS(0),
+        (unsigned)OPU(1),
+        (int)IX1(1).i
     );
     STEP(3);
     NEXT;
@@ -261,9 +261,9 @@ IS(BSET_SL) {
     LOC(1).u |= 1 << U8(0);
     gvmDebugOpcode(
         "bset %u, (%d) : 0x%08X",
-        OPU(0),
-        OPS(1),
-        LOC(1).u
+        (unsigned)OPU(0),
+        (int)OPS(1),
+        (int)LOC(1).u
     );
     STEP(3);
     NEXT;
@@ -274,9 +274,9 @@ IS(BSET_SI) {
     IX0(1).u |= 1 << U8(0);
     gvmDebugOpcode(
         "bset %u, (i0+%u) : 0x%08X",
-        OPU(0),
-        OPU(1),
-        IX0(1).u
+        (unsigned)OPU(0),
+        (unsigned)OPU(1),
+        (unsigned)IX0(1).u
     );
     STEP(3);
     NEXT;
@@ -289,9 +289,9 @@ IS(BCLR_SL) {
     LOC(1).u &= ~(1 << U8(0));
     gvmDebugOpcode(
         "bclr %u, (%d) : 0x%08X",
-        OPU(0),
-        OPS(1),
-        LOC(1).u
+        (unsigned)OPU(0),
+        (int)OPS(1),
+        (unsigned)LOC(1).u
     );
     STEP(3);
     NEXT;
@@ -302,9 +302,9 @@ IS(BCLR_SI) {
     IX0(1).u &= ~(1 << U8(0));
     gvmDebugOpcode(
         "bclr %u, (i0+%u) : 0x%08X",
-        OPU(0),
-        OPU(1),
-        IX0(1).u
+        (unsigned)OPU(0),
+        (unsigned)OPU(1),
+        (unsigned)IX0(1).u
     );
     STEP(3);
     NEXT;
@@ -316,10 +316,10 @@ IS(BBS_SL) {
     // Branch if bit is set (local)
     gvmDebugOpcode(
         "bbs %u, (%d), %d : 0x%08X => ",
-        OPU(0),
-        OPS(1),
+        (unsigned)OPU(0),
+        (int)OPS(1),
         (int)J16(2),
-        LOC(1).u
+        (unsigned)LOC(1).u
     );
     if ( LOC(1).u & (1 << U8(0)) ) {
         gvmDebugJump(2);
@@ -335,10 +335,10 @@ IS(BBS_SI) {
     // Branch if bit is set (indirect)
     gvmDebugOpcode(
         "bbs %u, (i0+%u), %d : 0x%08X => ",
-        OPU(0),
-        OPU(1),
+        (unsigned)OPU(0),
+        (unsigned)OPU(1),
         (int)J16(2),
-        IX0(1).u
+        (unsigned)IX0(1).u
     );
     if ( IX0(1).u & (1 << U8(0)) ) {
         gvmDebugJump(2);
@@ -356,10 +356,10 @@ IS(BBC_SL) {
     // Branch if bit is clear (local)
     gvmDebugOpcode(
         "bbc %u, (%d), %d : 0x%08X => ",
-        OPU(0),
-        OPS(1),
+        (unsigned)OPU(0),
+        (int)OPS(1),
         (int)J16(2),
-        LOC(1).u
+        (unsigned)LOC(1).u
     );
     if (!(LOC(1).u & (1 << U8(0)))) {
         gvmDebugJump(2);
@@ -375,10 +375,10 @@ IS(BBC_SI) {
     // Branch if bit is clear (indirect)
     gvmDebugOpcode(
         "bbs %u, (i0+%u), %d : 0x%08X => ",
-        OPU(0),
-        OPU(1),
+        (unsigned)OPU(0),
+        (unsigned)OPU(1),
         (int)J16(2),
-        IX0(1).u
+        (unsigned)IX0(1).u
     );
     if (!(IX0(1).u & (1 << U8(0)))) {
         gvmDebugJump(2);
@@ -394,11 +394,11 @@ IS(BBC_LL) {
     // Branch if bit is clear (local)
     gvmDebugOpcode(
         "bbc (%d), (%d), %d : bit:%u 0x%08X => ",
-        OPS(0),
-        OPS(1),
+        (int)OPS(0),
+        (int)OPS(1),
         (int)J16(2),
-        LOC(0).u,
-        LOC(1).u
+        (unsigned)LOC(0).u,
+        (unsigned)LOC(1).u
     );
     if (!(LOC(1).u & (1 << LOC(0).u))) {
         gvmDebugJump(2);
@@ -416,9 +416,9 @@ IS(NOT_LL) {
     LOC(1).u = ~LOC(0).u;
     gvmDebugOpcode(
         "not (%d), (%d) : 0x%08X",
-        OPS(0),
-        OPS(1),
-        LOC(1).u
+        (int)OPS(0),
+        (int)OPS(1),
+        (unsigned)LOC(1).u
     );
     STEP(3);
     NEXT;
@@ -428,9 +428,9 @@ IS(NOT_IL) {
     LOC(1).u = ~IX0(0).u;
     gvmDebugOpcode(
         "not (i0+%u), (%d) : 0x%08X",
-        OPU(0),
-        OPS(1),
-        LOC(1).u
+        (unsigned)OPU(0),
+        (int)OPS(1),
+        (unsigned)LOC(1).u
     );
     STEP(3);
     NEXT;
@@ -440,9 +440,9 @@ IS(NOT_LI) {
     IX0(1).u = ~LOC(0).u;
     gvmDebugOpcode(
         "not (%d), (i0+%u) : 0x%08X",
-        OPS(0),
-        OPU(1),
-        IX0(1).u
+        (int)OPS(0),
+        (unsigned)OPU(1),
+        (unsigned)IX0(1).u
     );
     STEP(3);
     NEXT;
@@ -452,9 +452,9 @@ IS(NOT_II) {
     IX1(1).u = ~IX0(0).u;
     gvmDebugOpcode(
         "not (i0+%u), (i1+%u) : 0x%08X",
-        OPU(0),
-        OPU(1),
-        IX1(1).u
+        (unsigned)OPU(0),
+        (unsigned)OPU(1),
+        (unsigned)IX1(1).u
     );
     STEP(3);
     NEXT;
@@ -466,9 +466,9 @@ IS(NEG_LL) {
     LOC(1).i = -LOC(0).i;
     gvmDebugOpcode(
         "neg.i (%d), (%d) : %d",
-        OPS(0),
-        OPS(1),
-        LOC(1).i
+        (int)OPS(0),
+        (int)OPS(1),
+        (int)LOC(1).i
     );
     STEP(3);
     NEXT;
@@ -478,9 +478,9 @@ IS(NEG_IL) {
     LOC(1).i = -IX0(0).i;
     gvmDebugOpcode(
         "neg.i (i0+%u), (%d) : %d",
-        OPU(0),
-        OPS(1),
-        LOC(1).i
+        (unsigned)OPU(0),
+        (int)OPS(1),
+        (int)LOC(1).i
     );
     STEP(3);
     NEXT;
@@ -490,9 +490,9 @@ IS(NEG_LI) {
     IX0(1).i = -LOC(0).i;
     gvmDebugOpcode(
         "neg.i (%d), (i0+%u) : %d",
-        OPS(0),
-        OPU(1),
-        IX0(1).i
+        (int)OPS(0),
+        (unsigned)OPU(1),
+        (int)IX0(1).i
     );
     STEP(3);
     NEXT;
@@ -502,9 +502,9 @@ IS(NEG_II) {
     IX1(1).i = -IX0(0).i;
     gvmDebugOpcode(
         "neg.i (i0+%u), (i1+%u) : %d",
-        OPU(0),
-        OPU(1),
-        IX1(1).i
+        (unsigned)OPU(0),
+        (unsigned)OPU(1),
+        (int)IX1(1).i
     );
     STEP(3);
     NEXT;
@@ -516,14 +516,14 @@ IS(ADD_LLL) {
     // Local + Local -> Local
     gvmDebugOpcode(
         "add.i (%d), (%d), (%d) : %d + %d => ",
-        OPS(0),
-        OPS(1),
-        OPS(2),
-        LOC(0).i,
-        LOC(1).i
+        (int)OPS(0),
+        (int)OPS(1),
+        (int)OPS(2),
+        (int)LOC(0).i,
+        (int)LOC(1).i
     );
     LOC(2).i = LOC(0).i + LOC(1).i;
-    gvmDebugOpcode("%d", LOC(2).i);
+    gvmDebugOpcode("%d", (int)LOC(2).i);
     STEP(4);
     NEXT;
 }
@@ -532,14 +532,14 @@ IS(ADD_ILL) {
     // Indirect + Local -> Local
     gvmDebugOpcode(
         "add.i (i0+%u), (%d), (%d) : %d + %d => ",
-        OPU(0),
-        OPS(1),
-        OPS(2),
-        IX0(0).i,
-        LOC(1).i
+        (unsigned)OPU(0),
+        (int)OPS(1),
+        (int)OPS(2),
+        (int)IX0(0).i,
+        (int)LOC(1).i
     );
     LOC(2).i = IX0(0).i + LOC(1).i;
-    gvmDebugOpcode("%d", LOC(2).i);
+    gvmDebugOpcode("%d", (int)LOC(2).i);
     STEP(4);
     NEXT;
 }
@@ -548,14 +548,14 @@ IS(ADD_LLI) {
     // Local + Local -> Indirect
     gvmDebugOpcode(
         "add.i (%d), (%d), (i0+%u) : %d + %d => ",
-        OPS(0),
-        OPS(1),
-        OPU(2),
-        LOC(0).i,
-        LOC(1).i
+        (int)OPS(0),
+        (int)OPS(1),
+        (unsigned)OPU(2),
+        (int)LOC(0).i,
+        (int)LOC(1).i
     );
     IX0(2).i = LOC(0).i + LOC(1).i;
-    gvmDebugOpcode("%d", IX0(2).i);
+    gvmDebugOpcode("%d", (int)IX0(2).i);
     STEP(4);
     NEXT;
 }
@@ -564,14 +564,14 @@ IS(ADD_ILI) {
     // Indirect + Local -> Indirect
     gvmDebugOpcode(
         "add.i (i0+%u), (%d), (i1+%u) : %d + %d => ",
-        OPU(0),
-        OPS(1),
-        OPU(2),
-        IX0(0).i,
-        LOC(1).i
+        (unsigned)OPU(0),
+        (int)OPS(1),
+        (unsigned)OPU(2),
+        (int)IX0(0).i,
+        (int)LOC(1).i
     );
     IX1(2).i = IX0(0).i + LOC(1).i;
-    gvmDebugOpcode("%d", IX1(2).i);
+    gvmDebugOpcode("%d", (int)IX1(2).i);
     STEP(4);
     NEXT;
 }
@@ -582,14 +582,14 @@ IS(SUB_LLL) {
     // Local - Local -> Local
     gvmDebugOpcode(
         "sub.i (%d), (%d), (%d) : %d - %d => ",
-        OPS(0),
-        OPS(1),
-        OPS(2),
-        LOC(0).i,
-        LOC(1).i
+        (int)OPS(0),
+        (int)OPS(1),
+        (int)OPS(2),
+        (int)LOC(0).i,
+        (int)LOC(1).i
     );
     LOC(2).i = LOC(0).i - LOC(1).i;
-    gvmDebugOpcode("%d", LOC(2).i);
+    gvmDebugOpcode("%d", (int)LOC(2).i);
     STEP(4);
     NEXT;
 }
@@ -598,14 +598,14 @@ IS(SUB_ILL) {
     // Indirect - Local -> Local
     gvmDebugOpcode(
         "sub.i (i0+%u), (%d), (%d) : %d - %d => ",
-        OPU(0),
-        OPS(1),
-        OPS(2),
-        IX0(0).i,
-        LOC(1).i
+        (unsigned)OPU(0),
+        (int)OPS(1),
+        (int)OPS(2),
+        (int)IX0(0).i,
+        (int)LOC(1).i
     );
     LOC(2).i = IX0(0).i - LOC(1).i;
-    gvmDebugOpcode("%d", LOC(2).i);
+    gvmDebugOpcode("%d", (int)LOC(2).i);
     STEP(4);
     NEXT;
 }
@@ -614,14 +614,14 @@ IS(SUB_LLI) {
     // Local - Local -> Indirect
     gvmDebugOpcode(
         "sub.i (%d), (%d), (i0+%u) : %d - %d => ",
-        OPS(0),
-        OPS(1),
-        OPU(2),
-        LOC(0).i,
-        LOC(1).i
+        (int)OPS(0),
+        (int)OPS(1),
+        (unsigned)OPU(2),
+        (int)LOC(0).i,
+        (int)LOC(1).i
     );
     IX0(2).i = LOC(0).i - LOC(1).i;
-    gvmDebugOpcode("%d", IX0(2).i);
+    gvmDebugOpcode("%d", (int)IX0(2).i);
     STEP(4);
     NEXT;
 }
@@ -630,14 +630,14 @@ IS(SUB_ILI) {
     // Indirect - Local -> Indirect
     gvmDebugOpcode(
         "sub.i (i0+%u), (%d), (i1+%u) : %d - %d => ",
-        OPU(0),
-        OPS(1),
-        OPU(2),
-        IX0(0).i,
-        LOC(1).i
+        (unsigned)OPU(0),
+        (int)OPS(1),
+        (unsigned)OPU(2),
+        (int)IX0(0).i,
+        (int)LOC(1).i
     );
     IX1(2).i = IX0(0).i - LOC(1).i;
-    gvmDebugOpcode("%d", IX1(2).i);
+    gvmDebugOpcode("%d", (int)IX1(2).i);
     STEP(4);
     NEXT;
 }
@@ -646,14 +646,14 @@ IS(SUB_LIL) {
     // Local - Indirect -> Local
     gvmDebugOpcode(
         "sub.i (%d), (i0+%u), (%d) : %d - %d => ",
-        OPS(0),
-        OPU(1),
-        OPS(2),
-        LOC(0).i,
-        IX0(1).i
+        (int)OPS(0),
+        (unsigned)OPU(1),
+        (int)OPS(2),
+        (int)LOC(0).i,
+        (int)IX0(1).i
     );
     LOC(2).i = LOC(0).i - IX0(0).i;
-    gvmDebugOpcode("%d", LOC(2).i);
+    gvmDebugOpcode("%d", (int)LOC(2).i);
     STEP(4);
     NEXT;
 }
@@ -662,14 +662,14 @@ IS(SUB_IIL) {
     // Indirect - Indirect -> Local
     gvmDebugOpcode(
         "sub.i (i0+%u), (i1+%u), (%d) : %d - %d => ",
-        OPU(0),
-        OPU(1),
-        OPS(2),
-        IX0(0).i,
-        IX1(1).i
+        (unsigned)OPU(0),
+        (unsigned)OPU(1),
+        (int)OPS(2),
+        (int)IX0(0).i,
+        (int)IX1(1).i
     );
     LOC(2).i = IX0(0).i - IX1(1).i;
-    gvmDebugOpcode("%d", LOC(2).i);
+    gvmDebugOpcode("%d", (int)LOC(2).i);
     STEP(4);
     NEXT;
 }
@@ -678,14 +678,14 @@ IS(SUB_LII) {
     // Local - Indirect -> Indirect
     gvmDebugOpcode(
         "sub.i (i0+%u), (i1+%u), (%d) : %d - %d => ",
-        OPU(0),
-        OPU(1),
-        OPS(2),
-        IX0(0).i,
-        IX1(1).i
+        (unsigned)OPU(0),
+        (unsigned)OPU(1),
+        (int)OPS(2),
+        (int)IX0(0).i,
+        (int)IX1(1).i
     );
     IX1(2).i = LOC(0).i - IX0(1).i;
-    gvmDebugOpcode("%d", IX1(2).i);
+    gvmDebugOpcode("%d", (int)IX1(2).i);
     STEP(4);
     NEXT;
 }
@@ -696,14 +696,14 @@ IS(MUL_LLL) {
     // Local * Local -> Local
     gvmDebugOpcode(
         "mul.i (%d), (%d), (%d) : %d * %d => ",
-        OPS(0),
-        OPS(1),
-        OPS(2),
-        LOC(0).i,
-        LOC(1).i
+        (int)OPS(0),
+        (int)OPS(1),
+        (int)OPS(2),
+        (int)LOC(0).i,
+        (int)LOC(1).i
     );
     LOC(2).i = LOC(0).i * LOC(1).i;
-    gvmDebugOpcode("%d", LOC(2).i);
+    gvmDebugOpcode("%d", (int)LOC(2).i);
     STEP(4);
     NEXT;
 }
@@ -712,14 +712,14 @@ IS(MUL_ILL) {
     // Indirect * Local -> Local
     gvmDebugOpcode(
         "mul.i (i0+%u), (%d), (%d) : %d * %d => ",
-        OPU(0),
-        OPS(1),
-        OPS(2),
-        IX0(0).i,
-        LOC(1).i
+        (unsigned)OPU(0),
+        (int)OPS(1),
+        (int)OPS(2),
+        (int)IX0(0).i,
+        (int)LOC(1).i
     );
     LOC(2).i = IX0(0).i * LOC(1).i;
-    gvmDebugOpcode("%d", LOC(2).i);
+    gvmDebugOpcode("%d", (int)LOC(2).i);
     STEP(4);
     NEXT;
 }
@@ -728,14 +728,14 @@ IS(MUL_LLI) {
     // Local * Local -> Indirect
     gvmDebugOpcode(
         "mul.i (%d), (%d), (i0+%u) : %d * %d => ",
-        OPS(0),
-        OPS(1),
-        OPU(2),
-        LOC(0).i,
-        LOC(1).i
+        (int)OPS(0),
+        (int)OPS(1),
+        (unsigned)OPU(2),
+        (int)LOC(0).i,
+        (int)LOC(1).i
     );
     IX0(2).i = LOC(0).i * LOC(1).i;
-    gvmDebugOpcode("%d", IX0(2).i);
+    gvmDebugOpcode("%d", (int)IX0(2).i);
     STEP(4);
     NEXT;
 }
@@ -744,14 +744,14 @@ IS(MUL_ILI) {
     // Indirect * Local -> Indirect
     gvmDebugOpcode(
         "mul.i (i0+%u), (%d), (i1+%u) : %d * %d => ",
-        OPU(0),
-        OPS(1),
-        OPU(2),
-        LOC(0).i,
-        LOC(1).i
+        (unsigned)OPU(0),
+        (int)OPS(1),
+        (unsigned)OPU(2),
+        (int)LOC(0).i,
+        (int)LOC(1).i
     );
     IX1(2).i = IX0(0).i * LOC(1).i;
-    gvmDebugOpcode("%d", IX1(2).i);
+    gvmDebugOpcode("%d", (int)IX1(2).i);
     STEP(4);
     NEXT;
 }
@@ -763,17 +763,17 @@ IS(DIV_LLL) {
     int32 denominator = LOC(1).i;
     gvmDebugOpcode(
         "div.i (%d), (%d), (%d) : %d / %d => ",
-        OPS(0),
-        OPS(1),
-        OPS(2),
-        LOC(0).i,
-        denominator
+        (int)OPS(0),
+        (int)OPS(1),
+        (int)OPS(2),
+        (int)LOC(0).i,
+        (int)denominator
     );
     if (!denominator) {
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
     LOC(2).i = LOC(0).i / denominator;
-    gvmDebugOpcode("%d", LOC(2).i);
+    gvmDebugOpcode("%d", (int)LOC(2).i);
     STEP(4);
     NEXT;
 }
@@ -783,17 +783,17 @@ IS(DIV_ILL) {
     int32 denominator = LOC(1).i;
     gvmDebugOpcode(
         "div.i (i0+%u), (%d), (%d) : %d / %d => ",
-        OPU(0),
-        OPS(1),
-        OPS(2),
-        IX0(0).i,
-        denominator
+        (unsigned)OPU(0),
+        (int)OPS(1),
+        (int)OPS(2),
+        (int)IX0(0).i,
+        (int)denominator
     );
     if (!denominator) {
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
     LOC(2).i = IX0(0).i / denominator;
-    gvmDebugOpcode("%d", LOC(2).i);
+    gvmDebugOpcode("%d", (int)LOC(2).i);
     STEP(4);
     NEXT;
 }
@@ -803,18 +803,18 @@ IS(DIV_LLI) {
     int32 denominator = LOC(1).i;
     gvmDebugOpcode(
         "div.i (%d), (%d), (i0+%u) : %d / %d => ",
-        OPS(0),
-        OPS(1),
-        OPU(2),
-        LOC(0).i,
-        denominator
+        (int)OPS(0),
+        (int)OPS(1),
+        (unsigned)OPU(2),
+        (int)LOC(0).i,
+        (int)denominator
     );
     if (!denominator) {
         gvmDebugOpcode("Abort with Zero Divide");
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
     IX0(2).i = LOC(0).i / denominator;
-    gvmDebugOpcode("%d", IX0(2).i);
+    gvmDebugOpcode("%d", (int)IX0(2).i);
     STEP(4);
     NEXT;
 }
@@ -824,18 +824,18 @@ IS(DIV_ILI) {
     int32 denominator = LOC(1).i;
     gvmDebugOpcode(
         "div.i (i0+%u), (%d), (i1+%u) : %d / %d => ",
-        OPU(0),
-        OPS(1),
-        OPU(2),
-        LOC(0).i,
-        denominator
+        (unsigned)OPU(0),
+        (int)OPS(1),
+        (unsigned)OPU(2),
+        (int)LOC(0).i,
+        (int)denominator
     );
     if (!denominator) {
         gvmDebugOpcode("Abort with Zero Divide");
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
     IX1(2).i = IX0(0).i / denominator;
-    gvmDebugOpcode("%d", IX1(2).i);
+    gvmDebugOpcode("%d", (int)IX1(2).i);
     STEP(4);
     NEXT;
 }
@@ -845,18 +845,18 @@ IS(DIV_LIL) {
     int32 denominator = IX0(1).i;
     gvmDebugOpcode(
         "div.i (%d), (i0+%u), (%d) : %d / %d => ",
-        OPS(0),
-        OPU(1),
-        OPS(2),
-        LOC(0).i,
-        denominator
+        (int)OPS(0),
+        (unsigned)OPU(1),
+        (int)OPS(2),
+        (int)LOC(0).i,
+        (int)denominator
     );
     if (!denominator) {
         gvmDebugOpcode("Abort with Zero Divide");
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
     LOC(2).i = LOC(0).i / denominator;
-    gvmDebugOpcode("%d", LOC(2).i);
+    gvmDebugOpcode("%d", (int)LOC(2).i);
     STEP(4);
     NEXT;
 }
@@ -866,18 +866,18 @@ IS(DIV_IIL) {
     int32 denominator = IX1(1).i;
     gvmDebugOpcode(
         "div.i (i0+%u), (i1+%u), (%d) : %d / %d => ",
-        OPU(0),
-        OPU(1),
-        OPS(2),
-        IX0(0).i,
-        denominator
+        (unsigned)OPU(0),
+        (unsigned)OPU(1),
+        (int)OPS(2),
+        (int)IX0(0).i,
+        (int)denominator
     );
     if (!denominator) {
         gvmDebugOpcode("Abort with Zero Divide");
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
     LOC(2).i = IX0(0).i / denominator;
-    gvmDebugOpcode("%d", LOC(2).i);
+    gvmDebugOpcode("%d", (int)LOC(2).i);
     STEP(4);
     NEXT;
 }
@@ -887,18 +887,18 @@ IS(DIV_LII) {
     int32 denominator = IX0(1).i;
     gvmDebugOpcode(
         "div.i (%d), (i0+%u), (i1+%u) : %d / %d => ",
-        OPS(0),
-        OPU(1),
-        OPU(2),
-        LOC(0).i,
-        denominator
+        (int)OPS(0),
+        (unsigned)OPU(1),
+        (unsigned)OPU(2),
+        (int)LOC(0).i,
+        (int)denominator
     );
     if (!denominator) {
         gvmDebugOpcode("Abort with Zero Divide");
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
     IX1(2).i = LOC(0).i / denominator;
-    gvmDebugOpcode("%d", IX1(2).i);
+    gvmDebugOpcode("%d", (int)IX1(2).i);
     STEP(4);
     NEXT;
 }
@@ -910,11 +910,11 @@ IS(MOD_LLL) {
     int32 denominator = LOC(1).i;
     gvmDebugOpcode(
         "mod.i (%d), (%d), (%d) : %d / %d => ",
-        OPS(0),
-        OPS(1),
-        OPS(2),
-        LOC(0).i,
-        denominator
+        (int)OPS(0),
+        (int)OPS(1),
+        (int)OPS(2),
+        (int)LOC(0).i,
+        (int)denominator
     );
     if (!denominator) {
         gvmDebugOpcode("Abort with Zero Divide");
@@ -930,11 +930,11 @@ IS(MOD_ILL) {
     int32 denominator = LOC(1).i;
     gvmDebugOpcode(
         "mod.i (i0+%u), (%d), (%d) : %d / %d => ",
-        OPU(0),
-        OPS(1),
-        OPS(2),
-        IX0(0).i,
-        denominator
+        (unsigned)OPU(0),
+        (int)OPS(1),
+        (int)OPS(2),
+        (int)IX0(0).i,
+        (int)denominator
     );
     if (!denominator) {
         gvmDebugOpcode("Abort with Zero Divide");
@@ -950,11 +950,11 @@ IS(MOD_LLI) {
     int32 denominator = LOC(1).i;
     gvmDebugOpcode(
         "mod.i (%d), (%d), (i0+%u) : %d / %d => ",
-        OPS(0),
-        OPS(1),
-        OPU(2),
-        LOC(0).i,
-        denominator
+        (int)OPS(0),
+        (int)OPS(1),
+        (unsigned)OPU(2),
+        (int)LOC(0).i,
+        (int)denominator
     );
     if (!denominator) {
         gvmDebugOpcode("Abort with Zero Divide");
@@ -970,11 +970,11 @@ IS(MOD_ILI) {
     int32 denominator = LOC(1).i;
     gvmDebugOpcode(
         "mod.i (i0+%u), (%d), (i1+%u) : %d / %d => ",
-        OPU(0),
-        OPS(1),
-        OPU(2),
-        LOC(0).i,
-        denominator
+        (unsigned)OPU(0),
+        (int)OPS(1),
+        (unsigned)OPU(2),
+        (int)LOC(0).i,
+        (int)denominator
     );
     if (!denominator) {
         gvmDebugOpcode("Abort with Zero Divide");
@@ -990,11 +990,11 @@ IS(MOD_LIL) {
     int32 denominator = IX0(1).i;
     gvmDebugOpcode(
         "mod.i (%d), (i0+%u), (%d) : %d / %d => ",
-        OPS(0),
-        OPU(1),
-        OPS(2),
-        LOC(0).i,
-        denominator
+        (int)OPS(0),
+        (unsigned)OPU(1),
+        (int)OPS(2),
+        (int)LOC(0).i,
+        (int)denominator
     );
     if (!denominator) {
         gvmDebugOpcode("Abort with Zero Divide");
@@ -1010,11 +1010,11 @@ IS(MOD_IIL) {
     int32 denominator = IX1(1).i;
     gvmDebugOpcode(
         "mod.i (i0+%u), (i1+%u), (%d) : %d / %d => ",
-        OPU(0),
-        OPU(1),
-        OPS(2),
-        IX0(0).i,
-        denominator
+        (unsigned)OPU(0),
+        (unsigned)OPU(1),
+        (int)OPS(2),
+        (int)IX0(0).i,
+        (int)denominator
     );
     if (!denominator) {
         gvmDebugOpcode("Abort with Zero Divide");
@@ -1030,11 +1030,11 @@ IS(MOD_LII) {
     int32 denominator = IX0(1).i;
     gvmDebugOpcode(
         "mod.i (%d), (i0+%u), (i1+%u) : %d / %d => ",
-        OPS(0),
-        OPU(1),
-        OPU(2),
-        LOC(0).i,
-        denominator
+        (int)OPS(0),
+        (unsigned)OPU(1),
+        (unsigned)OPU(2),
+        (int)LOC(0).i,
+        (int)denominator
     );
     if (!denominator) {
         gvmDebugOpcode("Abort with Zero Divide");
@@ -1051,14 +1051,14 @@ IS(AND_LLL) {
     // Local & Local -> Local
     gvmDebugOpcode(
         "and (%d), (%d), (%d) : 0x%08X & 0x%08X => ",
-        OPS(0),
-        OPS(1),
-        OPS(2),
-        LOC(0).u,
-        LOC(1).u
+        (int)OPS(0),
+        (int)OPS(1),
+        (int)OPS(2),
+        (unsigned)LOC(0).u,
+        (unsigned)LOC(1).u
     );
     LOC(2).u = LOC(0).u & LOC(1).u;
-    gvmDebugOpcode("0x%08X", LOC(2).u);
+    gvmDebugOpcode("0x%08X", (unsigned)LOC(2).u);
     STEP(4);
     NEXT;
 }
@@ -1067,14 +1067,14 @@ IS(AND_ILL) {
     // Indirect & Local -> Local
     gvmDebugOpcode(
         "and (i0+%u), (%d), (%d) : 0x%08X & 0x%08X => ",
-        OPU(0),
-        OPS(1),
-        OPS(2),
-        IX0(0).u,
-        LOC(1).u
+        (unsigned)OPU(0),
+        (int)OPS(1),
+        (int)OPS(2),
+        (unsigned)IX0(0).u,
+        (unsigned)LOC(1).u
     );
     LOC(2).u = IX0(0).u & LOC(1).u;
-    gvmDebugOpcode("0x%08X", LOC(2).u);
+    gvmDebugOpcode("0x%08X", (unsigned)LOC(2).u);
     STEP(4);
     NEXT;
 }
@@ -1083,14 +1083,14 @@ IS(AND_LLI) {
     // Local & Local -> Indirect
     gvmDebugOpcode(
         "and (%d), (%d), (i0+%u) : 0x%08X & 0x%08X => ",
-        OPS(0),
-        OPS(1),
-        OPU(2),
-        LOC(0).u,
-        LOC(1).u
+        (int)OPS(0),
+        (int)OPS(1),
+        (unsigned)OPU(2),
+        (unsigned)LOC(0).u,
+        (unsigned)LOC(1).u
     );
     IX0(2).u = LOC(0).u & LOC(1).u;
-    gvmDebugOpcode("0x%08X", IX0(2).u);
+    gvmDebugOpcode("0x%08X", (unsigned)IX0(2).u);
     STEP(4);
     NEXT;
 }
@@ -1099,14 +1099,14 @@ IS(AND_ILI) {
     // Indirect & Local -> Indirect
     gvmDebugOpcode(
         "and (i0+%u), (%d), (i1+%u) : 0x%08X & 0x%08X => ",
-        OPU(0),
-        OPS(1),
-        OPU(2),
-        IX0(0).u,
-        LOC(1).u
+        (unsigned)OPU(0),
+        (int)OPS(1),
+        (unsigned)OPU(2),
+        (unsigned)IX0(0).u,
+        (unsigned)LOC(1).u
     );
     IX1(2).u = IX0(0).u & LOC(1).u;
-    gvmDebugOpcode("0x%08X", IX1(2).u);
+    gvmDebugOpcode("0x%08X", (unsigned)IX1(2).u);
     STEP(4);
     NEXT;
 }
@@ -1117,14 +1117,14 @@ IS(OR_LLL) {
     // Local | Local -> Local
     gvmDebugOpcode(
         "or (%d), (%d), (%d) : 0x%08X | 0x%08X => ",
-        OPS(0),
-        OPS(1),
-        OPS(2),
-        LOC(0).u,
-        LOC(1).u
+        (int)OPS(0),
+        (int)OPS(1),
+        (int)OPS(2),
+        (unsigned)LOC(0).u,
+        (unsigned)LOC(1).u
     );
     LOC(2).u = LOC(0).u | LOC(1).u;
-    gvmDebugOpcode("0x%08X", LOC(2).u);
+    gvmDebugOpcode("0x%08X", (unsigned)LOC(2).u);
     STEP(4);
     NEXT;
 }
@@ -1133,14 +1133,14 @@ IS(OR_ILL) {
     // Indirect | Local -> Local
     gvmDebugOpcode(
         "or (i0+%u), (%d), (%d) : 0x%08X | 0x%08X => ",
-        OPU(0),
-        OPS(1),
-        OPS(2),
-        IX0(0).u,
-        LOC(1).u
+        (unsigned)OPU(0),
+        (int)OPS(1),
+        (int)OPS(2),
+        (unsigned)IX0(0).u,
+        (unsigned)LOC(1).u
     );
     LOC(2).u = IX0(0).u | LOC(1).u;
-    gvmDebugOpcode("0x%08X", LOC(2).u);
+    gvmDebugOpcode("0x%08X", (unsigned)LOC(2).u);
     STEP(4);
     NEXT;
 }
@@ -1149,14 +1149,14 @@ IS(OR_LLI) {
     // Local | Local -> Indirect
     gvmDebugOpcode(
         "or (%d), (%d), (i0+%u) : 0x%08X | 0x%08X => ",
-        OPS(0),
-        OPS(1),
-        OPU(2),
-        LOC(0).u,
-        LOC(1).u
+        (int)OPS(0),
+        (int)OPS(1),
+        (unsigned)OPU(2),
+        (unsigned)LOC(0).u,
+        (unsigned)LOC(1).u
     );
     IX0(2).u = LOC(0).u | LOC(1).u;
-    gvmDebugOpcode("0x%08X", IX0(2).u);
+    gvmDebugOpcode("0x%08X", (unsigned)IX0(2).u);
     STEP(4);
     NEXT;
 }
@@ -1165,14 +1165,14 @@ IS(OR_ILI) {
     // Indirect | Local -> Indirect
     gvmDebugOpcode(
         "or (i0+%u), (%d), (i1+%u) : 0x%08X | 0x%08X => ",
-        OPU(0),
-        OPS(1),
-        OPU(2),
-        IX0(0).u,
-        LOC(1).u
+        (unsigned)OPU(0),
+        (int)OPS(1),
+        (unsigned)OPU(2),
+        (unsigned)IX0(0).u,
+        (unsigned)LOC(1).u
     );
     IX1(2).u = IX0(0).u | LOC(1).u;
-    gvmDebugOpcode("0x%08X", IX1(2).u);
+    gvmDebugOpcode("0x%08X", (unsigned)IX1(2).u);
     STEP(4);
     NEXT;
 }
@@ -1183,14 +1183,14 @@ IS(XOR_LLL) {
     // Local ^ Local -> Local
     gvmDebugOpcode(
         "xor (%d), (%d), (%d) : 0x%08X ^ 0x%08X => ",
-        OPS(0),
-        OPS(1),
-        OPS(2),
-        LOC(0).u,
-        LOC(1).u
+        (int)OPS(0),
+        (int)OPS(1),
+        (int)OPS(2),
+        (unsigned)LOC(0).u,
+        (unsigned)LOC(1).u
     );
     LOC(2).u = LOC(0).u ^ LOC(1).u;
-    gvmDebugOpcode("0x%08X", LOC(2).u);
+    gvmDebugOpcode("0x%08X", (unsigned)LOC(2).u);
     STEP(4);
     NEXT;
 }
@@ -1199,14 +1199,14 @@ IS(XOR_ILL) {
     // Indirect ^ Local -> Local
     gvmDebugOpcode(
         "xor (i0+%u), (%d), (%d) : 0x%08X ^ 0x%08X => ",
-        OPU(0),
-        OPS(1),
-        OPS(2),
-        IX0(0).u,
-        LOC(1).u
+        (unsigned)OPU(0),
+        (int)OPS(1),
+        (int)OPS(2),
+        (unsigned)IX0(0).u,
+        (unsigned)LOC(1).u
     );
     LOC(2).u = IX0(0).u ^ LOC(1).u;
-    gvmDebugOpcode("0x%08X", LOC(2).u);
+    gvmDebugOpcode("0x%08X", (unsigned)LOC(2).u);
     STEP(4);
     NEXT;
 }
@@ -1215,14 +1215,14 @@ IS(XOR_LLI) {
     // Local ^ Local -> Indirect
     gvmDebugOpcode(
         "xor (%d), (%d), (i0+%u) : 0x%08X ^ 0x%08X => ",
-        OPS(0),
-        OPS(1),
-        OPU(2),
-        LOC(0).u,
-        LOC(1).u
+        (int)OPS(0),
+        (int)OPS(1),
+        (unsigned)OPU(2),
+        (unsigned)LOC(0).u,
+        (unsigned)LOC(1).u
     );
     IX0(2).u = LOC(0).u ^ LOC(1).u;
-    gvmDebugOpcode("0x%08X", IX0(2).u);
+    gvmDebugOpcode("0x%08X", (unsigned)IX0(2).u);
     STEP(4);
     NEXT;
 }
@@ -1231,14 +1231,14 @@ IS(XOR_ILI) {
     // Indirect ^ Local -> Indirect
     gvmDebugOpcode(
         "xor (i0+%u), (%d), (i1+%u) : 0x%08X ^ 0x%08X => ",
-        OPU(0),
-        OPS(1),
-        OPU(2),
-        IX0(0).u,
-        LOC(1).u
+        (unsigned)OPU(0),
+        (int)OPS(1),
+        (unsigned)OPU(2),
+        (unsigned)IX0(0).u,
+        (unsigned)LOC(1).u
     );
     IX1(2).u = IX0(0).u ^ LOC(1).u;
-    gvmDebugOpcode("0x%08X", IX1(2).u);
+    gvmDebugOpcode("0x%08X", (unsigned)IX1(2).u);
     STEP(4);
     NEXT;
 }
@@ -1249,14 +1249,14 @@ IS(LSL_LLL) {
     // Local << Local -> Local
     gvmDebugOpcode(
         "lsl (%d), (%d), (%d) : 0x%08X << %u => ",
-        OPS(0),
-        OPS(1),
-        OPS(2),
-        LOC(0).u,
-        LOC(1).u
+        (int)OPS(0),
+        (int)OPS(1),
+        (int)OPS(2),
+        (unsigned)LOC(0).u,
+        (unsigned)LOC(1).u
     );
     LOC(2).u = LOC(0).u << LOC(1).u;
-    gvmDebugOpcode("0x%08X", LOC(2).u);
+    gvmDebugOpcode("0x%08X", (unsigned)LOC(2).u);
     STEP(4);
     NEXT;
 }
@@ -1265,14 +1265,14 @@ IS(LSL_ILL) {
     // Indirect << Local -> Local
     gvmDebugOpcode(
         "lsl (i0+%u), (%d), (%d) : 0x%08X << %u => ",
-        OPU(0),
-        OPS(1),
-        OPS(2),
-        IX0(0).u,
-        LOC(1).u
+        (unsigned)OPU(0),
+        (int)OPS(1),
+        (int)OPS(2),
+        (unsigned)IX0(0).u,
+        (unsigned)LOC(1).u
     );
     LOC(2).u = IX0(0).u << LOC(1).u;
-    gvmDebugOpcode("0x%08X", LOC(2).u);
+    gvmDebugOpcode("0x%08X", (unsigned)LOC(2).u);
     STEP(4);
     NEXT;
 }
@@ -1281,14 +1281,14 @@ IS(LSL_LLI) {
     // Local << Local -> Indirect
     gvmDebugOpcode(
         "lsl (%d), (%d), (i0+%u) : 0x%08X << %u => ",
-        OPS(0),
-        OPS(1),
-        OPU(2),
-        LOC(0).u,
-        LOC(1).u
+        (int)OPS(0),
+        (int)OPS(1),
+        (unsigned)OPU(2),
+        (unsigned)LOC(0).u,
+        (unsigned)LOC(1).u
     );
     IX0(2).u = LOC(0).u << LOC(1).u;
-    gvmDebugOpcode("0x%08X", IX0(2).u);
+    gvmDebugOpcode("0x%08X", (unsigned)IX0(2).u);
     STEP(4);
     NEXT;
 }
@@ -1297,14 +1297,14 @@ IS(LSL_ILI) {
     // Indirect << Local -> Indirect
     gvmDebugOpcode(
         "lsl (i0+%u), (%d), (i1+%u) : 0x%08X << %u => ",
-        OPU(0),
-        OPS(1),
-        OPU(2),
-        IX0(0).u,
-        LOC(1).u
+        (unsigned)OPU(0),
+        (int)OPS(1),
+        (unsigned)OPU(2),
+        (unsigned)IX0(0).u,
+        (unsigned)LOC(1).u
     );
     IX1(2).u = IX0(0).u << LOC(1).u;
-    gvmDebugOpcode("0x%08X", IX1(2).u);
+    gvmDebugOpcode("0x%08X", (unsigned)IX1(2).u);
     STEP(4);
     NEXT;
 }
@@ -1315,14 +1315,14 @@ IS(LSR_LLL) {
     // Local >> Local -> Local
     gvmDebugOpcode(
         "lsr (%d), (%d), (%d) : 0x%08X << %u => ",
-        OPS(0),
-        OPS(1),
-        OPS(2),
-        LOC(0).u,
-        LOC(1).u
+        (int)OPS(0),
+        (int)OPS(1),
+        (int)OPS(2),
+        (unsigned)LOC(0).u,
+        (unsigned)LOC(1).u
     );
     LOC(2).u = LOC(0).u >> LOC(1).u;
-    gvmDebugOpcode("0x%08X", LOC(2).u);
+    gvmDebugOpcode("0x%08X", (unsigned)LOC(2).u);
     STEP(4);
     NEXT;
 }
@@ -1331,14 +1331,14 @@ IS(LSR_ILL) {
     // Indirect >> Local -> Local
     gvmDebugOpcode(
         "lsr (i0+%u), (%d), (%d) : 0x%08X >> %u => ",
-        OPU(0),
-        OPS(1),
-        OPS(2),
-        IX0(0).u,
-        LOC(1).u
+        (unsigned)OPU(0),
+        (int)OPS(1),
+        (int)OPS(2),
+        (unsigned)IX0(0).u,
+        (unsigned)LOC(1).u
     );
     LOC(2).u = IX0(0).u >> LOC(1).u;
-    gvmDebugOpcode("0x%08X", LOC(2).u);
+    gvmDebugOpcode("0x%08X", (unsigned)LOC(2).u);
     STEP(4);
     NEXT;
 }
@@ -1347,14 +1347,14 @@ IS(LSR_LLI) {
     // Local >> Local -> Indirect
     gvmDebugOpcode(
         "lsr (%d), (%d), (i0+%u) : 0x%08X >> %u => ",
-        OPS(0),
-        OPS(1),
-        OPU(2),
-        LOC(0).u,
-        LOC(1).u
+        (int)OPS(0),
+        (int)OPS(1),
+        (unsigned)OPU(2),
+        (unsigned)LOC(0).u,
+        (unsigned)LOC(1).u
     );
     IX0(2).u = LOC(0).u >> LOC(1).u;
-    gvmDebugOpcode("0x%08X", IX0(2).u);
+    gvmDebugOpcode("0x%08X", (unsigned)IX0(2).u);
     STEP(4);
     NEXT;
 }
@@ -1363,14 +1363,14 @@ IS(LSR_ILI) {
     // Indirect >> Local -> Indirect
     gvmDebugOpcode(
         "lsl (i0+%u), (%d), (i1+%u) : 0x%08X >> %u => ",
-        OPU(0),
-        OPS(1),
-        OPU(2),
-        IX0(0).u,
-        LOC(1).u
+        (unsigned)OPU(0),
+        (int)OPS(1),
+        (unsigned)OPU(2),
+        (unsigned)IX0(0).u,
+        (unsigned)LOC(1).u
     );
     IX1(2).u = IX0(0).u >> LOC(1).u;
-    gvmDebugOpcode("0x%08X", IX1(2).u);
+    gvmDebugOpcode("0x%08X", (unsigned)IX1(2).u);
     STEP(4);
     NEXT;
 }
@@ -1383,14 +1383,14 @@ IS(MAX_LLL) {
     int32 i2 = LOC(1).i;
     gvmDebugOpcode(
         "max.i (%d), (%d), (%d) : max(%d, %d) => ",
-        OPS(0),
-        OPS(1),
-        OPS(2),
-        i1,
-        i2
+        (int)OPS(0),
+        (int)OPS(1),
+        (int)OPS(2),
+        (int)i1,
+        (int)i2
     );
     LOC(2).i  = i1 > i2 ? i1 : i2;
-    gvmDebugOpcode("%d", LOC(2).u);
+    gvmDebugOpcode("%d", (unsigned)LOC(2).u);
     STEP(4);
     NEXT;
 }
@@ -1401,14 +1401,14 @@ IS(MAX_ILL) {
     int32 i2 = LOC(1).i;
     gvmDebugOpcode(
         "max.i (i0+%u), (%d), (%d) : max(%d, %d) => ",
-        OPU(0),
-        OPS(1),
-        OPS(2),
-        i1,
-        i2
+        (unsigned)OPU(0),
+        (int)OPS(1),
+        (int)OPS(2),
+        (int)i1,
+        (int)i2
     );
     LOC(2).i  = i1 > i2 ? i1 : i2;
-    gvmDebugOpcode("%d", LOC(2).u);
+    gvmDebugOpcode("%d", (unsigned)LOC(2).u);
     STEP(4);
     NEXT;
 }
@@ -1419,14 +1419,14 @@ IS(MAX_LLI) {
     int32 i2 = LOC(1).i;
     gvmDebugOpcode(
         "max.i (%d), (%d), (i0+%u) : max(%d, %d) => ",
-        OPS(0),
-        OPS(1),
-        OPU(2),
-        i1,
-        i2
+        (int)OPS(0),
+        (int)OPS(1),
+        (unsigned)OPU(2),
+        (int)i1,
+        (int)i2
     );
     IX0(0).i  = i1 > i2 ? i1 : i2;
-    gvmDebugOpcode("%d", IX0(2).u);
+    gvmDebugOpcode("%d", (unsigned)IX0(2).u);
     STEP(4);
     NEXT;
 }
@@ -1437,14 +1437,14 @@ IS(MAX_ILI) {
     int32 i2 = LOC(1).i;
     gvmDebugOpcode(
         "max.i (i0+%u), (%d), (i1+%u) : max(%d, %d) => ",
-        OPU(0),
-        OPS(1),
-        OPU(2),
-        i1,
-        i2
+        (unsigned)OPU(0),
+        (int)OPS(1),
+        (unsigned)OPU(2),
+        (int)i1,
+        (int)i2
     );
     IX1(2).i  = i1 > i2 ? i1 : i2;
-    gvmDebugOpcode("%d", IX1(2).u);
+    gvmDebugOpcode("%d", (unsigned)IX1(2).u);
     STEP(4);
     NEXT;
 }
@@ -1458,14 +1458,14 @@ IS(MIN_LLL) {
     int32 i2 = LOC(1).i;
     gvmDebugOpcode(
         "min.i (%d), (%d), (%d) : max(%d, %d) => ",
-        OPS(0),
-        OPS(1),
-        OPS(2),
-        i1,
-        i2
+        (int)OPS(0),
+        (int)OPS(1),
+        (int)OPS(2),
+        (int)i1,
+        (int)i2
     );
     LOC(2).i  = i1 < i2 ? i1 : i2;
-    gvmDebugOpcode("%d", LOC(2).u);
+    gvmDebugOpcode("%d", (unsigned)LOC(2).u);
     STEP(4);
     NEXT;
 }
@@ -1476,14 +1476,14 @@ IS(MIN_ILL) {
     int32 i2 = LOC(1).i;
     gvmDebugOpcode(
         "min.i (i0+%u), (%d), (%d) : max(%d, %d) => ",
-        OPU(0),
-        OPS(1),
-        OPS(2),
-        i1,
-        i2
+        (unsigned)OPU(0),
+        (int)OPS(1),
+        (int)OPS(2),
+        (int)i1,
+        (int)i2
     );
     LOC(2).i  = i1 < i2 ? i1 : i2;
-    gvmDebugOpcode("%d", LOC(2).u);
+    gvmDebugOpcode("%d", (unsigned)LOC(2).u);
     STEP(4);
     NEXT;
 }
@@ -1494,14 +1494,14 @@ IS(MIN_LLI) {
     int32 i2 = LOC(1).i;
     gvmDebugOpcode(
         "min.i (%d), (%d), (i0+%u) : max(%d, %d) => ",
-        OPS(0),
-        OPS(1),
-        OPU(2),
-        i1,
-        i2
+        (int)OPS(0),
+        (int)OPS(1),
+        (unsigned)OPU(2),
+        (int)i1,
+        (int)i2
     );
     IX0(0).i  = i1 < i2 ? i1 : i2;
-    gvmDebugOpcode("%d", IX0(2).u);
+    gvmDebugOpcode("%d", (unsigned)IX0(2).u);
     STEP(4);
     NEXT;
 }
@@ -1512,14 +1512,14 @@ IS(MIN_ILI) {
     int32 i2 = LOC(1).i;
     gvmDebugOpcode(
         "min.i (i0+%u), (%d), (i1+%u) : max(%d, %d) => ",
-        OPU(0),
-        OPS(1),
-        OPU(2),
-        i1,
-        i2
+        (unsigned)OPU(0),
+        (int)OPS(1),
+        (unsigned)OPU(2),
+        (int)i1,
+        (int)i2
     );
     IX1(2).i  = i1 < i2 ? i1 : i2;
-    gvmDebugOpcode("%d", IX1(2).u);
+    gvmDebugOpcode("%d", (unsigned)IX1(2).u);
     STEP(4);
     NEXT;
 }

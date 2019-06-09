@@ -11,17 +11,17 @@
 using namespace GVM;
 
 Result printInteger(Scalar* frame) {
-    std::printf("HOST: printInteger() = %d\n", frame[0].i);
+    std::printf("HOST: printInteger() = %d\n", (int)frame[0].i);
     return SUCCESS;
 }
 
 Result printFloat(Scalar* frame) {
-    std::printf("HOST: printFloat() = %f\n", frame[0].f);
+    std::printf("HOST: printFloat() = %e\n", frame[0].f);
     return SUCCESS;
 }
 
 Result printVector(Scalar* frame) {
-    std::printf("HOST: printVector() = { %f, %f, %f }\n", frame[0].f, frame[1].f, frame[2].f);
+    std::printf("HOST: printVector() = { %e, %e, %e }\n", frame[0].f, frame[1].f, frame[2].f);
     return SUCCESS;
 }
 
@@ -77,9 +77,9 @@ int main() {
 
     std::printf(
         "\nBefore\n\tstack[0] = %d\n\tstack[1] = %d\n\tstack[2] = %d\n",
-        stack[0].i,
-        stack[1].i,
-        stack[2].i
+        (int)stack[0].i,
+        (int)stack[1].i,
+        (int)stack[2].i
     );
 
     Result result = Interpreter::invoke(1);
@@ -87,9 +87,9 @@ int main() {
     std::printf(
         "\nAfter\n\tResult = %d\n\tstack[0] = %d\n\tstack[1] = %d\n\tstack[2] = %d\n",
         result,
-        stack[0].i,
-        stack[1].i,
-        stack[2].i
+        (int)stack[0].i,
+        (int)stack[1].i,
+        (int)stack[2].i
     );
 
     Interpreter::done();

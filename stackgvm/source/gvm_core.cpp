@@ -481,8 +481,8 @@ void Interpreter::dumpCallStack() {
                     "\t\t%3d | %p | 0x%08X | %12d | %12g\n",
                     i,
                     &frame[i],
-                    frame[i].u,
-                    frame[i].i,
+                    (unsigned)frame[i].u,
+                    (int)frame[i].i,
                     frame[i].f
                 );
             }

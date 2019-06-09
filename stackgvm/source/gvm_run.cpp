@@ -7,6 +7,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cmath>
+#include <cfloat>
 #include "include/gvm_core.hpp"
 #include "include/gvm_debug.hpp"
 
@@ -47,9 +48,9 @@ using namespace GVM;
     #define gvmDebugSkip()
 #endif
 
-#define FETCH switch (*PRGC)
-#define BOC switch (PRGC[1])
-#define CC(cond) case Condition::_##condition:
+#define FETCH   switch (*PRGC)
+#define FETCHC  switch (PRGC[1])
+#define BCC(c)  case Condition::_##c:
 #define NEXT          goto forever
 #define STEP(size)    PRGC += (size)
 #define EXIT(code)    SAVE_PRGC; return ((code))
@@ -132,6 +133,7 @@ forever:
         #include "include/gvm_integer.hpp"
         #include "include/gvm_float.hpp"
         #include "include/gvm_vector.hpp"
+        #include "include/gvm_conditional_branch.hpp"
         default:
             return EXEC_HALT_AND_CATCH_FIRE;
     }
