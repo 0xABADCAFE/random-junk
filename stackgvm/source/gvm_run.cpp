@@ -42,7 +42,11 @@ using namespace GVM;
 #else
     #define OPS(o)
     #define OPU(o)
+#ifdef _GVM_ANNOTATE_ASM_
+    #define IS(opcode)    case Opcode::_##opcode: asm("; "#opcode);
+#else
     #define IS(opcode)    case Opcode::_##opcode:
+#endif
     #define gvmDebugOpcode(...)
     #define gvmDebugJump(o)
     #define gvmDebugSkip()
@@ -50,7 +54,13 @@ using namespace GVM;
 
 #define FETCH   switch (*PRGC)
 #define FETCHC  switch (PRGC[1])
+
+#ifdef _GVM_ANNOTATE_ASM_
+#define BCC(c)  case Condition::_##c: asm("; BOC _"#c);
+#else
 #define BCC(c)  case Condition::_##c:
+#endif
+
 #define NEXT          goto forever
 #define STEP(size)    PRGC += (size)
 #define EXIT(code)    SAVE_PRGC; return ((code))

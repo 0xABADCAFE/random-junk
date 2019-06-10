@@ -15,13 +15,9 @@ BCC(V_AE_LL) {
     t  = vs1[1] - vs2[1]; sf += t * t;
     t  = vs1[2] - vs2[2]; sf += t * t;
     if (sf < (3 * FLT_EPSILON * FLT_EPSILON)) {
-        gvmDebugJump(3);
-        STEP(J16(3));
-        NEXT;
+        BOC_TAKEN
     }
-    gvmDebugSkip();
-    STEP(6);
-    NEXT;
+    BOC_SKIPPED
 }
 
 // Local == Indirect[0]
@@ -39,13 +35,9 @@ BCC(V_AE_LI0) {
     t  = vs1[1] - vs2[1]; sf += t * t;
     t  = vs1[2] - vs2[2]; sf += t * t;
     if (sf < (3 * FLT_EPSILON * FLT_EPSILON)) {
-        gvmDebugJump(3);
-        STEP(J16(3));
-        NEXT;
+        BOC_TAKEN
     }
-    gvmDebugSkip();
-    STEP(6);
-    NEXT;
+    BOC_SKIPPED
 }
 
 // Local == Indirect[1]
@@ -63,13 +55,9 @@ BCC(V_AE_LI1) {
     t  = vs1[1] - vs2[1]; sf += t * t;
     t  = vs1[2] - vs2[2]; sf += t * t;
     if (sf < (3 * FLT_EPSILON * FLT_EPSILON)) {
-        gvmDebugJump(3);
-        STEP(J16(3));
-        NEXT;
+        BOC_TAKEN
     }
-    gvmDebugSkip();
-    STEP(6);
-    NEXT;
+    BOC_SKIPPED
 }
 
 // Indirect[0] == Indirect[1]
@@ -87,11 +75,7 @@ BCC(V_AE_II) {
     t  = vs1[1] - vs2[1]; sf += t * t;
     t  = vs1[2] - vs2[2]; sf += t * t;
     if (sf < (3 * FLT_EPSILON * FLT_EPSILON)) {
-        gvmDebugJump(3);
-        STEP(J16(3));
-        NEXT;
+        BOC_TAKEN
     }
-    gvmDebugSkip();
-    STEP(6);
-    NEXT;
+    BOC_SKIPPED
 }

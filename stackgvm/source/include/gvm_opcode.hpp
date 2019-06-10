@@ -488,10 +488,10 @@ namespace GVM {
             _F_GT_II,               // Indirect[0] > Indirect[1]
 
             // Float approximately equal (within epsilon)
-            _F_AE_LL,               // Local == Local
-            _F_AE_LI0,              // Local == Indirect[0]
-            _F_AE_LI1,              // Local == Indirect[1]
-            _F_AE_II,               // Indirect[0] == Indirect[1]
+            _F_AE_LL,               // Local ~= Local
+            _F_AE_LI0,              // Local ~= Indirect[0]
+            _F_AE_LI1,              // Local ~= Indirect[1]
+            _F_AE_II,               // Indirect[0] ~= Indirect[1]
 
             // Vector identical (exact comparison)
             _V_EQ_LL,               // Local == Local
@@ -500,10 +500,10 @@ namespace GVM {
             _V_EQ_II,               // Indirect[0] == Indirect[1]
 
             // Vector approximately equal (each component within epsilon)
-            _V_AE_LL,               // Local == Local
-            _V_AE_LI0,              // Local == Indirect[0]
-            _V_AE_LI1,              // Local == Indirect[1]
-            _V_AE_II,               // Indirect[0] == Indirect[1]
+            _V_AE_LL,               // Local ~= Local
+            _V_AE_LI0,              // Local ~= Indirect[0]
+            _V_AE_LI1,              // Local ~= Indirect[1]
+            _V_AE_II,               // Indirect[0] ~= Indirect[1]
 
             // Vector not equal
             _V_NE_LL,               // Local == Local

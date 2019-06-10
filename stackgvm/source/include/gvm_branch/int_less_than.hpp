@@ -10,13 +10,9 @@ BCC(I_LT_LS) {
         (int)S8(2)
     );
     if (LOC(1).i < S8(2)) {
-        gvmDebugJump(3);
-        STEP(J16(3));
-        NEXT;
+        BOC_TAKEN
     }
-    gvmDebugSkip();
-    STEP(6);
-    NEXT;
+    BOC_SKIPPED
 }
 
 // Indirect[0] < Small Integer Literal
@@ -30,13 +26,9 @@ BCC(I_LT_I0S) {
         (int)S8(2)
     );
     if (IX0(1).i < S8(2)) {
-        gvmDebugJump(3);
-        STEP(J16(3));
-        NEXT;
+        BOC_TAKEN
     }
-    gvmDebugSkip();
-    STEP(6);
-    NEXT;
+    BOC_SKIPPED
 }
 
 // Indirect[1] < Small Integer Literal
@@ -50,13 +42,9 @@ BCC(I_LT_I1S) {
         (int)S8(2)
     );
     if (IX1(1).i < S8(2)) {
-        gvmDebugJump(3);
-        STEP(J16(3));
-        NEXT;
+        BOC_TAKEN
     }
-    gvmDebugSkip();
-    STEP(6);
-    NEXT;
+    BOC_SKIPPED
 }
 
 // Local < Local
@@ -70,13 +58,9 @@ BCC(I_LT_LL) {
         (int)LOC(2).i
     );
     if (LOC(1).i < LOC(2).i) {
-        gvmDebugJump(3);
-        STEP(J16(3));
-        NEXT;
+        BOC_TAKEN
     }
-    gvmDebugSkip();
-    STEP(6);
-    NEXT;
+    BOC_SKIPPED
 }
 
 // Local < Indirect[0]
@@ -90,13 +74,9 @@ BCC(I_LT_LI0) {
         (int)IX0(2).i
     );
     if (LOC(1).i < IX0(2).i) {
-        gvmDebugJump(3);
-        STEP(J16(3));
-        NEXT;
+        BOC_TAKEN
     }
-    gvmDebugSkip();
-    STEP(6);
-    NEXT;
+    BOC_SKIPPED
 }
 
 // Local < Indirect[1]
@@ -110,13 +90,9 @@ BCC(I_LT_LI1) {
         (int)IX1(2).i
     );
     if (LOC(1).i < IX1(2).i) {
-        gvmDebugJump(3);
-        STEP(J16(3));
-        NEXT;
+        BOC_TAKEN
     }
-    gvmDebugSkip();
-    STEP(6);
-    NEXT;
+    BOC_SKIPPED
 }
 
 // Indirect[0] < Indirect[1]
@@ -130,11 +106,7 @@ BCC(I_LT_II) {
         (int)IX1(2).i
     );
     if (IX0(1).i < IX1(2).i) {
-        gvmDebugJump(3);
-        STEP(J16(3));
-        NEXT;
+        BOC_TAKEN
     }
-    gvmDebugSkip();
-    STEP(6);
-    NEXT;
+    BOC_SKIPPED
 }

@@ -10,13 +10,9 @@ BCC(X_EQ_LS) {
         (int)S8(2)
     );
     if (LOC(1).i == S8(2)) {
-        gvmDebugJump(3);
-        STEP(J16(3));
-        NEXT;
+        BOC_TAKEN
     }
-    gvmDebugSkip();
-    STEP(6);
-    NEXT;
+    BOC_SKIPPED
 }
 
 // Indirect[0] === Small Integer Literal
@@ -30,13 +26,9 @@ BCC(X_EQ_I0S) {
         (int)S8(2)
     );
     if (IX0(1).i == S8(2)) {
-        gvmDebugJump(3);
-        STEP(J16(3));
-        NEXT;
+        BOC_TAKEN
     }
-    gvmDebugSkip();
-    STEP(6);
-    NEXT;
+    BOC_SKIPPED
 }
 
 // Indirect[1] === Small Integer Literal
@@ -50,13 +42,9 @@ BCC(X_EQ_I1S) {
         (int)S8(2)
     );
     if (IX1(1).i == S8(2)) {
-        gvmDebugJump(3);
-        STEP(J16(3));
-        NEXT;
+        BOC_TAKEN
     }
-    gvmDebugSkip();
-    STEP(6);
-    NEXT;
+    BOC_SKIPPED
 }
 
 // Local == Local
@@ -70,13 +58,9 @@ BCC(X_EQ_LL) {
         (unsigned)LOC(2).u
     );
     if (LOC(1).u == LOC(2).u) {
-        gvmDebugJump(3);
-        STEP(J16(3));
-        NEXT;
+        BOC_TAKEN
     }
-    gvmDebugSkip();
-    STEP(6);
-    NEXT;
+    BOC_SKIPPED
 }
 
 // Local == Indirect[0]
@@ -90,13 +74,9 @@ BCC(X_EQ_LI0) {
         (unsigned)IX0(2).u
     );
     if (LOC(1).u == IX0(2).u) {
-        gvmDebugJump(3);
-        STEP(J16(3));
-        NEXT;
+        BOC_TAKEN
     }
-    gvmDebugSkip();
-    STEP(6);
-    NEXT;
+    BOC_SKIPPED
 }
 
 // Local == Indirect[1]
@@ -110,13 +90,9 @@ BCC(X_EQ_LI1) {
         (unsigned)IX1(2).u
     );
     if (LOC(1).u == IX1(2).u) {
-        gvmDebugJump(3);
-        STEP(J16(3));
-        NEXT;
+        BOC_TAKEN
     }
-    gvmDebugSkip();
-    STEP(6);
-    NEXT;
+    BOC_SKIPPED
 }
 
 // Indirect[0] == Indirect[1]
@@ -130,11 +106,7 @@ BCC(X_EQ_II) {
         (unsigned)IX1(2).u
     );
     if (IX0(1).u == IX1(2).u) {
-        gvmDebugJump(3);
-        STEP(J16(3));
-        NEXT;
+        BOC_TAKEN
     }
-    gvmDebugSkip();
-    STEP(6);
-    NEXT;
+    BOC_SKIPPED
 }

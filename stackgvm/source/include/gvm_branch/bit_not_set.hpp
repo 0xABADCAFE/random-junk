@@ -9,13 +9,9 @@ BCC(X_BC_SL) {
         (unsigned)LOC(2).u
     );
     if (!((1<<U8(1)) & LOC(2).u)) {
-        gvmDebugJump(3);
-        STEP(J16(3));
-        NEXT;
+        BOC_TAKEN
     }
-    gvmDebugSkip();
-    STEP(6);
-    NEXT;
+    BOC_SKIPPED
 }
 
 // Literal bit clear in Indirect[0]
@@ -28,13 +24,9 @@ BCC(X_BC_SI0) {
         (unsigned)IX0(2).u
     );
     if (!((1<<U8(1)) & IX0(2).u)) {
-        gvmDebugJump(3);
-        STEP(J16(3));
-        NEXT;
+        BOC_TAKEN
     }
-    gvmDebugSkip();
-    STEP(6);
-    NEXT;
+    BOC_SKIPPED
 }
 
 // Literal bit clear in Indirect[1]
@@ -47,13 +39,9 @@ BCC(X_BC_SI1) {
         (unsigned)IX1(2).u
     );
     if (!((1<<U8(1)) & IX1(2).u)) {
-        gvmDebugJump(3);
-        STEP(J16(3));
-        NEXT;
+        BOC_TAKEN
     }
-    gvmDebugSkip();
-    STEP(6);
-    NEXT;
+    BOC_SKIPPED
 }
 
 // Local bit clear in Local
@@ -66,13 +54,9 @@ BCC(X_BC_LL) {
         (unsigned)LOC(2).u
     );
     if (!((1<<LOC(1).u) & LOC(2).u)) {
-        gvmDebugJump(3);
-        STEP(J16(3));
-        NEXT;
+        BOC_TAKEN
     }
-    gvmDebugSkip();
-    STEP(6);
-    NEXT;
+    BOC_SKIPPED
 }
 
 // Local bit clear in Indirect[0]
@@ -85,13 +69,9 @@ BCC(X_BC_LI0) {
         (unsigned)IX0(2).u
     );
     if (!((1<<LOC(1).u) & IX0(2).u)) {
-        gvmDebugJump(3);
-        STEP(J16(3));
-        NEXT;
+        BOC_TAKEN
     }
-    gvmDebugSkip();
-    STEP(6);
-    NEXT;
+    BOC_SKIPPED
 }
 
 // Local bit clear in Indirect[1]
@@ -104,12 +84,8 @@ BCC(X_BC_LI1) {
         (unsigned)IX1(2).u
     );
     if (!((1<<LOC(1).u) & IX1(2).u)) {
-        gvmDebugJump(3);
-        STEP(J16(3));
-        NEXT;
+        BOC_TAKEN
     }
-    gvmDebugSkip();
-    STEP(6);
-    NEXT;
+    BOC_SKIPPED
 }
 
