@@ -12,13 +12,9 @@ BCC(F_AE_LL) {
     sf = (LOC(1).f - LOC(2).f);
     sf *= sf;
     if (sf < (FLT_EPSILON * FLT_EPSILON)) {
-        gvmDebugJump(3);
-        STEP(J16(3));
-        NEXT;
+        BOC_TAKEN
     }
-    gvmDebugSkip();
-    STEP(6);
-    NEXT;
+    BOC_SKIPPED
 }
 
 // Local ~= Indirect[0]
@@ -34,13 +30,9 @@ BCC(F_AE_LI0) {
     sf = (LOC(1).f - IX0(2).f);
     sf *= sf;
     if (sf < (FLT_EPSILON * FLT_EPSILON)) {
-        gvmDebugJump(3);
-        STEP(J16(3));
-        NEXT;
+        BOC_TAKEN
     }
-    gvmDebugSkip();
-    STEP(6);
-    NEXT;
+    BOC_SKIPPED
 }
 
 // Local ~= Indirect[1]
@@ -56,13 +48,9 @@ BCC(F_AE_LI1) {
     sf = (LOC(1).f - IX1(2).f);
     sf *= sf;
     if (sf < (FLT_EPSILON * FLT_EPSILON)) {
-        gvmDebugJump(3);
-        STEP(J16(3));
-        NEXT;
+        BOC_TAKEN
     }
-    gvmDebugSkip();
-    STEP(6);
-    NEXT;
+    BOC_SKIPPED
 }
 
 // Indirect[0] ~= Indirect[1]
@@ -78,11 +66,7 @@ BCC(F_AE_II) {
     sf = (IX0(1).f - IX1(2).f);
     sf *= sf;
     if (sf < (FLT_EPSILON * FLT_EPSILON)) {
-        gvmDebugJump(3);
-        STEP(J16(3));
-        NEXT;
+        BOC_TAKEN
     }
-    gvmDebugSkip();
-    STEP(6);
-    NEXT;
+    BOC_SKIPPED
 }

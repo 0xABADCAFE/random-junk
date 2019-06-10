@@ -15,13 +15,9 @@ BCC(V_EQ_LL) {
         ud[1] == us[1] &&
         ud[2] == us[2]
     ) {
-        gvmDebugJump(3);
-        STEP(J16(3));
-        NEXT;
+        BOC_TAKEN
     }
-    gvmDebugSkip();
-    STEP(6);
-    NEXT;
+    BOC_SKIPPED
 }
 
 // Local == Indirect[0]
@@ -39,13 +35,9 @@ BCC(V_EQ_LI0) {
         ud[1] == us[1] &&
         ud[2] == us[2]
     ) {
-        gvmDebugJump(3);
-        STEP(J16(3));
-        NEXT;
+        BOC_TAKEN
     }
-    gvmDebugSkip();
-    STEP(6);
-    NEXT;
+    BOC_SKIPPED
 }
 
 // Local == Indirect[1]
@@ -63,13 +55,9 @@ BCC(V_EQ_LI1) {
         ud[1] == us[1] &&
         ud[2] == us[2]
     ) {
-        gvmDebugJump(3);
-        STEP(J16(3));
-        NEXT;
+        BOC_TAKEN
     }
-    gvmDebugSkip();
-    STEP(6);
-    NEXT;
+    BOC_SKIPPED
 }
 
 // Indirect[0] == Indirect[1]
@@ -87,11 +75,7 @@ BCC(V_EQ_II) {
         ud[1] == us[1] &&
         ud[2] == us[2]
     ) {
-        gvmDebugJump(3);
-        STEP(J16(3));
-        NEXT;
+        BOC_TAKEN
     }
-    gvmDebugSkip();
-    STEP(6);
-    NEXT;
+    BOC_SKIPPED
 }

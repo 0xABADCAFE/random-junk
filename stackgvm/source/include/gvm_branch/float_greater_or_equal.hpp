@@ -10,13 +10,9 @@ BCC(F_GE_LL) {
         LOC(2).f
     );
     if (LOC(1).f >= LOC(2).f) {
-        gvmDebugJump(3);
-        STEP(J16(3));
-        NEXT;
+        BOC_TAKEN
     }
-    gvmDebugSkip();
-    STEP(6);
-    NEXT;
+    BOC_SKIPPED
 }
 
 // Local >= Indirect[0]
@@ -30,13 +26,9 @@ BCC(F_GE_LI0) {
         IX0(2).f
     );
     if (LOC(1).f >= IX0(2).f) {
-        gvmDebugJump(3);
-        STEP(J16(3));
-        NEXT;
+        BOC_TAKEN
     }
-    gvmDebugSkip();
-    STEP(6);
-    NEXT;
+    BOC_SKIPPED
 }
 
 // Local >= Indirect[1]
@@ -50,13 +42,9 @@ BCC(F_GE_LI1) {
         IX1(2).f
     );
     if (LOC(1).f >= IX1(2).f) {
-        gvmDebugJump(3);
-        STEP(J16(3));
-        NEXT;
+        BOC_TAKEN
     }
-    gvmDebugSkip();
-    STEP(6);
-    NEXT;
+    BOC_SKIPPED
 }
 
 // Indirect[0] >= Indirect[1]
@@ -70,12 +58,8 @@ BCC(F_GE_II) {
         IX1(2).f
     );
     if (IX0(1).f >= IX1(2).f) {
-        gvmDebugJump(3);
-        STEP(J16(3));
-        NEXT;
+        BOC_TAKEN
     }
-    gvmDebugSkip();
-    STEP(6);
-    NEXT;
+    BOC_SKIPPED
 }
 
