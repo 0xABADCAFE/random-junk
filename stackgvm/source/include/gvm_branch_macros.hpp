@@ -49,6 +49,7 @@
 #define clt_li (l, I, i, j) _CC(I_GE_LI##I),   _D8(l),  _D8(i),  _D16(j),
 #define clt_ii (i1, i2, j)  _CC(I_GE_II),      _D8(i1), _D8(i2), _D16(j),
 
+// TODO - correct?
 #define clt_il (I, i, l, j) _CC(I_LE_LI##I),   _D8(l),  _D8(i),  _D16(j),
 
 // Integer branch if less than or equal
