@@ -14,13 +14,19 @@
 using namespace GVM;
 
 #ifdef _GVM_OPT_CACHE_POINTERS_
-    #define DECLARE_PTRS     Scalar *myFS, *myIR[2]; const uint8* myPC = programCounter;
-    #define UPDATE_PTRS      myFS = frameStack; myIR[0] = callStack->indirection[0]; myIR[1] = callStack->indirection[1];
+    #define DECLARE_PTRS \
+        Scalar *myFS, *myIR[2]; \
+        const uint8* myPC = programCounter;
+    #define UPDATE_PTRS \
+        myPC = programCounter; \
+        myFS = frameStack; \
+        myIR[0] = callStack->indirection[0];\
+        myIR[1] = callStack->indirection[1];
     #define IR(idx)          myIR[(idx)]
     #define SAVE_IR(idx)     callStack->indirection[(idx)] =  myIR[(idx)]
     #define PRGC             myPC
     #define SAVE_PRGC        programCounter = myPC
-    #define LOC(operand)   ( myFS[(int8)programCounter[(operand) + 1]] )
+    #define LOC(operand)   ( myFS[(int8)myPC[(operand) + 1]] )
 #else
     #define DECLARE_PTRS
     #define UPDATE_PTRS

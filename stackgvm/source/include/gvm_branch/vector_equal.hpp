@@ -7,7 +7,7 @@ BCC(V_EQ_LL) {
         "bcc eq.v (%d), (%d), %d : ",
         (int)OPS(1),
         (int)OPS(2),
-        (int)J16(3)
+        (int)JBRA(3)
     );
 
     if (
@@ -28,7 +28,7 @@ BCC(V_EQ_LI0) {
         "bcc eq.v (%d), (i0 + %u), %d : ",
         (int)OPS(1),
         (unsigned)OPU(2),
-        (int)J16(3)
+        (int)JBRA(3)
     );
     if (
         ud[0] == us[0] &&
@@ -48,7 +48,7 @@ BCC(V_EQ_LI1) {
         "bcc eq.v (%d), (i1 + %u), %d : ",
         (int)OPS(1),
         (unsigned)OPU(2),
-        (int)J16(3)
+        (int)JBRA(3)
     );
     if (
         ud[0] == us[0] &&
@@ -68,7 +68,7 @@ BCC(V_EQ_II) {
         "bcc eq.v (i0 + %u), (i1 + %u), %d : ",
         (unsigned)OPU(1),
         (unsigned)OPU(2),
-        (int)J16(3)
+        (int)JBRA(3)
     );
     if (
         ud[0] == us[0] &&

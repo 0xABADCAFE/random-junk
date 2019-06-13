@@ -5,7 +5,7 @@ BCC(X_BS_SL) {
         "bcc set #%u, (%d), %d : 0x%08X => ",
         (unsigned)U8(1),
         (int)OPS(2),
-        (int)J16(3),
+        (int)JBRA(3),
         (unsigned)LOC(2).u
     );
     if ((1<<U8(1)) & LOC(2).u) {
@@ -20,7 +20,7 @@ BCC(X_BS_SI0) {
         "bcc set #%u, (i0 + %u), %d : 0x%08X => ",
         (unsigned)U8(1),
         (unsigned)OPU(2),
-        (int)J16(3),
+        (int)JBRA(3),
         (unsigned)IX0(2).u
     );
     if ((1<<U8(1)) & IX0(2).u) {
@@ -35,7 +35,7 @@ BCC(X_BS_SI1) {
         "bcc set #%u, (i1 + %u), %d : 0x%08X => ",
         (unsigned)U8(1),
         (unsigned)OPU(2),
-        (int)J16(3),
+        (int)JBRA(3),
         (unsigned)IX1(2).u
     );
     if ((1<<U8(1)) & IX1(2).u) {
@@ -50,7 +50,7 @@ BCC(X_BS_LL) {
         "bcc set (%d), (%d), %d : 0x%08X => ",
         (int)OPS(1),
         (int)OPS(2),
-        (int)J16(3),
+        (int)JBRA(3),
         (unsigned)LOC(2).u
     );
     if ((1<<LOC(1).u) & LOC(2).u) {
@@ -65,7 +65,7 @@ BCC(X_BS_LI0) {
         "bcc set (%d), (i0 + %u), %d : 0x%08X => ",
         (int)OPS(1),
         (unsigned)OPU(2),
-        (int)J16(3),
+        (int)JBRA(3),
         (unsigned)IX0(2).u
     );
     if ((1<<LOC(1).u) & IX0(2).u) {
@@ -80,7 +80,7 @@ BCC(X_BS_LI1) {
         "bcc set (%d), (i1 + %u), %d : 0x%08X => ",
         (int)OPS(1),
         (unsigned)OPU(2),
-        (int)J16(3),
+        (int)JBRA(3),
         (unsigned)IX1(2).u
     );
     if ((1<<LOC(1).u) & IX1(2).u) {

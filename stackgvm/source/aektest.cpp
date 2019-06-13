@@ -109,20 +109,24 @@ typedef enum {
 } HostFunctionEnum;
 
 Result hostPrintHeader(Scalar* frame) {
+/*
 #ifdef _GVM_DEBUGGING_
     std::printf("OUTPUT PPM HEADER {P6 %d %d 255}\n", (int)frame[0].i, (int)frame[0].i);
 #else
     std::printf("P6 %d %d 255 ", (int)frame[0].i, (int)frame[0].i);
 #endif
+*/
     return SUCCESS;
 }
 
 Result hostPrintRGB(Scalar* frame) {
+/*
 #ifdef _GVM_DEBUGGING_
     std::printf("OUTPUT PPM PIXEL {%d, %d, %d}\n", (int)frame[0].f, (int)frame[1].f, (int)frame[2].f);
 #else
     std::printf("%c%c%c", (int)frame[0].f, (int)frame[1].f, (int)frame[2].f);
 #endif
+*/
     return SUCCESS;
 }
 
