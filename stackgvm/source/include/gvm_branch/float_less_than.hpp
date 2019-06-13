@@ -5,7 +5,7 @@ BCC(F_LT_LL) {
         "bcc lt.f (%d), (%d), %d : %e < %e => ",
         (int)OPS(1),
         (int)OPS(2),
-        (int)J16(3),
+        (int)JBRA(3),
         LOC(1).f,
         LOC(2).f
     );
@@ -21,7 +21,7 @@ BCC(F_LT_LI0) {
         "bcc lt.f (%d), (i0 + %u), %d : %e < %e => ",
         (int)OPS(1),
         (unsigned)OPU(2),
-        (int)J16(3),
+        (int)JBRA(3),
         LOC(1).f,
         IX0(2).f
     );
@@ -37,7 +37,7 @@ BCC(F_LT_LI1) {
         "bcc lt.f (%d), (i1 + %u), %d : %e < %e => ",
         (int)OPS(1),
         (unsigned)OPU(2),
-        (int)J16(3),
+        (int)JBRA(3),
         LOC(1).f,
         IX1(2).f
     );
@@ -53,7 +53,7 @@ BCC(F_LT_II) {
         "bcc lt.f (i0 + %u), (i1 + %u), %d : %e < %e => ",
         (unsigned)OPU(1),
         (unsigned)OPU(2),
-        (int)J16(3),
+        (int)JBRA(3),
         IX0(1).f,
         IX1(2).f
     );

@@ -5,7 +5,7 @@ BCC(X_EQ_LS) {
         "bcc eq.i (%d), #%d, %d : %d == %d => ",
         (int)OPS(1),
         (int)S8(2),
-        (int)J16(3),
+        (int)JBRA(3),
         (int)LOC(1).i,
         (int)S8(2)
     );
@@ -21,7 +21,7 @@ BCC(X_EQ_I0S) {
         "bcc eq.i (i0 + %u), #%d, %d : %d == %d => ",
         (unsigned)OPU(1),
         (int)S8(2),
-        (int)J16(3),
+        (int)JBRA(3),
         (int)IX0(1).i,
         (int)S8(2)
     );
@@ -37,7 +37,7 @@ BCC(X_EQ_I1S) {
         "bcc eq.i (i1 + %u), #%d, %d : %d == %d => ",
         (unsigned)OPU(1),
         (int)S8(2),
-        (int)J16(3),
+        (int)JBRA(3),
         (int)IX1(1).i,
         (int)S8(2)
     );
@@ -53,7 +53,7 @@ BCC(X_EQ_LL) {
         "bcc eq (%d), (%d), %d : 0x%08X == 0x%08X => ",
         (int)OPS(1),
         (int)OPS(2),
-        (int)J16(3),
+        (int)JBRA(3),
         (unsigned)LOC(1).u,
         (unsigned)LOC(2).u
     );
@@ -69,7 +69,7 @@ BCC(X_EQ_LI0) {
         "bcc eq (%d), (i0 + %u), %d : 0x%08X == 0x%08X => ",
         (int)OPS(1),
         (unsigned)OPU(2),
-        (int)J16(3),
+        (int)JBRA(3),
         (unsigned)LOC(1).u,
         (unsigned)IX0(2).u
     );
@@ -85,7 +85,7 @@ BCC(X_EQ_LI1) {
         "bcc eq (%d), (i1 + %u), %d : 0x%08X == 0x%08X => ",
         (int)OPS(1),
         (unsigned)OPU(2),
-        (int)J16(3),
+        (int)JBRA(3),
         (unsigned)LOC(1).u,
         (unsigned)IX1(2).u
     );
@@ -101,7 +101,7 @@ BCC(X_EQ_II) {
         "bcc eq (i0 + %u), (i1 + %u), %d : 0x%08X == 0x%08X => ",
         (unsigned)OPU(1),
         (unsigned)OPU(2),
-        (int)J16(3),
+        (int)JBRA(3),
         (unsigned)IX0(1).u,
         (unsigned)IX1(2).u
     );

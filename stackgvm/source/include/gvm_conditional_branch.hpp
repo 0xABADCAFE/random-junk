@@ -2,36 +2,41 @@
 
 // Branch on Condition ///////// ///////////////////////////////////////////////////////////////////////////////////////
 
+#ifdef _GVM_OPT_BCC_16_BIT_
+    #define JBRA(n) J16(n)
+    #define JSKIP 6
+#else
+    #define JBRA(n) J8(n)
+    #define JSKIP 5
+#endif
+
 #ifdef _GVM_OPT_ALLOW_GOTO_
 
     #define BOC_TAKEN   goto boc_branch_taken;
-
     #define BOC_SKIPPED goto boc_branch_skipped;
-
     #define HANDLE_BOC_TAKEN \
     gvmDebugJump(3); \
-    STEP(J16(3)); \
+    STEP(JBRA(3)); \
     NEXT;
 
     #define HANDLE_BOC_SKIPPED \
     gvmDebugSkip(); \
-    STEP(6); \
+    STEP(JSKIP); \
     NEXT;
 
 #else
 
     #define BOC_TAKEN \
     gvmDebugJump(3); \
-    STEP(J16(3)); \
+    STEP(JBRA(3)); \
     NEXT;
 
     #define BOC_SKIPPED \
     gvmDebugSkip(); \
-    STEP(6); \
+    STEP(JSKIP); \
     NEXT;
 
     #define HANDLE_BOC_TAKEN
-
     #define HANDLE_BOC_SKIPPED
 
 #endif
@@ -62,10 +67,10 @@ IS(BOC) {
         #include "gvm_branch/vector_approx_equal.hpp"
         #include "gvm_branch/vector_not_equal.hpp"
     }
-#ifdef _GVM_OPT_ALLOW_GOTO_
+
     boc_branch_taken:
-        #include "gvm_branch/branch_taken.hpp"
+        HANDLE_BOC_TAKEN;
     boc_branch_skipped:
-        #include "gvm_branch/branch_skipped.hpp"
-#endif
+        HANDLE_BOC_SKIPPED;
+
 }

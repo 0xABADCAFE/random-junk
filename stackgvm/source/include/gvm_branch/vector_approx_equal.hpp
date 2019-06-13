@@ -7,7 +7,7 @@ BCC(V_AE_LL) {
         "bcc ae.v (%d), (%d), %d : ",
         (int)OPS(1),
         (int)OPS(2),
-        (int)J16(3)
+        (int)JBRA(3)
     );
 
     float32
@@ -28,7 +28,7 @@ BCC(V_AE_LI0) {
         "bcc ae.v (%d), (i0 + %u), %d : ",
         (int)OPS(1),
         (unsigned)OPU(2),
-        (int)J16(3)
+        (int)JBRA(3)
     );
     float32
     t  = vs1[0] - vs2[0]; sf = t * t;
@@ -48,7 +48,7 @@ BCC(V_AE_LI1) {
         "bcc ae.v (%d), (i1 + %u), %d : ",
         (int)OPS(1),
         (unsigned)OPU(2),
-        (int)J16(3)
+        (int)JBRA(3)
     );
     float32
     t  = vs1[0] - vs2[0]; sf = t * t;
@@ -68,7 +68,7 @@ BCC(V_AE_II) {
         "bcc ae.v (i0 + %u), (i1 + %u), %d : ",
         (unsigned)OPU(1),
         (unsigned)OPU(2),
-        (int)J16(3)
+        (int)JBRA(3)
     );
     float32
     t  = vs1[0] - vs2[0]; sf = t * t;

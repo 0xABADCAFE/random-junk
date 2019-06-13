@@ -5,7 +5,7 @@ BCC(I_LE_LS) {
         "bcc le.i (%d), #%d, %d : %d <= %d => ",
         (int)OPS(1),
         (int)S8(2),
-        (int)J16(3),
+        (int)JBRA(3),
         (int)LOC(1).i,
         (int)S8(2)
     );
@@ -21,7 +21,7 @@ BCC(I_LE_I0S) {
         "bcc le.i (i0 + %u), #%d, %d : %d <= %d => ",
         (unsigned)OPU(1),
         (int)S8(2),
-        (int)J16(3),
+        (int)JBRA(3),
         (int)IX0(1).i,
         (int)S8(2)
     );
@@ -37,7 +37,7 @@ BCC(I_LE_I1S) {
         "bcc le.i (i1 + %u), #%d, %d : %d <= %d => ",
         (unsigned)OPU(1),
         (int)S8(2),
-        (int)J16(3),
+        (int)JBRA(3),
         (int)IX1(1).i,
         (int)S8(2)
     );
@@ -53,7 +53,7 @@ BCC(I_LE_LL) {
         "bcc le.i (%d), (%d), %d : %d <= %d => ",
         (int)OPS(1),
         (int)OPS(2),
-        (int)J16(3),
+        (int)JBRA(3),
         (int)LOC(1).i,
         (int)LOC(2).i
     );
@@ -69,7 +69,7 @@ BCC(I_LE_LI0) {
         "bcc le.i (%d), (i0 + %u), %d : %d <= %d => ",
         OPS(1),
         (unsigned)OPU(2),
-        (int)J16(3),
+        (int)JBRA(3),
         (int)LOC(1).i,
         (int)IX0(2).i
     );
@@ -85,7 +85,7 @@ BCC(I_LE_LI1) {
         "bcc le.i (%d), (i1 + %u), %d : %d <= %d => ",
         OPS(1),
         (unsigned)OPU(2),
-        (int)J16(3),
+        (int)JBRA(3),
         (int)LOC(1).i,
         (int)IX1(2).i
     );
@@ -101,7 +101,7 @@ BCC(I_LE_II) {
         "bcc le.i (i0 + %u), (i1 + %u), %d : %d <= %d => ",
         (unsigned)OPU(1),
         (unsigned)OPU(2),
-        (int)J16(3),
+        (int)JBRA(3),
         (int)IX0(1).i,
         (int)IX1(2).i
     );

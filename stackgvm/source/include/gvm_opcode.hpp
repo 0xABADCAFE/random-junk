@@ -32,12 +32,6 @@ namespace GVM {
             _BNZ_L,    // Branch to a signed 16-bit offset if local is not equal to zero
             _BNZ_I0,    // Branch to a signed 16-bit offset if indirect is not equal to zero
             _BNZ_I1,
-            _BEQ_LL,   // Branch to a signed 16-bit offset if two local values are equal
-            _BEQ_LI,   // Branch to a signed 16-bit offset if local and indirect values are equal
-            _BEQ_II,   // Branch to a signed 16-bit offset if two indirect values are equal
-            _BNE_LL,   // Branch to a signed 16-bit offset if two local values are not equal
-            _BNE_LI,   // Branch to a signed 16-bit offset if local and indirect values are not equal
-            _BNE_II,   // Branch to a signed 16-bit offset if two indirect values are not equal
 
             _ADDR_LL,  // Get address of local variable into local variable
             _ADDR_I0L, // Get the address of an indirect[0] variable into local variable
@@ -82,24 +76,6 @@ namespace GVM {
 
             // Integer specific instructions ///////////////////////////////////////////////////////////////////////////
 
-            // Two operand branch if greater or equal
-            _BGE_LL,
-            _BGE_IL,
-            _BGE_LI,
-            _BGE_II,
-
-            // Two operand branch if less than or equal
-            _BLE_II,
-
-            // Two operand branch if greater than
-            _BGT_LL,
-            _BGT_IL,
-            _BGT_LI,
-            _BGT_II,
-
-            // Two operand branch if less than
-            _BLT_II,
-
             _DBNZ_L,   // Decrement local and branch if not zero
             _DBNN_L,   // Decrement local and branch if not negative
 
@@ -113,12 +89,6 @@ namespace GVM {
             _BSET_SI, // Set bit in indirect
             _BCLR_SL, // Clear bit in local
             _BCLR_SI, // Clear bit in indirect
-            _BBS_SL,  // Branch if bit is set (fixed in local)
-            _BBS_SI,  // Branch if bit is set (indirect)
-            _BBC_SL,  // Branch if bit is clear (local)
-            _BBC_SI,  // Branch if bit is clear (indirect)
-
-            _BBC_LL,  // Branch if bit clear (local, local)
 
             // Two operand logical negate
             _NOT_LL,
@@ -218,24 +188,6 @@ namespace GVM {
             // Single operand get a random value between 0.0f and 1.0f
             _FRND_L,
 
-            // Two operand branch if greater or equal
-            _FBGE_LL,
-            _FBGE_IL,
-            _FBGE_LI,
-            _FBGE_II,
-
-            // Two operand branch if less than or equal
-            _FBLE_II,
-
-            // Two operand branch if greater than
-            _FBGT_LL,
-            _FBGT_IL,
-            _FBGT_LI,
-            _FBGT_II,
-
-            // Two operand branch if less than
-            _FBLT_II,
-
             // Two operand, local to local handy maths functions
             _FINV_LL,   // Reciprocal
             _FSQRT_LL,  // Square root
@@ -309,16 +261,6 @@ namespace GVM {
 
             // Single operandector random - produce a normalised vector with random orientation
             _VRND_L,
-
-            // Vector branch if equal
-            _VBEQ_LL,
-            _VBEQ_IL,
-            _VBEQ_II,
-
-            // Vector branch if not equal
-            _VBNE_LL,
-            _VBNE_IL,
-            _VBNE_II,
 
             // Two operand Vector instructions
             _VCOPY_LL,

@@ -5,7 +5,7 @@ BCC(X_BC_SL) {
         "bcc clr #%u, (%d), %d : 0x%08X => ",
         (unsigned)U8(1),
         (int)OPS(2),
-        (int)J16(3),
+        (int)JBRA(3),
         (unsigned)LOC(2).u
     );
     if (!((1<<U8(1)) & LOC(2).u)) {
@@ -20,7 +20,7 @@ BCC(X_BC_SI0) {
         "bcc clr #%u, (i0 + %u), %d : 0x%08X => ",
         (unsigned)U8(1),
         (unsigned)OPU(2),
-        (int)J16(3),
+        (int)JBRA(3),
         (unsigned)IX0(2).u
     );
     if (!((1<<U8(1)) & IX0(2).u)) {
@@ -35,7 +35,7 @@ BCC(X_BC_SI1) {
         "bcc clr #%u, (i1 + %u), %d : 0x%08X => ",
         (unsigned)U8(1),
         (unsigned)OPU(2),
-        (int)J16(3),
+        (int)JBRA(3),
         (unsigned)IX1(2).u
     );
     if (!((1<<U8(1)) & IX1(2).u)) {
@@ -50,7 +50,7 @@ BCC(X_BC_LL) {
         "bcc clr (%d), (%d), %d : 0x%08X => ",
         (int)OPS(1),
         (int)OPS(2),
-        (int)J16(3),
+        (int)JBRA(3),
         (unsigned)LOC(2).u
     );
     if (!((1<<LOC(1).u) & LOC(2).u)) {
@@ -65,7 +65,7 @@ BCC(X_BC_LI0) {
         "bcc clr (%d), (i0 + %u), %d : 0x%08X => ",
         (int)OPS(1),
         (unsigned)OPU(2),
-        (int)J16(3),
+        (int)JBRA(3),
         (unsigned)IX0(2).u
     );
     if (!((1<<LOC(1).u) & IX0(2).u)) {
@@ -80,7 +80,7 @@ BCC(X_BC_LI1) {
         "bcc clr (%d), (i1 + %u), %d : 0x%08X => ",
         (int)OPS(1),
         (unsigned)OPU(2),
-        (int)J16(3),
+        (int)JBRA(3),
         (unsigned)IX1(2).u
     );
     if (!((1<<LOC(1).u) & IX1(2).u)) {
