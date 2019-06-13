@@ -408,8 +408,8 @@ GFUNC(trace) {
 //     normal   = normal_up,
 //     material = 1;
 //   }
-                                                                                            // Total: 14
-    fclt_il     (gf_distance_min, f_trace_p, 14)                                            // 5 [1, 1, 1, 2]
+                                                                                            // Total: 15
+    fclt_il     (0, gf_distance_min, f_trace_p, 14)                                         // 5 [1, 1, 1, 1, 1]
         copy_ll     (f_trace_p, f_trace_distance)                                           // 3 [1, 1, 1]
         vcopy_il    (gv_normal_up, v_trace_normal)                                          // 3 [1, 1, 1]
         load_sl     (127, i_trace_material)                                                   // 3 [1, 1, 1]
@@ -494,7 +494,7 @@ GFUNC(trace) {
             fneg_ll     (f_trace_sphere_distance, f_trace_sphere_distance)                      // 3 [1, 1, 1]
 
             fclt_ll     (f_trace_sphere_distance, f_trace_distance, 27)                         // 5 [1, 1, 1, 2]
-                fcgt_li     (f_trace_sphere_distance, gf_distance_min, 22)                      // 5 [1, 1, 1, 2]
+                fcgt_li     (f_trace_sphere_distance, 0, gf_distance_min, 22)                   // 5 [1, 1, 1, 2]
 
                     copy_ll     (f_trace_sphere_distance, f_trace_distance)                     // 3 [1, 1, 1]
                     vfmul_lll   (v_trace_direction, f_trace_distance, v_trace_temp)             // 4 [1, 1, 1, 1]

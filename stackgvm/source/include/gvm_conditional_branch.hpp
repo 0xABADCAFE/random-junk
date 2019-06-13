@@ -10,24 +10,24 @@
 
     #define HANDLE_BOC_TAKEN \
     gvmDebugJump(3); \
-    STEP(J16(3)); \
+    STEP(J8(3)); \
     NEXT;
 
     #define HANDLE_BOC_SKIPPED \
     gvmDebugSkip(); \
-    STEP(6); \
+    STEP(5); \
     NEXT;
 
 #else
 
     #define BOC_TAKEN \
     gvmDebugJump(3); \
-    STEP(J16(3)); \
+    STEP(J8(3)); \
     NEXT;
 
     #define BOC_SKIPPED \
     gvmDebugSkip(); \
-    STEP(6); \
+    STEP(5); \
     NEXT;
 
     #define HANDLE_BOC_TAKEN
