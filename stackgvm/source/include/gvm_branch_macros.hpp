@@ -3,8 +3,10 @@
 
 #ifdef _GVM_OPT_BCC_16_BIT_
     #define _DJ(j) _D16(j)
+    #define BOC_SIZE 6
 #else
     #define _DJ(j) _D8(j)
+    #define BOC_SIZE 5
 #endif
 
 #define _CC(x)  _OP(BOC), (uint8)Condition::_##x
