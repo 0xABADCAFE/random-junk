@@ -7,19 +7,26 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cmath>
+#include <cfloat>
 #include "include/gvm_core.hpp"
 #include "include/gvm_debug.hpp"
 
 using namespace GVM;
 
 #ifdef _GVM_OPT_CACHE_POINTERS_
-    #define DECLARE_PTRS     Scalar *myFS, *myIR[2]; const uint8* myPC = programCounter;
-    #define UPDATE_PTRS      myFS = frameStack; myIR[0] = callStack->indirection[0]; myIR[1] = callStack->indirection[1];
+    #define DECLARE_PTRS \
+        Scalar *myFS, *myIR[2]; \
+        const uint8* myPC = programCounter;
+    #define UPDATE_PTRS \
+        myPC = programCounter; \
+        myFS = frameStack; \
+        myIR[0] = callStack->indirection[0];\
+        myIR[1] = callStack->indirection[1];
     #define IR(idx)          myIR[(idx)]
     #define SAVE_IR(idx)     callStack->indirection[(idx)] =  myIR[(idx)]
     #define PRGC             myPC
     #define SAVE_PRGC        programCounter = myPC
-    #define LOC(operand)   ( myFS[(int8)programCounter[(operand) + 1]] )
+    #define LOC(operand)   ( myFS[(int8)myPC[(operand) + 1]] )
 #else
     #define DECLARE_PTRS
     #define UPDATE_PTRS
@@ -41,15 +48,25 @@ using namespace GVM;
 #else
     #define OPS(o)
     #define OPU(o)
+#ifdef _GVM_ANNOTATE_ASM_
+    #define IS(opcode)    case Opcode::_##opcode: asm("; "#opcode);
+#else
     #define IS(opcode)    case Opcode::_##opcode:
+#endif
     #define gvmDebugOpcode(...)
     #define gvmDebugJump(o)
     #define gvmDebugSkip()
 #endif
 
-#define FETCH switch (*PRGC)
-#define BOC switch (PRGC[1])
-#define CC(cond) case Condition::_##condition:
+#define FETCH   switch (*PRGC)
+#define FETCHC  switch (PRGC[1])
+
+#ifdef _GVM_ANNOTATE_ASM_
+#define BCC(c)  case Condition::_##c: asm("; BOC _"#c);
+#else
+#define BCC(c)  case Condition::_##c:
+#endif
+
 #define NEXT          goto forever
 #define STEP(size)    PRGC += (size)
 #define EXIT(code)    SAVE_PRGC; return ((code))
@@ -95,7 +112,7 @@ using namespace GVM;
 #define RTA(size)  (PRGC + (size))
 
 
-#ifdef _GVM_PROFILE_OPCODE_COUNTS_
+#ifdef _GVM_OPT_PROFILE_OPCODE_COUNTS_
 #define INIT_OPCODE_COUNTS static uint64 perInstructionCounts[256] = { 0 }
 #define UPDATE_OPCODE_COUNTS ++perInstructionCounts[(*PRGC)]
 #define DUMP_OPCODE_COUNTS \
@@ -132,6 +149,7 @@ forever:
         #include "include/gvm_integer.hpp"
         #include "include/gvm_float.hpp"
         #include "include/gvm_vector.hpp"
+        #include "include/gvm_conditional_branch.hpp"
         default:
             return EXEC_HALT_AND_CATCH_FIRE;
     }

@@ -40,7 +40,7 @@ IS(BCALL) {
 
 IS(CALL) {
     gvmDebugOpcode(
-        "call $%04X : ",
+        "call @%04X : ",
         (unsigned)SYM(0)
     );
     // Call a named function by ID
@@ -81,7 +81,7 @@ IS(ICALL_I) {
 
 IS(HCALL) {
     gvmDebugOpcode(
-        "hcall $%04X : ",
+        "host #%04X : ",
         (int)SYM(0)
     );
     // Call a host function by ID
@@ -114,7 +114,7 @@ IS(RET) {
 IS(LI0BNN) {
     gvmDebugOpcode(
         "libnn (i0+%u), %d : %p != null => ",
-        OPU(0),
+        (unsigned)OPU(0),
         (int)(int)J16(1),
         IX0(0).a
     );
@@ -132,7 +132,7 @@ IS(LI0BNN) {
 IS(LI1BNN) {
     gvmDebugOpcode(
         "libnn (i1+%u), %d : %p != null => ",
-        OPU(0),
+        (unsigned)OPU(0),
         (int)(int)J16(1),
         IX1(0).a
     );
@@ -150,242 +150,6 @@ IS(LI1BNN) {
 
 // Scalar Instructions (Float Or Integer) //////////////////////////////////////////////////////////////////////////////
 
-// Single Operand Branch If Zero ///////////////////////////////////////////////////////////////////////////////////////
-
-IS(BEZ_L) {
-    gvmDebugOpcode(
-        "bez (%d), %d : 0x%08X == 0 => ",
-        OPS(0),
-        (int)J16(1),
-        LOC(0).u
-    );
-    // Branch to a signed 16-bit offset if local is equal to zero
-    if (0 == LOC(0).u) {
-        gvmDebugJump(1);
-        STEP(J16(1));
-        NEXT;
-    }
-    gvmDebugSkip();
-    STEP(4);
-    NEXT;
-}
-
-IS(BEZ_I0) {
-    gvmDebugOpcode(
-        "bez (i0+%u), %d : 0x%08X == 0 => ",
-        OPU(0),
-        (int)J16(1),
-        IX0(0).u
-    );
-    // Branch to a signed 16-bit offset if indirect is equal to zero
-    if (0 == IX0(0).u) {
-        gvmDebugJump(1);
-        STEP(J16(1));
-        NEXT;
-    }
-    gvmDebugSkip();
-    STEP(4);
-    NEXT;
-}
-
-IS(BEZ_I1) {
-    gvmDebugOpcode(
-        "bez (i1+%u), %d : 0x%08X == 0 => ",
-        OPU(0),
-        (int)J16(1),
-        IX1(0).u
-    );
-    // Branch to a signed 16-bit offset if indirect is equal to zero
-    if (0 == IX1(0).u) {
-        gvmDebugJump(1);
-        STEP(J16(1));
-        NEXT;
-    }
-    gvmDebugSkip();
-    STEP(4);
-    NEXT;
-}
-
-// Single Operand Branch If Not Zero //////////////////////////////////////////////////////////////////////////////////
-
-IS(BNZ_L) {
-    gvmDebugOpcode(
-        "bnz (%d), %d : 0x%08X != 0 => ",
-        OPS(0),
-        (int)J16(1),
-        LOC(0).u
-    );
-    // Branch to a signed 16-bit offset if local is not equal to zero
-    if (0 != LOC(0).u) {
-        gvmDebugJump(1);
-        STEP(J16(1));
-        NEXT;
-    }
-    gvmDebugSkip();
-    STEP(4);
-    NEXT;
-}
-
-IS(BNZ_I0) {
-    gvmDebugOpcode(
-        "bnz (i0+%u), %d : 0x%08X != 0 => ",
-        OPU(0),
-        (int)J16(1),
-        IX0(0).u
-    );
-    // Branch to a signed 16-bit offset if indirect is not equal to zero
-    if (0 != IX0(0).u) {
-        gvmDebugJump(1);
-        STEP(J16(1));
-        NEXT;
-    }
-    gvmDebugSkip();
-    STEP(4);
-    NEXT;
-}
-
-IS(BNZ_I1) {
-    gvmDebugOpcode(
-        "bnz (i0+%u), %d : 0x%08X != 0 => ",
-        OPU(0),
-        (int)J16(1),
-        IX1(0).u
-    );
-    // Branch to a signed 16-bit offset if indirect is not equal to zero
-    if (0 != IX1(0).u) {
-        gvmDebugJump(1);
-        STEP(J16(1));
-        NEXT;
-    }
-    gvmDebugSkip();
-    STEP(4);
-    NEXT;
-}
-
-// Two Operand Branch If Equal /////////////////////////////////////////////////////////////////////////////////////////
-
-IS(BEQ_LL) {
-    gvmDebugOpcode(
-        "beq (%d), (%d), %d : 0x%08X == 0x%08X => ",
-        OPS(0),
-        OPS(1),
-        (int)J16(2),
-        LOC(0).u,
-        LOC(1).u
-    );
-    // Branch to a signed 16-bit offset if two local values are equal
-    if (LOC(1).u == LOC(0).u) {
-        gvmDebugJump(2);
-        STEP(J16(2));
-        NEXT;
-    }
-    gvmDebugSkip();
-    STEP(5);
-    NEXT;
-}
-
-IS(BEQ_LI) {
-    gvmDebugOpcode(
-        "beq (%d), (i0+%u), %d : 0x%08X == 0x%08X => ",
-        OPS(0),
-        OPU(1),
-        (int)J16(2),
-        LOC(0).u,
-        IX0(1).u
-    );
-    // Branch to a signed 16-bit offset if local and indirect values are equal
-    if (IX0(1).u == LOC(0).u) {
-        gvmDebugJump(2);
-        STEP(J16(2));
-        NEXT;
-    }
-    gvmDebugSkip();
-    STEP(5);
-    NEXT;
-}
-
-IS(BEQ_II) {
-    gvmDebugOpcode(
-        "beq (i0+%u), (i1+%u), %d : 0x%08X == 0x%08X => ",
-        OPU(0),
-        OPU(1),
-        (int)J16(2),
-        IX0(0).u,
-        IX1(1).u
-    );
-    // Branch to a signed 16-bit offset if two indirect values are equal
-    if (IX0(0).u == IX1(1).u) {
-        gvmDebugJump(2);
-        STEP(J16(2));
-        NEXT;
-    }
-    gvmDebugSkip();
-    STEP(5);
-    NEXT;
-}
-
-// Two Operand Branch If Not Equal /////////////////////////////////////////////////////////////////////////////////////
-
-IS(BNE_LL) {
-    gvmDebugOpcode(
-        "bne (%d), (%d), %d : 0x%08X != 0x%08X => ",
-        OPS(0),
-        OPS(1),
-        (int)J16(2),
-        LOC(0).u,
-        LOC(1).u
-    );
-    // Branch to a signed 16-bit offset if two local values are equal
-    if (LOC(1).u != LOC(0).u) {
-        gvmDebugJump(2);
-        STEP(J16(2));
-        NEXT;
-    }
-    gvmDebugSkip();
-    STEP(5);
-    NEXT;
-}
-
-IS(BNE_LI) {
-    gvmDebugOpcode(
-        "bne (%d), (i0+%u), %d : 0x%08X != 0x%08X => ",
-        OPS(0),
-        OPU(1),
-        (int)J16(1),
-        LOC(0).u,
-        IX0(1).u
-    );
-    // Branch to a signed 16-bit offset if local and indirect values are equal
-    if (IX0(1).u != LOC(0).u) {
-        gvmDebugJump(2);
-        STEP(J16(2));
-        NEXT;
-    }
-    gvmDebugSkip();
-    STEP(5);
-    NEXT;
-}
-
-IS(BNE_II) {
-    gvmDebugOpcode(
-        "bne (i0+%u), (i1+%u), %d : 0x%08X != 0x%08X => ",
-        OPU(0),
-        OPU(1),
-        (int)J16(2),
-        IX0(0).u,
-        IX1(1).u
-    );
-    // Branch to a signed 16-bit offset if two indirect values are equal
-    if (IX0(0).u != IX1(1).u) {
-        gvmDebugJump(2);
-        STEP(J16(2));
-        NEXT;
-    }
-    gvmDebugSkip();
-    STEP(5);
-    NEXT;
-}
-
 // Addressing Operations //////////////////////////////////////////////////////////////////////////////////////////////
 
 IS(ADDR_LL) {
@@ -393,8 +157,8 @@ IS(ADDR_LL) {
     LOC(1).a = &LOC(0);
     gvmDebugOpcode(
         "addr (%d), (%d) : %p",
-        OPS(0),
-        OPS(1),
+        (int)OPS(0),
+        (int)OPS(1),
         LOC(1).a
     );
     STEP(3);
@@ -406,8 +170,8 @@ IS(ADDR_I0L) {
     LOC(1).a = &IX0(0);
     gvmDebugOpcode(
         "addr (i0+%u), (%d) : %p",
-        OPU(0),
-        OPS(1),
+        (unsigned)OPU(0),
+        (int)OPS(1),
         LOC(1).a
     );
     STEP(3);
@@ -419,8 +183,8 @@ IS(ADDR_I1L) {
     LOC(1).a = &IX1(0);
     gvmDebugOpcode(
         "addr (i1+%u), (%d) : %p",
-        OPU(0),
-        OPS(1),
+        (unsigned)OPU(0),
+        (int)OPS(1),
         LOC(1).a
     );
     STEP(3);
@@ -432,8 +196,8 @@ IS(ADDR_DL) {
     uint32 symbolId = SYM(0);
     gvmDebugOpcode(
         "addr $%04X, (%d) : ",
-        symbolId,
-        OPS(2)
+        (unsigned)symbolId,
+        (int)OPS(2)
     );
     if (!symbolId) {
         gvmDebugOpcode("Abort on illegal symbol id");
@@ -450,8 +214,8 @@ IS(ADDR_DI0) {
     uint32 symbolId = SYM(0);
     gvmDebugOpcode(
         "addr $%04X, (i0+%u) : ",
-        symbolId,
-        OPU(2)
+        (unsigned)symbolId,
+        (unsigned)OPU(2)
     );
     if (!symbolId) {
         gvmDebugOpcode("Abort on illegal symbol id");
@@ -468,8 +232,8 @@ IS(ADDR_DI1) {
     uint32 symbolId = SYM(0);
     gvmDebugOpcode(
         "addr $%04X, (i1+%u) : ",
-        symbolId,
-        OPU(2)
+        (unsigned)symbolId,
+        (unsigned)OPU(2)
     );
     if (!symbolId) {
         gvmDebugOpcode("Abort on illegal symbol id");
@@ -486,7 +250,7 @@ IS(ADDR_D0) {
     uint32 symbolId = SYM(0);
     gvmDebugOpcode(
         "addr $%04X, i0 : ",
-        symbolId
+        (unsigned)symbolId
     );
     if (!symbolId) {
         gvmDebugOpcode("Abort on illegal symbol id");
@@ -504,7 +268,7 @@ IS(ADDR_D1) {
     uint32 symbolId = SYM(0);
     gvmDebugOpcode(
         "addr $%04X, i1 : ",
-        symbolId
+        (unsigned)symbolId
     );
     if (!symbolId) {
         gvmDebugOpcode("Abort on illegal symbol id");
@@ -597,9 +361,9 @@ IS(COPY_LL) {
     // Copy a local scalar to a local scalar
     gvmDebugOpcode(
         "copy (%d), (%d) : 0x%08X",
-        OPS(0),
-        OPS(1),
-        LOC(0).u
+        (int)OPS(0),
+        (int)OPS(1),
+        (unsigned)LOC(0).u
     );
 
     LOC(1).u = LOC(0).u;
@@ -611,9 +375,9 @@ IS(COPY_I0L) {
     // Copy an indirect scalar to a local
     gvmDebugOpcode(
         "copy (i0+%u), (%d) : 0x%08X",
-        OPU(0),
-        OPS(1),
-        IX0(0).u
+        (unsigned)OPU(0),
+        (int)OPS(1),
+        (unsigned)IX0(0).u
     );
 
     LOC(1).u = IX0(0).u;
@@ -625,9 +389,9 @@ IS(COPY_I1L) {
     // Copy an indirect scalar to a local
     gvmDebugOpcode(
         "copy (i1+%u) (%d) : 0x%08X",
-        OPU(0),
-        OPS(1),
-        IX1(0).u
+        (unsigned)OPU(0),
+        (int)OPS(1),
+        (unsigned)IX1(0).u
     );
     LOC(1).u = IX1(0).u;
     STEP(3);
@@ -638,11 +402,11 @@ IS(CPIX_I0L) {
     // Copy indirect indexed by local to local
     gvmDebugOpcode(
         "copy (i0+%u)[(%d)], (%d) : [%u] => 0x%08X",
-        OPU(0),
-        OPS(1),
-        OPS(2),
-        LOC(1).u,
-        UIX0(0)[LOC(1).u]
+        (unsigned)OPU(0),
+        (int)OPS(1),
+        (int)OPS(2),
+        (unsigned)LOC(1).u,
+        (unsigned)UIX0(0)[LOC(1).u]
     );
     LOC(2).u = UIX0(0)[LOC(1).u];
     STEP(4);
@@ -653,11 +417,11 @@ IS(CPIX_I1L) {
     // Copy indirect indexed by local to local
     gvmDebugOpcode(
         "copy (i1+%u)[(%d)], (%d) : [%u] => 0x%08X",
-        OPU(0),
-        OPS(1),
-        OPS(2),
-        LOC(1).u,
-        UIX1(0)[LOC(1).u]
+        (unsigned)OPU(0),
+        (int)OPS(1),
+        (int)OPS(2),
+        (unsigned)LOC(1).u,
+        (unsigned)UIX1(0)[LOC(1).u]
     );
     LOC(2).u = UIX1(0)[LOC(1).u];
     STEP(4);
@@ -667,9 +431,9 @@ IS(CPIX_I1L) {
 IS(COPY_LI0) {
     gvmDebugOpcode(
         "copy (%d), (i0+%u) : 0x%08X",
-        OPS(0),
-        OPU(1),
-        LOC(0).u
+        (int)OPS(0),
+        (unsigned)OPU(1),
+        (unsigned)LOC(0).u
     );
     // Copy a local scalar to an indirect
     IX0(1).u = LOC(0).u;
@@ -680,9 +444,9 @@ IS(COPY_LI0) {
 IS(COPY_LI1) {
     gvmDebugOpcode(
         "copy (%d), (i0+%u) : 0x%08X",
-        OPS(0),
-        OPU(1),
-        LOC(0).u
+        (int)OPS(0),
+        (unsigned)OPU(1),
+        (unsigned)LOC(0).u
     );
     // Copy a local scalar to an indirect
     IX1(1).u = LOC(0).u;
@@ -693,9 +457,9 @@ IS(COPY_LI1) {
 IS(COPY_II) {
     gvmDebugOpcode(
         "copy (i0+%u), (i1+%u) : 0x%08X",
-        OPU(0),
-        OPU(1),
-        IX0(0).u
+        (unsigned)OPU(0),
+        (unsigned)OPU(1),
+        (unsigned)IX0(0).u
     );
     // Copy an indirect scalar to another indirect
     IX1(1).u = IX0(0).u;
@@ -709,9 +473,9 @@ IS(ITOF_LL) {
     // Cast integer to float
     gvmDebugOpcode(
         "ito.f (%d), (%d) : %d => ",
-        OPU(0),
-        OPS(1),
-        LOC(0).i
+        (unsigned)OPU(0),
+        (int)OPS(1),
+        (int)LOC(0).i
     );
     LOC(1).f = (float32)LOC(0).i;
     gvmDebugOpcode("%e", LOC(1).f);
@@ -723,12 +487,12 @@ IS(FTOI_LL) {
     // Cast float to integer
     gvmDebugOpcode(
         "fto.i (%d), (%d) : %e => ",
-        OPU(0),
-        OPS(1),
+        (unsigned)OPU(0),
+        (int)OPS(1),
         LOC(0).f
     );
     LOC(1).i = (int32)LOC(0).f;
-    gvmDebugOpcode("%d", LOC(1).i);
+    gvmDebugOpcode("%d", (int)LOC(1).i);
     STEP(3);
     NEXT;
 }
