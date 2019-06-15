@@ -112,7 +112,7 @@ using namespace GVM;
 #define RTA(size)  (PRGC + (size))
 
 
-#ifdef _GVM_PROFILE_OPCODE_COUNTS_
+#ifdef _GVM_OPT_PROFILE_OPCODE_COUNTS_
 #define INIT_OPCODE_COUNTS static uint64 perInstructionCounts[256] = { 0 }
 #define UPDATE_OPCODE_COUNTS ++perInstructionCounts[(*PRGC)]
 #define DUMP_OPCODE_COUNTS \

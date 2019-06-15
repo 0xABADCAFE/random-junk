@@ -18,6 +18,8 @@
 #define beq_li(l, I, i, j) _CC(X_EQ_LI##I),   _D8(l),  _D8(i),  _DJ(j),
 #define beq_ii(i1, i2, j)  _CC(X_EQ_II),      _D8(i1), _D8(i2), _DJ(j),
 
+
+
 // Untyped continue if all bits equak (alias) //////////////////////////////////////////////////////////////////////////
 #define ceq_ls(l, s, j)    _CC(X_NE_LS),      _D8(l),  _D8(s),  _DJ(j),
 #define ceq_is(I, i, s, j) _CC(X_NE_I##I##S), _D8(i),  _D8(s),  _DJ(j),
