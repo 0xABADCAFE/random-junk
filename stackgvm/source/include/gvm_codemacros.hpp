@@ -44,10 +44,6 @@
 #define hcall(f)         _OP(HCALL),        _D16(f),
 #define ret              _OP(RET),
 #define libnn(I,i,j)     _OP(LI##I##BNN),   _D8(i),   _D16(j),
-#define bez_l(l,j)       _OP(BEZ_L),        _D8(l),   _D16(j),
-#define bez_i(i,j)       _OP(BEZ_I),        _D8(i),   _D16(j),
-#define bnz_l(l,j)       _OP(BNZ_L),        _D8(l),   _D16(j),
-#define bnz_i(i,j)       _OP(BNZ_I),        _D8(i),   _D16(j),
 
 #define addr_ll(l1,l2)   _OP(ADDR_LL),      _D8(l1),  _D8(l2),
 #define addr_il(I,i,l)   _OP(ADDR_I##I##L), _D8(i),   _D8(l),

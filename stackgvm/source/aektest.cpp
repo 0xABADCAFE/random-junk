@@ -176,13 +176,11 @@ GFUNC(render) {
     copy_ll     (i_render_image_size, m_next_func_param_space)                                      // 3 [1, 1, 1]
     hcall       (print_header)                                                                      // 3 [1, 2]
 
-
 //  vec3 camera_forward = vec3_normalize( // Unit forwards
 //      camera_dir
 //  ),
 
     vnorm_il    (gv_camera_dir, v_render_camera_forward)                                            // 3 [1, 1, 1]
-
 
 //  vec3 camera_up = vec3_scale( // Unit up - Z is up in this system
 //      vec3_normalize(
@@ -211,7 +209,6 @@ GFUNC(render) {
     vcross_lll  (v_render_camera_forward,   v_render_camera_up,     v_render_camera_right)          // 4 [1, 1, 1, 1]
     vnorm_ll    (v_render_camera_right,     v_render_camera_right)                                  // 3 [1, 1, 1]
     vfmul_lil   (v_render_camera_right,     gf_camera_scale,        v_render_camera_right)          // 4 [1, 1, 1, 1]
-
 
 //  vec3 eye_offset = vec3_add( // Offset from eye to coner of focal plane
 //      vec3_scale(
@@ -408,8 +405,7 @@ GFUNC(trace) {
 //     normal   = normal_up,
 //     material = 1;
 //   }
-                                                                                            // Total: 14
-    //fclt_il     (0, gf_distance_min, f_trace_p, 14)                                         // 5 [1, 1, 1, 1, 1]
+                                                                                            // Total: 9 + BOC_SIZE
     fclt_il     (0, gf_distance_min, f_trace_p, 9 + BOC_SIZE)                               // BOC_SIZE
         copy_ll     (f_trace_p, f_trace_distance)                                           // 3 [1, 1, 1]
         vcopy_il    (gv_normal_up, v_trace_normal)                                          // 3 [1, 1, 1]
@@ -453,9 +449,8 @@ GFUNC(trace) {
     cpix_il     (0, gi_bitmap, f_trace_j, i_trace_bitmap_row)                               // 4 [1, 1, 1, 1]
     load_sl     (18, f_trace_k)                                                             // 3 [1, 1, 1]
 
-// Loop target for k                                                                        // Total:45
-    //cbs_ll      (f_trace_k, i_trace_bitmap_row, 45+42)                                      // 5 [1, 1, 1, 2]
-    cbs_ll      (f_trace_k, i_trace_bitmap_row, (40 + BOC_SIZE) + (27 + 3*BOC_SIZE))          // BOC_SIZE
+// Loop target for k                                                                        // Total:40 + BOC_SIZE
+    cbs_ll      (f_trace_k, i_trace_bitmap_row, (40 + BOC_SIZE) + (27 + 3*BOC_SIZE))        // BOC_SIZE
 
 //                 vec3 p = vec3_sub(
 //                     origin,
@@ -489,29 +484,23 @@ GFUNC(trace) {
 //                         material = 2; // Returning here is fast, but we'd get z fighting
 //                     }
 //                 }
-                                                                                            // Total: 42
-        //fcgt_ll     (f_trace_q, f_trace_zero, 42)                                               // 5 [1, 1, 1, 2]
-        fcgt_ll     (f_trace_q, f_trace_zero, 27 + 3*BOC_SIZE)                                  // BOC_SIZE
-            fsqrt_ll    (f_trace_q, f_trace_q)                                                  // 3 [1, 1, 1]
-            fadd_lll    (f_trace_b, f_trace_q, f_trace_sphere_distance)                         // 4 [1, 1, 1, 1]
-            fneg_ll     (f_trace_sphere_distance, f_trace_sphere_distance)                      // 3 [1, 1, 1]
+                                                                                            // Total: 27 + 3*BOC_SIZE
+        fcgt_ll     (f_trace_q, f_trace_zero, 27 + 3*BOC_SIZE)                              // BOC_SIZE
+            fsqrt_ll    (f_trace_q, f_trace_q)                                              // 3 [1, 1, 1]
+            fadd_lll    (f_trace_b, f_trace_q, f_trace_sphere_distance)                     // 4 [1, 1, 1, 1]
+            fneg_ll     (f_trace_sphere_distance, f_trace_sphere_distance)                  // 3 [1, 1, 1]
 
-            //fclt_ll     (f_trace_sphere_distance, f_trace_distance, 27)                         // 5 [1, 1, 1, 2]
-            fclt_ll     (f_trace_sphere_distance, f_trace_distance, 17 + 2*BOC_SIZE)            // BOC_SIZE
-                //fcgt_li     (f_trace_sphere_distance, 0, gf_distance_min, 22)                     // 5 [1, 1, 1, 2]
-                fcgt_li     (f_trace_sphere_distance, 0, gf_distance_min, 17 + BOC_SIZE)          // BOC_SIZE
-
-                    copy_ll     (f_trace_sphere_distance, f_trace_distance)                     // 3 [1, 1, 1]
-                    vfmul_lll   (v_trace_direction, f_trace_distance, v_trace_temp)             // 4 [1, 1, 1, 1]
-                    vadd_lll    (v_trace_temp, v_trace_p, v_trace_temp)                         // 4 [1, 1, 1, 1]
-                    vnorm_ll    (v_trace_temp, v_trace_normal)                                  // 3 [1, 1, 1]
-                    load_sl     (64, i_trace_material)                                           // 3 [1, 1, 1]
+            fclt_ll     (f_trace_sphere_distance, f_trace_distance, 17 + 2*BOC_SIZE)        // BOC_SIZE
+                fcgt_li     (f_trace_sphere_distance, 0, gf_distance_min, 17 + BOC_SIZE)    // BOC_SIZE
+                    copy_ll     (f_trace_sphere_distance, f_trace_distance)                 // 3 [1, 1, 1]
+                    vfmul_lll   (v_trace_direction, f_trace_distance, v_trace_temp)         // 4 [1, 1, 1, 1]
+                    vadd_lll    (v_trace_temp, v_trace_p, v_trace_temp)                     // 4 [1, 1, 1, 1]
+                    vnorm_ll    (v_trace_temp, v_trace_normal)                              // 3 [1, 1, 1]
+                    load_sl     (64, i_trace_material)                                      // 3 [1, 1, 1]
 // k--
-    //dbnn_l      (f_trace_k, -42-45)                                                         // 4 [1, 1, 2]
-    dbnn_l      (f_trace_k, -(27 + 3*BOC_SIZE) - (40 + BOC_SIZE))                             // 4 [1, 1, 2]
+    dbnn_l      (f_trace_k, -(27 + 3*BOC_SIZE) - (40 + BOC_SIZE))                           // 4 [1, 1, 2]
 // j--
-    //dbnn_l      (f_trace_j, -4 -42-45 -7)                                                   // 4 [1, 1, 2]
-    dbnn_l      (f_trace_j, -4 - (27 + 3*BOC_SIZE) - (40 + BOC_SIZE) - 7)                     // 4 [1, 1, 2]
+    dbnn_l      (f_trace_j, -4 - (27 + 3*BOC_SIZE) - (40 + BOC_SIZE) - 7)                   // 4 [1, 1, 2]
     ret
 };
 
@@ -573,7 +562,7 @@ GFUNC(sample) {
 //       gradient
 //     );
 //   }
-    bnz_l   (i_sample_material, 27)                                                    // 4 [1, 1, 2]
+    bne_ls  (i_sample_material, 0, 23 + BOC_SIZE)                                      // BOC_SIZE
         load_sl     (1, f_sample_gradient)                                             // 3 [1, 1, 1]
         itof_ll     (f_sample_gradient, f_sample_gradient)                             // 3
         fsub_lll    (f_sample_gradient, vec3_z(v_sample_in_direction), f_sample_gradient)    // 4
@@ -609,6 +598,7 @@ GFUNC(sample) {
     vsub_lll    (v_sample_light, v_sample_intersection, v_sample_light)                // 4
     vnorm_ll    (v_sample_light, v_sample_light)                                       // 3
     vcopy_ll    (v_sample_light, v_sample_temp_1)
+
 //   // Calculate the lambertian illumuination factor
 //   float32 lambertian = dot(light, normal);
 
@@ -623,12 +613,12 @@ GFUNC(sample) {
 
     //fclt_ll     (f_sample_lambertian, m_sample_temp_0, 8)  // 5
     fclt_ll     (f_sample_lambertian, m_sample_temp_0, 3 + BOC_SIZE)  // BOC_SIZE
-        bra         (3+3+4)                                // 3
+        bra         (3 + 3 + BOC_SIZE)                                // 3
 
-    call(trace)                                            // 3
+    call(trace)                                                       // 3
 
-    bez_l       (i_sample_material, 7)                     // 4
-        load_sl     (0, f_sample_lambertian)               // 3
+    beq_ls      (i_sample_material, 0, 3 + BOC_SIZE)                  // BOC_SIZE
+        load_sl     (0, f_sample_lambertian)                          // 3
 
 //   // Hit the floor plane
 //   if (material & 1) {
@@ -643,7 +633,6 @@ GFUNC(sample) {
 //       (lambertian * 0.2 + 0.1)
 //     );
 //   }
-    //bbc_sl      (0, m_sample_temp_1, 45)                                        // 5 [1, 1, 1, 2]
     bbc_sl      (0, m_sample_temp_1, 35 + 2*BOC_SIZE)                           // BOC_SIZE
         fmul_ill    (gf_point_2, f_sample_lambertian, f_sample_lambertian)      // 4 [1, 1, 1, 1]
         fadd_ill    (gf_point_1, f_sample_lambertian, f_sample_lambertian)      // 4 [1, 1, 1, 1]
@@ -652,7 +641,6 @@ GFUNC(sample) {
         fceil_ll    (vec3_y(v_sample_intersection), m_sample_temp_1)            // 3 [1, 1, 1]
         fadd_lll    (m_sample_temp_0, m_sample_temp_1, m_sample_temp_1)         // 4 [1, 1, 1, 1]
         ftoi_ll     (m_sample_temp_1, m_sample_temp_0)                          // 3 [1, 1, 1]
-        //bbs_sl      (0, m_sample_temp_0, 10)                                    // 5 [1, 1, 1, 2]
         bbs_sl      (0, m_sample_temp_0, 5 + BOC_SIZE)                          // BOC_SIZE
             vfmul_ill   (gv_floor_white_rgb, f_sample_lambertian, v_sample_rgb) // 4 [1, 1, 1, 1]
             ret                                                                 // 1
@@ -692,8 +680,7 @@ GFUNC(sample) {
     vfmul_lil   (v_sample_next_rgb, gf_reflection_scale, v_sample_rgb)
 
     load_sl     (0, m_sample_temp_0)                                                  // 3
-    //fcgt_ll     (f_sample_lambertian, m_sample_temp_0, 28)                            // 5
-    fcgt_ll     (f_sample_lambertian, m_sample_temp_0, 23 + BOC_SIZE)                 // 5
+    fcgt_ll     (f_sample_lambertian, m_sample_temp_0, 23 + BOC_SIZE)                 // BOC_SIZE
         vdot_lll    (v_sample_temp_1,   v_sample_half_vector, f_sample_specular)      // 4
         copy_il     (0, gf_specular_power, m_sample_temp_0)                           // 3
         fpow_lll    (f_sample_specular, m_sample_temp_0,    f_sample_specular)        // 4
