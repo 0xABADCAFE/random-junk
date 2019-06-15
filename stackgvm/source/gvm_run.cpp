@@ -74,11 +74,11 @@ using namespace GVM;
 // Local Operand, dereferences a Scalar on the stack frame by the signed 8-bit operand.
 // Parameter is the operand byte number.
 
-// Vector local operand, returns a float32 pointer to the zeroth element of the vector
-#define VLOC(operand)  ( (float32*)&LOC(operand) )
+// Vector local operand, returns a SCALAR_F pointer to the zeroth element of the vector
+#define VLOC(operand)  ( (SCALAR_F*)&LOC(operand) )
 
 // Vector expressed as triplet of unsigned words - for data transfer operations
-#define ULOC(operand)  ( (uint32*)&LOC(operand) )
+#define ULOC(operand)  ( (SCALAR_U*)&LOC(operand) )
 
 // Indirect Operand, dereferences one of the index registers by the unsigned 8-bit operand.
 
@@ -88,12 +88,12 @@ using namespace GVM;
 
 
 // Vector Indirect Operand,
-#define VIX0(operand)    ((float32*)&IX0(operand))
-#define VIX1(operand)    ((float32*)&IX1(operand))
+#define VIX0(operand)    ((SCALAR_F*)&IX0(operand))
+#define VIX1(operand)    ((SCALAR_F*)&IX1(operand))
 
 // Vector expressed as triplet of unsigned words - for data transfoer operations
-#define UIX0(operand)    ((uint32*)&IX0(operand))
-#define UIX1(operand)    ((uint32*)&IX1(operand))
+#define UIX0(operand)    ((SCALAR_U*)&IX0(operand))
+#define UIX1(operand)    ((SCALAR_U*)&IX1(operand))
 
 // Jump displaceents
 #define J16(operand)  (int16)(((uint16)PRGC[(operand) + 1] << 8) | PRGC[(operand) + 2])
@@ -127,13 +127,13 @@ using namespace GVM;
 #define DUMP_OPCODE_COUNTS
 #endif
 
-const float32 invRMax = 1.0f / (float32)RAND_MAX;
+const SCALAR_F invRMax = 1.0f / (SCALAR_F)RAND_MAX;
 
 Result Interpreter::run() {
     DECLARE_PTRS;
 
-    float32 *vs1, *vs2, *vd, sf;
-    uint32  *us, *ud, tag;
+    SCALAR_F *vs1, *vs2, *vd, sf;
+    SCALAR_U *us, *ud, tag;
     Result  result;
 
     UPDATE_PTRS;

@@ -84,7 +84,7 @@
     #if (_GVM_HOST_OS == _GVM_HOST_LINUX_INTEL_32)
         #define _GVM_HOST_ENDIAN _GVM_HOST_LITTLE
         #include "platforms/machine_linux_generic.hpp"
-    #if (_GVM_HOST_OS == _GVM_HOST_LINUX_INTEL_64)
+    #elif (_GVM_HOST_OS == _GVM_HOST_LINUX_INTEL_64)
         #define _GVM_HOST_ENDIAN _GVM_HOST_LITTLE
         #include "platforms/machine_linux_generic.hpp"
     //#elif (_GVM_HOST_OS == _GVM_HOST_AMIGAOS3_68K)
