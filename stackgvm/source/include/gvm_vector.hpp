@@ -5,9 +5,9 @@
 
 IS(VRND_L) {
     vd = VLOC(0);
-    float32 x = (invRMax * std::rand()) - 1.0f;
-    float32 y = (invRMax * std::rand()) - 1.0f;
-    float32 z = (invRMax * std::rand()) - 1.0f;
+    SCALAR_F x = (invRMax * std::rand()) - 1.0f;
+    SCALAR_F y = (invRMax * std::rand()) - 1.0f;
+    SCALAR_F z = (invRMax * std::rand()) - 1.0f;
     sf = 1.0f / std::sqrt((x * x) + (y * y) + (z * z));
     vd[0] = x*sf;
     vd[1] = y*sf;
@@ -209,7 +209,7 @@ IS(VNORM_II) {
 // Two Operand Vector Magnitude (Float Result) /////////////////////////////////////////////////////////////////////////
 
 IS(VMAG_LL) {
-    float32* v = VLOC(0);
+    SCALAR_F* v = VLOC(0);
     gvmDebugOpcode(
         "vmag.f (%d), (%d) : |{ %g, %g, %g }| => ",
         (int)OPS(0),
@@ -227,7 +227,7 @@ IS(VMAG_LL) {
 }
 
 IS(VMAG_IL) {
-    float32* v = VIX0(0);
+    SCALAR_F* v = VIX0(0);
     gvmDebugOpcode(
         "vmag.f (i0+%u), (%d) : |{ %g, %g, %g }| => ",
         (unsigned)OPU(0),
@@ -245,7 +245,7 @@ IS(VMAG_IL) {
 }
 
 IS(VMAG_LI) {
-    float32* v = VLOC(0);
+    SCALAR_F* v = VLOC(0);
     gvmDebugOpcode(
         "vmag.f (%d), (i0+%u) : |{ %g, %g, %g }| => ",
         (int)OPS(0),
@@ -263,7 +263,7 @@ IS(VMAG_LI) {
 }
 
 IS(VMAG_II) {
-    float32* v = VIX0(0);
+    SCALAR_F* v = VIX0(0);
     gvmDebugOpcode(
         "vmag.f (i0+%u), (i1+%u) : |{ %g, %g, %g }| => ",
         (unsigned)OPU(0),
