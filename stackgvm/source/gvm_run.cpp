@@ -62,9 +62,9 @@ using namespace GVM;
 #define FETCHC  switch (PRGC[1])
 
 #ifdef _GVM_ANNOTATE_ASM_
-#define BCC(c)  case Condition::_##c: asm("; BOC _"#c);
+    #define BCC(c)  case Condition::_##c: asm("; BOC _"#c);
 #else
-#define BCC(c)  case Condition::_##c:
+    #define BCC(c)  case Condition::_##c:
 #endif
 
 #define NEXT          goto forever
@@ -113,18 +113,18 @@ using namespace GVM;
 
 
 #ifdef _GVM_OPT_PROFILE_OPCODE_COUNTS_
-#define INIT_OPCODE_COUNTS static uint64 perInstructionCounts[256] = { 0 }
-#define UPDATE_OPCODE_COUNTS ++perInstructionCounts[(*PRGC)]
-#define DUMP_OPCODE_COUNTS \
-    for (uint32 i=0; i<256; i++) { \
-        if (perInstructionCounts[i]) { \
-            std::fprintf(stderr, "\t%02X : %llu\n", i, perInstructionCounts[i]); \
-        } \
-    }
+    #define INIT_OPCODE_COUNTS static uint64 perInstructionCounts[256] = { 0 }
+    #define UPDATE_OPCODE_COUNTS ++perInstructionCounts[(*PRGC)]
+    #define DUMP_OPCODE_COUNTS \
+        for (uint32 i=0; i<256; i++) { \
+            if (perInstructionCounts[i]) { \
+                std::fprintf(stderr, "\t%02X : %llu\n", i, perInstructionCounts[i]); \
+            } \
+        }
 #else
-#define INIT_OPCODE_COUNTS
-#define UPDATE_OPCODE_COUNTS
-#define DUMP_OPCODE_COUNTS
+    #define INIT_OPCODE_COUNTS
+    #define UPDATE_OPCODE_COUNTS
+    #define DUMP_OPCODE_COUNTS
 #endif
 
 const SCALAR_F invRMax = 1.0f / (SCALAR_F)RAND_MAX;
