@@ -18,6 +18,7 @@
     #define _GVM_HOST_MORPHOS_PPC      4
     #define _GVM_HOST_LINUX_INTEL_32   5
     #define _GVM_HOST_LINUX_INTEL_64   6
+    #define _GVM_HOST_LINUX_ARM_64     7
 
     // Target sanity checks
     #if (_GVM_HOST_OS == _GVM_HOST_AMIGAOS3_68K)
@@ -87,6 +88,10 @@
     #elif (_GVM_HOST_OS == _GVM_HOST_LINUX_INTEL_64)
         #define _GVM_HOST_ENDIAN _GVM_HOST_LITTLE
         #include "platforms/machine_linux_generic.hpp"
+    #elif (_GVM_HOST_OS == _GVM_HOST_LINUX_ARM_64)
+        #define _GVM_HOST_ENDIAN _GVM_HOST_LITTLE
+        #include "platforms/machine_linux_generic.hpp"
+
     //#elif (_GVM_HOST_OS == _GVM_HOST_AMIGAOS3_68K)
     //    #include "platforms/machine_amiga_68k.hpp"
     //#elif (_GVM_HOST_OS == _GVM_HOST_AMIGAOS3_WARPUP)

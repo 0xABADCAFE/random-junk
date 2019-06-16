@@ -1,14 +1,14 @@
 # Project: TOYTL - GVM
 
 # Target
-BIN      = bin/gamevm_arm64_exe
+BIN      = bin/gamevm_aek_x64_exe
 
 # Compiler settings
-CXXFLAGS = -Ofast -Wall -W -mcpu=native -mtune=native -fomit-frame-pointer -fno-exceptions -fexpensive-optimizations -D_GVM_HOST_OS=_GVM_HOST_LINUX_ARM_64 -D_GVM_OPT_64BIT_PURE_ -D_GVM_DEBUGGING_ -D_GVM_DEBUG_FUNCTIONS_ -D_GVM_DEBUG_OPCODES_
+CXXFLAGS = -O3 -Wall -W -march=native -mfpmath=sse -fomit-frame-pointer -fno-exceptions -fexpensive-optimizations -D_GVM_HOST_OS=_GVM_HOST_LINUX_INTEL_64 -D_GVM_OPT_64BIT_PURE_ -D_GVM_OPT_CACHE_POINTERS_ -D_GVM_OPT_ALLOW_GOTO_ #-D_GVM_OPT_PROFILE_OPCODE_COUNTS_
 
 # Makefile settings
-ARCH     = arm64_linux
+ARCH     = x64_linux
 MEXT     = $(ARCH)
 
-include interpreter.make
+include aek_test.make
 
