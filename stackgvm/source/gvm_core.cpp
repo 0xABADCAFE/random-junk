@@ -11,20 +11,24 @@
 
 using namespace GVM;
 
-void*                  Interpreter::workingSet            = 0;
-Interpreter::CallInfo* Interpreter::callStack             = 0;
-Interpreter::CallInfo* Interpreter::callStackBase         = 0;
-Interpreter::CallInfo* Interpreter::callStackTop          = 0;
-Scalar*                Interpreter::frameStack            = 0;
-Scalar*                Interpreter::frameStackBase        = 0;
-Scalar*                Interpreter::frameStackTop         = 0;
-const uint8*           Interpreter::programCounter        = 0;
-const FuncInfo*        Interpreter::functionTable         = 0;
-uint32                 Interpreter::functionTableSize     = 0;
-const HostCall*        Interpreter::hostFunctionTable     = 0;
-uint32                 Interpreter::hostFunctionTableSize = 0;
-Scalar**               Interpreter::dataTable             = 0;
-uint32                 Interpreter::dataTableSize         = 0;
+void*                   Interpreter::workingSet            = 0;
+Interpreter::CallInfo*  Interpreter::callStack             = 0;
+Interpreter::CallInfo*  Interpreter::callStackBase         = 0;
+Interpreter::CallInfo*  Interpreter::callStackTop          = 0;
+Scalar*                 Interpreter::frameStack            = 0;
+Scalar*                 Interpreter::frameStackBase        = 0;
+Scalar*                 Interpreter::frameStackTop         = 0;
+const uint8*            Interpreter::programCounter        = 0;
+const FuncInfo*         Interpreter::functionTable         = 0;
+uint32                  Interpreter::functionTableSize     = 0;
+const HostCall*         Interpreter::hostFunctionTable     = 0;
+uint32                  Interpreter::hostFunctionTableSize = 0;
+Scalar**                Interpreter::dataTable             = 0;
+uint32                  Interpreter::dataTableSize         = 0;
+
+#ifdef _GVM_OPT_PROFILING_
+FuncProfile*            Interpreter::callProfile           = 0;
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -97,6 +101,15 @@ Result Interpreter::init(size_t rSize, size_t fSize, const FuncInfo* func, const
     frameStackBase     = frameStack = (Scalar*)(readySet + callStackSize) + REDZONE_BUFFER;
     frameStackTop      = &frameStackBase[fSize-1];
 
+#ifdef _GVM_OPT_PROFILING_
+    callProfile        = (FuncProfile*)std::calloc(functionTableSize, sizeof(FuncProfile));
+    if (!callProfile) {
+        std::free(readySet);
+        gvmDebug("GVM::Interpreter::init()\n\tCould not allocate call profile table\n");
+        return INIT_OUT_OF_MEMORY;
+    }
+#endif
+
     gvmDebug(
         "GVM::Interpreter::init()\n"
         "\tCall Stack          [%p - %p]\n"
@@ -121,6 +134,13 @@ Result Interpreter::init(size_t rSize, size_t fSize, const FuncInfo* func, const
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Interpreter::done() {
+#ifdef _GVM_OPT_PROFILING_
+    if (callProfile) {
+        std::free(callProfile);
+        gvmDebug("GVM::Interpreter::done()\n\tReleased call profile table\n");
+        callProfile = 0;
+    }
+#endif
     if (workingSet) {
         gvmDebug("GVM::Interpreter::done()\n\tReleased working set\n");
         std::free(workingSet);
@@ -313,6 +333,11 @@ Result Interpreter::enterFunction(const uint8* returnAddress, uint16 functionId)
             frameStack
         );
 #endif
+
+#ifdef _GVM_OPT_PROFILING_
+        ++callProfile[functionId].count;
+#endif
+
         return SUCCESS;
     }
 

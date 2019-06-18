@@ -111,6 +111,15 @@ using namespace GVM;
 // Return address
 #define RTA(size)  (PRGC + (size))
 
+#ifdef _GVM_OPT_PROFILING_
+    #define DUMP_PROFILE \
+    std::fprintf(stderr, "Function Profile:\n"); \
+    for (uint32 i=1; i<functionTableSize; i++) { \
+        std::fprintf(stderr, "\t#%04X [%u calls, %g seconds]\n", i, callProfile[i].count, callProfile[i].time); \
+    }
+#else
+    #define DUMP_PROFILE
+#endif
 
 #ifdef _GVM_OPT_PROFILE_OPCODE_COUNTS_
     #define INIT_OPCODE_COUNTS static uint64 perInstructionCounts[256] = { 0 }

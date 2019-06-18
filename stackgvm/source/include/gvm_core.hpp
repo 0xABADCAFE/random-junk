@@ -71,6 +71,15 @@ namespace GVM {
         };
     };
 
+#ifdef _GVM_OPT_PROFILING_
+
+    struct FuncProfile {
+        uint32  count;
+        float32 time;
+    };
+
+#endif
+
     typedef Result (*HostCall)(Scalar* stackFrame);
 
     /**
@@ -125,6 +134,11 @@ namespace GVM {
             static uint32          hostFunctionTableSize;
             static Scalar**        dataTable;
             static uint32          dataTableSize;
+
+#ifdef _GVM_OPT_PROFILING_
+            static FuncProfile*    callProfile;
+#endif
+
 
             static Result enterFunction(const uint8* returnAddress, uint16 functionId);
             static Result enterClosure(const uint8* returnAddress, int16 branch, uint8 frameSize);
