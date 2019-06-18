@@ -117,6 +117,9 @@ namespace GVM {
                 uint16       functionId;
                 uint8        frameSize;
                 uint8        reserved;
+#ifdef _GVM_OPT_PROFILING_
+                float32      mark;
+#endif
             };
 
             // Primary allocation for all stack data

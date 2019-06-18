@@ -115,7 +115,7 @@ using namespace GVM;
     #define DUMP_PROFILE \
     std::fprintf(stderr, "Function Profile:\n"); \
     for (uint32 i=1; i<functionTableSize; i++) { \
-        std::fprintf(stderr, "\t#%04X [%u calls, %g seconds]\n", i, callProfile[i].count, callProfile[i].time); \
+        std::fprintf(stderr, "\t#%04X [%" FU32 " calls, %g seconds]\n", i, callProfile[i].count, callProfile[i].time); \
     }
 #else
     #define DUMP_PROFILE
@@ -127,7 +127,7 @@ using namespace GVM;
     #define DUMP_OPCODE_COUNTS \
         for (uint32 i=0; i<256; i++) { \
             if (perInstructionCounts[i]) { \
-                std::fprintf(stderr, "\t%02X : %llu\n", i, perInstructionCounts[i]); \
+                std::fprintf(stderr, "\t%02X : %" FU64 "\n", i, perInstructionCounts[i]); \
             } \
         }
 #else

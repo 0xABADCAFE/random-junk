@@ -28,7 +28,12 @@ uint32                  Interpreter::dataTableSize         = 0;
 
 #ifdef _GVM_OPT_PROFILING_
 FuncProfile*            Interpreter::callProfile           = 0;
+namespace {
+    FloatClock callTimer;
+};
 #endif
+
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -335,6 +340,7 @@ Result Interpreter::enterFunction(const uint8* returnAddress, uint16 functionId)
 #endif
 
 #ifdef _GVM_OPT_PROFILING_
+        callStack->mark = callTimer.elapsed();
         ++callProfile[functionId].count;
 #endif
 
@@ -386,8 +392,11 @@ Result Interpreter::exitFunction() {
 
     if (callStack > callStackBase) {
         const uint8* returnTo = callStack->returnAddress;
-#ifdef _GVM_DEBUG_FUNCTIONS_
+#if defined(_GVM_DEBUG_FUNCTIONS_) || defined(_GVM_OPT_PROFILING_)
         int currentId = callStack->functionId;
+#endif
+#ifdef _GVM_OPT_PROFILING_
+        callProfile[currentId].time += callTimer.elapsed() - callStack->mark;
 #endif
         --callStack;
         if (frameStack - callStack->frameSize < frameStackBase) {
