@@ -36,7 +36,13 @@ namespace GVM {
 
     };
 
+        #define PROFILE_ENTRY(f) Profiler::enterFunction(f);
+        #define PROFILE_EXIT()   Profiler::leaveFunction();
+
     #else
+
+        #define PROFILE_ENTRY(f)
+        #define PROFILE_EXIT()
 
 	#endif
 };

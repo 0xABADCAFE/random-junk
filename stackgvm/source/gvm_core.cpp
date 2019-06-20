@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include "include/gvm_core.hpp"
 #include "include/gvm_debug.hpp"
+#include "include/gvm_profiling.hpp"
 
 using namespace GVM;
 
@@ -25,14 +26,6 @@ const HostCall*         Interpreter::hostFunctionTable     = 0;
 uint32                  Interpreter::hostFunctionTableSize = 0;
 Scalar**                Interpreter::dataTable             = 0;
 uint32                  Interpreter::dataTableSize         = 0;
-
-#ifdef _GVM_OPT_PROFILING_
-FuncProfile*            Interpreter::callProfile           = 0;
-namespace {
-    FloatClock callTimer;
-};
-#endif
-
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -95,6 +88,14 @@ Result Interpreter::init(size_t rSize, size_t fSize, const FuncInfo* func, const
         return result;
     }
 
+#ifdef _GVM_OPT_PROFILING_
+    result = Profiler::init(functionTableSize, rSize);
+    if (result != SUCCESS) {
+        std::free(readySet);
+        return result;
+    }
+#endif
+
     workingSet = readySet;
 
     // Bookend entry so that we don't have to edge case checks for the first entry point
@@ -105,15 +106,6 @@ Result Interpreter::init(size_t rSize, size_t fSize, const FuncInfo* func, const
 
     frameStackBase     = frameStack = (Scalar*)(readySet + callStackSize) + REDZONE_BUFFER;
     frameStackTop      = &frameStackBase[fSize-1];
-
-#ifdef _GVM_OPT_PROFILING_
-    callProfile        = (FuncProfile*)std::calloc(functionTableSize, sizeof(FuncProfile));
-    if (!callProfile) {
-        std::free(readySet);
-        gvmDebug("GVM::Interpreter::init()\n\tCould not allocate call profile table\n");
-        return INIT_OUT_OF_MEMORY;
-    }
-#endif
 
     gvmDebug(
         "GVM::Interpreter::init()\n"
@@ -140,11 +132,7 @@ Result Interpreter::init(size_t rSize, size_t fSize, const FuncInfo* func, const
 
 void Interpreter::done() {
 #ifdef _GVM_OPT_PROFILING_
-    if (callProfile) {
-        std::free(callProfile);
-        gvmDebug("GVM::Interpreter::done()\n\tReleased call profile table\n");
-        callProfile = 0;
-    }
+    Profiler::done();
 #endif
     if (workingSet) {
         gvmDebug("GVM::Interpreter::done()\n\tReleased working set\n");
@@ -339,11 +327,6 @@ Result Interpreter::enterFunction(const uint8* returnAddress, uint16 functionId)
         );
 #endif
 
-#ifdef _GVM_OPT_PROFILING_
-        callStack->mark = callTimer.elapsed();
-        ++callProfile[functionId].count;
-#endif
-
         return SUCCESS;
     }
 
@@ -394,9 +377,6 @@ Result Interpreter::exitFunction() {
         const uint8* returnTo = callStack->returnAddress;
 #if defined(_GVM_DEBUG_FUNCTIONS_) || defined(_GVM_OPT_PROFILING_)
         int currentId = callStack->functionId;
-#endif
-#ifdef _GVM_OPT_PROFILING_
-        callProfile[currentId].time += callTimer.elapsed() - callStack->mark;
 #endif
         --callStack;
         if (frameStack - callStack->frameSize < frameStackBase) {
@@ -478,6 +458,8 @@ void Interpreter::dumpFrame() {
         }
     }
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Interpreter::dumpCallStack() {
     std::fprintf(
