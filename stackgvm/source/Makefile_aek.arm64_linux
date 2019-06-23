@@ -1,7 +1,7 @@
 # Project: TOYTL - GVM
 
 # Target
-BIN      = bin/gamevm_aek_arm64_exe
+BIN      = bin/gvm_aek_arm64_exe
 
 # Compiler settings
 CXXFLAGS = -Ofast -Wall -W -mcpu=native -mtune=native -fomit-frame-pointer -fno-exceptions -D_GVM_HOST_OS=_GVM_HOST_LINUX_ARM_64 -D_GVM_OPT_64BIT_PURE_ -D_GVM_OPT_CACHE_POINTERS_ -D_GVM_OPT_ALLOW_GOTO_ #-D_GVM_OPT_PROFILE_OPCODE_COUNTS_
