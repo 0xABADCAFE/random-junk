@@ -326,7 +326,7 @@ Result Interpreter::enterFunction(const uint8* returnAddress, uint16 functionId)
             frameStack
         );
 #endif
-
+        PROFILE_ENTRY(functionId);
         return SUCCESS;
     }
 
@@ -361,6 +361,7 @@ Result Interpreter::enterClosure(const uint8* returnAddress, int16 branch, uint8
             programCounter
         );
 #endif
+        PROFILE_ENTRY(0);
         return SUCCESS;
     }
 
@@ -393,6 +394,7 @@ Result Interpreter::exitFunction() {
             programCounter
         );
 #endif
+        PROFILE_EXIT();
         return returnTo ? SUCCESS : EXEC_RETURN_TO_HOST;
     }
     return EXEC_CALL_STACK_UNDERFLOW;

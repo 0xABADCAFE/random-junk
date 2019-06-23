@@ -5,7 +5,7 @@ namespace GVM {
     class Profiler {
         public:
             struct FuncProfile {
-                uint32  callCount;
+                int32  callCount;
                 float32 incWallTime;
             };
 
@@ -22,22 +22,21 @@ namespace GVM {
                 uint16  reserved;
             };
 
-			// All the profiling data is allocated together
-			static void*         workingSet;
+            // All the profiling data is allocated together
+            static void*         workingSet;
 
             // Tracking per function, per recursion depth
             static FuncProfile** funcProfile;
 
             // Current recursion depth of each function
-            static uint32*       funcDepth;
-            static StackEntry*   profileStackBase;
-            static StackEntry*   profileStackTop;
+            static int32*        funcDepth;
             static StackEntry*   profileStack;
-
+            static size_t        numFunctions;
+            static size_t        maxCallDepth;
     };
 
-        #define PROFILE_ENTRY(f) Profiler::enterFunction(f);
-        #define PROFILE_EXIT()   Profiler::leaveFunction();
+        #define PROFILE_ENTRY(f) Profiler::enterFunction(f)
+        #define PROFILE_EXIT()   Profiler::leaveFunction()
 
     #else
 
