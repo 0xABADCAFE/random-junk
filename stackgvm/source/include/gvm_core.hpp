@@ -48,19 +48,7 @@ namespace GVM {
         TAG_MASK_REFERENCE = 3 << 30
     } SymbolIDTypeTag;
 
-    /**
-     * Scalar
-     *
-     * Basic machine datatype.
-     */
-    union Scalar {
-        int32   i;
-        uint32  u;
-        float32 f;
-        Scalar* a;
-        Scalar(int i)   : i(i) {}
-        Scalar(float f) : f(f) {}
-    };
+    #include "gvm_scalar.hpp"
 
     /**
      * FuncInfo
