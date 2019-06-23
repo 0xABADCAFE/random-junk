@@ -12,6 +12,9 @@ using namespace GVM;
     #include "include/platforms/machine_linux_generic_impl.hpp"
 #elif (_VM_HOST_OS == _VM_HOST_LINUX_INTEL_64)
     #include "include/platforms/machine_linux_generic_impl.hpp"
+#elif (_VM_HOST_OS == _VM_HOST_LINUX_ARM_64)
+    #include "include/platforms/machine_linux_generic_impl.hpp"
+
 //#elif (_VM_HOST_OS == _VM_HOST_AMIGAOS3_68K)
 //    #include "include/platforms/machine_amiga_68k_impl.hpp"
 //#elif (_VM_HOST_OS == _VM_HOST_AMIGAOS3_WARPUP)
