@@ -14,16 +14,12 @@ using namespace GVM;
 
 #ifdef _GVM_OPT_PROFILING_
 
-#undef gvmDebug
-#define gvmDebug(...) std::fprintf(stderr, __VA_ARGS__)
-
 void*                   Profiler::workingSet       = 0;
 Profiler::FuncProfile** Profiler::funcProfile      = 0;
 int32*                  Profiler::funcDepth        = 0;
 Profiler::StackEntry*   Profiler::profileStack     = 0;
 size_t                  Profiler::numFunctions     = 0;
 size_t                  Profiler::maxCallDepth     = 0;
-
 FloatClock              Profiler::timer;
 
 Result Profiler::init(size_t numFunctions, size_t maxCallDepth) {
@@ -97,7 +93,6 @@ Result Profiler::init(size_t numFunctions, size_t maxCallDepth) {
 }
 
 void Profiler::done() {
-
     for (unsigned i=0; i<numFunctions; i++) {
         std::fprintf(
             stderr,
