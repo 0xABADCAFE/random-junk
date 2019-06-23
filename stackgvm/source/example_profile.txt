@@ -1,0 +1,36 @@
+Executed: 36561659603 instructions total.
+Profile for function 0
+Profile for function 1
+        @   0:        1 calls, 186257965.088 us, avg. 186257965.088 us
+Profile for function 2
+        @   0: 36373247 calls, 169405471.802 us, avg.        4.657 us
+Profile for function 3
+        @   0: 16777216 calls, 180161514.282 us, avg.       10.738 us
+        @   1:  5372613 calls,  49291645.050 us, avg.        9.175 us
+        @   2:   858536 calls,   8357387.543 us, avg.        9.734 us
+        @   3:   175589 calls,   1845909.119 us, avg.       10.513 us
+        @   4:    45551 calls,    502359.390 us, avg.       11.029 us
+        @   5:    12912 calls,    151008.606 us, avg.       11.695 us
+        @   6:     4182 calls,     50834.656 us, avg.       12.156 us
+        @   7:     1344 calls,     18753.052 us, avg.       13.953 us
+        @   8:      482 calls,      8152.008 us, avg.       16.913 us
+        @   9:      199 calls,      4486.084 us, avg.       22.543 us
+        @  10:       95 calls,      2971.649 us, avg.       31.281 us
+        @  11:       66 calls,      2262.115 us, avg.       34.274 us
+        @  12:       43 calls,      1739.502 us, avg.       40.454 us
+        @  13:       33 calls,      1419.067 us, avg.       43.002 us
+        @  14:       26 calls,      1075.745 us, avg.       41.375 us
+        @  15:       23 calls,       858.307 us, avg.       37.318 us
+        @  16:       19 calls,       679.016 us, avg.       35.738 us
+        @  17:       17 calls,       560.760 us, avg.       32.986 us
+        @  18:       15 calls,       408.173 us, avg.       27.212 us
+        @  19:       11 calls,       320.435 us, avg.       29.130 us
+        @  20:        7 calls,       221.252 us, avg.       31.607 us
+        @  21:        7 calls,       175.476 us, avg.       25.068 us
+        @  22:        5 calls,       114.441 us, avg.       22.888 us
+        @  23:        4 calls,        76.294 us, avg.       19.073 us
+        @  24:        2 calls,        30.518 us, avg.       15.259 us
+        @  25:        1 calls,        22.888 us, avg.       22.888 us
+        @  26:        1 calls,         7.629 us, avg.        7.629 us
+        @  27:        1 calls,         7.629 us, avg.        7.629 us
+Took 186.257980 seconds [1]
