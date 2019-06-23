@@ -8,23 +8,25 @@
 #include <cstdlib>
 #include "include/gvm_core.hpp"
 #include "include/gvm_debug.hpp"
+#include "include/gvm_profiling.hpp"
 
 using namespace GVM;
 
-void*                  Interpreter::workingSet            = 0;
-Interpreter::CallInfo* Interpreter::callStack             = 0;
-Interpreter::CallInfo* Interpreter::callStackBase         = 0;
-Interpreter::CallInfo* Interpreter::callStackTop          = 0;
-Scalar*                Interpreter::frameStack            = 0;
-Scalar*                Interpreter::frameStackBase        = 0;
-Scalar*                Interpreter::frameStackTop         = 0;
-const uint8*           Interpreter::programCounter        = 0;
-const FuncInfo*        Interpreter::functionTable         = 0;
-uint32                 Interpreter::functionTableSize     = 0;
-const HostCall*        Interpreter::hostFunctionTable     = 0;
-uint32                 Interpreter::hostFunctionTableSize = 0;
-Scalar**               Interpreter::dataTable             = 0;
-uint32                 Interpreter::dataTableSize         = 0;
+void*                   Interpreter::workingSet            = 0;
+Interpreter::CallInfo*  Interpreter::callStack             = 0;
+Interpreter::CallInfo*  Interpreter::callStackBase         = 0;
+Interpreter::CallInfo*  Interpreter::callStackTop          = 0;
+Scalar*                 Interpreter::frameStack            = 0;
+Scalar*                 Interpreter::frameStackBase        = 0;
+Scalar*                 Interpreter::frameStackTop         = 0;
+const uint8*            Interpreter::programCounter        = 0;
+const FuncInfo*         Interpreter::functionTable         = 0;
+uint32                  Interpreter::functionTableSize     = 0;
+const HostCall*         Interpreter::hostFunctionTable     = 0;
+uint32                  Interpreter::hostFunctionTableSize = 0;
+Scalar**                Interpreter::dataTable             = 0;
+uint32                  Interpreter::dataTableSize         = 0;
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -86,6 +88,14 @@ Result Interpreter::init(size_t rSize, size_t fSize, const FuncInfo* func, const
         return result;
     }
 
+#ifdef _GVM_OPT_PROFILING_
+    result = Profiler::init(functionTableSize, rSize);
+    if (result != SUCCESS) {
+        std::free(readySet);
+        return result;
+    }
+#endif
+
     workingSet = readySet;
 
     // Bookend entry so that we don't have to edge case checks for the first entry point
@@ -121,6 +131,9 @@ Result Interpreter::init(size_t rSize, size_t fSize, const FuncInfo* func, const
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Interpreter::done() {
+#ifdef _GVM_OPT_PROFILING_
+    Profiler::done();
+#endif
     if (workingSet) {
         gvmDebug("GVM::Interpreter::done()\n\tReleased working set\n");
         std::free(workingSet);
@@ -313,6 +326,7 @@ Result Interpreter::enterFunction(const uint8* returnAddress, uint16 functionId)
             frameStack
         );
 #endif
+        PROFILE_ENTRY(functionId);
         return SUCCESS;
     }
 
@@ -347,6 +361,7 @@ Result Interpreter::enterClosure(const uint8* returnAddress, int16 branch, uint8
             programCounter
         );
 #endif
+        PROFILE_ENTRY(0);
         return SUCCESS;
     }
 
@@ -361,7 +376,7 @@ Result Interpreter::exitFunction() {
 
     if (callStack > callStackBase) {
         const uint8* returnTo = callStack->returnAddress;
-#ifdef _GVM_DEBUG_FUNCTIONS_
+#if defined(_GVM_DEBUG_FUNCTIONS_) || defined(_GVM_OPT_PROFILING_)
         int currentId = callStack->functionId;
 #endif
         --callStack;
@@ -379,6 +394,7 @@ Result Interpreter::exitFunction() {
             programCounter
         );
 #endif
+        PROFILE_EXIT();
         return returnTo ? SUCCESS : EXEC_RETURN_TO_HOST;
     }
     return EXEC_CALL_STACK_UNDERFLOW;
@@ -444,6 +460,8 @@ void Interpreter::dumpFrame() {
         }
     }
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Interpreter::dumpCallStack() {
     std::fprintf(

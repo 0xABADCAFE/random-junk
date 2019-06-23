@@ -111,14 +111,13 @@ using namespace GVM;
 // Return address
 #define RTA(size)  (PRGC + (size))
 
-
 #ifdef _GVM_OPT_PROFILE_OPCODE_COUNTS_
     #define INIT_OPCODE_COUNTS static uint64 perInstructionCounts[256] = { 0 }
     #define UPDATE_OPCODE_COUNTS ++perInstructionCounts[(*PRGC)]
     #define DUMP_OPCODE_COUNTS \
         for (uint32 i=0; i<256; i++) { \
             if (perInstructionCounts[i]) { \
-                std::fprintf(stderr, "\t%02X : %llu\n", i, perInstructionCounts[i]); \
+                std::fprintf(stderr, "\t%02X : %" FU64 "\n", i, perInstructionCounts[i]); \
             } \
         }
 #else
