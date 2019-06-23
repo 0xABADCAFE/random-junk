@@ -1,11 +1,11 @@
 #ifndef _GVM_PROFILING_HPP_
     #define _GVM_PROFILING_HPP_
 namespace GVM {
-	#ifdef _GVM_OPT_PROFILING_
+    #ifdef _GVM_OPT_PROFILING_
     class Profiler {
         public:
             struct FuncProfile {
-                int32  callCount;
+                uint32  callCount;
                 float32 incWallTime;
             };
 
@@ -33,6 +33,8 @@ namespace GVM {
             static StackEntry*   profileStack;
             static size_t        numFunctions;
             static size_t        maxCallDepth;
+
+            static FloatClock    timer;
     };
 
         #define PROFILE_ENTRY(f) Profiler::enterFunction(f)
@@ -43,6 +45,6 @@ namespace GVM {
         #define PROFILE_ENTRY(f)
         #define PROFILE_EXIT()
 
-	#endif
+    #endif
 };
 #endif

@@ -24,6 +24,8 @@ Profiler::StackEntry*   Profiler::profileStack     = 0;
 size_t                  Profiler::numFunctions     = 0;
 size_t                  Profiler::maxCallDepth     = 0;
 
+FloatClock              Profiler::timer;
+
 Result Profiler::init(size_t numFunctions, size_t maxCallDepth) {
 
     size_t funcProfileIndexSize = numFunctions * sizeof(FuncProfile*);
@@ -103,12 +105,16 @@ void Profiler::done() {
             i
         );
         for (unsigned j=0; j<maxCallDepth; j++) {
-            if (funcProfile[i][j].callCount != 0) {
+            uint32 totalCount = funcProfile[i][j].callCount;
+            if (totalCount > 0) {
+                float64 totalCallTime = 1e6 * funcProfile[i][j].incWallTime;
                 std::fprintf(
                     stderr,
-                    "\t\t@%4u: %" FS32 " calls\n",
+                    "\t@%4u: %8" FU32 " calls, %12.3f us, avg. %12.3f us\n",
                     j,
-                    funcProfile[i][j].callCount
+                    totalCount,
+                    totalCallTime,
+                    totalCallTime / totalCount
                 );
             }
         }
@@ -126,12 +132,14 @@ void Profiler::done() {
 
 void Profiler::enterFunction(uint16 id) {
     ++profileStack;
+    profileStack->mark       = timer.elapsed();
     profileStack->functionId = id;
     ++funcProfile[id][++funcDepth[id]].callCount;
 }
 
 void Profiler::leaveFunction() {
-    --funcDepth[profileStack->functionId];
+    uint16 functionId = profileStack->functionId;
+    funcProfile[functionId][funcDepth[functionId]--].incWallTime += timer.elapsed() - profileStack->mark;
     --profileStack;
 }
 
