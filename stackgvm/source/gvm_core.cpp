@@ -132,6 +132,7 @@ Result Interpreter::init(size_t rSize, size_t fSize, const FuncInfo* func, const
 
 void Interpreter::done() {
 #ifdef _GVM_OPT_PROFILING_
+    Profiler::dump(stderr);
     Profiler::done();
 #endif
     if (workingSet) {

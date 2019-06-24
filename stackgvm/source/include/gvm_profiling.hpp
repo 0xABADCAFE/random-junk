@@ -14,6 +14,7 @@ namespace GVM {
         public:
             static Result init(size_t numFunctions, size_t maxCallDepth);
             static void done();
+            static void dump(std::FILE* to);
             static void enterFunction(uint16 id);
             static void leaveFunction();
 
@@ -38,15 +39,13 @@ namespace GVM {
 
             static FloatClock    timer;
     };
-
-        #define PROFILE_ENTRY(f) Profiler::enterFunction(f)
-        #define PROFILE_EXIT()   Profiler::leaveFunction()
-
+        #define PROFILE_ENTRY(f)    Profiler::enterFunction(f)
+        #define PROFILE_EXIT()      Profiler::leaveFunction()
+        #define PROFILE_DUMP(to)    Profiler::dump((to))
     #else
-
         #define PROFILE_ENTRY(f)
         #define PROFILE_EXIT()
-
+        #define PROFILE_DUMP(to)
     #endif
 };
 #endif
