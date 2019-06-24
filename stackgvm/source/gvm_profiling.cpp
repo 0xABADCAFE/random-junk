@@ -67,6 +67,10 @@ Result Profiler::init(size_t numFunctions, size_t maxCallDepth) {
     for (unsigned i = 0; i < numFunctions; i++) {
         gvmDebug("\tfuncProfile[%u]: %p\n", i, pProfile);
         funcProfile[i] = pProfile;
+        for (unsigned j = 0; j < maxCallDepth; j++) {
+            pProfile[j].minIncWallTime = 1e10f;
+            pProfile[j].maxIncWallTime = 0.0f;
+        }
         pProfile += maxCallDepth;
     }
 
@@ -93,27 +97,38 @@ Result Profiler::init(size_t numFunctions, size_t maxCallDepth) {
 }
 
 void Profiler::done() {
-    for (unsigned i=0; i<numFunctions; i++) {
+    for (unsigned i = 0; i < numFunctions; i++) {
         std::fprintf(
             stderr,
-            "Profile for function %u\n",
+            "Walltime Profile for function %u\n"
+            "+-------+----------+---------------+---------------+---------------+---------------+\n"
+            "| Depth |    Calls |  Tot Inc (us) |  Avg Inc (us) |  Min Inc (us) |  Max Inc (us) |\n"
+            "+-------+----------+---------------+---------------+---------------+---------------+\n",
             i
         );
-        for (unsigned j=0; j<maxCallDepth; j++) {
-            uint32 totalCount = funcProfile[i][j].callCount;
+        for (unsigned j = 0; j < maxCallDepth; j++) {
+            FuncProfile& profile = funcProfile[i][j];
+            uint32 totalCount = profile.callCount;
             if (totalCount > 0) {
-                float64 totalCallTime = 1e6 * funcProfile[i][j].incWallTime;
+                float64 totalCallTime = 1e6 * profile.incWallTime;
                 std::fprintf(
                     stderr,
-                    "\t@%4u: %8" FU32 " calls, %12.3f us, avg. %12.3f us\n",
+                    "| %5u | %8" FU32 " | %13.3f | %13.3f | %13.3f | %13.3f |\n",
                     j,
                     totalCount,
                     totalCallTime,
-                    totalCallTime / totalCount
+                    totalCallTime / totalCount,
+                    1e6 * profile.minIncWallTime,
+                    1e6 * profile.maxIncWallTime
                 );
             }
         }
+        std::fprintf(
+            stderr,
+            "+-------+----------+---------------+---------------+---------------+---------------+\n\n"
+        );
     }
+
 
     if (workingSet) {
         std::free(workingSet);
@@ -134,7 +149,15 @@ void Profiler::enterFunction(uint16 id) {
 
 void Profiler::leaveFunction() {
     uint16 functionId = profileStack->functionId;
-    funcProfile[functionId][funcDepth[functionId]--].incWallTime += timer.elapsed() - profileStack->mark;
+    float32 incWallTime = timer.elapsed() - profileStack->mark;
+    FuncProfile& profile = funcProfile[functionId][funcDepth[functionId]--];
+    if (incWallTime < profile.minIncWallTime) {
+        profile.minIncWallTime = incWallTime;
+    }
+    if (incWallTime > profile.maxIncWallTime) {
+        profile.maxIncWallTime = incWallTime;
+    }
+    profile.incWallTime += incWallTime;
     --profileStack;
 }
 

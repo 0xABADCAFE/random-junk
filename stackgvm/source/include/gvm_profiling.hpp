@@ -7,6 +7,8 @@ namespace GVM {
             struct FuncProfile {
                 uint32  callCount;
                 float32 incWallTime;
+                float32 minIncWallTime;
+                float32 maxIncWallTime;
             };
 
         public:
