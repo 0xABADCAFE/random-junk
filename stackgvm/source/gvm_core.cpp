@@ -30,7 +30,13 @@ uint32                  Interpreter::dataTableSize         = 0;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Result Interpreter::init(size_t rSize, size_t fSize, const FuncInfo* func, const HostCall* host, Scalar** data) {
+Result Interpreter::init(
+    const size_t rSize,
+    const size_t fSize,
+    const FuncInfo* func,
+    const HostCall* host,
+    Scalar** data
+) {
     if (!func || !host || !data) {
         gvmDebug("GVM::Interpreter::init()\n\tTables cannot be empty\n");
         return MISC_ILLEGAL_VALUE;
@@ -46,14 +52,11 @@ Result Interpreter::init(size_t rSize, size_t fSize, const FuncInfo* func, const
         return MISC_ILLEGAL_VALUE;
     }
 
-    if (fSize == 0) {
-        fSize = rSize * FuncInfo::MAX_FRAME_SIZE;
-    }
-
-    if (fSize < MIN_STACK_SIZE || fSize > MAX_STACK_SIZE) {
+    size_t lSize = (fSize ? fSize : rSize * FuncInfo::MAX_FRAME_SIZE);
+    if (lSize < MIN_STACK_SIZE || lSize > MAX_STACK_SIZE) {
         gvmDebug(
             "GVM::Interpreter::init()\n\tFrame Stack Size %d is not in range %d - %d\n",
-            (int)fSize,
+            (int)lSize,
             MIN_STACK_SIZE,
             MAX_STACK_SIZE
         );
@@ -61,7 +64,7 @@ Result Interpreter::init(size_t rSize, size_t fSize, const FuncInfo* func, const
     }
 
     size_t callStackSize   = (1 + rSize) * sizeof(CallInfo);
-    size_t frameStackSize  = (fSize + REDZONE_BUFFER * 2) * sizeof(Scalar);
+    size_t frameStackSize  = (lSize + REDZONE_BUFFER * 2) * sizeof(Scalar);
     size_t totalAllocation = callStackSize + frameStackSize;
 
     gvmDebug(
@@ -71,7 +74,7 @@ Result Interpreter::init(size_t rSize, size_t fSize, const FuncInfo* func, const
         "\t%d bytes for frame stack (%d of %d bytes each, including start and end red zones of %d entries each)\n",
         (int)totalAllocation,
         (int)callStackSize, (int)rSize, (int)sizeof(CallInfo),
-        (int)frameStackSize,(int)fSize, (int)sizeof(Scalar),
+        (int)frameStackSize,(int)lSize, (int)sizeof(Scalar),
         (int)REDZONE_BUFFER
     );
 
@@ -105,7 +108,7 @@ Result Interpreter::init(size_t rSize, size_t fSize, const FuncInfo* func, const
     callStackTop       = &callStackBase[rSize-1];
 
     frameStackBase     = frameStack = (Scalar*)(readySet + callStackSize) + REDZONE_BUFFER;
-    frameStackTop      = &frameStackBase[fSize-1];
+    frameStackTop      = &frameStackBase[lSize-1];
 
     gvmDebug(
         "GVM::Interpreter::init()\n"
@@ -132,6 +135,7 @@ Result Interpreter::init(size_t rSize, size_t fSize, const FuncInfo* func, const
 
 void Interpreter::done() {
 #ifdef _GVM_OPT_PROFILING_
+    Profiler::dump(stderr);
     Profiler::done();
 #endif
     if (workingSet) {
@@ -376,9 +380,6 @@ Result Interpreter::exitFunction() {
 
     if (callStack > callStackBase) {
         const uint8* returnTo = callStack->returnAddress;
-#if defined(_GVM_DEBUG_FUNCTIONS_) || defined(_GVM_OPT_PROFILING_)
-        int currentId = callStack->functionId;
-#endif
         --callStack;
         if (frameStack - callStack->frameSize < frameStackBase) {
             gvmDebug("GVM::Interpreter::exitFunction() : Frame Stack Underflow.\n");

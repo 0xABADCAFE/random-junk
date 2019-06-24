@@ -88,8 +88,14 @@ namespace GVM {
                 REDZONE_BUFFER = 128
             };
 
-            static Result  init(size_t rSize, size_t fSize, const FuncInfo* func, const HostCall* host, Scalar** data);
-            static Result  invoke(uint16 functionId);
+            static Result  init(
+                const size_t rSize,
+                const size_t fSize,
+                const FuncInfo* func,
+                const HostCall* host,
+                Scalar** data
+            );
+            static Result  invoke(const uint16 functionId);
             static void    done();
 
             static Scalar* stack() {
@@ -126,10 +132,10 @@ namespace GVM {
             static Scalar**        dataTable;
             static uint32          dataTableSize;
 
-            static Result enterFunction(const uint8* returnAddress, uint16 functionId);
-            static Result enterClosure(const uint8* returnAddress, int16 branch, uint8 frameSize);
+            static Result enterFunction(const uint8* returnAddress, const uint16 functionId);
+            static Result enterClosure(const uint8* returnAddress, const int16 branch, const uint8 frameSize);
             static Result exitFunction();
-            static Result invokeHostFunction(uint16 functionId);
+            static Result invokeHostFunction(const uint16 functionId);
             static Result run();
             static Result validateTables(const FuncInfo* func, const HostCall* host, Scalar** data);
             static void   dumpFrame();
