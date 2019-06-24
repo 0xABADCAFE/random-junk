@@ -7,20 +7,22 @@ namespace GVM {
             struct FuncProfile {
                 uint32  callCount;
                 float32 incWallTime;
+                float32 childWallTime;
                 float32 minIncWallTime;
                 float32 maxIncWallTime;
             };
 
         public:
-            static Result init(size_t numFunctions, size_t maxCallDepth);
+            static Result init(const size_t numFunctions, const size_t maxCallDepth);
             static void done();
             static void dump(std::FILE* to);
-            static void enterFunction(uint16 id);
+            static void enterFunction(const uint16 id);
             static void leaveFunction();
 
         private:
             struct StackEntry {
                 float32 mark;
+                float32 childAccum;
                 uint16  functionId;
                 uint16  reserved;
             };

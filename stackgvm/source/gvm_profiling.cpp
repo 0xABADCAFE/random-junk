@@ -24,12 +24,12 @@ FloatClock              Profiler::timer;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Result Profiler::init(size_t numFunctions, size_t maxCallDepth) {
+Result Profiler::init(const size_t numFunctions, const size_t maxCallDepth) {
 
     size_t funcProfileIndexSize = numFunctions * sizeof(FuncProfile*);
     size_t funcProfileSize      = numFunctions * maxCallDepth * sizeof(FuncProfile);
     size_t funcDepthSize        = numFunctions * sizeof(int32);
-    size_t callStackSize        = (maxCallDepth + 1) * sizeof(StackEntry);
+    size_t callStackSize        = (maxCallDepth + 2) * sizeof(StackEntry);
 
     size_t totalAllocation =
         funcProfileIndexSize +
@@ -71,7 +71,7 @@ Result Profiler::init(size_t numFunctions, size_t maxCallDepth) {
         funcProfile[i] = pProfile;
         for (unsigned j = 0; j < maxCallDepth; j++) {
             pProfile[j].minIncWallTime = 1e10f;
-            pProfile[j].maxIncWallTime = 0.0f;
+            pProfile[j].maxIncWallTime = -1e10f;
         }
         pProfile += maxCallDepth;
     }
@@ -89,7 +89,13 @@ Result Profiler::init(size_t numFunctions, size_t maxCallDepth) {
     // The final part of the allocation is a set of M StackEntry instances, where M is the maximum call depth. This
     // stack tracks the current function's invocation and it's entry timestamp.
 
-    profileStack = (StackEntry*)(readySet + funcProfileIndexSize + funcProfileSize + funcDepthSize);
+    profileStack = (StackEntry*)(
+        readySet +
+        funcProfileIndexSize +
+        funcProfileSize +
+        funcDepthSize +
+        sizeof(StackEntry)
+    );
     gvmDebug(
         "\tprofileStackBase: %p\n",
         profileStack
@@ -111,6 +117,8 @@ void Profiler::done() {
     profileStack     = 0;
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void Profiler::dump(std::FILE* out) {
     // We take the time of the first function entered (at depth zero) to represent the total time for percentages.
     float32 percentTotalDivisor = 1e4 * funcProfile[profileStack[0].functionId][0].incWallTime;
@@ -119,40 +127,62 @@ void Profiler::dump(std::FILE* out) {
         std::fprintf(
             out,
             "Walltime Profile for function %u\n"
-            "+-------+----------+---------------+--------+---------------+---------------+---------------+\n"
-            "| Depth |    Calls |  Tot Inc (us) |  %% Tot |  Avg Inc (us) |  Min Inc (us) |  Max Inc (us) |\n"
-            "+-------+----------+---------------+--------+---------------+---------------+---------------+\n",
+            "+-------+----------+---------------+--------+---------------+---------------+---------------+---------------+---------------+\n"
+            "| Depth |    Calls |  Tot Inc (us) |  %% Tot |  Avg Inc (us) |  Min Inc (us) |  Max Inc (us) |  Tot Exc (us) |  Avg Exc (us) |\n"
+            "+-------+----------+---------------+--------+---------------+---------------+---------------+---------------+---------------+\n",
             i
         );
         for (unsigned j = 0; j < maxCallDepth; j++) {
             FuncProfile& profile = funcProfile[i][j];
             uint32 totalCount = profile.callCount;
-            if (totalCount > 0) {
-                float64 totalCallTime = 1e6 * profile.incWallTime;
+            if (totalCount > 1) {
+                float64 totalIncWallTime = 1e6 * profile.incWallTime;
+                float64 totalExcWallTime = totalIncWallTime - (1e6 * profile.childWallTime);
                 std::fprintf(
                     out,
-                    "| %5u | %8" FU32 " | %13.3f | %6.2f | %13.3f | %13.3f | %13.3f |\n",
+                    "| %5u | %8" FU32 " | %13.3f | %6.2f | %13.3f | %13.3f | %13.3f | %13.3f | %13.3f |\n",
                     j,
                     totalCount,
-                    totalCallTime,
-                    totalCallTime / percentTotalDivisor,
-                    totalCallTime / totalCount,
+                    totalIncWallTime,
+                    totalIncWallTime / percentTotalDivisor,
+                    totalIncWallTime / totalCount,
                     1e6 * profile.minIncWallTime,
-                    1e6 * profile.maxIncWallTime
+                    1e6 * profile.maxIncWallTime,
+                    totalExcWallTime,
+                    totalExcWallTime / totalCount
                 );
+            } else if (totalCount == 1) {
+                float64 totalIncWallTime = 1e6 * profile.incWallTime;
+                float64 totalExcWallTime = totalIncWallTime - (1e6 * profile.childWallTime);
+                std::fprintf(
+                    out,
+                    "| %5u | %8" FU32 " | %13.3f | %6.2f | %13s | %13s | %13s | %13.3f | %13s |\n",
+                    j,
+                    totalCount,
+                    totalIncWallTime,
+                    totalIncWallTime / percentTotalDivisor,
+                    "-",
+                    "-",
+                    "-",
+                    totalExcWallTime,
+                    "-"
+                );
+            } else {
+                break;
             }
         }
         std::fprintf(
             out,
-            "+-------+----------+---------------+--------+---------------+---------------+---------------+\n\n"
+            "+-------+----------+---------------+--------+---------------+---------------+---------------+---------------+---------------+\n\n"
         );
     }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Profiler::enterFunction(uint16 id) {
+void Profiler::enterFunction(const uint16 id) {
     profileStack->mark       = timer.elapsed();
+    profileStack->childAccum = 0.0f;
     profileStack->functionId = id;
     ++funcProfile[id][++funcDepth[id]].callCount;
     ++profileStack;
@@ -171,7 +201,13 @@ void Profiler::leaveFunction() {
     if (incWallTime > profile.maxIncWallTime) {
         profile.maxIncWallTime = incWallTime;
     }
-    profile.incWallTime += incWallTime;
+
+    profile.incWallTime   += incWallTime;
+    profile.childWallTime += profileStack->childAccum;
+
+    // Update parent child accumulator about the time we spent here. This looks scary but it's why we allocate one slot
+    // above and below the stack so the -1 has no bad effect.
+    profileStack[-1].childAccum += incWallTime;
 }
 
 #endif
