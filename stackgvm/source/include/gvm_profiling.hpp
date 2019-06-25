@@ -27,8 +27,6 @@ namespace GVM {
             struct FuncProfile {
                 NanoTime::Value incWallTime;
                 NanoTime::Value childWallTime;
-                NanoTime::Value minIncWallTime;
-                NanoTime::Value maxIncWallTime;
                 uint32 callCount;
             };
 
