@@ -31,9 +31,12 @@ namespace GVM {
             }
     };
 
-    // High precision timing
+    /**
+     * NanoTime
+     *
+     * Nanosecond precision timing.
+     */
     class NanoTime {
-
         public:
             typedef uint64 Value;
             static Value mark();

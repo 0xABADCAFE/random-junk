@@ -107,6 +107,7 @@ Result Profiler::init(const size_t numFunctions, const size_t maxCallDepth) {
 
 void Profiler::done() {
     if (workingSet) {
+        calibrate();
         std::free(workingSet);
         gvmDebug("GVM::Profiler::done()\n\tFreed profiling data\n");
     }
@@ -207,6 +208,22 @@ void Profiler::leaveFunction() {
     // Update parent child accumulator about the time we spent here. This looks scary but it's why we allocate one slot
     // above and below the stack so the -1 has no bad effect.
     profileStack[-1].childAccum += incWallTime;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Profiler::calibrate() {
+    NanoTime::Value start = NanoTime::mark();
+    for (int i=0; i<100000; i++) {
+        enterFunction(0);
+        leaveFunction();
+    }
+    NanoTime::Value end   = NanoTime::mark();
+    std::fprintf(
+        stderr,
+        "Profiling overhead per function: %.3f us\n",
+        1e-8 * (end - start)
+    );
 }
 
 #endif

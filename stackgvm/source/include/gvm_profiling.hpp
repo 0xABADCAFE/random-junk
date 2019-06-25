@@ -2,8 +2,28 @@
     #define _GVM_PROFILING_HPP_
 namespace GVM {
     #ifdef _GVM_OPT_PROFILING_
+
+    /**
+     * Profiler
+     *
+     * Basic profiling class. We only emit this code when making a profiled build.
+     */
     class Profiler {
         public:
+            static Result init(const size_t numFunctions, const size_t maxCallDepth);
+            static void done();
+            static void dump(std::FILE* to);
+            static void enterFunction(const uint16 id);
+            static void leaveFunction();
+
+            static void calibrate();
+
+        private:
+            /**
+             * FuncProfile
+             *
+             * Tracks time spent in functions and call count
+             */
             struct FuncProfile {
                 NanoTime::Value incWallTime;
                 NanoTime::Value childWallTime;
@@ -12,14 +32,11 @@ namespace GVM {
                 uint32 callCount;
             };
 
-        public:
-            static Result init(const size_t numFunctions, const size_t maxCallDepth);
-            static void done();
-            static void dump(std::FILE* to);
-            static void enterFunction(const uint16 id);
-            static void leaveFunction();
-
-        private:
+            /**
+             * StackEntry
+             *
+             * Tracks current position and start time stamps in the callgraph
+             */
             struct StackEntry {
                 NanoTime::Value mark;
                 NanoTime::Value childAccum;
