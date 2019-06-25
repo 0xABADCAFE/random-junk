@@ -5,11 +5,11 @@ namespace GVM {
     class Profiler {
         public:
             struct FuncProfile {
-                uint32  callCount;
-                float32 incWallTime;
-                float32 childWallTime;
-                float32 minIncWallTime;
-                float32 maxIncWallTime;
+                NanoTime::Value incWallTime;
+                NanoTime::Value childWallTime;
+                NanoTime::Value minIncWallTime;
+                NanoTime::Value maxIncWallTime;
+                uint32 callCount;
             };
 
         public:
@@ -21,10 +21,10 @@ namespace GVM {
 
         private:
             struct StackEntry {
-                float32 mark;
-                float32 childAccum;
-                uint16  functionId;
-                uint16  reserved;
+                NanoTime::Value mark;
+                NanoTime::Value childAccum;
+                uint16 functionId;
+                uint16 reserved;
             };
 
             // All the profiling data is allocated together
@@ -38,8 +38,6 @@ namespace GVM {
             static StackEntry*   profileStack;
             static size_t        numFunctions;
             static size_t        maxCallDepth;
-
-            static FloatClock    timer;
     };
         #define PROFILE_ENTRY(f)    Profiler::enterFunction(f)
         #define PROFILE_EXIT()      Profiler::leaveFunction()

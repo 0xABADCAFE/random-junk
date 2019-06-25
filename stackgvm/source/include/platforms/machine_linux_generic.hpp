@@ -26,11 +26,17 @@ namespace GVM {
 
             float32 elapsed();
 
-        public:
             FloatClock() {
                 set();
             }
     };
 
+    // High precision timing
+    class NanoTime {
+
+        public:
+            typedef uint64 Value;
+            static Value mark();
+    };
 }
 
