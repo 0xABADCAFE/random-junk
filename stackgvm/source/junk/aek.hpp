@@ -172,6 +172,10 @@
         16      // 0000000000000010000
     };
 
-
+    typedef enum {
+        M_SKY    = 0,
+        M_FLOOR  = 1,
+        M_MIRROR = 2
+    } Material;
 #endif
 

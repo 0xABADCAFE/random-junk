@@ -26,23 +26,30 @@ void init_spheres() {
             }
         }
     }
-    std::fprintf(stderr, "num_spheres:%d\n", num_spheres);
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Material trace(cvr3 origin, cvr3 direction, float32& distance, vec3& normal)
+//
+//  General purpose trace routine that calculates the material, distance to point of intersection and the normal at the
+//  point of intersection. Since sphere volumes overlap, this version exhaustively tests every sphere to determine the
+//  exact point of intersection.
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Trace
-int32 trace(cvr3 origin, cvr3 direction, float32& distance, vec3& normal) {
-    distance         = 1e9f;
+Material trace(cvr3 origin, cvr3 direction, float32& distance, vec3& normal) {
+    distance = 1e9f;
 
     // Assume trace hits nothing
-    int32   material = 0;
+    Material   material = M_SKY;
     float32 p = -origin.z / direction.z;
 
     // Check if trace maybe hits floor
     if (0.01f < p) {
         distance = p,
         normal   = normal_up,
-        material = 1;
+        material = M_FLOOR;
     }
 
     // Check if trace maybe hits a sphere
@@ -64,43 +71,54 @@ int32 trace(cvr3 origin, cvr3 direction, float32& distance, vec3& normal) {
                 normal   = vec3_normalize(
                     vec3_add(p, vec3_scale(direction, distance))
                 ),
-                material = 2; // Returning here is fast, but we'd get z fighting
+                material = M_MIRROR; // Returning here is fast, but we'd get z fighting
             }
         }
     }
     return material;
 }
 
-// Trace
-int32 trace_nobounce(cvr3 origin, cvr3 direction, float32& distance, vec3& normal) {
-    distance         = 1e9f;
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Material trace_nobounce(cvr3 origin, cvr3 direction, float32& distance, vec3& normal)
+//
+//  General purpose trace routine that calculates the material, distance to point of intersection and the normal at the
+//  point of intersection. Completely ignores sphere intersection tests. We use this routine when we know that a ray
+//  cannot intersect any of the spheres in the scene,
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // Assume trace hits nothing
-    int32   material = 0;
+Material trace_nobounce(cvr3 origin, cvr3 direction, float32& distance, vec3& normal) {
+    distance  = 1e9f;
     float32 p = -origin.z / direction.z;
 
     // Check if trace maybe hits floor
     if (0.01f < p) {
         distance = p,
-        normal   = normal_up,
-        material = 1;
+        normal   = normal_up;
+        return M_FLOOR;
     }
-
-
-    return material;
+    return M_SKY;
 }
 
-///////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Material trace_material_only(cvr3 origin, cvr3 direction)
+//
+//  Shortcut version of the trace routine that only tests what material is intersected first by the ray. As the distance
+//  and nprmal are not required here. if the ray hits a sphere we early exit;
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-int32 trace_material_only(cvr3 origin, cvr3 direction) {
+Material trace_material_only(cvr3 origin, cvr3 direction, const float32 sphere_size_mod = 1.0f, const float32 floor_mod = 0.0f) {
 
     // Assume trace hits sky
-    int32   material = 0;
-    float32 p = -origin.z / direction.z;
+    Material material = M_SKY;
+    float32 p = -origin.z / (direction.z + floor_mod);
 
     // Check if trace maybe hits floor
     if (0.01f < p) {
-        material = 1;
+        material = M_FLOOR;
     }
 
     // Check if trace maybe hits a sphere
@@ -112,13 +130,13 @@ int32 trace_material_only(cvr3 origin, cvr3 direction) {
 
         float32
             b = dot(p, direction),
-            eye_offset = dot(p, p) - 1.15f, // This makes the sphere seem bigger
+            eye_offset = dot(p, p) - sphere_size_mod,
             q = b * b - eye_offset
         ;
         if (q > 0.0f) {
             float32 sphere_distance = -b - std::sqrt(q);
             if (sphere_distance < 1e9 && sphere_distance > 0.01f) {
-                material = 2;
+                material = M_MIRROR;
                 break;
             }
         }
@@ -126,25 +144,37 @@ int32 trace_material_only(cvr3 origin, cvr3 direction) {
     return material;
 }
 
-///////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Sampling
+inline vec3 sample_sky(cvr3 direction) {
+    float32 gradient = 1.0f - direction.z;
+    gradient *= gradient;
+    gradient *= gradient;
+    return vec3_scale(
+        sky_rgb, // Blueish sky colour
+        gradient
+    );
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  vec3 sample(cvr3 origin, cvr3 direction)
+//
+//  Generic sampling method that uses the most expensive trace() and recursively samples when hitting a reflective
+//  surface.
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 vec3 sample(cvr3 origin, cvr3 direction) {
     float32 distance;
     vec3 normal;
 
     // Find where the ray intersects the world
-    int32 material = trace(origin, direction, distance, normal);
+    Material material = trace(origin, direction, distance, normal);
 
     // Hit nothing? Sky shade
-    if (!material) {
-        float32 gradient = 1.0f - direction.z;
-        gradient *= gradient;
-        gradient *= gradient;
-        return vec3_scale(
-            sky_rgb, // Blueish sky colour
-            gradient
-        );
+    if (material == M_SKY) {
+        return sample_sky(direction);
     }
 
     vec3
@@ -165,12 +195,12 @@ vec3 sample(cvr3 origin, cvr3 direction) {
 
     // Calculate the lambertian illumuination factor
     float32 lambertian = dot(light, normal);
-    if (lambertian < 0.0f || trace(intersection, light, distance, normal)) {
+    if (lambertian < 0.0f || trace_material_only(intersection, light)) {
         lambertian = 0.0f; // in shadow
     }
 
     // Hit the floor plane
-    if (material == 1) {
+    if (material == M_FLOOR) {
         intersection = vec3_scale(intersection, 0.2f);
         return vec3_scale(
             (
@@ -204,23 +234,25 @@ vec3 sample(cvr3 origin, cvr3 direction) {
     );
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  vec3 sample_nobounce(cvr3 origin, cvr3 direction)
+//
+//  Tuned sample method for rays that we know will not hit a reflective surface.
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 vec3 sample_nobounce(cvr3 origin, cvr3 direction) {
 
     float32 distance;
     vec3 normal;
 
     // Find where the ray intersects the world
-    int32 material = trace_nobounce(origin, direction, distance, normal);
+    Material material = trace_nobounce(origin, direction, distance, normal);
 
     // Hit nothing? Sky shade
-    if (!material) {
-        float32 gradient = 1.0f - direction.z;
-        gradient *= gradient;
-        gradient *= gradient;
-        return vec3_scale(
-            sky_rgb, // Blueish sky colour
-            gradient
-        );
+    if (material == M_SKY) {
+        return sample_sky(direction);
     }
 
     vec3
@@ -241,7 +273,7 @@ vec3 sample_nobounce(cvr3 origin, cvr3 direction) {
 
     // Calculate the lambertian illumuination factor
     float32 lambertian = dot(light, normal);
-    if (lambertian < 0.0f || trace(intersection, light, distance, normal)) {
+    if (lambertian < 0.0f || trace_material_only(intersection, light)) {
         lambertian = 0.0f; // in shadow
     }
 
@@ -335,52 +367,56 @@ int main() {
                 )
             );
 
-            int32 material = trace_material_only(probe_origin, probe_direction);
+            Material material = trace_material_only(probe_origin, probe_direction, 1.15f, -0.01f);
 
+            if (material != M_SKY) {
 
-            sampler samplefn = (material == 2 ? sample : sample_nobounce);
+                sampler samplefn = (material == M_MIRROR ? sample : sample_nobounce);
 
-            // Cast 64 rays per pixel for sampling
-            for (int32 ray_count = 64; ray_count--;) {
+                // Cast 64 rays per pixel for sampling
+                for (int32 ray_count = 64; ray_count--;) {
 
-                // Random delta to be added for depth of field effects
-                vec3 delta = vec3_add(
-                    vec3_scale(camera_up,    (frand() - 0.5f) * 99.0f),
-                    vec3_scale(camera_right, (frand() - 0.5f) * 99.0f)
-                );
+                    // Random delta to be added for depth of field effects
+                    vec3 delta = vec3_add(
+                        vec3_scale(camera_up,    (frand() - 0.5f) * 99.0f),
+                        vec3_scale(camera_right, (frand() - 0.5f) * 99.0f)
+                    );
 
-                // Accumulate the sample result into the current pixel
-                pixel  = vec3_add(
-                    samplefn(
-                        vec3_add(
-                            focal_point,
-                            delta
-                        ),
-                        vec3_normalize(
-                            vec3_sub(
-                                vec3_scale(
-                                    vec3_add(
-                                        vec3_scale(camera_up, frand() + x),
-                                        vec3_add(
-                                            vec3_scale(camera_right, frand() + y),
-                                            eye_offset
-                                        )
-                                    ),
-                                    16.0f
-                                ),
+                    // Accumulate the sample result into the current pixel
+                    pixel  = vec3_add(
+                        samplefn(
+                            vec3_add(
+                                focal_point,
                                 delta
+                            ),
+                            vec3_normalize(
+                                vec3_sub(
+                                    vec3_scale(
+                                        vec3_add(
+                                            vec3_scale(camera_up, frand() + x),
+                                            vec3_add(
+                                                vec3_scale(camera_right, frand() + y),
+                                                eye_offset
+                                            )
+                                        ),
+                                        16.0f
+                                    ),
+                                    delta
+                                )
                             )
-                        )
-                    ),
-                    pixel
-                );
-            }
+                        ),
+                        pixel
+                    );
+                }
 
-            pixel = vec3_scale(pixel, 3.5f);
+                pixel = vec3_scale(pixel, 3.5f);
+            } else {
+                pixel = vec3_scale(sample_sky(probe_direction), 64 * 3.5);
+            }
             pixel = vec3_add(pixel, vec3(13.0f, 13.0f, 13.0f));
 
             // Convert to integers and push out to ppm outpu stream
-            std::printf("%c%c%c", (int32)pixel.x, (int32)pixel.y, (int32)pixel.z);
+            std::printf("%c%c%c", (int)pixel.x, (int)pixel.y, (int)pixel.z);
         }
     }
 

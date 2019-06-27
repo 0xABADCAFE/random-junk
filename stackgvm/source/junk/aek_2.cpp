@@ -28,7 +28,6 @@ void init_spheres() {
             }
         }
     }
-    std::fprintf(stderr, "num_spheres:%d\n", num_spheres);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -241,7 +240,7 @@ int main() {
             pixel = vec3_add(pixel, vec3(13.0f, 13.0f, 13.0f));
 
             // Convert to integers and push out to ppm outpu stream
-            std::printf("%c%c%c", (int32)pixel.x, (int32)pixel.y, (int32)pixel.z);
+            std::printf("%c%c%c", (int)pixel.x, (int)pixel.y, (int)pixel.z);
         }
     }
 
