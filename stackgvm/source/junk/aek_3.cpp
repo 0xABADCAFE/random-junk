@@ -8,6 +8,15 @@
 //   * Optimised away a pow() call for the sky gradient
 //   * Moved the specular calculation to the point where the ray definitely
 //     intersects a sphere.
+//
+// Optimisations
+//   * Convert the aek bitmap to an array of sphere coordinates.
+//   * Implement a material probe before performing the ray trace calculation, in which the probe is tuned to
+//     return the sky material for pixels that will only contain sky, floor for pixels that will only contain floor
+//     and mirror for materials that will generally be the mirrored sphere but could be floor or sky as the probe
+//     treats the spheres as slightly larger.
+//   * Optimised trace functions based on material probe, e.g. single ray for sky, single bounce and no bounce
+//     versions of the regular sample function.
 
 #include "aek.hpp"
 
@@ -59,7 +68,7 @@ Material trace(cvr3 origin, cvr3 direction, float32& distance, vec3& normal) {
     }
 
     // Check if trace maybe hits a sphere
-    for (int i = 0; i<num_spheres; i++) {
+    for (int i = 0; i < num_spheres; i++) {
         vec3 p = vec3_sub(
             origin,
             spheres[i] // Sphere coordinate
@@ -152,13 +161,13 @@ Material trace_material_only(cvr3 origin, cvr3 direction, const float32 sphere_s
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-//  vec3 sample_sky(cvr3 direction)
+//  vec3 material_sky_rgb(cvr3 direction)
 //
 //  Returns the sky colour for a given direction.
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-inline vec3 sample_sky(cvr3 direction) {
+inline vec3 material_sky_rgb(cvr3 direction) {
     float32 gradient = 1.0f - direction.z;
     gradient *= gradient;
     gradient *= gradient;
@@ -168,62 +177,20 @@ inline vec3 sample_sky(cvr3 direction) {
     );
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-//  vec3 sample_nobounce(cvr3 origin, cvr3 direction)
-//
-//  Tuned sample method for rays that we know will not hit a reflective surface.
-//
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-vec3 sample_nobounce(cvr3 origin, cvr3 direction) {
-
-    float32 distance;
-    vec3 normal;
-
-    // Find where the ray intersects the world
-    Material material = trace_nobounce(origin, direction, distance, normal);
-
-    // Hit nothing? Sky shade
-    if (material == M_SKY) {
-        return sample_sky(direction);
-    }
-
-    vec3
-        intersection = vec3_add(origin, vec3_scale(direction, distance)),
-
-        // Calculate the lighting vector
-        light = vec3_normalize(
-            vec3_sub(
-                vec3( // lighting direction, plus a bit of randomness to generate soft shadows.
-                    9.0f + frand(),
-                    9.0f + frand(),
-                    16.0f
-                ),
-                intersection
-            )
-        )
-    ;
-
-    // Calculate the lambertian illumuination factor
-    float32 lambertian = dot(light, normal);
-    if (lambertian < 0.0f || trace_material_only(intersection, light)) {
-        lambertian = 0.0f; // in shadow
-    }
-
-
+inline vec3 material_floor_rgb(vec3& intersection, float32 lambertian) {
     intersection = vec3_scale(intersection, 0.2f);
     return vec3_scale(
         (
             // Compute check colour based on the position
-            (int32) (ceil(intersection.x) + ceil(intersection.y)) & 1 ?
-                floor_red_rgb : // red
-                floor_white_rgb   // white
+            (int) (ceil(intersection.x) + ceil(intersection.y)) & 1 ?
+                floor_red_rgb :
+                floor_white_rgb
         ),
         (lambertian * 0.2f + 0.1f)
     );
-
 }
+
+typedef vec3 (*sampler)(cvr3 origin, cvr3 direction);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -243,7 +210,7 @@ vec3 sample(cvr3 origin, cvr3 direction) {
 
     // Hit nothing? Sky shade
     if (material == M_SKY) {
-        return sample_sky(direction);
+        return material_sky_rgb(direction);
     }
 
     vec3
@@ -270,16 +237,7 @@ vec3 sample(cvr3 origin, cvr3 direction) {
 
     // Hit the floor plane
     if (material == M_FLOOR) {
-        intersection = vec3_scale(intersection, 0.2f);
-        return vec3_scale(
-            (
-                // Compute check colour based on the position
-                (int32) (ceil(intersection.x) + ceil(intersection.y)) & 1 ?
-                    floor_red_rgb : // red
-                    floor_white_rgb   // white
-            ),
-            (lambertian * 0.2f + 0.1f)
-        );
+        return material_floor_rgb(intersection, lambertian);
     }
 
     vec3 half_vector = vec3_add(
@@ -303,7 +261,122 @@ vec3 sample(cvr3 origin, cvr3 direction) {
     );
 }
 
-typedef vec3 (*sampler)(cvr3 origin, cvr3 direction);
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  vec3 sample_nobounce(cvr3 origin, cvr3 direction)
+//
+//  Tuned sample method for rays that we know will not hit a reflective surface.
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+vec3 sample_nobounce(cvr3 origin, cvr3 direction) {
+
+    float32 distance;
+    vec3 normal;
+
+    // Find where the ray intersects the world
+    Material material = trace_nobounce(origin, direction, distance, normal);
+
+    // Hit nothing? Sky shade
+    if (material == M_SKY) {
+        return material_sky_rgb(direction);
+    }
+
+    vec3
+        intersection = vec3_add(origin, vec3_scale(direction, distance)),
+
+        // Calculate the lighting vector
+        light = vec3_normalize(
+            vec3_sub(
+                vec3( // lighting direction, plus a bit of randomness to generate soft shadows.
+                    9.0f + frand(),
+                    9.0f + frand(),
+                    16.0f
+                ),
+                intersection
+            )
+        )
+    ;
+
+    // Calculate the lambertian illumuination factor
+    float32 lambertian = dot(light, normal);
+    if (lambertian < 0.0f || trace_material_only(intersection, light)) {
+        lambertian = 0.0f; // in shadow
+    }
+
+    return material_floor_rgb(intersection, lambertian);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  vec3 sample_first_bounce(cvr3 origin, cvr3 direction)
+//
+//  Tuned sample method for primary rays that we expect to bounce only once. This determination is made by checking
+//  the calculated half_vector's y component to see if it's heading away from the plane containing the spheres.
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+vec3 sample_first_bounce(cvr3 origin, cvr3 direction) {
+    float32 distance;
+    vec3 normal;
+
+    // Find where the ray intersects the world
+    Material material = trace(origin, direction, distance, normal);
+
+    // Hit nothing? Sky shade
+    if (material == M_SKY) {
+        return material_sky_rgb(direction);
+    }
+
+    vec3
+        intersection = vec3_add(origin, vec3_scale(direction, distance)),
+
+        // Calculate the lighting vector
+        light = vec3_normalize(
+            vec3_sub(
+                vec3( // lighting direction, plus a bit of randomness to generate soft shadows.
+                    9.0f + frand(),
+                    9.0f + frand(),
+                    16.0f
+                ),
+                intersection
+            )
+        )
+    ;
+
+    // Calculate the lambertian illumuination factor
+    float32 lambertian = dot(light, normal);
+    if (lambertian < 0.0f || trace_material_only(intersection, light)) {
+        lambertian = 0.0f; // in shadow
+    }
+
+    // Hit the floor plane
+    if (material == M_FLOOR) {
+        return material_floor_rgb(intersection, lambertian);
+    }
+
+    vec3 half_vector = vec3_add(
+        direction,
+        vec3_scale(
+            normal,
+            dot(normal, direction) * -2.0f
+        )
+    );
+
+    sampler samplefn = (half_vector.y > 0.15f) ? sample_nobounce : sample;
+
+    // Compute the specular highlight power
+    float32 specular = pow(dot(light, half_vector) * (lambertian > 0.0), 99.0f);
+
+    // Hit a sphere
+    return vec3_add(
+        vec3(specular, specular, specular),
+        vec3_scale(
+            samplefn(intersection, half_vector),
+            0.75f
+        )
+    );
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -389,7 +462,7 @@ void render(std::FILE* out, int image_size) {
 
             if (material != M_SKY) {
 
-                sampler samplefn = (material == M_MIRROR ? sample : sample_nobounce);
+                sampler samplefn = (material == M_MIRROR ? sample_first_bounce : sample_nobounce);
 
                 // Cast 64 rays per pixel for sampling
                 for (int ray_count = 64; ray_count--;) {
@@ -429,7 +502,7 @@ void render(std::FILE* out, int image_size) {
 
                 pixel = vec3_scale(pixel, 3.5f);
             } else {
-                pixel = vec3_scale(sample_sky(probe_direction), 64 * 3.5);
+                pixel = vec3_scale(material_sky_rgb(probe_direction), 64 * 3.5);
             }
             pixel = vec3_add(pixel, ambient_rgb);
 
