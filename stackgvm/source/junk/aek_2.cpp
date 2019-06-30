@@ -11,15 +11,19 @@
 
 #include "aek.hpp"
 
-///////////////////////////////////////////////////////////////////////////////
+#ifdef __LP64__
+    #define PPMNAME "aek2_64.ppm"
+#else
+    #define PPMNAME "aek2_32.ppm"
+#endif
 
 vec3 spheres[18*8];
-int32 num_spheres = 0;
+int  num_spheres = 0;
 
 void init_spheres() {
     // Check if trace maybe hits a sphere
-    for (int32 k = 19; k--;) {
-        for (int32 j = 9; j--;) {
+    for (int k = 19; k--;) {
+        for (int j = 9; j--;) {
             if (data[j] & 1 << k) {
                 spheres[num_spheres].x = k;
                 spheres[num_spheres].y = 0;
@@ -30,21 +34,28 @@ void init_spheres() {
     }
 }
 
-///////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Material trace(cvr3 origin, cvr3 direction, float32& distance, vec3& normal)
+//
+//  General purpose trace routine that calculates the material, distance to point of intersection and the normal at the
+//  point of intersection. Since sphere volumes overlap, this version exhaustively tests every sphere to determine the
+//  exact point of intersection.
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Trace
-int32 trace(cvr3 origin, cvr3 direction, float32& distance, vec3& normal) {
-    distance         = 1e9f;
+Material trace(cvr3 origin, cvr3 direction, float32& distance, vec3& normal) {
+    distance = 1e9f;
 
     // Assume trace hits nothing
-    int32   material = 0;
+    Material   material = M_SKY;
     float32 p = -origin.z / direction.z;
 
     // Check if trace maybe hits floor
     if (0.01f < p) {
         distance = p,
         normal   = normal_up,
-        material = 1;
+        material = M_FLOOR;
     }
 
     // Check if trace maybe hits a sphere
@@ -66,25 +77,31 @@ int32 trace(cvr3 origin, cvr3 direction, float32& distance, vec3& normal) {
                 normal   = vec3_normalize(
                     vec3_add(p, vec3_scale(direction, distance))
                 ),
-                material = 2; // Returning here is fast, but we'd get z fighting
+                material = M_MIRROR; // Returning here is fast, but we'd get z fighting
             }
         }
     }
     return material;
 }
 
-///////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  vec3 sample(cvr3 origin, cvr3 direction)
+//
+//  Generic sampling method that uses the most expensive trace() and recursively samples when hitting a reflective
+//  surface.
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Sampling
 vec3 sample(cvr3 origin, cvr3 direction) {
     float32 distance;
     vec3 normal;
 
     // Find where the ray intersects the world
-    int32 material = trace(origin, direction, distance, normal);
+    Material material = trace(origin, direction, distance, normal);
 
     // Hit nothing? Sky shade
-    if (!material) {
+    if (material == M_SKY) {
         float32 gradient = 1.0f - direction.z;
         gradient *= gradient;
         gradient *= gradient;
@@ -117,7 +134,7 @@ vec3 sample(cvr3 origin, cvr3 direction) {
     }
 
     // Hit the floor plane
-    if (material == 1) {
+    if (material == M_FLOOR) {
         intersection = vec3_scale(intersection, 0.2f);
         return vec3_scale(
             (
@@ -146,19 +163,21 @@ vec3 sample(cvr3 origin, cvr3 direction) {
         vec3(specular, specular, specular),
         vec3_scale(
             sample(intersection, half_vector),
-            0.5f
+            0.75f
         )
     );
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  void render(std::FILE* out, int image_size)
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void render(std::FILE* out, int image_size) {
+    std::fprintf(out, "P6 %d %d 255 ", image_size, image_size);
 
-///////////////////////////////////////////////////////////////////////////////
-
-// Main
-int main() {
-    int image_size = 512;
-    printf("P6 %d %d 255 ", image_size, image_size);
+    NanoTime::Value start = NanoTime::mark();
 
     // camera direction vectors
     vec3
@@ -169,8 +188,8 @@ int main() {
         camera_up = vec3_scale( // Unit up - Z is up in this system
             vec3_normalize(
                 vec3_cross(
-                normal_up,
-                camera_forward
+                    normal_up,
+                    camera_forward
                 )
             ),
             0.002f
@@ -192,16 +211,14 @@ int main() {
         )
     ;
 
-    init_spheres();
-
-    for (int32 y = image_size; y--;) {
-        for (int32 x = image_size; x--;) {
+    for (int y = image_size; y--;) {
+        for (int x = image_size; x--;) {
 
             // Use a vector for the pixel. The values here are in the range 0.0 - 255.0 rather than the 0.0 - 1.0
             vec3 pixel(0.0f, 0.0f, 0.0f);
 
             // Cast 64 rays per pixel for sampling
-            for (int32 ray_count = 64; ray_count--;) {
+            for (int ray_count = 64; ray_count--;) {
 
                 // Random delta to be added for depth of field effects
                 vec3 delta = vec3_add(
@@ -237,13 +254,37 @@ int main() {
             }
 
             pixel = vec3_scale(pixel, 3.5f);
-            pixel = vec3_add(pixel, vec3(13.0f, 13.0f, 13.0f));
+            pixel = vec3_add(pixel, ambient_rgb);
 
             // Convert to integers and push out to ppm outpu stream
-            std::printf("%c%c%c", (int)pixel.x, (int)pixel.y, (int)pixel.z);
+            std::fprintf(out, "%c%c%c", (int)pixel.x, (int)pixel.y, (int)pixel.z);
         }
     }
 
-  return 0;
+    NanoTime::Value end = NanoTime::mark();
+
+    std::printf(
+        "Total render() time %0.6f seconds\n",
+        (float64)(end - start) / 1e9
+    );
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Main
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+int main() {
+    std::FILE* out = fopen(PPMNAME, "wb");
+    if (out) {
+        std::printf("Rendering to " PPMNAME "...\n");
+        init_spheres();
+        render(out, 512);
+        std::fclose(out);
+    } else {
+        std::printf("Unable to open output file\n");
+    }
+    return 0;
+
+}

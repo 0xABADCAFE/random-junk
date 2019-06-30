@@ -11,13 +11,19 @@
 
 #include "aek.hpp"
 
+#ifdef __LP64__
+    #define PPMNAME "aek3_64.ppm"
+#else
+    #define PPMNAME "aek3_32.ppm"
+#endif
+
 vec3 spheres[18*8];
-int32 num_spheres = 0;
+int  num_spheres = 0;
 
 void init_spheres() {
     // Check if trace maybe hits a sphere
-    for (int32 k = 19; k--;) {
-        for (int32 j = 9; j--;) {
+    for (int k = 19; k--;) {
+        for (int j = 9; j--;) {
             if (data[j] & 1 << k) {
                 spheres[num_spheres].x = k;
                 spheres[num_spheres].y = 0;
@@ -145,6 +151,12 @@ Material trace_material_only(cvr3 origin, cvr3 direction, const float32 sphere_s
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  vec3 sample_sky(cvr3 direction)
+//
+//  Returns the sky colour for a given direction.
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 inline vec3 sample_sky(cvr3 direction) {
     float32 gradient = 1.0f - direction.z;
@@ -154,6 +166,63 @@ inline vec3 sample_sky(cvr3 direction) {
         sky_rgb, // Blueish sky colour
         gradient
     );
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  vec3 sample_nobounce(cvr3 origin, cvr3 direction)
+//
+//  Tuned sample method for rays that we know will not hit a reflective surface.
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+vec3 sample_nobounce(cvr3 origin, cvr3 direction) {
+
+    float32 distance;
+    vec3 normal;
+
+    // Find where the ray intersects the world
+    Material material = trace_nobounce(origin, direction, distance, normal);
+
+    // Hit nothing? Sky shade
+    if (material == M_SKY) {
+        return sample_sky(direction);
+    }
+
+    vec3
+        intersection = vec3_add(origin, vec3_scale(direction, distance)),
+
+        // Calculate the lighting vector
+        light = vec3_normalize(
+            vec3_sub(
+                vec3( // lighting direction, plus a bit of randomness to generate soft shadows.
+                    9.0f + frand(),
+                    9.0f + frand(),
+                    16.0f
+                ),
+                intersection
+            )
+        )
+    ;
+
+    // Calculate the lambertian illumuination factor
+    float32 lambertian = dot(light, normal);
+    if (lambertian < 0.0f || trace_material_only(intersection, light)) {
+        lambertian = 0.0f; // in shadow
+    }
+
+
+    intersection = vec3_scale(intersection, 0.2f);
+    return vec3_scale(
+        (
+            // Compute check colour based on the position
+            (int32) (ceil(intersection.x) + ceil(intersection.y)) & 1 ?
+                floor_red_rgb : // red
+                floor_white_rgb   // white
+        ),
+        (lambertian * 0.2f + 0.1f)
+    );
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -229,77 +298,23 @@ vec3 sample(cvr3 origin, cvr3 direction) {
         vec3(specular, specular, specular),
         vec3_scale(
             sample(intersection, half_vector),
-            0.5f
+            0.75f
         )
     );
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-//  vec3 sample_nobounce(cvr3 origin, cvr3 direction)
-//
-//  Tuned sample method for rays that we know will not hit a reflective surface.
-//
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-vec3 sample_nobounce(cvr3 origin, cvr3 direction) {
-
-    float32 distance;
-    vec3 normal;
-
-    // Find where the ray intersects the world
-    Material material = trace_nobounce(origin, direction, distance, normal);
-
-    // Hit nothing? Sky shade
-    if (material == M_SKY) {
-        return sample_sky(direction);
-    }
-
-    vec3
-        intersection = vec3_add(origin, vec3_scale(direction, distance)),
-
-        // Calculate the lighting vector
-        light = vec3_normalize(
-            vec3_sub(
-                vec3( // lighting direction, plus a bit of randomness to generate soft shadows.
-                    9.0f + frand(),
-                    9.0f + frand(),
-                    16.0f
-                ),
-                intersection
-            )
-        )
-    ;
-
-    // Calculate the lambertian illumuination factor
-    float32 lambertian = dot(light, normal);
-    if (lambertian < 0.0f || trace_material_only(intersection, light)) {
-        lambertian = 0.0f; // in shadow
-    }
-
-
-    intersection = vec3_scale(intersection, 0.2f);
-    return vec3_scale(
-        (
-            // Compute check colour based on the position
-            (int32) (ceil(intersection.x) + ceil(intersection.y)) & 1 ?
-                floor_red_rgb : // red
-                floor_white_rgb   // white
-        ),
-        (lambertian * 0.2f + 0.1f)
-    );
-
 }
 
 typedef vec3 (*sampler)(cvr3 origin, cvr3 direction);
 
-///////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  void render(std::FILE* out, int image_size)
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void render(std::FILE* out, int image_size) {
+    std::fprintf(out, "P6 %d %d 255 ", image_size, image_size);
 
-// Main
-int main() {
-    int image_size = 512;
-    printf("P6 %d %d 255 ", image_size, image_size);
+    NanoTime::Value start = NanoTime::mark();
 
     // camera direction vectors
     vec3
@@ -310,8 +325,8 @@ int main() {
         camera_up = vec3_scale( // Unit up - Z is up in this system
             vec3_normalize(
                 vec3_cross(
-                normal_up,
-                camera_forward
+                    normal_up,
+                    camera_forward
                 )
             ),
             0.002f
@@ -343,10 +358,11 @@ int main() {
         )
     ;
 
-    init_spheres();
 
-    for (int32 y = image_size; y--;) {
-        for (int32 x = image_size; x--;) {
+    int ray_counts[3] = { 0, 0, 0 };
+
+    for (int y = image_size; y--;) {
+        for (int x = image_size; x--;) {
             // Use a vector for the pixel. The values here are in the range 0.0 - 255.0 rather than the 0.0 - 1.0
             vec3 pixel(0.0f, 0.0f, 0.0f);
 
@@ -367,14 +383,16 @@ int main() {
                 )
             );
 
-            Material material = trace_material_only(probe_origin, probe_direction, 1.15f, -0.01f);
+            Material material = trace_material_only(probe_origin, probe_direction, 1.10f, -0.01f);
+
+            ray_counts[material]++;
 
             if (material != M_SKY) {
 
                 sampler samplefn = (material == M_MIRROR ? sample : sample_nobounce);
 
                 // Cast 64 rays per pixel for sampling
-                for (int32 ray_count = 64; ray_count--;) {
+                for (int ray_count = 64; ray_count--;) {
 
                     // Random delta to be added for depth of field effects
                     vec3 delta = vec3_add(
@@ -413,13 +431,43 @@ int main() {
             } else {
                 pixel = vec3_scale(sample_sky(probe_direction), 64 * 3.5);
             }
-            pixel = vec3_add(pixel, vec3(13.0f, 13.0f, 13.0f));
+            pixel = vec3_add(pixel, ambient_rgb);
 
             // Convert to integers and push out to ppm outpu stream
-            std::printf("%c%c%c", (int)pixel.x, (int)pixel.y, (int)pixel.z);
+            std::fprintf(out, "%c%c%c", (int)pixel.x, (int)pixel.y, (int)pixel.z);
         }
     }
 
-  return 0;
+    NanoTime::Value end = NanoTime::mark();
+
+    std::printf(
+        "Total render() time %0.6f seconds\n"
+        "Primary material probes:\n"
+        "\tM_SKY    : %5d\n"
+        "\tM_FLOOR  : %5d\n"
+        "\tM_MIRROR : %5d\n",
+        (float64)(end - start) / 1e9,
+        ray_counts[M_SKY],
+        ray_counts[M_FLOOR],
+        ray_counts[M_MIRROR]
+    );
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Main
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+int main() {
+    std::FILE* out = fopen(PPMNAME, "wb");
+    if (out) {
+        std::printf("Rendering to " PPMNAME "...\n");
+        init_spheres();
+        render(out, 512);
+        std::fclose(out);
+    } else {
+        std::printf("Unable to open output file\n");
+    }
+    return 0;
+}

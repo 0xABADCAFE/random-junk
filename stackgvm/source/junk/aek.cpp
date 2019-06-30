@@ -11,26 +11,29 @@
 
 #include "aek.hpp"
 
-///////////////////////////////////////////////////////////////////////////////
+#ifdef __LP64__
+    #define PPMNAME "aek_64.ppm"
+#else
+    #define PPMNAME "aek_32.ppm"
+#endif
 
-// Trace
-int32 trace(cvr3 origin, cvr3 direction, float32& distance, vec3& normal) {
-    distance         = 1e9;
+Material trace(cvr3 origin, cvr3 direction, float32& distance, vec3& normal) {
+    distance = 1e9;
 
     // Assume trace hits nothing
-    int32   material = 0;
+    Material material = M_SKY;
     float32 p = -origin.z / direction.z;
 
     // Check if trace maybe hits floor
-    if (0.01 < p) {
+    if (0.01f < p) {
         distance = p,
         normal   = normal_up,
-        material = 1;
+        material = M_FLOOR;
     }
 
     // Check if trace maybe hits a sphere
-    for (int32 k = 19; k--;) {
-        for (int32 j = 9; j--;) {
+    for (int k = 19; k--;) {
+        for (int j = 9; j--;) {
             if (data[j] & 1 << k) {
                 vec3 p = vec3_sub(
                     origin,
@@ -39,17 +42,17 @@ int32 trace(cvr3 origin, cvr3 direction, float32& distance, vec3& normal) {
 
                 float32
                     b = dot(p, direction),
-                    eye_offset = dot(p, p) - 1.0,
+                    eye_offset = dot(p, p) - 1.0f,
                     q = b * b - eye_offset
                 ;
-                if (q > 0) {
+                if (q > 0.0f) {
                     float32 sphere_distance = -b - sqrt(q);
-                        if (sphere_distance < distance && sphere_distance > 0.01) {
+                        if (sphere_distance < distance && sphere_distance > 0.01f) {
                             distance = sphere_distance,
                             normal   = vec3_normalize(
                             vec3_add(p, vec3_scale(direction, distance))
                         ),
-                        material = 2; // Returning here is fast, but we'd get z fighting
+                        material = M_MIRROR; // Returning here is fast, but we'd get z fighting
                     }
                 }
             }
@@ -59,18 +62,24 @@ int32 trace(cvr3 origin, cvr3 direction, float32& distance, vec3& normal) {
     return material;
 }
 
-///////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  vec3 sample(cvr3 origin, cvr3 direction)
+//
+//  Generic sampling method that uses the most expensive trace() and recursively samples when hitting a reflective
+//  surface.
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Sampling
 vec3 sample(cvr3 origin, cvr3 direction) {
     float32 distance;
     vec3 normal;
 
-  // Find where the ray intersects the world
-    int32 material = trace(origin, direction, distance, normal);
+    // Find where the ray intersects the world
+    Material material = trace(origin, direction, distance, normal);
 
     // Hit nothing? Sky shade
-    if (!material) {
+    if (material == M_SKY) {
         float32 gradient = 1.0 - direction.z;
         gradient *= gradient;
         gradient *= gradient;
@@ -87,9 +96,9 @@ vec3 sample(cvr3 origin, cvr3 direction) {
         light = vec3_normalize(
             vec3_sub(
                 vec3( // lighting direction, plus a bit of randomness to generate soft shadows.
-                    9.0 + frand(),
-                    9.0 + frand(),
-                    16.0
+                    9.0f + frand(),
+                    9.0f + frand(),
+                    16.0f
                 ),
                 intersection
             )
@@ -99,28 +108,28 @@ vec3 sample(cvr3 origin, cvr3 direction) {
             direction,
             vec3_scale(
                 normal,
-                dot(normal, direction) * -2.0
+                dot(normal, direction) * -2.0f
             )
         )
     ;
 
     // Calculate the lambertian illumuination factor
     float32 lambertian = dot(light, normal);
-    if (lambertian < 0 || trace(intersection, light, distance, normal)) {
-        lambertian = 0; // in shadow
+    if (lambertian < 0.0f || trace(intersection, light, distance, normal)) {
+        lambertian = 0.0f; // in shadow
     }
 
     // Hit the floor plane
-    if (material & 1) {
-        intersection = vec3_scale(intersection, 0.2);
+    if (material == M_FLOOR) {
+        intersection = vec3_scale(intersection, 0.2f);
         return vec3_scale(
             (
                 // Compute check colour based on the position
                 (int32) (ceil(intersection.x) + ceil(intersection.y)) & 1 ?
-                floor_red_rgb : // red
-                floor_white_rgb   // white
+                    floor_red_rgb : // red
+                    floor_white_rgb   // white
             ),
-            (lambertian * 0.2 + 0.1)
+            (lambertian * 0.2f + 0.1f)
         );
     }
 
@@ -132,17 +141,21 @@ vec3 sample(cvr3 origin, cvr3 direction) {
         vec3(specular, specular, specular),
         vec3_scale(
             sample(intersection, half_vector),
-            0.5
+            0.75f
         )
     );
 }
 
-///////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  void render(std::FILE* out, int image_size)
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Main
-int main() {
-    int image_size = 512;
-    printf("P6 %d %d 255 ", image_size, image_size);
+void render(std::FILE* out, int image_size) {
+    std::fprintf(out, "P6 %d %d 255 ", image_size, image_size);
+
+    NanoTime::Value start = NanoTime::mark();
 
     // camera direction vectors
     vec3
@@ -157,14 +170,14 @@ int main() {
                     camera_forward
                 )
             ),
-            0.002
+            0.002f
         ),
 
         camera_right = vec3_scale( // Unit right
             vec3_normalize(
                 vec3_cross(camera_forward, camera_up)
             ),
-            0.002
+            0.002f
         ),
 
         eye_offset = vec3_add( // Offset frm eye to coner of focal plane
@@ -175,14 +188,14 @@ int main() {
             camera_forward
         )
     ;
-    for (int32 y = image_size; y--;) {
-        for (int32 x = image_size; x--;) {
+    for (int y = image_size; y--;) {
+        for (int x = image_size; x--;) {
 
             // Use a vector for the pixel. The values here are in the range 0.0 - 255.0 rather than the 0.0 - 1.0
             vec3 pixel(13.0, 13.0, 13.0);
 
             // Cast 64 rays per pixel for sampling
-            for (int32 ray_count = 64; ray_count--;) {
+            for (int ray_count = 64; ray_count--;) {
 
                 // Random delta to be added for depth of field effects
                 vec3 delta = vec3_add(
@@ -221,9 +234,32 @@ int main() {
             }
 
             // Convert to integers and push out to ppm outpu stream
-            printf("%c%c%c", (int)pixel.x, (int)pixel.y, (int)pixel.z);
+            std::fprintf(out, "%c%c%c", (int)pixel.x, (int)pixel.y, (int)pixel.z);
         }
+    }
+
+    NanoTime::Value end = NanoTime::mark();
+
+    std::printf(
+        "Total render() time %0.6f seconds\n",
+        (float64)(end - start) / 1e9
+    );
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Main
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+int main() {
+    std::FILE* out = fopen(PPMNAME, "wb");
+    if (out) {
+        std::printf("Rendering to " PPMNAME "...\n");
+        render(out, 512);
+        std::fclose(out);
+    } else {
+        std::printf("Unable to open output file\n");
     }
     return 0;
 }
-
