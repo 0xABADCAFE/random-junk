@@ -1,0 +1,20 @@
+Rendering to aek_32.ppm...
+Total render() time 10.068197 seconds
+Rendering to aek2_32.ppm...
+Total render() time 7.507945 seconds
+Rendering to aek3_32.ppm...
+Total render() time 4.882722 seconds
+Primary material probes:
+        M_SKY    : 99360
+        M_FLOOR  : 74542
+        M_MIRROR : 88242
+Rendering to aek_64.ppm...
+Total render() time 9.555294 seconds
+Rendering to aek2_64.ppm...
+Total render() time 7.248286 seconds
+Rendering to aek3_64.ppm...
+Total render() time 4.504942 seconds
+Primary material probes:
+        M_SKY    : 99360
+        M_FLOOR  : 74542
+        M_MIRROR : 88242
