@@ -50,6 +50,22 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
+// Image Configuration settings
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+static const int     IMAGE_SIZE    = 1024;
+static const int     MAX_RAYS      = 256;
+static const float32 SPHERE_ALBEDO = 0.75f;
+
+// Derived settings
+static const float32 IMAGE_SCALE   = 1.024f / IMAGE_SIZE;
+static const float32 RGB_SCALE     = 3.5f;
+static const float32 SAMPLE_SCALE  = RGB_SCALE * (64.0f / MAX_RAYS);
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
 // Vector 3 type
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -86,35 +102,35 @@ typedef enum {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-const vec3 camera_dir(
+static const vec3 camera_dir(
     -6.0, -16.0, 0.0
 );
 
-const vec3 focal_point(
+static const vec3 focal_point(
     17.0, 16.0, 8.0
 );
 
-const vec3 normal_up(
+static const vec3 normal_up(
     0.0, 0.0, 1.0
 );
 
-const vec3 sky_rgb(
+static const vec3 sky_rgb(
     0.7, 0.6, 1.0
 );
 
-const vec3 floor_red_rgb(
+static const vec3 floor_red_rgb(
     3.0, 1.0, 1.0
 );
 
-const vec3 floor_white_rgb(
+static const vec3 floor_white_rgb(
     3.0, 3.0, 3.0
 );
 
-const vec3 ambient_rgb(
+static const vec3 ambient_rgb(
     13.0, 13.0, 13.0
 );
 
-int32 data[] = {
+static const int32 data[] = {
     247570, // 0111100011100010010
     280596, // 1000100100000010100
     280600, // 1000100100000011000
@@ -127,6 +143,8 @@ int32 data[] = {
 };
 
 static const float32 invRM = 1.0 / RAND_MAX;
+
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //

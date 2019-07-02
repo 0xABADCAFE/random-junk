@@ -18,7 +18,7 @@
 #endif
 
 Material trace(cvr3 origin, cvr3 direction, float32& distance, vec3& normal) {
-    distance = 1e9;
+    distance = 1e9f;
 
     // Assume trace hits nothing
     Material material = M_SKY;
@@ -37,7 +37,7 @@ Material trace(cvr3 origin, cvr3 direction, float32& distance, vec3& normal) {
             if (data[j] & 1 << k) {
                 vec3 p = vec3_sub(
                     origin,
-                    vec3(k, 0.0, j + 4.0) // Sphere coordinate
+                    vec3(k, 0.0f, j + 4.0f) // Sphere coordinate
                 );
 
                 float32
@@ -58,7 +58,6 @@ Material trace(cvr3 origin, cvr3 direction, float32& distance, vec3& normal) {
             }
         }
     }
-
     return material;
 }
 
@@ -80,7 +79,7 @@ vec3 sample(cvr3 origin, cvr3 direction) {
 
     // Hit nothing? Sky shade
     if (material == M_SKY) {
-        float32 gradient = 1.0 - direction.z;
+        float32 gradient = 1.0f - direction.z;
         gradient *= gradient;
         gradient *= gradient;
         return vec3_scale(
@@ -134,26 +133,26 @@ vec3 sample(cvr3 origin, cvr3 direction) {
     }
 
     // Compute the specular highlight power
-    float32 specular = pow(dot(light, half_vector) * (lambertian > 0.0), 99.0);
+    float32 specular = pow(dot(light, half_vector) * (lambertian > 0.0f), 99.0f);
 
     // Hit a sphere
     return vec3_add(
         vec3(specular, specular, specular),
         vec3_scale(
             sample(intersection, half_vector),
-            0.75f
+            SPHERE_ALBEDO
         )
     );
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-//  void render(std::FILE* out, int image_size)
+//  void render(std::FILE* out)
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void render(std::FILE* out, int image_size) {
-    std::fprintf(out, "P6 %d %d 255 ", image_size, image_size);
+void render(std::FILE* out) {
+    std::fprintf(out, "P6 %d %d 255 ", IMAGE_SIZE, IMAGE_SIZE);
 
     NanoTime::Value start = NanoTime::mark();
 
@@ -170,37 +169,38 @@ void render(std::FILE* out, int image_size) {
                     camera_forward
                 )
             ),
-            0.002f
+            IMAGE_SCALE
         ),
 
         camera_right = vec3_scale( // Unit right
             vec3_normalize(
                 vec3_cross(camera_forward, camera_up)
             ),
-            0.002f
+            IMAGE_SCALE
         ),
 
         eye_offset = vec3_add( // Offset frm eye to coner of focal plane
             vec3_scale(
                 vec3_add(camera_up, camera_right),
-                -(image_size >> 1)
+                -(IMAGE_SIZE >> 1)
             ),
             camera_forward
         )
     ;
-    for (int y = image_size; y--;) {
-        for (int x = image_size; x--;) {
+
+    for (int y = IMAGE_SIZE; y--;) {
+        for (int x = IMAGE_SIZE; x--;) {
 
             // Use a vector for the pixel. The values here are in the range 0.0 - 255.0 rather than the 0.0 - 1.0
-            vec3 pixel(13.0, 13.0, 13.0);
+            vec3 pixel = ambient_rgb;
 
             // Cast 64 rays per pixel for sampling
-            for (int ray_count = 64; ray_count--;) {
+            for (int ray_count = MAX_RAYS; ray_count--;) {
 
                 // Random delta to be added for depth of field effects
                 vec3 delta = vec3_add(
-                    vec3_scale(camera_up,    (frand() - 0.5) * 99.0),
-                    vec3_scale(camera_right, (frand() - 0.5) * 99.0)
+                    vec3_scale(camera_up,    (frand() - 0.5f) * 99.0f),
+                    vec3_scale(camera_right, (frand() - 0.5f) * 99.0f)
                 );
 
                 // Accumulate the sample result into the current pixel
@@ -227,7 +227,7 @@ void render(std::FILE* out, int image_size) {
                                 )
                             )
                         ),
-                        3.5
+                        SAMPLE_SCALE
                     ),
                     pixel
                 );
@@ -256,7 +256,7 @@ int main() {
     std::FILE* out = fopen(PPMNAME, "wb");
     if (out) {
         std::printf("Rendering to " PPMNAME "...\n");
-        render(out, 512);
+        render(out);
         std::fclose(out);
     } else {
         std::printf("Unable to open output file\n");

@@ -137,7 +137,7 @@ Material trace_material_only(cvr3 origin, cvr3 direction, const float32 sphere_s
     }
 
     // Check if trace maybe hits a sphere
-    for (int i = 0; i<num_spheres; i++) {
+    for (int i = 0; i < num_spheres; i++) {
         vec3 p = vec3_sub(
             origin,
             spheres[i] // Sphere coordinate
@@ -150,7 +150,7 @@ Material trace_material_only(cvr3 origin, cvr3 direction, const float32 sphere_s
         ;
         if (q > 0.0f) {
             float32 sphere_distance = -b - std::sqrt(q);
-            if (sphere_distance < 1e9 && sphere_distance > 0.01f) {
+            if (sphere_distance < 1e9f && sphere_distance > 0.01f) {
                 material = M_MIRROR;
                 break;
             }
@@ -373,19 +373,19 @@ vec3 sample_first_bounce(cvr3 origin, cvr3 direction) {
         vec3(specular, specular, specular),
         vec3_scale(
             samplefn(intersection, half_vector),
-            0.75f
+            SPHERE_ALBEDO
         )
     );
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-//  void render(std::FILE* out, int image_size)
+//  void render(std::FILE* out)
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void render(std::FILE* out, int image_size) {
-    std::fprintf(out, "P6 %d %d 255 ", image_size, image_size);
+void render(std::FILE* out) {
+    std::fprintf(out, "P6 %d %d 255 ", IMAGE_SIZE, IMAGE_SIZE);
 
     NanoTime::Value start = NanoTime::mark();
 
@@ -402,20 +402,20 @@ void render(std::FILE* out, int image_size) {
                     camera_forward
                 )
             ),
-            0.002f
+            IMAGE_SCALE
         ),
 
         camera_right = vec3_scale( // Unit right
             vec3_normalize(
                 vec3_cross(camera_forward, camera_up)
             ),
-            0.002f
+            IMAGE_SCALE
         ),
 
         eye_offset = vec3_add( // Offset frm eye to coner of focal plane
             vec3_scale(
                 vec3_add(camera_up, camera_right),
-                -(image_size >> 1)
+                -(IMAGE_SIZE >> 1)
             ),
             camera_forward
         ),
@@ -434,8 +434,8 @@ void render(std::FILE* out, int image_size) {
 
     int ray_counts[3] = { 0, 0, 0 };
 
-    for (int y = image_size; y--;) {
-        for (int x = image_size; x--;) {
+    for (int y = IMAGE_SIZE; y--;) {
+        for (int x = IMAGE_SIZE; x--;) {
             // Use a vector for the pixel. The values here are in the range 0.0 - 255.0 rather than the 0.0 - 1.0
             vec3 pixel(0.0f, 0.0f, 0.0f);
 
@@ -465,7 +465,7 @@ void render(std::FILE* out, int image_size) {
                 sampler samplefn = (material == M_MIRROR ? sample_first_bounce : sample_nobounce);
 
                 // Cast 64 rays per pixel for sampling
-                for (int ray_count = 64; ray_count--;) {
+                for (int ray_count = MAX_RAYS; ray_count--;) {
 
                     // Random delta to be added for depth of field effects
                     vec3 delta = vec3_add(
@@ -500,9 +500,9 @@ void render(std::FILE* out, int image_size) {
                     );
                 }
 
-                pixel = vec3_scale(pixel, 3.5f);
+                pixel = vec3_scale(pixel, SAMPLE_SCALE);
             } else {
-                pixel = vec3_scale(material_sky_rgb(probe_direction), 64 * 3.5);
+                pixel = vec3_scale(material_sky_rgb(probe_direction), MAX_RAYS * SAMPLE_SCALE);
             }
             pixel = vec3_add(pixel, ambient_rgb);
 
@@ -537,7 +537,7 @@ int main() {
     if (out) {
         std::printf("Rendering to " PPMNAME "...\n");
         init_spheres();
-        render(out, 512);
+        render(out);
         std::fclose(out);
     } else {
         std::printf("Unable to open output file\n");
