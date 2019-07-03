@@ -26,7 +26,7 @@
     #define PPMNAME "aek3b_32.ppm"
 #endif
 
-static const float32 RGB_SIMILARITY_LIMIT = 0.33f;
+static const float32 RGB_SIMILARITY_LIMIT = 0.2f;
 
 static vec3 spheres[18*8];
 static int  num_spheres = 0;
@@ -387,7 +387,13 @@ vec3 sample_first_bounce(cvr3 origin, cvr3 direction) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void render(std::FILE* out) {
+    std::FILE* dbg = fopen("aek3b_rays.ppm", "wb");
+    if (!dbg) {
+        return;
+    }
+
     std::fprintf(out, "P6 %d %d 255 ", IMAGE_SIZE, IMAGE_SIZE);
+    std::fprintf(dbg, "P5 %d %d 255 ", IMAGE_SIZE, IMAGE_SIZE);
 
     NanoTime::Value start = NanoTime::mark();
 
@@ -434,7 +440,7 @@ void render(std::FILE* out) {
     ;
 
 
-    int ray_counts[4] = { 0, 0, 0, 0 };
+    int ray_counts[4] = { 0, 0, 0 };
 
     for (int y = IMAGE_SIZE; y--;) {
         for (int x = IMAGE_SIZE; x--;) {
@@ -467,9 +473,9 @@ void render(std::FILE* out) {
                 sampler samplefn = (material == M_MIRROR ? sample_first_bounce : sample_nobounce);
 
                 vec3 samples[4];
-
-                // Cast 64 rays per pixel for sampling
-                for (int ray_count = 0; ray_count < MAX_RAYS; ++ray_count) {
+                int ray_count;
+                // Cast MAX_RAYS rays per pixel for sampling
+                for (ray_count = 0; ray_count < MAX_RAYS; ++ray_count) {
 
                     // Random delta to be added for depth of field effects
                     vec3 delta = vec3_add(
@@ -517,7 +523,7 @@ void render(std::FILE* out) {
                     // dot product of that difference with itself to get some notion of the samples distance from the
                     // average. We then sum those up and just check it's lower than some arbitrary threshold.
 
-                    if (ray_count > 15 && (ray_count & 3) == 3) {
+                    if (ray_count > 11 && (ray_count & 3) == 3) {
 
                         vec3 average = vec3_scale(
                             pixel,
@@ -547,30 +553,30 @@ void render(std::FILE* out) {
                 }
 
                 pixel = vec3_scale(pixel, SAMPLE_SCALE);
+                std::fprintf(dbg, "%c", MAX_RAYS - ray_count);
             } else {
                 pixel = vec3_scale(material_sky_rgb(probe_direction), MAX_RAYS * SAMPLE_SCALE);
+                std::fprintf(dbg, "%c", 1);
             }
             pixel = vec3_add(pixel, ambient_rgb);
 
-            // Convert to integers and push out to ppm outpu stream
+            // Convert to integers and push out to ppm output stream
             std::fprintf(out, "%c%c%c", (int)pixel.x, (int)pixel.y, (int)pixel.z);
         }
     }
 
     NanoTime::Value end = NanoTime::mark();
-
+    std::fclose(dbg);
     std::printf(
         "Total render() time %0.6f seconds\n"
         "Primary material probes:\n"
         "\tM_SKY    : %5d\n"
         "\tM_FLOOR  : %5d\n"
-        "\tM_MIRROR : %5d\n"
-        "\tEarly Out: %5d\n",
+        "\tM_MIRROR : %5d\n",
         (float64)(end - start) / 1e9,
         ray_counts[M_SKY],
         ray_counts[M_FLOOR],
-        ray_counts[M_MIRROR],
-        ray_counts[3] // how many non-sky pixels didn't do the full ray count
+        ray_counts[M_MIRROR]
     );
 }
 
