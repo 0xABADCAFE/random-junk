@@ -26,8 +26,49 @@
     #define PPMNAME "aek3b_32.ppm"
 #endif
 
-static const float32 RGB_SIMILARITY_LIMIT = 0.2f;
 
+struct FunctionProfle {
+    enum {
+        RENDER = 0,
+        SAMPLE,
+        SAMPLE_NO_BOUNCE,
+        SAMPLE_FIRST_BOUNCE,
+        TRACE,
+        TRACE_NO_BOUNCE,
+        TRACE_MATERIAL_ONLY,
+        MAX
+    };
+    uint64 ns;
+    const char* name;
+    uint32 calls;
+};
+
+static FunctionProfle function_profile[FunctionProfle::MAX] = {
+    { 0, "render()", 0 },
+    { 0, "sample()", 0 },
+    { 0, "sample_no_bounce()", 0 },
+    { 0, "sample_first_bounce()", 0 },
+    { 0, "trace()", 0 },
+    { 0, "trace_no_bounce()", 0 },
+    { 0, "trace_material_only()", 0 },
+};
+
+static void dump_profile() {
+    for (int i = 0; i < FunctionProfle::MAX; i++) {
+        std::printf(
+            "%-22s | %9" FU32 " | %9.6f | %.3f\n",
+            function_profile[i].name,
+            function_profile[i].calls,
+            1e-9 * function_profile[i].ns,
+            (float64)function_profile[i].ns / (float64)function_profile[i].calls
+        );
+    }
+}
+
+#define PROF_ENTER(_f) ++function_profile[(_f)].calls; NanoTime::Value __nt = NanoTime::mark()
+#define PROF_EXIT(_f) function_profile[(_f)].ns += NanoTime::mark() - __nt;
+
+static const float32 RGB_SIMILARITY_LIMIT = 1e-4f;
 static vec3 spheres[18*8];
 static int  num_spheres = 0;
 
@@ -56,6 +97,8 @@ void init_spheres() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Material trace(cvr3 origin, cvr3 direction, float32& distance, vec3& normal) {
+    PROF_ENTER(FunctionProfle::TRACE);
+
     distance = 1e9f;
 
     // Assume trace hits nothing
@@ -92,12 +135,13 @@ Material trace(cvr3 origin, cvr3 direction, float32& distance, vec3& normal) {
             }
         }
     }
+    PROF_EXIT(FunctionProfle::TRACE);
     return material;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-//  Material trace_nobounce(cvr3 origin, cvr3 direction, float32& distance, vec3& normal)
+//  Material trace_no_bounce(cvr3 origin, cvr3 direction, float32& distance, vec3& normal)
 //
 //  General purpose trace routine that calculates the material, distance to point of intersection and the normal at the
 //  point of intersection. Completely ignores sphere intersection tests. We use this routine when we know that a ray
@@ -105,7 +149,8 @@ Material trace(cvr3 origin, cvr3 direction, float32& distance, vec3& normal) {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Material trace_nobounce(cvr3 origin, cvr3 direction, float32& distance, vec3& normal) {
+Material trace_no_bounce(cvr3 origin, cvr3 direction, float32& distance, vec3& normal) {
+    PROF_ENTER(FunctionProfle::TRACE_NO_BOUNCE);
     distance  = 1e9f;
     float32 p = -origin.z / direction.z;
 
@@ -113,8 +158,10 @@ Material trace_nobounce(cvr3 origin, cvr3 direction, float32& distance, vec3& no
     if (0.01f < p) {
         distance = p,
         normal   = normal_up;
+        PROF_EXIT(FunctionProfle::TRACE_NO_BOUNCE);
         return M_FLOOR;
     }
+    PROF_EXIT(FunctionProfle::TRACE_NO_BOUNCE);
     return M_SKY;
 }
 
@@ -128,6 +175,8 @@ Material trace_nobounce(cvr3 origin, cvr3 direction, float32& distance, vec3& no
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Material trace_material_only(cvr3 origin, cvr3 direction, const float32 sphere_size_mod = 1.0f, const float32 floor_mod = 0.0f) {
+
+    PROF_ENTER(FunctionProfle::TRACE_MATERIAL_ONLY);
 
     // Assume trace hits sky
     Material material = M_SKY;
@@ -158,6 +207,7 @@ Material trace_material_only(cvr3 origin, cvr3 direction, const float32 sphere_s
             }
         }
     }
+    PROF_EXIT(FunctionProfle::TRACE_MATERIAL_ONLY);
     return material;
 }
 
@@ -204,6 +254,7 @@ typedef vec3 (*sampler)(cvr3 origin, cvr3 direction);
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 vec3 sample(cvr3 origin, cvr3 direction) {
+    PROF_ENTER(FunctionProfle::SAMPLE);
     float32 distance;
     vec3 normal;
 
@@ -212,6 +263,7 @@ vec3 sample(cvr3 origin, cvr3 direction) {
 
     // Hit nothing? Sky shade
     if (material == M_SKY) {
+        PROF_EXIT(FunctionProfle::SAMPLE);
         return material_sky_rgb(direction);
     }
 
@@ -239,6 +291,7 @@ vec3 sample(cvr3 origin, cvr3 direction) {
 
     // Hit the floor plane
     if (material == M_FLOOR) {
+        PROF_EXIT(FunctionProfle::SAMPLE);
         return material_floor_rgb(intersection, lambertian);
     }
 
@@ -252,6 +305,8 @@ vec3 sample(cvr3 origin, cvr3 direction) {
 
     // Compute the specular highlight power
     float32 specular = pow(dot(light, half_vector) * (lambertian > 0.0), 99.0f);
+
+    PROF_EXIT(FunctionProfle::SAMPLE);
 
     // Hit a sphere
     return vec3_add(
@@ -265,22 +320,25 @@ vec3 sample(cvr3 origin, cvr3 direction) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-//  vec3 sample_nobounce(cvr3 origin, cvr3 direction)
+//  vec3 sample_no_bounce(cvr3 origin, cvr3 direction)
 //
 //  Tuned sample method for rays that we know will not hit a reflective surface.
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-vec3 sample_nobounce(cvr3 origin, cvr3 direction) {
+vec3 sample_no_bounce(cvr3 origin, cvr3 direction) {
+
+    PROF_ENTER(FunctionProfle::SAMPLE_NO_BOUNCE);
 
     float32 distance;
     vec3 normal;
 
     // Find where the ray intersects the world
-    Material material = trace_nobounce(origin, direction, distance, normal);
+    Material material = trace_no_bounce(origin, direction, distance, normal);
 
     // Hit nothing? Sky shade
     if (material == M_SKY) {
+        PROF_EXIT(FunctionProfle::SAMPLE_NO_BOUNCE);
         return material_sky_rgb(direction);
     }
 
@@ -306,6 +364,7 @@ vec3 sample_nobounce(cvr3 origin, cvr3 direction) {
         lambertian = 0.0f; // in shadow
     }
 
+    PROF_EXIT(FunctionProfle::SAMPLE_NO_BOUNCE);
     return material_floor_rgb(intersection, lambertian);
 }
 
@@ -319,6 +378,9 @@ vec3 sample_nobounce(cvr3 origin, cvr3 direction) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 vec3 sample_first_bounce(cvr3 origin, cvr3 direction) {
+
+    PROF_ENTER(FunctionProfle::SAMPLE_FIRST_BOUNCE);
+
     float32 distance;
     vec3 normal;
 
@@ -327,6 +389,7 @@ vec3 sample_first_bounce(cvr3 origin, cvr3 direction) {
 
     // Hit nothing? Sky shade
     if (material == M_SKY) {
+        PROF_EXIT(FunctionProfle::SAMPLE_FIRST_BOUNCE);
         return material_sky_rgb(direction);
     }
 
@@ -354,6 +417,7 @@ vec3 sample_first_bounce(cvr3 origin, cvr3 direction) {
 
     // Hit the floor plane
     if (material == M_FLOOR) {
+        PROF_EXIT(FunctionProfle::SAMPLE_FIRST_BOUNCE);
         return material_floor_rgb(intersection, lambertian);
     }
 
@@ -365,10 +429,12 @@ vec3 sample_first_bounce(cvr3 origin, cvr3 direction) {
         )
     );
 
-    sampler samplefn = (half_vector.y > 0.15f) ? sample_nobounce : sample;
+    sampler samplefn = (half_vector.y > 0.15f) ? sample_no_bounce : sample;
 
     // Compute the specular highlight power
     float32 specular = pow(dot(light, half_vector) * (lambertian > 0.0), 99.0f);
+
+    PROF_EXIT(FunctionProfle::SAMPLE_FIRST_BOUNCE);
 
     // Hit a sphere
     return vec3_add(
@@ -387,15 +453,15 @@ vec3 sample_first_bounce(cvr3 origin, cvr3 direction) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void render(std::FILE* out) {
+
     std::FILE* dbg = fopen("aek3b_rays.ppm", "wb");
     if (!dbg) {
         return;
     }
-
     std::fprintf(out, "P6 %d %d 255 ", IMAGE_SIZE, IMAGE_SIZE);
     std::fprintf(dbg, "P5 %d %d 255 ", IMAGE_SIZE, IMAGE_SIZE);
 
-    NanoTime::Value start = NanoTime::mark();
+    PROF_ENTER(FunctionProfle::RENDER);
 
     // camera direction vectors
     vec3
@@ -439,9 +505,6 @@ void render(std::FILE* out) {
         )
     ;
 
-
-    int ray_counts[4] = { 0, 0, 0 };
-
     for (int y = IMAGE_SIZE; y--;) {
         for (int x = IMAGE_SIZE; x--;) {
             // Use a vector for the pixel. The values here are in the range 0.0 - 255.0 rather than the 0.0 - 1.0
@@ -466,11 +529,9 @@ void render(std::FILE* out) {
 
             Material material = trace_material_only(probe_origin, probe_direction, 1.10f, -0.01f);
 
-            ray_counts[material]++;
-
             if (material != M_SKY) {
 
-                sampler samplefn = (material == M_MIRROR ? sample_first_bounce : sample_nobounce);
+                sampler samplefn = (material == M_MIRROR ? sample_first_bounce : sample_no_bounce);
 
                 vec3 samples[4];
                 int ray_count;
@@ -523,13 +584,13 @@ void render(std::FILE* out) {
                     // dot product of that difference with itself to get some notion of the samples distance from the
                     // average. We then sum those up and just check it's lower than some arbitrary threshold.
 
-                    if (ray_count > 11 && (ray_count & 3) == 3) {
+                    if (ray_count > 7 && (ray_count & 3) == 3) {
 
                         vec3 average = vec3_scale(
                             pixel,
                             1.0f/(ray_count + 1)
                         );
-
+/*
                         float32 dot_sum = 0.0f;
 
                         for (int s = 0; s < 4; ++s) {
@@ -546,17 +607,35 @@ void render(std::FILE* out) {
                                 pixel,
                                 (float32)MAX_RAYS / (float32)(ray_count + 1)
                             );
-                            ray_counts[3]++;
+                            break;
+                        }
+*/
+
+                        vec3 last;
+                        for (int s = 0; s < 4; ++s) {
+                            last = vec3_add(last, samples[s]);
+                        }
+                        last = vec3_sub(
+                            vec3_scale(last, 0.25f),
+                            average
+                        );
+                        float32 dot_sum = dot(last, last);
+                        if (dot_sum < RGB_SIMILARITY_LIMIT) {
+                            pixel = vec3_scale(
+                                pixel,
+                                (float32)MAX_RAYS / (float32)(ray_count + 1)
+                            );
                             break;
                         }
                     }
                 }
 
                 pixel = vec3_scale(pixel, SAMPLE_SCALE);
-                std::fprintf(dbg, "%c", MAX_RAYS - ray_count);
+                std::fprintf(dbg, "%c", ray_count);
+
             } else {
                 pixel = vec3_scale(material_sky_rgb(probe_direction), MAX_RAYS * SAMPLE_SCALE);
-                std::fprintf(dbg, "%c", 1);
+                std::fprintf(dbg, "%c", 0);
             }
             pixel = vec3_add(pixel, ambient_rgb);
 
@@ -565,19 +644,9 @@ void render(std::FILE* out) {
         }
     }
 
-    NanoTime::Value end = NanoTime::mark();
+    PROF_EXIT(FunctionProfle::RENDER);
+
     std::fclose(dbg);
-    std::printf(
-        "Total render() time %0.6f seconds\n"
-        "Primary material probes:\n"
-        "\tM_SKY    : %5d\n"
-        "\tM_FLOOR  : %5d\n"
-        "\tM_MIRROR : %5d\n",
-        (float64)(end - start) / 1e9,
-        ray_counts[M_SKY],
-        ray_counts[M_FLOOR],
-        ray_counts[M_MIRROR]
-    );
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -593,6 +662,7 @@ int main() {
         init_spheres();
         render(out);
         std::fclose(out);
+        dump_profile();
     } else {
         std::printf("Unable to open output file\n");
     }
