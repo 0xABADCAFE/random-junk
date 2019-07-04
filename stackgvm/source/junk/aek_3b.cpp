@@ -533,7 +533,7 @@ void render(std::FILE* out) {
 
                 sampler samplefn = (material == M_MIRROR ? sample_first_bounce : sample_no_bounce);
 
-                vec3 samples[4];
+                vec3 samples[8];
                 int ray_count;
                 // Cast MAX_RAYS rays per pixel for sampling
                 for (ray_count = 0; ray_count < MAX_RAYS; ++ray_count) {
@@ -545,7 +545,7 @@ void render(std::FILE* out) {
                     );
 
                     // Buffer the most recent 4 samoles
-                    vec3& sample = samples[ray_count & 3];
+                    vec3& sample = samples[ray_count & 7];
 
                     sample = samplefn(
                         vec3_add(
@@ -584,7 +584,7 @@ void render(std::FILE* out) {
                     // dot product of that difference with itself to get some notion of the samples distance from the
                     // average. We then sum those up and just check it's lower than some arbitrary threshold.
 
-                    if (ray_count > 7 && (ray_count & 3) == 3) {
+                    if (ray_count > 7 && (ray_count & 7) == 7) {
 
                         vec3 average = vec3_scale(
                             pixel,
@@ -612,11 +612,11 @@ void render(std::FILE* out) {
 */
 
                         vec3 last;
-                        for (int s = 0; s < 4; ++s) {
+                        for (int s = 0; s < 8; ++s) {
                             last = vec3_add(last, samples[s]);
                         }
                         last = vec3_sub(
-                            vec3_scale(last, 0.25f),
+                            vec3_scale(last, 0.125f),
                             average
                         );
                         float32 dot_sum = dot(last, last);
