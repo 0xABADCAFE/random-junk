@@ -66,29 +66,82 @@ static const float32 SAMPLE_SCALE  = RGB_SCALE * (64.0f / MAX_RAYS);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// Vector 3 type
+// Vec3 type
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-struct vec3 {
+class Vec3;
+
+#ifdef NO_PASS_BY_REF
+    typedef const Vec3 cvr3;
+#else
+    typedef const Vec3& cvr3;
+#endif
+
+class Vec3 {
+    public:
     float32 x, y, z;
 
     // default constructor
-    vec3() { }
+    Vec3() { }
 
     // constructor
-    vec3(float32 a, float32 b, float32 c) {
+    Vec3(float32 a, float32 b, float32 c) {
         x = a;
         y = b;
         z = c;
     }
-};
 
-#ifdef NO_PASS_BY_REF
-    typedef const vec3 cvr3;
-#else
-    typedef const vec3& cvr3;
-#endif
+    // Sum two Vec3
+    static Vec3 add(cvr3 v1, cvr3 v2) {
+        return Vec3(
+            v1.x + v2.x,
+            v1.y + v2.y,
+            v1.z + v2.z
+        );
+    }
+
+    // Subtract two Vec3
+    static Vec3 sub(cvr3 v1, cvr3 v2) {
+        return Vec3(
+            v1.x - v2.x,
+            v1.y - v2.y,
+            v1.z - v2.z
+        );
+    }
+
+    // Scale a Vec3 by a float
+    static Vec3 scale(cvr3 v, float32 s) {
+        return Vec3(
+            v.x * s,
+            v.y * s,
+            v.z * s
+        );
+    }
+
+    // Get a normalised Vec3
+    static Vec3 normalize(cvr3 v) {
+        return scale(v, (1.0f / sqrt(
+            (v.x * v.x) +
+            (v.y * v.y) +
+            (v.z * v.z)
+        )));
+    }
+
+    // Get the dot product of two Vec3
+    static float32 dot(cvr3 v1, cvr3 v2) {
+        return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+    }
+
+    // Get the cross product for two Vec3
+    static Vec3 cross(cvr3 v1, cvr3 v2) {
+        return Vec3(
+            v1.y * v2.z - v1.z * v2.y,
+            v1.z * v2.x - v1.x * v2.z,
+            v1.x * v2.y - v1.y * v2.x
+        );
+    }
+} __attribute__((aligned(16)));
 
 typedef enum {
     M_SKY    = 0,
@@ -102,31 +155,31 @@ typedef enum {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static const vec3 camera_dir(
+static const Vec3 camera_dir(
     -6.0, -16.0, 0.0
 );
 
-static const vec3 focal_point(
+static const Vec3 focal_point(
     17.0, 16.0, 8.0
 );
 
-static const vec3 normal_up(
+static const Vec3 normal_up(
     0.0, 0.0, 1.0
 );
 
-static const vec3 sky_rgb(
+static const Vec3 sky_rgb(
     0.7, 0.6, 1.0
 );
 
-static const vec3 floor_red_rgb(
+static const Vec3 floor_red_rgb(
     3.0, 1.0, 1.0
 );
 
-static const vec3 floor_white_rgb(
+static const Vec3 floor_white_rgb(
     3.0, 3.0, 3.0
 );
 
-static const vec3 ambient_rgb(
+static const Vec3 ambient_rgb(
     13.0, 13.0, 13.0
 );
 
@@ -152,55 +205,7 @@ static const float32 invRM = 1.0 / RAND_MAX;
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Sum two vec3
-inline vec3 vec3_add(cvr3 v1, cvr3 v2) {
-    return vec3(
-        v1.x + v2.x,
-        v1.y + v2.y,
-        v1.z + v2.z
-    );
-}
 
-// Subtract two vec3
-inline vec3 vec3_sub(cvr3 v1, cvr3 v2) {
-    return vec3(
-        v1.x - v2.x,
-        v1.y - v2.y,
-        v1.z - v2.z
-    );
-}
-
-// Scale a vec3 by a float
-inline vec3 vec3_scale(cvr3 v, float32 s) {
-    return vec3(
-        v.x * s,
-        v.y * s,
-        v.z * s
-    );
-}
-
-// Get a normalised vec3
-inline vec3 vec3_normalize(cvr3 v) {
-    return vec3_scale(v, (1.0 / sqrt(
-        (v.x * v.x) +
-        (v.y * v.y) +
-        (v.z * v.z)
-    )));
-}
-
-// Get the dot product of two vec3
-inline float32 dot(cvr3 v1, cvr3 v2) {
-    return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
-}
-
-// Get the cross product for two vec3
-inline vec3 vec3_cross(cvr3 v1, cvr3 v2) {
-    return vec3(
-        v1.y * v2.z - v1.z * v2.y,
-        v1.z * v2.x - v1.x * v2.z,
-        v1.x * v2.y - v1.y * v2.x
-    );
-}
 
 // Get a random number in the range 0.0 - 1.0
 inline float32 frand() {
@@ -213,8 +218,8 @@ inline float32 frand() {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Material trace(cvr3 origin, cvr3 direction, float32& distance, vec3& normal);
-vec3     sample(cvr3 origin, cvr3 direction);
+Material trace(cvr3 origin, cvr3 direction, float32& distance, Vec3& normal);
+Vec3     sample(cvr3 origin, cvr3 direction);
 void     render(std::FILE* out, int image_size);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
