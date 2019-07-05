@@ -504,7 +504,7 @@ void render(std::FILE* out) {
 
 
     for (int y = IMAGE_SIZE; y--;) {
-        int min_adaptive_ray_count = (SAMPLE_BUFFER_SIZE-1);
+        int min_adaptive_ray_count = SAMPLE_BUFFER_SIZE;
         for (int x = IMAGE_SIZE; x--;) {
             // Use a vector for the pixel. The values here are in the range 0.0 - 255.0 rather than the 0.0 - 1.0
             Vec3 pixel(0.0f, 0.0f, 0.0f);
@@ -531,9 +531,10 @@ void render(std::FILE* out) {
             if (material != M_SKY) {
                 Vec3 samples[SAMPLE_BUFFER_SIZE];
                 SampleFunction samplefn = (material == M_MIRROR ? sample_first_bounce : sample_no_bounce);
-                int ray_count;
-                // Cast MAX_RAYS rays per pixel for sampling
-                for (ray_count = 0; ray_count < MAX_RAYS; ++ray_count) {
+                int ray_count = 0;
+
+                // Cast up to MAX_RAYS rays per pixel for sampling
+                for (; ray_count < MAX_RAYS; ++ray_count) {
 
                     // Random delta to be added for depth of field effects
                     Vec3 delta = Vec3::add(
@@ -541,7 +542,7 @@ void render(std::FILE* out) {
                         Vec3::scale(camera_right, (frand() - 0.5f) * 99.0f)
                     );
 
-                    // Buffer the most recent 4 samoles
+                    // Buffer the most recent sample
                     Vec3& sample = samples[ray_count & (SAMPLE_BUFFER_SIZE-1)];
 
                     sample = samplefn(
@@ -582,10 +583,9 @@ void render(std::FILE* out) {
                     // average. We then sum those up and just check it's lower than some arbitrary threshold.
 
                     if (
-                        ray_count > min_adaptive_ray_count &&
+                        ray_count >= min_adaptive_ray_count &&
                         (ray_count & (SAMPLE_BUFFER_SIZE-1)) == (SAMPLE_BUFFER_SIZE-1)
                     ) {
-
                         Vec3 average = Vec3::scale(
                             pixel,
                             1.0f/(ray_count + 1)
@@ -605,25 +605,18 @@ void render(std::FILE* out) {
                                 pixel,
                                 (float32)MAX_RAYS / (float32)(ray_count + 1)
                             );
-
-
-                            min_adaptive_ray_count = ray_count;
-
                             break;
                         }
                     }
                 }
 
-                min_adaptive_ray_count *= 0.75f;
-                if (min_adaptive_ray_count < (SAMPLE_BUFFER_SIZE-1)) {
-                    min_adaptive_ray_count = (SAMPLE_BUFFER_SIZE-1);
-                } else if (min_adaptive_ray_count > MAX_RAYS>>1) {
-                    min_adaptive_ray_count = MAX_RAYS>>1;
+                min_adaptive_ray_count = ray_count >> 1;
+                if (min_adaptive_ray_count < SAMPLE_BUFFER_SIZE) {
+                    min_adaptive_ray_count = SAMPLE_BUFFER_SIZE;
                 }
-
                 pixel = Vec3::scale(pixel, SAMPLE_SCALE);
-                if (ray_count >= MAX_RAYS) {
-                    ray_count = MAX_RAYS-1;
+                if (ray_count > 255) {
+                    ray_count = 255;
                 }
                 std::fprintf(dbg, "%c", ray_count);
 
