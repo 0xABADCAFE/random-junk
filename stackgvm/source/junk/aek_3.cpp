@@ -29,6 +29,10 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Profiling options
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #ifdef PROFILE
     struct FunctionProfle {
@@ -72,10 +76,40 @@
     #define PROF_ENTER(_f) ++function_profile[(_f)].calls; NanoTime::Value __nt = NanoTime::mark()
     #define PROF_EXIT(_f)    function_profile[(_f)].ns += NanoTime::mark() - __nt;
     #define PROF_DUMP()      dump_profile()
+    #define TIME_RENDER_INIT()
+    #define TIME_RENDER_DONE()
 #else
     #define PROF_ENTER(_f)
     #define PROF_EXIT(_f)
     #define PROF_DUMP()
+    #define TIME_RENDER_INIT() NanoTime::Value render_start = NanoTime::mark()
+    #define TIME_RENDER_DONE() NanoTime::Value render_end = NanoTime::mark(); \
+    std::printf( \
+        "Total render() time %0.6f seconds\n", \
+        (float64)(render_end - render_start) * 1e-9 \
+    )
+#endif
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#ifdef EMIT_RAY_DENSITY_MAP
+    #define INIT_RAY_DENSITY_MAP(n) \
+        std::FILE* ray_density_out = fopen((n), "wb"); \
+        if (!ray_density_out) { \
+            return; \
+        } \
+        std::fprintf(ray_density_out, "P5 %d %d 255 ", IMAGE_SIZE, IMAGE_SIZE)
+
+    #define WRITE_RAY_DENSITY(d) std::fprintf(ray_density_out, "%c", ((d)>255) ? 255 : (d) );
+    #define DONE_RAY_DENSITY_MAP() std::fclose(ray_density_out)
+#else
+    #define INIT_RAY_DENSITY_MAP(n)
+    #define WRITE_RAY_DENSITY(d)
+    #define DONE_RAY_DENSITY_MAP()
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -113,8 +147,8 @@ Material trace(cvr3 origin, cvr3 direction, float32& distance, Vec3& normal) {
     distance = 1e9f;
 
     // Assume trace hits nothing
-    Material   material = M_SKY;
-    float32 p = -origin.z / direction.z;
+    Material material = M_SKY;
+    float32  p = -origin.z / direction.z;
 
     // Check if trace maybe hits floor
     if (0.01f < p) {
@@ -449,14 +483,13 @@ Vec3 sample_first_bounce(cvr3 origin, cvr3 direction) {
 
 void render(std::FILE* out) {
 
-    std::FILE* dbg = fopen("aek3b_rays.ppm", "wb");
-    if (!dbg) {
-        return;
-    }
-    std::fprintf(out, "P6 %d %d 255 ", IMAGE_SIZE, IMAGE_SIZE);
-    std::fprintf(dbg, "P5 %d %d 255 ", IMAGE_SIZE, IMAGE_SIZE);
+    INIT_RAY_DENSITY_MAP("aek3b_rays.ppm");
 
+    std::fprintf(out, "P6 %d %d 255 ", IMAGE_SIZE, IMAGE_SIZE);
+
+    // Only the profile call or the render timing call will be compiled in, never both
     PROF_ENTER(FunctionProfle::RENDER);
+    TIME_RENDER_INIT();
 
     // camera direction vectors
     Vec3
@@ -614,14 +647,11 @@ void render(std::FILE* out) {
                     min_adaptive_ray_count = SAMPLE_BUFFER_SIZE;
                 }
                 pixel = Vec3::scale(pixel, SAMPLE_SCALE);
-                if (ray_count > 255) {
-                    ray_count = 255;
-                }
-                std::fprintf(dbg, "%c", ray_count);
+                WRITE_RAY_DENSITY(ray_count);
 
             } else {
                 pixel = Vec3::scale(material_sky_rgb(probe_direction), MAX_RAYS * SAMPLE_SCALE);
-                std::fprintf(dbg, "%c", 0);
+                WRITE_RAY_DENSITY(0);
             }
             pixel = Vec3::add(pixel, ambient_rgb);
 
@@ -630,9 +660,10 @@ void render(std::FILE* out) {
         }
     }
 
+    // Only the profile call or the render timing call will be compiled in, never both
+    TIME_RENDER_DONE();
     PROF_EXIT(FunctionProfle::RENDER);
-
-    std::fclose(dbg);
+    DONE_RAY_DENSITY_MAP();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
