@@ -85,7 +85,6 @@ static Vec3  spheres[18*8];
 static int   num_spheres = 0;
 
 void init_spheres() {
-    // Check if trace maybe hits a sphere
     for (int k = 19; k--;) {
         for (int j = 9; j--;) {
             if (data[j] & 1 << k) {

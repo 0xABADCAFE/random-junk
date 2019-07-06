@@ -17,7 +17,7 @@
     #define PPMNAME "aek_32.ppm"
 #endif
 
-Material trace(cvr3 origin, cvr3 direction, float32& distance, vec3& normal) {
+Material trace(cvr3 origin, cvr3 direction, float32& distance, Vec3& normal) {
     distance = 1e9f;
 
     // Assume trace hits nothing
@@ -35,22 +35,22 @@ Material trace(cvr3 origin, cvr3 direction, float32& distance, vec3& normal) {
     for (int k = 19; k--;) {
         for (int j = 9; j--;) {
             if (data[j] & 1 << k) {
-                vec3 p = vec3_sub(
+                Vec3 p = Vec3::sub(
                     origin,
-                    vec3(k, 0.0f, j + 4.0f) // Sphere coordinate
+                    Vec3(k, 0.0f, j + 4.0f) // Sphere coordinate
                 );
 
                 float32
-                    b = dot(p, direction),
-                    eye_offset = dot(p, p) - 1.0f,
+                    b = Vec3::dot(p, direction),
+                    eye_offset = Vec3::dot(p, p) - 1.0f,
                     q = b * b - eye_offset
                 ;
                 if (q > 0.0f) {
                     float32 sphere_distance = -b - sqrt(q);
                         if (sphere_distance < distance && sphere_distance > 0.01f) {
                             distance = sphere_distance,
-                            normal   = vec3_normalize(
-                            vec3_add(p, vec3_scale(direction, distance))
+                            normal   = Vec3::normalize(
+                            Vec3::add(p, Vec3::scale(direction, distance))
                         ),
                         material = M_MIRROR; // Returning here is fast, but we'd get z fighting
                     }
@@ -63,16 +63,16 @@ Material trace(cvr3 origin, cvr3 direction, float32& distance, vec3& normal) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-//  vec3 sample(cvr3 origin, cvr3 direction)
+//  Vec3 sample(cvr3 origin, cvr3 direction)
 //
 //  Generic sampling method that uses the most expensive trace() and recursively samples when hitting a reflective
 //  surface.
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-vec3 sample(cvr3 origin, cvr3 direction) {
+Vec3 sample(cvr3 origin, cvr3 direction) {
     float32 distance;
-    vec3 normal;
+    Vec3 normal;
 
     // Find where the ray intersects the world
     Material material = trace(origin, direction, distance, normal);
@@ -82,19 +82,19 @@ vec3 sample(cvr3 origin, cvr3 direction) {
         float32 gradient = 1.0f - direction.z;
         gradient *= gradient;
         gradient *= gradient;
-        return vec3_scale(
+        return Vec3::scale(
             sky_rgb, // Blueish sky colour
             gradient
         );
     }
 
-    vec3
-        intersection = vec3_add(origin, vec3_scale(direction, distance)),
+    Vec3
+        intersection = Vec3::add(origin, Vec3::scale(direction, distance)),
 
         // Calculate the lighting vector
-        light = vec3_normalize(
-            vec3_sub(
-                vec3( // lighting direction, plus a bit of randomness to generate soft shadows.
+        light = Vec3::normalize(
+            Vec3::sub(
+                Vec3( // lighting direction, plus a bit of randomness to generate soft shadows.
                     9.0f + frand(),
                     9.0f + frand(),
                     16.0f
@@ -103,25 +103,25 @@ vec3 sample(cvr3 origin, cvr3 direction) {
             )
         ),
 
-        half_vector = vec3_add(
+        half_vector = Vec3::add(
             direction,
-            vec3_scale(
+            Vec3::scale(
                 normal,
-                dot(normal, direction) * -2.0f
+                Vec3::dot(normal, direction) * -2.0f
             )
         )
     ;
 
     // Calculate the lambertian illumuination factor
-    float32 lambertian = dot(light, normal);
+    float32 lambertian = Vec3::dot(light, normal);
     if (lambertian < 0.0f || trace(intersection, light, distance, normal)) {
         lambertian = 0.0f; // in shadow
     }
 
     // Hit the floor plane
     if (material == M_FLOOR) {
-        intersection = vec3_scale(intersection, 0.2f);
-        return vec3_scale(
+        intersection = Vec3::scale(intersection, 0.2f);
+        return Vec3::scale(
             (
                 // Compute check colour based on the position
                 (int32) (ceil(intersection.x) + ceil(intersection.y)) & 1 ?
@@ -133,12 +133,12 @@ vec3 sample(cvr3 origin, cvr3 direction) {
     }
 
     // Compute the specular highlight power
-    float32 specular = pow(dot(light, half_vector) * (lambertian > 0.0f), 99.0f);
+    float32 specular = pow(Vec3::dot(light, half_vector) * (lambertian > 0.0f), 99.0f);
 
     // Hit a sphere
-    return vec3_add(
-        vec3(specular, specular, specular),
-        vec3_scale(
+    return Vec3::add(
+        Vec3(specular, specular, specular),
+        Vec3::scale(
             sample(intersection, half_vector),
             SPHERE_ALBEDO
         )
@@ -157,14 +157,14 @@ void render(std::FILE* out) {
     NanoTime::Value start = NanoTime::mark();
 
     // camera direction vectors
-    vec3
-        camera_forward = vec3_normalize( // Unit forwards
+    Vec3
+        camera_forward = Vec3::normalize( // Unit forwards
             camera_dir
         ),
 
-        camera_up = vec3_scale( // Unit up - Z is up in this system
-            vec3_normalize(
-                vec3_cross(
+        camera_up = Vec3::scale( // Unit up - Z is up in this system
+            Vec3::normalize(
+                Vec3::cross(
                     normal_up,
                     camera_forward
                 )
@@ -172,16 +172,16 @@ void render(std::FILE* out) {
             IMAGE_SCALE
         ),
 
-        camera_right = vec3_scale( // Unit right
-            vec3_normalize(
-                vec3_cross(camera_forward, camera_up)
+        camera_right = Vec3::scale( // Unit right
+            Vec3::normalize(
+                Vec3::cross(camera_forward, camera_up)
             ),
             IMAGE_SCALE
         ),
 
-        eye_offset = vec3_add( // Offset frm eye to coner of focal plane
-            vec3_scale(
-                vec3_add(camera_up, camera_right),
+        eye_offset = Vec3::add( // Offset frm eye to coner of focal plane
+            Vec3::scale(
+                Vec3::add(camera_up, camera_right),
                 -(IMAGE_SIZE >> 1)
             ),
             camera_forward
@@ -192,32 +192,32 @@ void render(std::FILE* out) {
         for (int x = IMAGE_SIZE; x--;) {
 
             // Use a vector for the pixel. The values here are in the range 0.0 - 255.0 rather than the 0.0 - 1.0
-            vec3 pixel = ambient_rgb;
+            Vec3 pixel = ambient_rgb;
 
             // Cast 64 rays per pixel for sampling
             for (int ray_count = MAX_RAYS; ray_count--;) {
 
                 // Random delta to be added for depth of field effects
-                vec3 delta = vec3_add(
-                    vec3_scale(camera_up,    (frand() - 0.5f) * 99.0f),
-                    vec3_scale(camera_right, (frand() - 0.5f) * 99.0f)
+                Vec3 delta = Vec3::add(
+                    Vec3::scale(camera_up,    (frand() - 0.5f) * 99.0f),
+                    Vec3::scale(camera_right, (frand() - 0.5f) * 99.0f)
                 );
 
                 // Accumulate the sample result into the current pixel
-                pixel  = vec3_add(
-                    vec3_scale(
+                pixel  = Vec3::add(
+                    Vec3::scale(
                         sample(
-                            vec3_add(
+                            Vec3::add(
                                 focal_point,
                                 delta
                             ),
-                            vec3_normalize(
-                                vec3_sub(
-                                    vec3_scale(
-                                        vec3_add(
-                                            vec3_scale(camera_up, frand() + x),
-                                            vec3_add(
-                                                vec3_scale(camera_right, frand() + y),
+                            Vec3::normalize(
+                                Vec3::sub(
+                                    Vec3::scale(
+                                        Vec3::add(
+                                            Vec3::scale(camera_up, frand() + x),
+                                            Vec3::add(
+                                                Vec3::scale(camera_right, frand() + y),
                                                 eye_offset
                                             )
                                         ),
