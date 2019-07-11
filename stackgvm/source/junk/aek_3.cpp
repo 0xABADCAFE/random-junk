@@ -30,12 +30,15 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-//  Profiling options
+//  Profiling
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #ifdef PROFILE
-    struct FunctionProfle {
+
+namespace Profiling {
+
+    struct Entry {
         enum {
             RENDER = 0,
             SAMPLE,
@@ -51,39 +54,39 @@
         uint32 calls;
     };
 
-    static FunctionProfle function_profile[FunctionProfle::MAX] = {
+    static Entry entries[Entry::MAX] = {
         { 0, "Scene::render()", 0 },
         { 0, "Sample::sample()", 0 },
-        { 0, "Sample::sample_no_bounce()", 0 },
-        { 0, "Sample::sample_first_bounce()", 0 },
+        { 0, "Sample::sampleNoBounce()", 0 },
+        { 0, "Sample::sampleFirstBounce()", 0 },
         { 0, "Ray::trace()", 0 },
-        { 0, "Ray::trace_no_bounce()", 0 },
-        { 0, "Ray::trace_material_only()", 0 },
+        { 0, "Ray::traceNoBounce()", 0 },
+        { 0, "Ray::traceMaterialOnly()", 0 },
     };
 
-    static void dump_profile() {
-        for (int i = 0; i < FunctionProfle::MAX; i++) {
+    static void dump() {
+        for (int i = 0; i < Entry::MAX; i++) {
             std::printf(
                 "%-22s | %9" FU32 " | %9.6f | %.3f\n",
-                function_profile[i].name,
-                function_profile[i].calls,
-                1e-9 * function_profile[i].ns,
-                (float64)function_profile[i].ns / (float64)function_profile[i].calls
+                entries[i].name,
+                entries[i].calls,
+                1e-9 * entries[i].ns,
+                (float64)entries[i].ns / (float64)entries[i].calls
             );
         }
     }
-
-    #define PROF_ENTER(_f) ++function_profile[(_f)].calls; NanoTime::Value __nt = NanoTime::mark()
-    #define PROF_EXIT(_f)    function_profile[(_f)].ns += NanoTime::mark() - __nt;
-    #define PROF_DUMP()      dump_profile()
+}
+    #define PROF_ENTER(_f) ++Profiling::entries[(_f)].calls; Profiling::Nanotime __nt = Profiling::mark()
+    #define PROF_EXIT(_f)    Profiling::entries[(_f)].ns += Profiling::mark() - __nt;
+    #define PROF_DUMP()      Profiling::dump()
     #define TIME_RENDER_INIT()
     #define TIME_RENDER_DONE()
 #else
     #define PROF_ENTER(_f)
     #define PROF_EXIT(_f)
     #define PROF_DUMP()
-    #define TIME_RENDER_INIT() NanoTime::Value render_start = NanoTime::mark()
-    #define TIME_RENDER_DONE() NanoTime::Value render_end = NanoTime::mark(); \
+    #define TIME_RENDER_INIT() Profiling::Nanotime render_start = Profiling::mark()
+    #define TIME_RENDER_DONE() Profiling::Nanotime render_end   = Profiling::mark(); \
     std::printf( \
         "Total render() time %0.6f seconds\n", \
         (float64)(render_end - render_start) * 1e-9 \
@@ -92,7 +95,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-//
+//  Ray Density Map
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -112,39 +115,6 @@
     #define DONE_RAY_DENSITY_MAP()
 #endif
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-namespace Material {
-
-    inline Vec3 shade_sky_rgb(cvr3 direction) {
-        float32 gradient = 1.0f - direction.z;
-        gradient *= gradient;
-        gradient *= gradient;
-        return Vec3::scale(
-            sky_rgb, // Blueish sky colour
-            gradient
-        );
-    }
-
-    inline Vec3 shade_floor_rgb(Vec3& intersection, float32 lambertian) {
-        intersection = Vec3::scale(intersection, 0.2f);
-        return Vec3::scale(
-            (
-                // Compute check colour based on the position
-                (int) (ceil(intersection.x) + ceil(intersection.y)) & 1 ?
-                    tile_red_rgb :
-                    tile_white_rgb
-            ),
-            (lambertian * 0.2f + 0.1f)
-        );
-    }
-
-    inline float32 specularity(cvr3 light, cvr3 half_vector, float32 lambertian) {
-        return (lambertian > 0.0) ?
-            pow(Vec3::dot(light, half_vector), 99.0f) :
-            0.0f;
-    }
-}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -153,9 +123,47 @@ namespace Material {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 namespace Scene {
-    static Vec3  spheres[18*8];
+    static Vec3* spheres     = 0;
     static int   num_spheres = 0;
+
+    static void init() {
+        // Calclulate how many spheres we have, allocate space and unpack the bitmap
+        spheres      = 0;
+        num_spheres  = 0;
+        int column   = 0;
+        int rows     = sizeof(bitmap) / sizeof(int32);
+        for (int i = 0; i < rows; ++i) {
+            num_spheres += __builtin_popcount(bitmap[i]);
+            if (bitmap[i]) {
+                int msb = 8 * sizeof(int32) - __builtin_clz(bitmap[i]);
+                if (msb > column) {
+                    column = msb;
+                }
+            }
+        }
+
+        spheres = new Vec3[num_spheres];
+        for (int i = 0; column--;) {
+            for (int row = rows; row--;) {
+                if (bitmap[row] & 1 << column) {
+                    spheres[i].x = column;
+                    spheres[i].y = 0;
+                    spheres[i].z = row + 4;
+                    ++i;
+                }
+            }
+        }
+    }
+
+    static void done() {
+        if (spheres) {
+            delete[] spheres;
+        }
+        spheres = 0;
+    }
+
 }
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -165,18 +173,8 @@ namespace Scene {
 
 namespace Ray {
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //
-    //  Material::Kind trace(cvr3 origin, cvr3 direction, float32& distance, Vec3& normal)
-    //
-    //  General purpose trace routine that calculates the material, distance to point of intersection and the normal at
-    //  the point of intersection. Since sphere volumes overlap, this version exhaustively tests every sphere to
-    //  determine exact point of intersection.
-    //
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     Material::Kind trace(cvr3 origin, cvr3 direction, float32& distance, Vec3& normal) {
-        PROF_ENTER(FunctionProfle::TRACE);
+        PROF_ENTER(Profiling::Entry::TRACE);
 
         distance = 1e9f;
 
@@ -214,22 +212,13 @@ namespace Ray {
                 }
             }
         }
-        PROF_EXIT(FunctionProfle::TRACE);
+        PROF_EXIT(Profiling::Entry::TRACE);
         return material;
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //
-    //  Material::Kind trace_no_bounce(cvr3 origin, cvr3 direction, float32& distance, Vec3& normal)
-    //
-    //  General purpose trace routine that calculates the material, distance to point of intersection and the normal at
-    //  the point of intersection. Completely ignores sphere intersection tests. We use this routine when we know that a
-    //  ray cannot intersect any of the spheres in the scene.
-    //
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    Material::Kind trace_no_bounce(cvr3 origin, cvr3 direction, float32& distance, Vec3& normal) {
-        PROF_ENTER(FunctionProfle::TRACE_NO_BOUNCE);
+    Material::Kind traceNoBounce(cvr3 origin, cvr3 direction, float32& distance, Vec3& normal) {
+        PROF_ENTER(Profiling::Entry::TRACE_NO_BOUNCE);
         distance  = 1e9f;
         float32 p = -origin.z / direction.z;
 
@@ -237,29 +226,21 @@ namespace Ray {
         if (0.01f < p) {
             distance = p,
             normal   = Scene::normal_up;
-            PROF_EXIT(FunctionProfle::TRACE_NO_BOUNCE);
+            PROF_EXIT(Profiling::Entry::TRACE_NO_BOUNCE);
             return Material::FLOOR;
         }
-        PROF_EXIT(FunctionProfle::TRACE_NO_BOUNCE);
+        PROF_EXIT(Profiling::Entry::TRACE_NO_BOUNCE);
         return Material::SKY;
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //
-    //  Material::Kind trace_material_only(cvr3 origin, cvr3 direction)
-    //
-    //  Shortcut version of the trace routine that only tests what material is intersected first by the ray. As the
-    //  distance and normal are not required here. if the ray hits a sphere we early exit out of the test.
-    //
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    Material::Kind trace_material_only(
+    Material::Kind traceMaterialOnly(
         cvr3 origin,
         cvr3 direction,
         const float32 sphere_size_mod = 1.0f,
         const float32 floor_mod = 0.0f
     ) {
-        PROF_ENTER(FunctionProfle::TRACE_MATERIAL_ONLY);
+        PROF_ENTER(Profiling::Entry::TRACE_MATERIAL_ONLY);
 
         // Assume trace hits sky
         Material::Kind material = Material::SKY;
@@ -290,11 +271,12 @@ namespace Ray {
                 }
             }
         }
-        PROF_EXIT(FunctionProfle::TRACE_MATERIAL_ONLY);
+        PROF_EXIT(Profiling::Entry::TRACE_MATERIAL_ONLY);
         return material;
     }
 
 }
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -312,13 +294,7 @@ namespace Sample {
 
     typedef Vec3 (*Function)(cvr3 origin, cvr3 direction);
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //
-    //  Helpers
-    //
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    inline float32 calculate_lighting(cvr3 intersection, cvr3 normal, Vec3& light) {
+    inline float32 calculateLambertian(cvr3 intersection, cvr3 normal, Vec3& light) {
         // Calculate the lighting vector
         light = Vec3::normalize(
             Vec3::sub(
@@ -333,33 +309,14 @@ namespace Sample {
 
         // Calculate the lambertian illumuination factor
         float32 lambertian = Vec3::dot(light, normal);
-        if (lambertian < 0.0f || Ray::trace_material_only(intersection, light)) {
+        if (lambertian < 0.0f || Ray::traceMaterialOnly(intersection, light)) {
             lambertian = 0.0f; // in shadow
         }
         return lambertian;
     }
 
-    inline Vec3 calculate_half_vector(cvr3 direction, cvr3 normal) {
-        return Vec3::add(
-            direction,
-            Vec3::scale(
-                normal,
-                Vec3::dot(normal, direction) * -2.0f
-            )
-        );
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //
-    //  Vec3 sample(cvr3 origin, cvr3 direction)
-    //
-    //  Generic sampling method that uses the most expensive trace() and recursively samples when hitting a reflective
-    //  surface.
-    //
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     Vec3 sample(cvr3 origin, cvr3 direction) {
-        PROF_ENTER(FunctionProfle::SAMPLE);
+        PROF_ENTER(Profiling::Entry::SAMPLE);
 
         Vec3    normal;
         float32 distance;
@@ -369,8 +326,8 @@ namespace Sample {
 
         // Hit nothing? Sky shade
         if (material == Material::SKY) {
-            PROF_EXIT(FunctionProfle::SAMPLE);
-            return Material::shade_sky_rgb(direction);
+            PROF_EXIT(Profiling::Entry::SAMPLE);
+            return Material::shadeSky(direction);
         }
 
         Vec3
@@ -378,20 +335,20 @@ namespace Sample {
             intersection = Vec3::add(origin, Vec3::scale(direction, distance))
         ;
 
-        float32 lambertian = calculate_lighting(intersection, normal, light);
+        float32 lambertian = calculateLambertian(intersection, normal, light);
 
         // Hit the floor plane
         if (material == Material::FLOOR) {
-            PROF_EXIT(FunctionProfle::SAMPLE);
-            return Material::shade_floor_rgb(intersection, lambertian);
+            PROF_EXIT(Profiling::Entry::SAMPLE);
+            return Material::shadeFloor(intersection, lambertian);
         }
 
-        Vec3 half_vector = calculate_half_vector(direction, normal);
+        Vec3 half_vector = calculateHalfVector(direction, normal);
 
         // Compute the specular highlight power
         float32 specular = Material::specularity(light, half_vector, lambertian);
 
-        PROF_EXIT(FunctionProfle::SAMPLE);
+        PROF_EXIT(Profiling::Entry::SAMPLE);
 
         // Hit a sphere
         return Vec3::add(
@@ -403,28 +360,21 @@ namespace Sample {
         );
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //
-    //  Vec3 no_bounce(cvr3 origin, cvr3 direction)
-    //
-    //  Tuned sample method for rays that we know will not hit a reflective surface.
-    //
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    Vec3 no_bounce(cvr3 origin, cvr3 direction) {
+    Vec3 sampleNoBounce(cvr3 origin, cvr3 direction) {
 
-        PROF_ENTER(FunctionProfle::SAMPLE_NO_BOUNCE);
+        PROF_ENTER(Profiling::Entry::SAMPLE_NO_BOUNCE);
 
         float32 distance;
         Vec3    normal;
 
         // Find where the ray intersects the world
-        Material::Kind material = Ray::trace_no_bounce(origin, direction, distance, normal);
+        Material::Kind material = Ray::traceNoBounce(origin, direction, distance, normal);
 
         // Hit nothing? Sky shade
         if (material == Material::SKY) {
-            PROF_EXIT(FunctionProfle::SAMPLE_NO_BOUNCE);
-            return Material::shade_sky_rgb(direction);
+            PROF_EXIT(Profiling::Entry::SAMPLE_NO_BOUNCE);
+            return Material::shadeSky(direction);
         }
 
         Vec3
@@ -432,24 +382,16 @@ namespace Sample {
             intersection = Vec3::add(origin, Vec3::scale(direction, distance))
         ;
 
-        float32 lambertian = calculate_lighting(intersection, normal, light);
+        float32 lambertian = calculateLambertian(intersection, normal, light);
 
-        PROF_EXIT(FunctionProfle::SAMPLE_NO_BOUNCE);
-        return Material::shade_floor_rgb(intersection, lambertian);
+        PROF_EXIT(Profiling::Entry::SAMPLE_NO_BOUNCE);
+        return Material::shadeFloor(intersection, lambertian);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //
-    //  Vec3 first_bounce(cvr3 origin, cvr3 direction)
-    //
-    //  Tuned sample method for primary rays that we expect to bounce only once. This determination is made by checking
-    //  the calculated half_vector's y component to see if it's heading away from the plane containing the spheres.
-    //
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    Vec3 first_bounce(cvr3 origin, cvr3 direction) {
+    Vec3 sampleFirstBounce(cvr3 origin, cvr3 direction) {
 
-        PROF_ENTER(FunctionProfle::SAMPLE_FIRST_BOUNCE);
+        PROF_ENTER(Profiling::Entry::SAMPLE_FIRST_BOUNCE);
 
         float32 distance;
         Vec3    normal;
@@ -459,8 +401,8 @@ namespace Sample {
 
         // Hit nothing? Sky shade
         if (material == Material::SKY) {
-            PROF_EXIT(FunctionProfle::SAMPLE_FIRST_BOUNCE);
-            return Material::shade_sky_rgb(direction);
+            PROF_EXIT(Profiling::Entry::SAMPLE_FIRST_BOUNCE);
+            return Material::shadeSky(direction);
         }
 
         Vec3
@@ -468,22 +410,22 @@ namespace Sample {
             intersection = Vec3::add(origin, Vec3::scale(direction, distance))
         ;
 
-        float32 lambertian = calculate_lighting(intersection, normal, light);
+        float32 lambertian = calculateLambertian(intersection, normal, light);
 
         // Hit the floor plane
         if (material == Material::FLOOR) {
-            PROF_EXIT(FunctionProfle::SAMPLE_FIRST_BOUNCE);
-            return Material::shade_floor_rgb(intersection, lambertian);
+            PROF_EXIT(Profiling::Entry::SAMPLE_FIRST_BOUNCE);
+            return Material::shadeFloor(intersection, lambertian);
         }
 
-        Vec3 half_vector = calculate_half_vector(direction, normal);
+        Vec3 half_vector = calculateHalfVector(direction, normal);
 
-        Function samplefn = (half_vector.y > 0.15f) ? no_bounce : sample;
+        Function samplefn = (half_vector.y > 0.15f) ? sampleNoBounce : sample;
 
         // Compute the specular highlight power
         float32 specular = Material::specularity(light, half_vector, lambertian);
 
-        PROF_EXIT(FunctionProfle::SAMPLE_FIRST_BOUNCE);
+        PROF_EXIT(Profiling::Entry::SAMPLE_FIRST_BOUNCE);
 
         // Hit a sphere
         return Vec3::add(
@@ -497,6 +439,7 @@ namespace Sample {
 
 }
 
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //  Scene
@@ -505,30 +448,6 @@ namespace Sample {
 
 namespace Scene {
 
-    bool init() {
-        for (int k = 19; k--;) {
-            for (int j = 9; j--;) {
-                if (bitmap[j] & 1 << k) {
-                    spheres[num_spheres].x = k;
-                    spheres[num_spheres].y = 0;
-                    spheres[num_spheres].z = j + 4;
-                    num_spheres++;
-                }
-            }
-        }
-        return true;
-    }
-
-    void done() {
-
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //
-    //  void render(std::FILE* out)
-    //
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     void render(std::FILE* out) {
 
         INIT_RAY_DENSITY_MAP("aek3b_rays.ppm");
@@ -536,7 +455,7 @@ namespace Scene {
         std::fprintf(out, "P6 %d %d 255 ", IMAGE_SIZE, IMAGE_SIZE);
 
         // Only the profile call or the render timing call will be compiled in, never both
-        PROF_ENTER(FunctionProfle::RENDER);
+        PROF_ENTER(Profiling::Entry::RENDER);
         TIME_RENDER_INIT();
 
         // camera direction vectors
@@ -592,9 +511,9 @@ namespace Scene {
                     Vec3::sub(
                         Vec3::scale(
                             Vec3::add(
-                                Vec3::scale(camera_up, 0.5 + x),
+                                Vec3::scale(camera_up, 0.5f + x),
                                 Vec3::add(
-                                    Vec3::scale(camera_right, 0.5 + y),
+                                    Vec3::scale(camera_right, 0.5f + y),
                                     eye_offset
                                 )
                             ),
@@ -604,13 +523,13 @@ namespace Scene {
                     )
                 );
 
-                Material::Kind material = Ray::trace_material_only(probe_origin, probe_direction, 1.10f, -0.01f);
+                Material::Kind material = Ray::traceMaterialOnly(probe_origin, probe_direction, 1.10f, -0.01f);
 
                 if (material != Material::SKY) {
                     Vec3 samples[Sample::ADAPTIVE_BUFFER_SIZE];
                     Sample::Function samplefn = (material == Material::MIRROR) ?
-                        Sample::first_bounce :
-                        Sample::no_bounce
+                        Sample::sampleFirstBounce :
+                        Sample::sampleNoBounce
                     ;
 
                     int ray_count = 0;
@@ -694,7 +613,7 @@ namespace Scene {
                     WRITE_RAY_DENSITY(ray_count);
 
                 } else {
-                    pixel = Vec3::scale(Material::shade_sky_rgb(probe_direction), MAX_RAYS * SAMPLE_SCALE);
+                    pixel = Vec3::scale(Material::shadeSky(probe_direction), MAX_RAYS * SAMPLE_SCALE);
                     WRITE_RAY_DENSITY(0);
                 }
                 pixel = Vec3::add(pixel, Scene::ambient_rgb);
@@ -706,10 +625,12 @@ namespace Scene {
 
         // Only the profile call or the render timing call will be compiled in, never both
         TIME_RENDER_DONE();
-        PROF_EXIT(FunctionProfle::RENDER);
+        PROF_EXIT(Profiling::Entry::RENDER);
         DONE_RAY_DENSITY_MAP();
     }
+
 }
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -721,10 +642,9 @@ int main() {
     std::FILE* out = fopen(PPMNAME, "wb");
     if (out) {
         std::printf("Rendering to " PPMNAME "...\n");
-        if (Scene::init()) {
-            Scene::render(out);
-            Scene::done();
-        }
+        Scene::init();
+        Scene::render(out);
+        Scene::done();
         std::fclose(out);
         PROF_DUMP();
     } else {
