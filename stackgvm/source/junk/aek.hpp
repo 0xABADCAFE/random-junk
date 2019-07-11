@@ -136,6 +136,21 @@ class Vec3 {
     }
 } __attribute__((aligned(16)));
 
+// Get a random number in the range 0.0 - 1.0
+inline float32 frand() {
+    static const float32 invRM = 1.0 / RAND_MAX;
+    return invRM * rand();
+}
+
+inline Vec3 calculateHalfVector(cvr3 direction, cvr3 normal) {
+    return Vec3::add(
+        direction,
+        Vec3::scale(
+            normal,
+            Vec3::dot(normal, direction) * -2.0f
+        )
+    );
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -145,6 +160,7 @@ class Vec3 {
 
 namespace Scene {
 
+    // Basic Data
     static const Vec3 camera_dir(-6.0f, -16.0f, 0.0f);
     static const Vec3 focal_point(17.0f, 16.0f, 8.0f);
     static const Vec3 normal_up(0.0f, 0.0f, 1.0f);
@@ -164,6 +180,7 @@ namespace Scene {
 
     // Render the Scene to a file output
     void render(std::FILE* out, int image_size);
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -174,18 +191,20 @@ namespace Scene {
 
 namespace Material {
 
+    // Material Kind
     typedef enum {
         SKY    = 0,
         FLOOR  = 1,
         MIRROR = 2
     } Kind;
 
+    // Material properties
     static const float32 MIRROR_ALBEDO = 0.75f;
-
     static const Vec3 sky_rgb(0.7f, 0.6f, 1.0f);
     static const Vec3 tile_red_rgb(3.0f, 1.0f, 1.0f);
     static const Vec3 tile_white_rgb(3.0f, 3.0f, 3.0f);
 
+    // Shading helpers
     static inline Vec3 shadeSky(cvr3 direction) {
         float32 gradient = 1.0f - direction.z;
         gradient *= gradient;
@@ -214,7 +233,9 @@ namespace Material {
             pow(Vec3::dot(light, half_vector), 99.0f) :
             0.0f;
     }
+
 }
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -229,6 +250,7 @@ namespace Ray {
     Material::Kind trace(cvr3 origin, cvr3 direction, float32& distance, Vec3& normal);
 }
 
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //  Sample
@@ -241,28 +263,6 @@ namespace Sample {
     Vec3 sample(cvr3 origin, cvr3 direction);
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-//  Misc
-//
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-// Get a random number in the range 0.0 - 1.0
-inline float32 frand() {
-    static const float32 invRM = 1.0 / RAND_MAX;
-    return invRM * rand();
-}
-
-inline Vec3 calculateHalfVector(cvr3 direction, cvr3 normal) {
-    return Vec3::add(
-        direction,
-        Vec3::scale(
-            normal,
-            Vec3::dot(normal, direction) * -2.0f
-        )
-    );
-}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
