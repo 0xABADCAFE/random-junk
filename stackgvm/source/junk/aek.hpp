@@ -53,13 +53,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static const int     IMAGE_SIZE    = 1024;
-static const int     MAX_RAYS      = 256;
+const int     I_IMAGE_SIZE    = 1024;
+const int     I_MAX_RAYS      = 256;
 
 // Derived settings
-static const float32 IMAGE_SCALE   = 1.024f / IMAGE_SIZE;
-static const float32 RGB_SCALE     = 3.5f;
-static const float32 SAMPLE_SCALE  = RGB_SCALE * (64.0f / MAX_RAYS);
+const float32 F_IMAGE_SCALE   = 1.024f / I_IMAGE_SIZE;
+const float32 F_RGB_SCALE     = 3.5f;
+const float32 F_SAMPLE_SCALE  = F_RGB_SCALE * (64.0f / I_MAX_RAYS);
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -67,14 +67,6 @@ static const float32 SAMPLE_SCALE  = RGB_SCALE * (64.0f / MAX_RAYS);
 // Vec3 type
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-class Vec3;
-
-#ifdef NO_PASS_BY_REF
-    typedef const Vec3 cvr3;
-#else
-    typedef const Vec3& cvr3;
-#endif
 
 class Vec3 {
     public:
@@ -86,7 +78,7 @@ class Vec3 {
     Vec3(const float32 a, const float32 b, const float32 c) : x(a), y(b), z(c) { }
 
     // Sum two Vec3
-    static Vec3 add(cvr3 v1, cvr3 v2) {
+    static Vec3 add(const Vec3& v1, const Vec3& v2) {
         return Vec3(
             v1.x + v2.x,
             v1.y + v2.y,
@@ -95,7 +87,7 @@ class Vec3 {
     }
 
     // Subtract two Vec3
-    static Vec3 sub(cvr3 v1, cvr3 v2) {
+    static Vec3 sub(const Vec3& v1, const Vec3& v2) {
         return Vec3(
             v1.x - v2.x,
             v1.y - v2.y,
@@ -104,7 +96,7 @@ class Vec3 {
     }
 
     // Scale a Vec3 by a float
-    static Vec3 scale(cvr3 v, float32 s) {
+    static Vec3 scale(const Vec3& v, float32 s) {
         return Vec3(
             v.x * s,
             v.y * s,
@@ -113,7 +105,7 @@ class Vec3 {
     }
 
     // Get a normalised Vec3
-    static Vec3 normalize(cvr3 v) {
+    static Vec3 normalize(const Vec3& v) {
         return scale(v, (1.0f / sqrt(
             (v.x * v.x) +
             (v.y * v.y) +
@@ -122,12 +114,12 @@ class Vec3 {
     }
 
     // Get the dot product of two Vec3
-    static float32 dot(cvr3 v1, cvr3 v2) {
+    static float32 dot(const Vec3& v1, const Vec3& v2) {
         return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
     }
 
     // Get the cross product for two Vec3
-    static Vec3 cross(cvr3 v1, cvr3 v2) {
+    static Vec3 cross(const Vec3& v1, const Vec3& v2) {
         return Vec3(
             v1.y * v2.z - v1.z * v2.y,
             v1.z * v2.x - v1.x * v2.z,
@@ -138,19 +130,20 @@ class Vec3 {
 
 // Get a random number in the range 0.0 - 1.0
 inline float32 frand() {
-    static const float32 invRM = 1.0 / RAND_MAX;
-    return invRM * rand();
+    static const float32 F_INV_RAND_MAX = 1.0f / RAND_MAX;
+    return F_INV_RAND_MAX * rand();
 }
 
-inline Vec3 calculateHalfVector(cvr3 direction, cvr3 normal) {
+inline Vec3 calculateHalfVector(const Vec3& v_direction, const Vec3& v_normal) {
     return Vec3::add(
-        direction,
+        v_direction,
         Vec3::scale(
-            normal,
-            Vec3::dot(normal, direction) * -2.0f
+            v_normal,
+            Vec3::dot(v_normal, v_direction) * -2.0f
         )
     );
 }
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -161,12 +154,13 @@ inline Vec3 calculateHalfVector(cvr3 direction, cvr3 normal) {
 namespace Scene {
 
     // Basic Data
-    static const Vec3 camera_dir(-6.0f, -16.0f, 0.0f);
-    static const Vec3 focal_point(17.0f, 16.0f, 8.0f);
-    static const Vec3 normal_up(0.0f, 0.0f, 1.0f);
-    static const Vec3 ambient_rgb(13.0f, 13.0f, 13.0f);
+    const Vec3 V_CAMERA_DIR  (-6.0f, -16.0f,  0.0f);
+    const Vec3 V_FOCAL_POINT (17.0f,  16.0f,  8.0f);
+    const Vec3 V_NORMAL_UP   (0.0f,    0.0f,  1.0f);
+    const Vec3 V_AMBIENT_RGB (13.0f,  13.0f, 13.0f);
 
-    static const int32 bitmap[] = {
+    // Bitmap
+    const int32 AI_BITMAP[] = {
         247570, // 0111100011100010010
         280596, // 1000100100000010100
         280600, // 1000100100000011000
@@ -178,9 +172,16 @@ namespace Scene {
         16      // 0000000000000010000
     };
 
-    // Render the Scene to a file output
-    void render(std::FILE* out, int image_size);
+    const int32 I_BITMAP_ROWS = sizeof(AI_BITMAP)/sizeof(int32);
 
+    // Scene initialisation
+    void init();
+
+    // Render the Scene to a file output
+    void render(std::FILE* r_out, int i_image_size);
+
+    // Scene completion
+    void done();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -193,44 +194,48 @@ namespace Material {
 
     // Material Kind
     typedef enum {
-        SKY    = 0,
-        FLOOR  = 1,
-        MIRROR = 2
+        I_SKY    = 0,
+        I_FLOOR  = 1,
+        I_MIRROR = 2
     } Kind;
 
     // Material properties
-    static const float32 MIRROR_ALBEDO = 0.75f;
-    static const Vec3 sky_rgb(0.7f, 0.6f, 1.0f);
-    static const Vec3 tile_red_rgb(3.0f, 1.0f, 1.0f);
-    static const Vec3 tile_white_rgb(3.0f, 3.0f, 3.0f);
+    const float32 F_MIRROR_ALBEDO = 0.75f;
 
-    // Shading helpers
-    static inline Vec3 shadeSky(cvr3 direction) {
-        float32 gradient = 1.0f - direction.z;
-        gradient *= gradient;
-        gradient *= gradient;
+    // Material Colours
+    const Vec3    V_SKY_RGB        (0.7f, 0.6f, 1.0f);
+    const Vec3    V_TILE_RED_RGB   (3.0f, 1.0f, 1.0f);
+    const Vec3    V_TILE_WHITE_RGB (3.0f, 3.0f, 3.0f);
+
+    // Shading function for Sky Material
+    inline Vec3 shadeSky(const Vec3& v_direction) {
+        float32 f_gradient = 1.0f - v_direction.z;
+        f_gradient *= f_gradient;
+        f_gradient *= f_gradient;
         return Vec3::scale(
-            sky_rgb, // Blueish sky colour
-            gradient
+            V_SKY_RGB, // Blueish sky colour
+            f_gradient
         );
     }
 
-    static inline Vec3 shadeFloor(Vec3& intersection, float32 lambertian) {
-        intersection = Vec3::scale(intersection, 0.2f);
+    // Shading function for Floor Material
+    inline Vec3 shadeFloor(Vec3& v_intersection, float32 f_lambertian) {
+        v_intersection = Vec3::scale(v_intersection, 0.2f);
         return Vec3::scale(
             (
                 // Compute check colour based on the position
-                (int) (ceil(intersection.x) + ceil(intersection.y)) & 1 ?
-                    tile_red_rgb :
-                    tile_white_rgb
+                (int) (std::ceil(v_intersection.x) + std::ceil(v_intersection.y)) & 1 ?
+                    V_TILE_RED_RGB :
+                    V_TILE_WHITE_RGB
             ),
-            (lambertian * 0.2f + 0.1f)
+            (f_lambertian * 0.2f + 0.1f)
         );
     }
 
-    static inline float32 specularity(cvr3 light, cvr3 half_vector, float32 lambertian) {
-        return (lambertian > 0.0f) ?
-            pow(Vec3::dot(light, half_vector), 99.0f) :
+    // Shading function for Specular intensity
+    inline float32 specularity(const Vec3& v_light, const Vec3& v_half_vector, float32 f_lambertian) {
+        return (f_lambertian > 0.0f) ?
+            std::pow(Vec3::dot(v_light, v_half_vector), 99.0f) :
             0.0f;
     }
 
@@ -247,7 +252,7 @@ namespace Ray {
 
     // Trace a ray into the scene to determine what kind of material it hits, at what distance and what is the
     // normal (if any) to use
-    Material::Kind trace(cvr3 origin, cvr3 direction, float32& distance, Vec3& normal);
+    Material::Kind trace(const Vec3& v_origin, const Vec3& v_direction, float32& f_distance, Vec3& v_normal);
 }
 
 
@@ -260,7 +265,7 @@ namespace Ray {
 namespace Sample {
 
     // Obtain a sample RGB value for a given origin and direction
-    Vec3 sample(cvr3 origin, cvr3 direction);
+    Vec3 sample(const Vec3& v_origin, const Vec3& v_direction);
 }
 
 
@@ -278,10 +283,10 @@ namespace Profiling {
 
     // Obtain a nanosecond precision wall time
     Nanotime mark() {
-        timespec current;
-        clock_gettime(CLOCK_MONOTONIC, &current);
-        Nanotime mark = 1000000000ULL * current.tv_sec ;
-        return   mark + current.tv_nsec;
+        timespec r_current;
+        clock_gettime(CLOCK_MONOTONIC, &r_current);
+        Nanotime u_mark = 1000000000ULL * r_current.tv_sec ;
+        return   u_mark + r_current.tv_nsec;
     }
 };
 

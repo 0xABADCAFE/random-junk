@@ -68,14 +68,6 @@ const float32 F_SAMPLE_SCALE  = F_RGB_SCALE * (64.0f / I_MAX_RAYS);
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-class Vec3;
-
-#ifdef NO_PASS_BY_REF
-    typedef const Vec3 cvr3;
-#else
-    typedef const Vec3& cvr3;
-#endif
-
 class Vec3 {
     public:
     float32 x, y, z;
@@ -86,7 +78,7 @@ class Vec3 {
     Vec3(const float32 a, const float32 b, const float32 c) : x(a), y(b), z(c) { }
 
     // Sum two Vec3
-    static Vec3 add(cvr3 v1, cvr3 v2) {
+    static Vec3 add(const Vec3& v1, const Vec3& v2) {
         return Vec3(
             v1.x + v2.x,
             v1.y + v2.y,
@@ -95,7 +87,7 @@ class Vec3 {
     }
 
     // Subtract two Vec3
-    static Vec3 sub(cvr3 v1, cvr3 v2) {
+    static Vec3 sub(const Vec3& v1, const Vec3& v2) {
         return Vec3(
             v1.x - v2.x,
             v1.y - v2.y,
@@ -104,7 +96,7 @@ class Vec3 {
     }
 
     // Scale a Vec3 by a float
-    static Vec3 scale(cvr3 v, float32 s) {
+    static Vec3 scale(const Vec3& v, float32 s) {
         return Vec3(
             v.x * s,
             v.y * s,
@@ -113,7 +105,7 @@ class Vec3 {
     }
 
     // Get a normalised Vec3
-    static Vec3 normalize(cvr3 v) {
+    static Vec3 normalize(const Vec3& v) {
         return scale(v, (1.0f / sqrt(
             (v.x * v.x) +
             (v.y * v.y) +
@@ -122,12 +114,12 @@ class Vec3 {
     }
 
     // Get the dot product of two Vec3
-    static float32 dot(cvr3 v1, cvr3 v2) {
+    static float32 dot(const Vec3& v1, const Vec3& v2) {
         return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
     }
 
     // Get the cross product for two Vec3
-    static Vec3 cross(cvr3 v1, cvr3 v2) {
+    static Vec3 cross(const Vec3& v1, const Vec3& v2) {
         return Vec3(
             v1.y * v2.z - v1.z * v2.y,
             v1.z * v2.x - v1.x * v2.z,
@@ -142,7 +134,7 @@ inline float32 frand() {
     return F_INV_RAND_MAX * rand();
 }
 
-inline Vec3 calculateHalfVector(cvr3 v_direction, cvr3 v_normal) {
+inline Vec3 calculateHalfVector(const Vec3& v_direction, const Vec3& v_normal) {
     return Vec3::add(
         v_direction,
         Vec3::scale(
@@ -216,7 +208,7 @@ namespace Material {
     const Vec3    V_TILE_WHITE_RGB (3.0f, 3.0f, 3.0f);
 
     // Shading function for Sky Material
-    inline Vec3 shadeSky(cvr3 v_direction) {
+    inline Vec3 shadeSky(const Vec3& v_direction) {
         float32 f_gradient = 1.0f - v_direction.z;
         f_gradient *= f_gradient;
         f_gradient *= f_gradient;
@@ -241,7 +233,7 @@ namespace Material {
     }
 
     // Shading function for Specular intensity
-    inline float32 specularity(cvr3 v_light, cvr3 v_half_vector, float32 f_lambertian) {
+    inline float32 specularity(const Vec3& v_light, const Vec3& v_half_vector, float32 f_lambertian) {
         return (f_lambertian > 0.0f) ?
             std::pow(Vec3::dot(v_light, v_half_vector), 99.0f) :
             0.0f;
@@ -260,7 +252,7 @@ namespace Ray {
 
     // Trace a ray into the scene to determine what kind of material it hits, at what distance and what is the
     // normal (if any) to use
-    Material::Kind trace(cvr3 v_origin, cvr3 v_direction, float32& f_distance, Vec3& v_normal);
+    Material::Kind trace(const Vec3& v_origin, const Vec3& v_direction, float32& f_distance, Vec3& v_normal);
 }
 
 
@@ -273,7 +265,7 @@ namespace Ray {
 namespace Sample {
 
     // Obtain a sample RGB value for a given origin and direction
-    Vec3 sample(cvr3 v_origin, cvr3 v_direction);
+    Vec3 sample(const Vec3& v_origin, const Vec3& v_direction);
 }
 
 

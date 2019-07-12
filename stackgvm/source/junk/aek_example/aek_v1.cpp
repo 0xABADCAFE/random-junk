@@ -44,7 +44,7 @@ namespace Ray {
     /**
      * Vanilla trace behaviour, tests for intersection with all Scene objects
      */
-    Material::Kind trace(cvr3 v_origin, cvr3 v_direction, float32& f_distance, Vec3& v_normal) {
+    Material::Kind trace(const Vec3& v_origin, const Vec3& v_direction, float32& f_distance, Vec3& v_normal) {
         f_distance = 1e9f;
 
         // Assume trace hits nothing
@@ -101,7 +101,7 @@ namespace Ray {
 
 namespace Sample {
 
-    Vec3 sample(cvr3 v_origin, cvr3 v_direction) {
+    Vec3 sample(const Vec3& v_origin, const Vec3& v_direction) {
         float32 f_distance;
         Vec3    v_normal;
 

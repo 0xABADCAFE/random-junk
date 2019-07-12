@@ -1,11 +1,20 @@
 // De-golfed version of the Business Card Raytracer by Andrew Kensler
+//
+// Changes
+//   * Renaming of types, functions and variables
+//   * Replaced operator overloads with vanilla functions
+//   * Added functions for explicit vector subtract which was realised
+//     previously as v1 + (v2 * -1);
+//   * Optimised away a pow() call for the sky gradient
+//   * Moved the specular calculation to the point where the ray definitely
+//     intersects a sphere.
 
 #include "aek.hpp"
 
 #ifdef __LP64__
-    #define PPMNAME "aek_v2_64.ppm"
+    #define PPMNAME "aek_v1_64.ppm"
 #else
-    #define PPMNAME "aek_v2_32.ppm"
+    #define PPMNAME "aek_v1_32.ppm"
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -16,44 +25,22 @@
 
 namespace Scene {
 
-    // Dynamically allocated set of spheres
-    Vec3* av_spheres    = 0;
-    int   i_num_spheres = 0;
+    // Maximum column to consider
+    int32 i_max_bitmap_column = 0;
 
+    // Initialise the scene.
     void init() {
-        // Calclulate how many spheres we have, allocate space and unpack the bitmap
-        av_spheres    = 0;
-        i_num_spheres = 0;
-        int i_column  = 0;
+        int i_mask = 0;
         for (int i = 0; i < I_BITMAP_ROWS; ++i) {
-            i_num_spheres += __builtin_popcount(AI_BITMAP[i]);
-            i_column |= AI_BITMAP[i];
+            i_mask |= AI_BITMAP[i];
         }
-
-        i_column = 8 * sizeof(int32) - __builtin_clz(i_column);
-
-        av_spheres = new Vec3[i_num_spheres];
-        for (int i = 0; i_column--;) {
-            for (int i_row = I_BITMAP_ROWS; i_row--;) {
-                if (AI_BITMAP[i_row] & 1 << i_column) {
-                    av_spheres[i].x = i_column;
-                    av_spheres[i].y = 0;
-                    av_spheres[i].z = i_row + 4;
-                    ++i;
-                }
-            }
-        }
+        i_max_bitmap_column = 8 * sizeof(int32) - __builtin_clz(i_mask);
     }
 
     void done() {
-        if (av_spheres) {
-            delete[] av_spheres;
-        }
-        av_spheres = 0;
+
     }
-
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -81,25 +68,31 @@ namespace Ray {
         }
 
         // Check if trace maybe hits a sphere
-        for (int i = 0; i < Scene::i_num_spheres; ++i) {
-            Vec3 v_p = Vec3::sub(
-                v_origin,
-                Scene::av_spheres[i] // Sphere coordinate
-            );
+        for (int k = Scene::i_max_bitmap_column; k--;) {
+            for (int j = Scene::I_BITMAP_ROWS; j--;) {
+                if (Scene::AI_BITMAP[j] & 1 << k) {
+                    Vec3 v_p = Vec3::sub(
+                        v_origin,
+                        Vec3(k, 0.0f, j + 4.0f) // Sphere coordinate
+                    );
 
-            float32
-                f_b          = Vec3::dot(v_p, v_direction),
-                f_eye_offset = Vec3::dot(v_p, v_p) - 1.0f,
-                f_q          = f_b * f_b - f_eye_offset
-            ;
-            if (f_q > 0.0f) {
-                float32 f_sphere_distance = -f_b - std::sqrt(f_q);
-                if (f_sphere_distance < f_distance && f_sphere_distance > 0.01f) {
-                    f_distance = f_sphere_distance,
-                    v_normal   = Vec3::normalize(
-                        Vec3::add(v_p, Vec3::scale(v_direction, f_distance))
-                    ),
-                    i_material = Material::I_MIRROR;
+                    float32
+                        f_b          = Vec3::dot(v_p, v_direction),
+                        f_eye_offset = Vec3::dot(v_p, v_p) - 1.0f,
+                        f_q          = f_b * f_b - f_eye_offset
+                    ;
+
+                    if (f_q > 0.0f) {
+                        float32 f_sphere_distance = -f_b - std::sqrt(f_q);
+                            if (f_sphere_distance < f_distance && f_sphere_distance > 0.01f) {
+                                f_distance = f_sphere_distance,
+                                v_normal   = Vec3::normalize(
+                                    Vec3::add(v_p, Vec3::scale(v_direction, f_distance)
+                                )
+                            ),
+                            i_material = Material::I_MIRROR;
+                        }
+                    }
                 }
             }
         }
@@ -142,7 +135,9 @@ namespace Sample {
                     ),
                     v_intersection
                 )
-            )
+            ),
+
+            v_half_vector = calculateHalfVector(v_direction, v_normal)
         ;
 
         // Calculate the lambertian illumuination factor
@@ -155,8 +150,6 @@ namespace Sample {
         if (i_material == Material::I_FLOOR) {
             return Material::shadeFloor(v_intersection, f_lambertian);
         }
-
-        Vec3 v_half_vector = calculateHalfVector(v_direction, v_normal);
 
         // Compute the specular highlight power
         float32 f_specular = Material::specularity(v_light, v_half_vector, f_lambertian);
@@ -223,7 +216,7 @@ namespace Scene {
             for (int x = I_IMAGE_SIZE; x--;) {
 
                 // Use a vector for the pixel. The values here are in the range 0.0 - 255.0 rather than the 0.0 - 1.0
-                Vec3 v_pixel(0.0f);
+                Vec3 v_pixel = V_AMBIENT_RGB;
 
                 // Cast 64 rays per pixel for sampling
                 for (int ray_count = I_MAX_RAYS; ray_count--;) {
@@ -236,33 +229,33 @@ namespace Scene {
 
                     // Accumulate the sample result into the current pixel
                     v_pixel  = Vec3::add(
-                        Sample::sample(
-                            Vec3::add(
-                                V_FOCAL_POINT,
-                                v_delta
-                            ),
-                            Vec3::normalize(
-                                Vec3::sub(
-                                    Vec3::scale(
-                                        Vec3::add(
-                                            Vec3::scale(v_camera_up, frand() + x),
-                                            Vec3::add(
-                                                Vec3::scale(v_camera_right, frand() + y),
-                                                v_eye_offset
-                                            )
-                                        ),
-                                        16.0f
-                                    ),
+                        Vec3::scale(
+                            Sample::sample(
+                                Vec3::add(
+                                    V_FOCAL_POINT,
                                     v_delta
+                                ),
+                                Vec3::normalize(
+                                    Vec3::sub(
+                                        Vec3::scale(
+                                            Vec3::add(
+                                                Vec3::scale(v_camera_up, frand() + x),
+                                                Vec3::add(
+                                                    Vec3::scale(v_camera_right, frand() + y),
+                                                    v_eye_offset
+                                                )
+                                            ),
+                                            16.0f
+                                        ),
+                                        v_delta
+                                    )
                                 )
-                            )
+                            ),
+                            F_SAMPLE_SCALE
                         ),
                         v_pixel
                     );
                 }
-
-                v_pixel = Vec3::scale(v_pixel, F_SAMPLE_SCALE);
-                v_pixel = Vec3::add(v_pixel, V_AMBIENT_RGB);
 
                 // Convert to integers and push out to ppm outpu stream
                 std::fprintf(r_out, "%c%c%c", (int)v_pixel.x, (int)v_pixel.y, (int)v_pixel.z);

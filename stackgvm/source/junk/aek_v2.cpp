@@ -1,4 +1,13 @@
 // De-golfed version of the Business Card Raytracer by Andrew Kensler
+//
+// Changes
+//   * Renaming of types, functions and variables
+//   * Replaced operator overloads with vanilla functions
+//   * Added functions for explicit vector subtract which was realised
+//     previously as v1 + (v2 * -1);
+//   * Optimised away a pow() call for the sky gradient
+//   * Moved the specular calculation to the point where the ray definitely
+//     intersects a sphere.
 
 #include "aek.hpp"
 
