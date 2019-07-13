@@ -62,25 +62,22 @@ namespace Ray {
         for (int k = Scene::i_max_bitmap_column; k--;) {
             for (int j = Scene::I_BITMAP_ROWS; j--;) {
                 if (Scene::AI_BITMAP[j] & 1 << k) {
-                    Vec3 v_p = Vec3::sub(
-                        v_origin,
-                        Vec3(k, 0.0f, j + 4.0f) // Sphere coordinate
-                    );
+                    Vec3 v_p = v_origin - Vec3(k, 0.0f, j + 4.0f); // Sphere coordinate
 
                     float32
-                        f_b          = Vec3::dot(v_p, v_direction),
-                        f_eye_offset = Vec3::dot(v_p, v_p) - 1.0f,
+                        f_b          = v_p ^ v_direction,
+                        f_eye_offset = (v_p ^ v_p) - 1.0f,
                         f_q          = f_b * f_b - f_eye_offset
                     ;
 
                     if (f_q > 0.0f) {
                         float32 f_sphere_distance = -f_b - std::sqrt(f_q);
-                            if (f_sphere_distance < f_distance && f_sphere_distance > 0.01f) {
-                                f_distance = f_sphere_distance,
-                                v_normal   = Vec3::normalize(
-                                    Vec3::add(v_p, Vec3::scale(v_direction, f_distance)
-                                )
-                            ),
+                        if (
+                            f_sphere_distance < f_distance &&
+                            f_sphere_distance > 0.01f
+                        ) {
+                            f_distance = f_sphere_distance;
+                            v_normal   = ~(v_p + v_direction * f_distance);
                             i_material = Material::I_MIRROR;
                         }
                     }
@@ -114,25 +111,23 @@ namespace Sample {
         }
 
         Vec3
-            v_intersection = Vec3::add(v_origin, Vec3::scale(v_direction, f_distance)),
+            v_intersection = v_origin + v_direction * f_distance,
 
             // Calculate the lighting vector
-            v_light = Vec3::normalize(
-                Vec3::sub(
-                    Vec3( // lighting direction, plus a bit of randomness to generate soft shadows.
-                        9.0f + frand(),
-                        9.0f + frand(),
-                        16.0f
-                    ),
-                    v_intersection
-                )
+            v_light = ~(
+                Vec3(
+                    // lighting direction, plus a bit of randomness to generate soft shadows.
+                    9.0f + frand(),
+                    9.0f + frand(),
+                    16.0f
+                ) - v_intersection
             ),
 
-            v_half_vector = calculateHalfVector(v_direction, v_normal)
+            v_half_vector = v_direction | v_normal
         ;
 
         // Calculate the lambertian illumuination factor
-        float32 f_lambertian = Vec3::dot(v_light, v_normal);
+        float32 f_lambertian = v_light ^ v_normal;
         if (f_lambertian < 0.0f || Ray::trace(v_intersection, v_light, f_distance, v_normal)) {
             f_lambertian = 0.0f; // in shadow
         }
@@ -146,13 +141,7 @@ namespace Sample {
         float32 f_specular = Material::specularity(v_light, v_half_vector, f_lambertian);
 
         // Hit a sphere
-        return Vec3::add(
-            Vec3(f_specular),
-            Vec3::scale(
-                sample(v_intersection, v_half_vector),
-                Material::F_MIRROR_ALBEDO
-            )
-        );
+        return Vec3(f_specular) + sample(v_intersection, v_half_vector) * Material::F_MIRROR_ALBEDO;
     }
 
 }
@@ -171,36 +160,14 @@ namespace Scene {
 
         Profiling::Nanotime u_start = Profiling::mark();
 
-        // camera direction vectors
         Vec3
-            v_camera_forward = Vec3::normalize( // Unit forwards
-                V_CAMERA_DIR
-            ),
+            // camera direction vectors
+            v_camera_forward = ~V_CAMERA_DIR,
+            v_camera_up      = ~(V_NORMAL_UP * v_camera_forward) * F_IMAGE_SCALE,
+            v_camera_right   = ~(v_camera_forward * v_camera_up) * F_IMAGE_SCALE,
 
-            v_camera_up = Vec3::scale( // Unit up - Z is up in this system
-                Vec3::normalize(
-                    Vec3::cross(
-                        V_NORMAL_UP,
-                        v_camera_forward
-                    )
-                ),
-                F_IMAGE_SCALE
-            ),
-
-            v_camera_right = Vec3::scale( // Unit right
-                Vec3::normalize(
-                    Vec3::cross(v_camera_forward, v_camera_up)
-                ),
-                F_IMAGE_SCALE
-            ),
-
-            v_eye_offset = Vec3::add( // Offset frm eye to coner of focal plane
-                Vec3::scale(
-                    Vec3::add(v_camera_up, v_camera_right),
-                    -(I_IMAGE_SIZE >> 1)
-                ),
-                v_camera_forward
-            )
+            // Offset frm eye to coner of focal plane
+            v_eye_offset     = v_camera_forward + (v_camera_up + v_camera_right) * -(I_IMAGE_SIZE >> 1)
         ;
 
         for (int y = I_IMAGE_SIZE; y--;) {
@@ -213,43 +180,31 @@ namespace Scene {
                 for (int ray_count = I_MAX_RAYS; ray_count--;) {
 
                     // Random delta to be added for depth of field effects
-                    Vec3 v_delta = Vec3::add(
-                        Vec3::scale(v_camera_up,    (frand() - 0.5f) * 99.0f),
-                        Vec3::scale(v_camera_right, (frand() - 0.5f) * 99.0f)
-                    );
+                    Vec3 v_delta =
+                        v_camera_up    * frand(-49.5f, 49.5f) +
+                        v_camera_right * frand(-49.5f, 49.5f);
 
                     // Accumulate the sample result into the current pixel
-                    v_pixel  = Vec3::add(
-                        Vec3::scale(
-                            Sample::sample(
-                                Vec3::add(
-                                    V_FOCAL_POINT,
-                                    v_delta
-                                ),
-                                Vec3::normalize(
-                                    Vec3::sub(
-                                        Vec3::scale(
-                                            Vec3::add(
-                                                Vec3::scale(v_camera_up, frand() + x),
-                                                Vec3::add(
-                                                    Vec3::scale(v_camera_right, frand() + y),
-                                                    v_eye_offset
-                                                )
-                                            ),
-                                            16.0f
-                                        ),
-                                        v_delta
-                                    )
-                                )
-                            ),
-                            F_SAMPLE_SCALE
-                        ),
-                        v_pixel
-                    );
+                    v_pixel +=  Sample::sample(
+                        V_FOCAL_POINT + v_delta,
+                        ~(
+                            (
+                                v_camera_up    * (frand() + x) +
+                                v_camera_right * (frand() + y) +
+                                v_eye_offset
+                            ) * 16.0f - v_delta
+                        )
+                    ) * F_SAMPLE_SCALE;
                 }
 
-                // Convert to integers and push out to ppm outpu stream
-                std::fprintf(r_out, "%c%c%c", (int)v_pixel.x, (int)v_pixel.y, (int)v_pixel.z);
+                // Convert to integers and push out to ppm output stream
+                std::fprintf(
+                    r_out,
+                    "%c%c%c",
+                    (int)v_pixel.x,
+                    (int)v_pixel.y,
+                    (int)v_pixel.z
+                );
             }
         }
 
