@@ -64,12 +64,26 @@ namespace Scene {
 namespace Ray {
 
     /**
-     * Vanilla trace behaviour, tests for intersection with all Scene objects
+     * Vanilla trace behaviour. Traces a ray into the Scene in order to determine what is hit, at what distance and
+     * what the surface normal (if any) is at that location. Returns the material type of the entity that was hit and
+     * where relevant, updates f_distance and v_normal.
+     *
+     * The ray is traced from v_origin along v_direction. Due to the simplicity of our Scene, only three outcomes are
+     * possible:
+     *
+     * 1) The ray misses all objects and heads towards the sky.
+     * 2) The ray misses all objects and heads towards the floor. The distance from v_origin to the point of
+     *    intersection is set in f_distance and the unit normal UP is set in v_normal.
+     * 3) The ray hits an object. The distance from v_origin to the point of intersection is set in f_distance and the
+     *    surface normal at the point of intersection is set in v_normal.
+     *
+     * Since a ray may intersect multiple objects and the objects are in no particular order, every object is tested
+     * to find the one closest to v_origin.
      */
     Material::Kind trace(const Vec3& v_origin, const Vec3& v_direction, float32& f_distance, Vec3& v_normal) {
         f_distance = 1e9f;
 
-        // Assume trace hits nothing
+        // Assume trace hits the sky
         Material::Kind i_material = Material::I_SKY;
         float32        f_p        = -v_origin.z / v_direction.z;
 
@@ -80,25 +94,27 @@ namespace Ray {
             i_material = Material::I_FLOOR;
         }
 
-        // Check if trace maybe hits a sphere
+        // Check if trace maybe hits a sphere. Here we compute the position in the Scene of each sphere referenced in
+        // the bitmap and check if the ray intersects it. Even if it intersects, we cannot guarantee we have found the
+        // nearest point of intersection as the order in which the spheres are tested is fixed. We have to test each
+        // one and keep track of the nearest.
+
         for (int i = 0; i < Scene::i_num_spheres; ++i) {
-            Vec3 v_p = Vec3::sub(
-                v_origin,
-                Scene::av_spheres[i] // Sphere coordinate
-            );
+            Vec3 v_position = v_origin - Scene::av_spheres[i]; // Sphere coordinate
 
             float32
-                f_b          = Vec3::dot(v_p, v_direction),
-                f_eye_offset = Vec3::dot(v_p, v_p) - 1.0f,
+                f_b          = v_position ^ v_direction,
+                f_eye_offset = (v_position ^ v_position) - Scene::F_SPHERE_RADIUS,
                 f_q          = f_b * f_b - f_eye_offset
             ;
+
             if (f_q > 0.0f) {
+                // We have an intersection. Need confirm that it's nearer than any calculated so far and also
+                // not at point blank range.
                 float32 f_sphere_distance = -f_b - std::sqrt(f_q);
                 if (f_sphere_distance < f_distance && f_sphere_distance > 0.01f) {
-                    f_distance = f_sphere_distance,
-                    v_normal   = Vec3::normalize(
-                        Vec3::add(v_p, Vec3::scale(v_direction, f_distance))
-                    ),
+                    f_distance = f_sphere_distance;
+                    v_normal   = ~(v_position + v_direction * f_distance);
                     i_material = Material::I_MIRROR;
                 }
             }
@@ -117,6 +133,24 @@ namespace Ray {
 
 namespace Sample {
 
+    /**
+     * Vanilla sample behaviour. Traces a ray into the Scene and depending on which Material was hit, calculates an
+     * RGB value, taking into consideration the material and lighting conditions.
+     *
+     * 1) Where the trace heads into the sky, we use the sky shading Material behaviour to calculate the RGB value.
+     *
+     * 2) Where the trace hits the floor, we calculate the lambertian illumination factor and trace a second ray towards
+     *    the light source, to determine whether or not the point of intersection was in shadow or not. We then use the
+     *    floor shading Material behaviour, providing our lambertian, to calculate the RGB value.
+     *    A small amount of randomness is used in this second trace so that the edge of the shadow region is imprecise
+     *    and over many samples, a smooth penumbra will evolve.
+     *
+     * 3) Where the trace hit a sphere, we first compute a specular brightness sample and then recursively sample another
+     *    ray from the point of intersection into the scene to see what was reflected. The RGB value returned from that
+     *    recursion is attenuated by the mirror albedo and summed with the specular brightness sample to derive a final
+     *    RGB value.
+     *
+     */
     Vec3 sample(const Vec3& v_origin, const Vec3& v_direction) {
         float32 f_distance;
         Vec3    v_normal;
@@ -125,50 +159,42 @@ namespace Sample {
         Material::Kind i_material = Ray::trace(v_origin, v_direction, f_distance, v_normal);
 
         // Hit nothing? Sky shade
-        if (i_material == Material::I_SKY) {
+        if (Material::I_SKY == i_material) {
             return Material::shadeSky(v_direction);
         }
 
         Vec3
-            v_intersection = Vec3::add(v_origin, Vec3::scale(v_direction, f_distance)),
+            v_intersection = v_origin + v_direction * f_distance,
 
             // Calculate the lighting vector
-            v_light = Vec3::normalize(
-                Vec3::sub(
-                    Vec3( // lighting direction, plus a bit of randomness to generate soft shadows.
-                        9.0f + frand(),
-                        9.0f + frand(),
-                        16.0f
-                    ),
-                    v_intersection
-                )
+            v_light = ~(
+                Vec3(
+                    // lighting direction, plus a bit of randomness to generate soft shadows.
+                    9.0f + frand(),
+                    9.0f + frand(),
+                    16.0f
+                ) - v_intersection
             )
         ;
 
         // Calculate the lambertian illumuination factor
-        float32 f_lambertian = Vec3::dot(v_light, v_normal);
+        float32 f_lambertian = v_light ^ v_normal;
         if (f_lambertian < 0.0f || Ray::trace(v_intersection, v_light, f_distance, v_normal)) {
             f_lambertian = 0.0f; // in shadow
         }
 
         // Hit the floor plane
-        if (i_material == Material::I_FLOOR) {
+        if (Material::I_FLOOR == i_material) {
             return Material::shadeFloor(v_intersection, f_lambertian);
         }
 
-        Vec3 v_half_vector = calculateHalfVector(v_direction, v_normal);
+        Vec3 v_half_vector = v_half_vector = v_direction | v_normal;
 
-        // Compute the specular highlight power
+        // Compute the specular highlight intensity
         float32 f_specular = Material::specularity(v_light, v_half_vector, f_lambertian);
 
         // Hit a sphere
-        return Vec3::add(
-            Vec3(f_specular),
-            Vec3::scale(
-                sample(v_intersection, v_half_vector),
-                Material::F_MIRROR_ALBEDO
-            )
-        );
+        return Vec3(f_specular) + sample(v_intersection, v_half_vector) * Material::F_MIRROR_ALBEDO;
     }
 
 }
@@ -187,85 +213,55 @@ namespace Scene {
 
         Profiling::Nanotime u_start = Profiling::mark();
 
-        // camera direction vectors
         Vec3
-            v_camera_forward = Vec3::normalize( // Unit forwards
-                V_CAMERA_DIR
-            ),
+            // camera direction vectors
+            v_camera_forward = ~V_CAMERA_DIR,
+            v_camera_up      = ~(V_NORMAL_UP * v_camera_forward) * F_IMAGE_SCALE,
+            v_camera_right   = ~(v_camera_forward * v_camera_up) * F_IMAGE_SCALE,
 
-            v_camera_up = Vec3::scale( // Unit up - Z is up in this system
-                Vec3::normalize(
-                    Vec3::cross(
-                        V_NORMAL_UP,
-                        v_camera_forward
-                    )
-                ),
-                F_IMAGE_SCALE
-            ),
-
-            v_camera_right = Vec3::scale( // Unit right
-                Vec3::normalize(
-                    Vec3::cross(v_camera_forward, v_camera_up)
-                ),
-                F_IMAGE_SCALE
-            ),
-
-            v_eye_offset = Vec3::add( // Offset frm eye to coner of focal plane
-                Vec3::scale(
-                    Vec3::add(v_camera_up, v_camera_right),
-                    -(I_IMAGE_SIZE >> 1)
-                ),
-                v_camera_forward
-            )
+            // Offset from eye to coner of focal plane
+            v_eye_offset     = v_camera_forward + (v_camera_up + v_camera_right) * -(I_IMAGE_SIZE >> 1)
         ;
 
         for (int y = I_IMAGE_SIZE; y--;) {
             for (int x = I_IMAGE_SIZE; x--;) {
 
                 // Use a vector for the pixel. The values here are in the range 0.0 - 255.0 rather than the 0.0 - 1.0
-                Vec3 v_pixel(0.0f);
+                Vec3 v_pixel;
 
                 // Cast 64 rays per pixel for sampling
                 for (int ray_count = I_MAX_RAYS; ray_count--;) {
 
                     // Random delta to be added for depth of field effects
-                    Vec3 v_delta = Vec3::add(
-                        Vec3::scale(v_camera_up,    (frand() - 0.5f) * 99.0f),
-                        Vec3::scale(v_camera_right, (frand() - 0.5f) * 99.0f)
-                    );
+                    Vec3 v_delta =
+                        v_camera_up    * frand(-49.5f, 49.5f) +
+                        v_camera_right * frand(-49.5f, 49.5f);
 
                     // Accumulate the sample result into the current pixel
-                    v_pixel  = Vec3::add(
-                        Sample::sample(
-                            Vec3::add(
-                                V_FOCAL_POINT,
-                                v_delta
-                            ),
-                            Vec3::normalize(
-                                Vec3::sub(
-                                    Vec3::scale(
-                                        Vec3::add(
-                                            Vec3::scale(v_camera_up, frand() + x),
-                                            Vec3::add(
-                                                Vec3::scale(v_camera_right, frand() + y),
-                                                v_eye_offset
-                                            )
-                                        ),
-                                        16.0f
-                                    ),
-                                    v_delta
-                                )
-                            )
-                        ),
-                        v_pixel
+                    v_pixel += Sample::sample(
+                        V_FOCAL_POINT + v_delta,
+                        ~(
+                            (
+                                v_camera_up    * (frand() + x) +
+                                v_camera_right * (frand() + y) +
+                                v_eye_offset
+                            ) * 16.0f - v_delta
+                        )
                     );
                 }
 
-                v_pixel = Vec3::scale(v_pixel, F_SAMPLE_SCALE);
-                v_pixel = Vec3::add(v_pixel, V_AMBIENT_RGB);
+		// Scale the sample and add on the ambient term
+                v_pixel *= F_SAMPLE_SCALE;
+                v_pixel += V_AMBIENT_RGB;
 
-                // Convert to integers and push out to ppm outpu stream
-                std::fprintf(r_out, "%c%c%c", (int)v_pixel.x, (int)v_pixel.y, (int)v_pixel.z);
+                // Convert to integers and push out to ppm output stream
+                std::fprintf(
+                    r_out,
+                    "%c%c%c",
+                    (int)v_pixel.x,
+                    (int)v_pixel.y,
+                    (int)v_pixel.z
+                );
             }
         }
 

@@ -54,7 +54,10 @@ namespace Scene {
     const Vec3    V_LIGHT_ORIGIN ( 9.0f,   9.0f, 16.0f);
     const float32 F_SPHERE_RADIUS = 1.0f;
 
-    // Bitmap
+    /**
+     * Sphere Position map. The array of integer values defines a planar bitmap. Every bit represents a coordinate on
+     * a 2D plane, each bit set to 1 will have a sphere at that coordinate.
+     */
     const int32 AI_BITMAP[] = {
         247570, // 0111100011100010010
         280596, // 1000100100000010100

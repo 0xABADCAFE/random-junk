@@ -19,19 +19,26 @@ namespace Scene {
     // Maximum column to consider
     int32 i_max_bitmap_column = 0;
 
-    // Initialise the scene.
+    /**
+     * Initialise the Scene. Here we determine the maximum number of columns we need to look at in our object position
+     * bitmap. To do this, we OR together the values in every row, then see what the highest bit set is.
+     */
     void init() {
         int i_mask = 0;
         for (int i = 0; i < I_BITMAP_ROWS; ++i) {
             i_mask |= AI_BITMAP[i];
         }
+        // We could use a loop to determine the highest bit that is set, but there is a builtin  we can use which
+        // returns the number of leading zeros in an integer.
         i_max_bitmap_column = 8 * sizeof(int32) - __builtin_clz(i_mask);
     }
 
     void done() {
 
     }
+
 }
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -42,14 +49,21 @@ namespace Scene {
 namespace Ray {
 
     /**
-     * Vanilla trace behaviour, tests for intersection with all Scene objects. The ray is traced from v_origin
-     * towards v_direction. Due to the simplicity of our Scene, only three outcomes are possible:
+     * Vanilla trace behaviour. Traces a ray into the Scene in order to determine what is hit, at what distance and
+     * what the surface normal (if any) is at that location. Returns the material type of the entity that was hit and
+     * where relevant, updates f_distance and v_normal.
      *
-     * 1) The ray misses all objects and heads into the sky. In this case, f_distance and v_normal are not computed.
-     * 2) The ray misses all objects and hits the floor plane. In this case, f_distance is how far along v_direction
-     *    we travelled to the point on the floor and v_normal is the upwards unit vector.
-     * 3) The ray hits an object. In this case, f_distance is how far along v_direction we travelled to the point of
-     *    intersection with the object and v_normal is the surface normal at that point.
+     * The ray is traced from v_origin along v_direction. Due to the simplicity of our Scene, only three outcomes are
+     * possible:
+     *
+     * 1) The ray misses all objects and heads towards the sky.
+     * 2) The ray misses all objects and heads towards the floor. The distance from v_origin to the point of
+     *    intersection is set in f_distance and the unit normal UP is set in v_normal.
+     * 3) The ray hits an object. The distance from v_origin to the point of intersection is set in f_distance and the
+     *    surface normal at the point of intersection is set in v_normal.
+     *
+     * Since a ray may intersect multiple objects and the objects are in no particular order, every object is tested
+     * to find the one closest to v_origin.
      */
     Material::Kind trace(const Vec3& v_origin, const Vec3& v_direction, float32& f_distance, Vec3& v_normal) {
         f_distance = 1e9f;
@@ -217,7 +231,7 @@ namespace Scene {
                         v_camera_right * frand(-49.5f, 49.5f);
 
                     // Accumulate the sample result into the current pixel
-                    v_pixel +=  Sample::sample(
+                    v_pixel += Sample::sample(
                         V_FOCAL_POINT + v_delta,
                         ~(
                             (
