@@ -42,12 +42,19 @@ namespace Scene {
 namespace Ray {
 
     /**
-     * Vanilla trace behaviour, tests for intersection with all Scene objects
+     * Vanilla trace behaviour, tests for intersection with all Scene objects. The ray is traced from v_origin
+     * towards v_direction. Due to the simplicity of our Scene, only three outcomes are possible:
+     *
+     * 1) The ray misses all objects and heads into the sky. In this case, f_distance and v_normal are not computed.
+     * 2) The ray misses all objects and hits the floor plane. In this case, f_distance is how far along v_direction
+     *    we travelled to the point on the floor and v_normal is the upwards unit vector.
+     * 3) The ray hits an object. In this case, f_distance is how far along v_direction we travelled to the point of
+     *    intersection with the object and v_normal is the surface normal at that point.
      */
     Material::Kind trace(const Vec3& v_origin, const Vec3& v_direction, float32& f_distance, Vec3& v_normal) {
         f_distance = 1e9f;
 
-        // Assume trace hits nothing
+        // Assume trace hits the sky
         Material::Kind i_material = Material::I_SKY;
         float32        f_p        = -v_origin.z / v_direction.z;
 
@@ -58,26 +65,33 @@ namespace Ray {
             i_material = Material::I_FLOOR;
         }
 
-        // Check if trace maybe hits a sphere
+        // Check if trace maybe hits a sphere. Here we compute the position in the Scene of each sphere referenced in
+        // the bitmap and check if the ray intersects it. Even if it intersects, we cannot guarantee we have found the
+        // nearest point of intersection as the order in which the spheres are tested is fixed. We have to test each
+        // one and keep track of the nearest.
+
         for (int k = Scene::i_max_bitmap_column; k--;) {
             for (int j = Scene::I_BITMAP_ROWS; j--;) {
                 if (Scene::AI_BITMAP[j] & 1 << k) {
-                    Vec3 v_p = v_origin - Vec3(k, 0.0f, j + 4.0f); // Sphere coordinate
+                    Vec3 v_position = v_origin - Vec3(k, 0.0f, j + 4.0f); // Calculated sphere coordinate
 
                     float32
-                        f_b          = v_p ^ v_direction,
-                        f_eye_offset = (v_p ^ v_p) - 1.0f,
+                        f_b          = v_position ^ v_direction,
+                        f_eye_offset = (v_position ^ v_position) - Scene::F_SPHERE_RADIUS,
                         f_q          = f_b * f_b - f_eye_offset
                     ;
 
                     if (f_q > 0.0f) {
+                        // We have an intersection. Need confirm that it's nearer than any calculated so far and also
+                        // not at point blank range.
                         float32 f_sphere_distance = -f_b - std::sqrt(f_q);
                         if (
                             f_sphere_distance < f_distance &&
                             f_sphere_distance > 0.01f
                         ) {
+                            //
                             f_distance = f_sphere_distance;
-                            v_normal   = ~(v_p + v_direction * f_distance);
+                            v_normal   = ~(v_position + v_direction * f_distance);
                             i_material = Material::I_MIRROR;
                         }
                     }
@@ -98,6 +112,24 @@ namespace Ray {
 
 namespace Sample {
 
+    /**
+     * Vanilla sample behaviour. Traces a ray into the Scene and depending on which Material was hit, calculates an
+     * RGB value, taking into consideration the material and lighting conditions.
+     *
+     * 1) Where the trace heads into the sky, we use the sky shading Material behaviour to calculate the RGB value.
+     *
+     * 2) Where the trace hits the floor, we calculate the lambertian illumination factor and trace a second ray towards
+     *    the light source, to determine whether or not the point of intersection was in shadow or not. We then use the
+     *    floor shading Material behaviour, providing our lambertian, to calculate the RGB value.
+     *    A small amount of randomness is used in this second trace so that the edge of the shadow region is imprecise
+     *    and over many samples, a smooth penumbra will evolve.
+     *
+     * 3) Where the trace hit a sphere, we first compute a specular brightness sample and then recursively sample another
+     *    ray from the point of intersection into the scene to see what was reflected. The RGB value returned from that
+     *    recursion is attenuated by the mirror albedo and summed with the specular brightness sample to derive a final
+     *    RGB value.
+     *
+     */
     Vec3 sample(const Vec3& v_origin, const Vec3& v_direction) {
         float32 f_distance;
         Vec3    v_normal;
@@ -106,7 +138,7 @@ namespace Sample {
         Material::Kind i_material = Ray::trace(v_origin, v_direction, f_distance, v_normal);
 
         // Hit nothing? Sky shade
-        if (i_material == Material::I_SKY) {
+        if (Material::I_SKY == i_material) {
             return Material::shadeSky(v_direction);
         }
 
@@ -133,11 +165,11 @@ namespace Sample {
         }
 
         // Hit the floor plane
-        if (i_material == Material::I_FLOOR) {
+        if (Material::I_FLOOR == i_material) {
             return Material::shadeFloor(v_intersection, f_lambertian);
         }
 
-        // Compute the specular highlight power
+        // Compute the specular highlight intensity
         float32 f_specular = Material::specularity(v_light, v_half_vector, f_lambertian);
 
         // Hit a sphere
@@ -166,7 +198,7 @@ namespace Scene {
             v_camera_up      = ~(V_NORMAL_UP * v_camera_forward) * F_IMAGE_SCALE,
             v_camera_right   = ~(v_camera_forward * v_camera_up) * F_IMAGE_SCALE,
 
-            // Offset frm eye to coner of focal plane
+            // Offset from eye to coner of focal plane
             v_eye_offset     = v_camera_forward + (v_camera_up + v_camera_right) * -(I_IMAGE_SIZE >> 1)
         ;
 

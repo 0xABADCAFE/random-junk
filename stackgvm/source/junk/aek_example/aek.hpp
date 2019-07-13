@@ -47,10 +47,12 @@ inline Vec3 calculateHalfVector(const Vec3& v_direction, const Vec3& v_normal) {
 namespace Scene {
 
     // Basic Data
-    const Vec3 V_CAMERA_DIR  (-6.0f, -16.0f,  0.0f);
-    const Vec3 V_FOCAL_POINT (17.0f,  16.0f,  8.0f);
-    const Vec3 V_NORMAL_UP   (0.0f,    0.0f,  1.0f);
-    const Vec3 V_AMBIENT_RGB (13.0f,  13.0f, 13.0f);
+    const Vec3    V_CAMERA_DIR   (-6.0f, -16.0f,  0.0f);
+    const Vec3    V_FOCAL_POINT  (17.0f,  16.0f,  8.0f);
+    const Vec3    V_NORMAL_UP    ( 0.0f,   0.0f,  1.0f);
+    const Vec3    V_AMBIENT_RGB  (13.0f,  13.0f, 13.0f);
+    const Vec3    V_LIGHT_ORIGIN ( 9.0f,   9.0f, 16.0f);
+    const float32 F_SPHERE_RADIUS = 1.0f;
 
     // Bitmap
     const int32 AI_BITMAP[] = {
