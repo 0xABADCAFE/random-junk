@@ -170,9 +170,9 @@ namespace Sample {
             v_light = ~(
                 Vec3(
                     // lighting direction, plus a bit of randomness to generate soft shadows.
-                    9.0f + frand(),
-                    9.0f + frand(),
-                    16.0f
+                    Scene::V_LIGHT_ORIGIN.x + frand(),
+                    Scene::V_LIGHT_ORIGIN.y + frand(),
+                    Scene::V_LIGHT_ORIGIN.z
                 ) - v_intersection
             )
         ;
@@ -213,16 +213,6 @@ namespace Scene {
 
         Profiling::Nanotime u_start = Profiling::mark();
 
-        Vec3
-            // camera direction vectors
-            v_camera_forward = ~V_CAMERA_DIR,
-            v_camera_up      = ~(V_NORMAL_UP * v_camera_forward) * F_IMAGE_SCALE,
-            v_camera_right   = ~(v_camera_forward * v_camera_up) * F_IMAGE_SCALE,
-
-            // Offset from eye to coner of focal plane
-            v_eye_offset     = v_camera_forward + (v_camera_up + v_camera_right) * -(I_IMAGE_SIZE >> 1)
-        ;
-
         for (int y = I_IMAGE_SIZE; y--;) {
             for (int x = I_IMAGE_SIZE; x--;) {
 
@@ -234,23 +224,23 @@ namespace Scene {
 
                     // Random delta to be added for depth of field effects
                     Vec3 v_delta =
-                        v_camera_up    * frand(-49.5f, 49.5f) +
-                        v_camera_right * frand(-49.5f, 49.5f);
+                        V_CAMERA_UP    * frand(-49.5f, 49.5f) +
+                        V_CAMERA_RIGHT * frand(-49.5f, 49.5f);
 
                     // Accumulate the sample result into the current pixel
                     v_pixel += Sample::sample(
                         V_FOCAL_POINT + v_delta,
                         ~(
                             (
-                                v_camera_up    * (frand() + x) +
-                                v_camera_right * (frand() + y) +
-                                v_eye_offset
+                                V_CAMERA_UP    * (frand() + x) +
+                                V_CAMERA_RIGHT * (frand() + y) +
+                                V_EYE_OFFSET
                             ) * 16.0f - v_delta
                         )
                     );
                 }
 
-		// Scale the sample and add on the ambient term
+                // Scale the sample and add on the ambient term
                 v_pixel *= F_SAMPLE_SCALE;
                 v_pixel += V_AMBIENT_RGB;
 
@@ -295,4 +285,3 @@ int main() {
     }
     return 0;
 }
-

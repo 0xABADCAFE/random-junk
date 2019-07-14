@@ -12,99 +12,13 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-//  Profiling
-//
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-#ifdef PROFILE
-
-namespace Profiling {
-
-    struct Entry {
-        enum {
-            I_RENDER = 0,
-            I_SAMPLE,
-            I_SAMPLE_NO_BOUNCE,
-            I_SAMPLE_FIRST_BOUNCE,
-            I_TRACE,
-            I_TRACE_NO_BOUNCE,
-            I_TRACE_MATERIAL_ONLY,
-            I_MAX
-        };
-        uint64      u_ns;
-        const char* s_name;
-        uint32      u_calls;
-    };
-
-    Entry ao_entries[Entry::I_MAX] = {
-        { 0, "Scene::render()", 0 },
-        { 0, "Sample::sample()", 0 },
-        { 0, "Sample::sampleNoBounce()", 0 },
-        { 0, "Sample::sampleFirstBounce()", 0 },
-        { 0, "Ray::trace()", 0 },
-        { 0, "Ray::traceNoBounce()", 0 },
-        { 0, "Ray::traceMaterialOnly()", 0 },
-    };
-
-    void dump() {
-        for (int i = 0; i < Entry::I_MAX; ++i) {
-            std::printf(
-                "%-22s | %9" FU32 " | %9.6f | %.3f\n",
-                ao_entries[i].s_name,
-                ao_entries[i].u_calls,
-                1e-9 * ao_entries[i].u_ns,
-                (float64)ao_entries[i].u_ns / (float64)ao_entries[i].u_calls
-            );
-        }
-    }
-}
-    #define PROF_ENTER(_f) ++Profiling::ao_entries[(_f)].u_calls; Profiling::Nanotime __u_nt = Profiling::mark()
-    #define PROF_EXIT(_f)    Profiling::ao_entries[(_f)].u_ns += Profiling::mark() - __u_nt;
-    #define PROF_DUMP()      Profiling::dump()
-    #define TIME_RENDER_INIT()
-    #define TIME_RENDER_DONE()
-#else
-    #define PROF_ENTER(_f)
-    #define PROF_EXIT(_f)
-    #define PROF_DUMP()
-    #define TIME_RENDER_INIT() Profiling::Nanotime u_render_start = Profiling::mark()
-    #define TIME_RENDER_DONE() Profiling::Nanotime u_render_end   = Profiling::mark(); \
-    std::printf( \
-        "Total render() time %0.6f seconds\n", \
-        (float64)(u_render_end - u_render_start) * 1e-9 \
-    )
-#endif
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-//  Ray Density Map
-//
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-#ifdef EMIT_RAY_DENSITY_MAP
-    #define INIT_RAY_DENSITY_MAP(n) \
-        std::FILE* r_ray_density_out = std::fopen((n), "wb"); \
-        if (!r_ray_density_out) { \
-            return; \
-        } \
-        std::fprintf(r_ray_density_out, "P5 %d %d 255 ", I_IMAGE_SIZE, I_IMAGE_SIZE)
-
-    #define WRITE_RAY_DENSITY(d) std::fprintf(r_ray_density_out, "%c", ((d)>255) ? 255 : (d) );
-    #define DONE_RAY_DENSITY_MAP() std::fclose(r_ray_density_out)
-#else
-    #define INIT_RAY_DENSITY_MAP(n)
-    #define WRITE_RAY_DENSITY(d)
-    #define DONE_RAY_DENSITY_MAP()
-#endif
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
 //  Scene
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 namespace Scene {
+
+    // Dynamically allocated set of spheres
     Vec3* av_spheres    = 0;
     int   i_num_spheres = 0;
 
@@ -152,15 +66,27 @@ namespace Scene {
 namespace Ray {
 
     /**
-     * Vanilla trace behaviour, tests for intersection with all Scene objects
+     * Vanilla trace() behaviour. Traces a ray into the Scene in order to determine what is hit, at what distance and
+     * what the surface normal (if any) is at that location. Returns the material type of the entity that was hit and
+     * where relevant, updates f_distance and v_normal.
+     *
+     * The ray is traced from v_origin along v_direction. Due to the simplicity of our Scene, only three outcomes are
+     * possible:
+     *
+     * 1) The ray misses all objects and heads towards the sky.
+     * 2) The ray misses all objects and heads towards the floor. The distance from v_origin to the point of
+     *    intersection is set in f_distance and the unit normal UP is set in v_normal.
+     * 3) The ray hits an object. The distance from v_origin to the point of intersection is set in f_distance and the
+     *    surface normal at the point of intersection is set in v_normal.
+     *
+     * Since a ray may intersect multiple objects and the objects are in no particular order, every object is tested
+     * to find the one closest to v_origin.
      */
     Material::Kind trace(const Vec3& v_origin, const Vec3& v_direction, float32& f_distance, Vec3& v_normal) {
 
-        PROF_ENTER(Profiling::Entry::I_TRACE);
-
         f_distance = 1e9f;
 
-        // Assume trace hits nothing
+        // Assume trace hits the sky
         Material::Kind i_material = Material::I_SKY;
         float32        f_p        = -v_origin.z / v_direction.z;
 
@@ -171,42 +97,40 @@ namespace Ray {
             i_material = Material::I_FLOOR;
         }
 
-        // Check if trace maybe hits a sphere
-        for (int i = 0; i < Scene::i_num_spheres; i++) {
-            Vec3 v_p = Vec3::sub(
-                v_origin,
-                Scene::av_spheres[i] // Sphere coordinate
-            );
+        // Check if trace maybe hits a sphere. Here we compute the position in the Scene of each sphere referenced in
+        // the bitmap and check if the ray intersects it. Even if it intersects, we cannot guarantee we have found the
+        // nearest point of intersection as the order in which the spheres are tested is fixed. We have to test each
+        // one and keep track of the nearest.
+
+        for (int i = 0; i < Scene::i_num_spheres; ++i) {
+            Vec3 v_position = v_origin - Scene::av_spheres[i]; // Sphere coordinate
 
             float32
-                f_b          = Vec3::dot(v_p, v_direction),
-                f_eye_offset = Vec3::dot(v_p, v_p) - 1.0f,
+                f_b          = v_position ^ v_direction,
+                f_eye_offset = (v_position ^ v_position) - Scene::F_SPHERE_RADIUS,
                 f_q          = f_b * f_b - f_eye_offset
             ;
 
             if (f_q > 0.0f) {
+                // We have an intersection. Need confirm that it's nearer than any calculated so far and also
+                // not at point blank range.
                 float32 f_sphere_distance = -f_b - std::sqrt(f_q);
                 if (f_sphere_distance < f_distance && f_sphere_distance > 0.01f) {
-                    f_distance = f_sphere_distance,
-                    v_normal   = Vec3::normalize(
-                        Vec3::add(v_p, Vec3::scale(v_direction, f_distance))
-                    ),
+                    f_distance = f_sphere_distance;
+                    v_normal   = ~(v_position + v_direction * f_distance);
                     i_material = Material::I_MIRROR;
                 }
             }
         }
-
-        PROF_EXIT(Profiling::Entry::I_TRACE);
-
         return i_material;
     }
 
+
     /**
-     * Variant trace behaviour, tests for floor and sky intersection only
+     * Variant trace() behaviour, tests for floor and sky intersection only, completely omitting any object intersection
+     * tests. We use this version when we have reason to believe that no intersection is possible.
      */
     Material::Kind traceNoBounce(const Vec3& v_origin, const Vec3& v_direction, float32& f_distance, Vec3& v_normal) {
-
-        PROF_ENTER(Profiling::Entry::I_TRACE_NO_BOUNCE);
 
         f_distance  = 1e9f;
         float32 f_p = -v_origin.z / v_direction.z;
@@ -215,30 +139,22 @@ namespace Ray {
         if (0.01f < f_p) {
             f_distance = f_p,
             v_normal   = Scene::V_NORMAL_UP;
-
-            PROF_EXIT(Profiling::Entry::I_TRACE_NO_BOUNCE);
-
             return Material::I_FLOOR;
         }
-
-        PROF_EXIT(Profiling::Entry::I_TRACE_NO_BOUNCE);
-
         return Material::I_SKY;
     }
 
     /**
-     * Variant trace behaviour, tests only which material was hit. Accepts tuning parameters that adjust the apparent
+     * Variant trace() behaviour, tests only which material was hit. Accepts tuning parameters that adjust the apparent
      * radius of objects and the pitch of the horizon. This is to allow us to provide an estimation of what material
      * was hit so that we can use the correct version later for stochastic sampling.
      */
     Material::Kind traceMaterialOnly(
-        const Vec3& v_origin,
-        const Vec3& v_direction,
-        const float32 f_sphere_size_mod = 1.0f,
+        const Vec3&   v_origin,
+        const Vec3&   v_direction,
+        const float32 f_sphere_size_mod = Scene::F_SPHERE_RADIUS,
         const float32 f_floor_mod = 0.0f
     ) {
-
-        PROF_ENTER(Profiling::Entry::I_TRACE_MATERIAL_ONLY);
 
         // Assume trace hits sky
         Material::Kind i_material = Material::I_SKY;
@@ -251,14 +167,11 @@ namespace Ray {
 
         // Check if trace maybe hits a sphere
         for (int i = 0; i < Scene::i_num_spheres; i++) {
-            Vec3 v_p = Vec3::sub(
-                v_origin,
-                Scene::av_spheres[i] // Sphere coordinate
-            );
+            Vec3 v_position = v_origin - Scene::av_spheres[i]; // Sphere coordinate
 
             float32
-                f_b          = Vec3::dot(v_p, v_direction),
-                f_eye_offset = Vec3::dot(v_p, v_p) - f_sphere_size_mod,
+                f_b          = v_position ^ v_direction,
+                f_eye_offset = (v_position ^ v_position) - f_sphere_size_mod,
                 f_q          = f_b * f_b - f_eye_offset
             ;
 
@@ -270,9 +183,6 @@ namespace Ray {
                 }
             }
         }
-
-        PROF_EXIT(Profiling::Entry::I_TRACE_MATERIAL_ONLY);
-
         return i_material;
     }
 
@@ -291,25 +201,40 @@ namespace Sample {
         I_ADAPTIVE_BUFFER_SIZE = 8
     };
 
-    const float32 F_RGB_SIMILARITY_LIMIT = 1e-4f;
+    /**
+     * Defines how similar two Vec3 RGB values should be (based on the square of the component distances) such that they
+     * are considered equivalent.
+     */
+    const float32 F_RGB_SIMILARITY_LIMIT    = 1e-4f;
 
+    /**
+     * Defines the maximum y component value used to switch between recursive and non recursive sample() variants.
+     */
+    const float32 F_THRESHOLD_SAMPLE_SELECT = 0.15f;
+
+    /**
+     * Callable type for sample() variants.
+     */
     typedef Vec3 (*Function)(const Vec3& v_origin, const Vec3& v_direction);
 
+
+    /**
+     * Helper function to calculate the lambertian value for lighting, as well as generating a perturbed lighting
+     * vector.
+     */
     inline float32 calculateLambertian(const Vec3& v_intersection, const Vec3& v_normal, Vec3& v_light) {
         // Calculate the lighting vector
-        v_light = Vec3::normalize(
-            Vec3::sub(
-                Vec3( // lighting direction, plus a bit of randomness to generate soft shadows.
-                    9.0f + frand(),
-                    9.0f + frand(),
-                    16.0f
-                ),
-                v_intersection
-            )
+        v_light = ~(
+            Vec3(
+                // lighting direction, plus a bit of randomness to generate soft shadows.
+                Scene::V_LIGHT_ORIGIN.x + frand(),
+                Scene::V_LIGHT_ORIGIN.y + frand(),
+                Scene::V_LIGHT_ORIGIN.z
+            ) - v_intersection
         );
 
         // Calculate the lambertian illumuination factor
-        float32 f_lambertian = Vec3::dot(v_light, v_normal);
+        float32 f_lambertian = v_light ^ v_normal;
         if (f_lambertian < 0.0f || Ray::traceMaterialOnly(v_intersection, v_light)) {
             f_lambertian = 0.0f; // in shadow
         }
@@ -317,8 +242,24 @@ namespace Sample {
     }
 
 
+    /**
+     * Vanilla sample() behaviour. Traces a ray into the Scene and depending on which Material was hit, calculates an
+     * RGB value, taking into consideration the material and lighting conditions.
+     *
+     * 1) Where the trace heads into the sky, we use the sky shading Material behaviour to calculate the RGB value.
+     *
+     * 2) Where the trace hits the floor, we calculate the lambertian illumination factor and trace a second ray towards
+     *    the light source, to determine whether or not the point of intersection was in shadow or not. We then use the
+     *    floor shading Material behaviour, providing our lambertian, to calculate the RGB value.
+     *    A small amount of randomness is used in this second trace so that the edge of the shadow region is imprecise
+     *    and over many samples, a smooth penumbra will evolve.
+     *
+     * 3) Where the trace hit a sphere, we first compute a specular brightness sample and then recursively sample another
+     *    ray from the point of intersection into the scene to see what was reflected. The RGB value returned from that
+     *    recursion is attenuated by the mirror albedo and summed with the specular brightness sample to derive a final
+     *    RGB value.
+     */
     Vec3 sample(const Vec3& v_origin, const Vec3& v_direction) {
-        PROF_ENTER(Profiling::Entry::I_SAMPLE);
 
         Vec3    v_normal;
         float32 f_distance;
@@ -327,49 +268,36 @@ namespace Sample {
         Material::Kind i_material = Ray::trace(v_origin, v_direction, f_distance, v_normal);
 
         // Hit nothing? Sky shade
-        if (i_material == Material::I_SKY) {
-
-            PROF_EXIT(Profiling::Entry::SAMPLE);
-
+        if (Material::I_SKY == i_material) {
             return Material::shadeSky(v_direction);
         }
 
         Vec3
             v_light,
-            v_intersection = Vec3::add(v_origin, Vec3::scale(v_direction, f_distance))
+            v_intersection = v_origin + v_direction * f_distance
         ;
 
-        float32 f_lambertian = calculateLambertian(v_intersection, v_normal, v_light);
+        float32 f_lambertian   = calculateLambertian(v_intersection, v_normal, v_light);
 
         // Hit the floor plane
-        if (i_material == Material::I_FLOOR) {
-
-            PROF_EXIT(Profiling::Entry::SAMPLE);
-
+        if (Material::I_FLOOR == i_material) {
             return Material::shadeFloor(v_intersection, f_lambertian);
         }
 
-        Vec3 v_half_vector = calculateHalfVector(v_direction, v_normal);
+        Vec3 v_half_vector = v_direction | v_normal;
 
-        // Compute the specular highlight power
+        // Compute the specular highlight intensity
         float32 f_specular = Material::specularity(v_light, v_half_vector, f_lambertian);
 
-        PROF_EXIT(Profiling::Entry::I_SAMPLE);
-
         // Hit a sphere
-        return Vec3::add(
-            Vec3(f_specular),
-            Vec3::scale(
-                sample(v_intersection, v_half_vector),
-                Material::F_MIRROR_ALBEDO
-            )
-        );
+        return Vec3(f_specular) + sample(v_intersection, v_half_vector) * Material::F_MIRROR_ALBEDO;
     }
 
-
+    /**
+     * Variant sample() behaviour that uses the variant trace behaviour that excludes object intersection tests. We use
+     * this when sampling for a direction we do not believe will intersect anything other than the floor or sky,
+     */
     Vec3 sampleNoBounce(const Vec3& v_origin, const Vec3& v_direction) {
-
-        PROF_ENTER(Profiling::Entry::I_SAMPLE_NO_BOUNCE);
 
         float32 f_distance;
         Vec3    v_normal;
@@ -378,29 +306,26 @@ namespace Sample {
         Material::Kind i_material = Ray::traceNoBounce(v_origin, v_direction, f_distance, v_normal);
 
         // Hit nothing? Sky shade
-        if (i_material == Material::I_SKY) {
-
-            PROF_EXIT(Profiling::Entry::I_SAMPLE_NO_BOUNCE);
-
+        if (Material::I_SKY == i_material) {
             return Material::shadeSky(v_direction);
         }
 
         Vec3
             v_light,
-            v_intersection = Vec3::add(v_origin, Vec3::scale(v_direction, f_distance))
+            v_intersection = v_origin + v_direction * f_distance
         ;
 
         float32 f_lambertian = calculateLambertian(v_intersection, v_normal, v_light);
 
-        PROF_EXIT(Profiling::Entry::I_SAMPLE_NO_BOUNCE);
-
         return Material::shadeFloor(v_intersection, f_lambertian);
     }
 
-
+    /**
+     * Variant sample() behaviour that we use for the first intersected reflection only. This version will either use a
+     * recursive or non-recursive variant of the sample function depending on whether or not it seems the reflected
+     * ray is heading away from the plane containing the objects.
+     */
     Vec3 sampleFirstBounce(const Vec3& v_origin, const Vec3& v_direction) {
-
-        PROF_ENTER(Profiling::Entry::I_SAMPLE_FIRST_BOUNCE);
 
         float32 f_distance;
         Vec3    v_normal;
@@ -410,44 +335,30 @@ namespace Sample {
 
         // Hit nothing? Sky shade
         if (i_material == Material::I_SKY) {
-
-            PROF_EXIT(Profiling::Entry::SAMPLE_FIRST_BOUNCE);
-
             return Material::shadeSky(v_direction);
         }
 
         Vec3
             v_light,
-            v_intersection = Vec3::add(v_origin, Vec3::scale(v_direction, f_distance))
+            v_intersection = v_origin + v_direction * f_distance
         ;
 
         float32 f_lambertian = calculateLambertian(v_intersection, v_normal, v_light);
 
         // Hit the floor plane
         if (i_material == Material::I_FLOOR) {
-
-            PROF_EXIT(Profiling::Entry::SAMPLE_FIRST_BOUNCE);
-
             return Material::shadeFloor(v_intersection, f_lambertian);
         }
 
-        Vec3 v_half_vector = calculateHalfVector(v_direction, v_normal);
+        Vec3 v_half_vector = v_direction | v_normal;
 
         Function samplefn = (v_half_vector.y > 0.15f) ? sampleNoBounce : sample;
 
-        // Compute the specular highlight power
+        // Compute the specular highlight intensity
         float32 f_specular = Material::specularity(v_light, v_half_vector, f_lambertian);
 
-        PROF_EXIT(Profiling::Entry::I_SAMPLE_FIRST_BOUNCE);
-
         // Hit a sphere
-        return Vec3::add(
-            Vec3(f_specular),
-            Vec3::scale(
-                samplefn(v_intersection, v_half_vector),
-                Material::F_MIRROR_ALBEDO
-            )
-        );
+        return Vec3(f_specular) + samplefn(v_intersection, v_half_vector) * Material::F_MIRROR_ALBEDO;
     }
 
 }
@@ -461,57 +372,19 @@ namespace Sample {
 
 namespace Scene {
 
-    void render(std::FILE* out) {
+    const float32
+        F_SPHERE_PROBE_RADIUS = F_SPHERE_RADIUS * 1.1f,
+        F_FLOOR_PROBE_OFFSET  = -0.01f
+    ;
 
-        INIT_RAY_DENSITY_MAP("aek3b_rays.ppm");
+    const Vec3
+        V_PROBE_DELTA    = V_CAMERA_UP   + V_CAMERA_RIGHT,
+        V_PROBE_ORIGIN   = V_FOCAL_POINT + V_PROBE_DELTA
+    ;
 
-        std::fprintf(out, "P6 %d %d 255 ", I_IMAGE_SIZE, I_IMAGE_SIZE);
+    void render(std::FILE* r_out) {
 
-        // Only the profile call or the render timing call will be compiled in, never both
-        PROF_ENTER(Profiling::Entry::I_RENDER);
-        TIME_RENDER_INIT();
-
-        // camera direction vectors
-        Vec3
-            v_camera_forward = Vec3::normalize( // Unit forwards
-                Scene::V_CAMERA_DIR
-            ),
-
-            v_camera_up = Vec3::scale( // Unit up - Z is up in this system
-                Vec3::normalize(
-                    Vec3::cross(
-                        Scene::V_NORMAL_UP,
-                        v_camera_forward
-                    )
-                ),
-                F_IMAGE_SCALE
-            ),
-
-            v_camera_right = Vec3::scale( // Unit right
-                Vec3::normalize(
-                    Vec3::cross(v_camera_forward, v_camera_up)
-                ),
-                F_IMAGE_SCALE
-            ),
-
-            v_eye_offset = Vec3::add( // Offset frm eye to coner of focal plane
-                Vec3::scale(
-                    Vec3::add(v_camera_up, v_camera_right),
-                    -(I_IMAGE_SIZE >> 1)
-                ),
-                v_camera_forward
-            ),
-
-            v_probe_delta = Vec3::add(
-                v_camera_up,
-                v_camera_right
-            ),
-
-            v_probe_origin = Vec3::add(
-                Scene::V_FOCAL_POINT,
-                v_probe_delta
-            )
-        ;
+        std::fprintf(r_out, "P6 %d %d 255 ", I_IMAGE_SIZE, I_IMAGE_SIZE);
 
         for (int y = I_IMAGE_SIZE; y--;) {
             int i_min_adaptive_ray_count = Sample::I_ADAPTIVE_BUFFER_SIZE;
@@ -520,27 +393,25 @@ namespace Scene {
                 Vec3 v_pixel(0.0f);
 
                 // Perform a material probe first. If we don't hit a sphere we can use an optimised sample function
-                Vec3 v_probe_direction = Vec3::normalize(
-                    Vec3::sub(
-                        Vec3::scale(
-                            Vec3::add(
-                                Vec3::scale(v_camera_up, 0.5f + x),
-                                Vec3::add(
-                                    Vec3::scale(v_camera_right, 0.5f + y),
-                                    v_eye_offset
-                                )
-                            ),
-                            16.0f
-                        ),
-                        v_probe_delta
-                    )
+                Vec3 v_probe_direction = ~(
+                    (
+                        V_CAMERA_UP    * (0.5f + x) +
+                        V_CAMERA_RIGHT * (0.5f + y) +
+                        V_EYE_OFFSET
+
+                    ) * 16.0f - V_PROBE_DELTA
                 );
 
-                Material::Kind i_material = Ray::traceMaterialOnly(v_probe_origin, v_probe_direction, 1.10f, -0.01f);
+                Material::Kind i_material = Ray::traceMaterialOnly(
+                    V_PROBE_ORIGIN,
+                    v_probe_direction,
+                    F_SPHERE_PROBE_RADIUS,
+                    F_FLOOR_PROBE_OFFSET
+                );
 
                 if (i_material != Material::I_SKY) {
                     Vec3 av_samples[Sample::I_ADAPTIVE_BUFFER_SIZE];
-                    Sample::Function samplefn = (i_material == Material::I_MIRROR) ?
+                    Sample::Function samplefn = (Material::I_MIRROR == i_material) ?
                         Sample::sampleFirstBounce :
                         Sample::sampleNoBounce
                     ;
@@ -551,42 +422,29 @@ namespace Scene {
                     for (; i_ray_count < I_MAX_RAYS; ++i_ray_count) {
 
                         // Random delta to be added for depth of field effects
-                        Vec3 v_delta = Vec3::add(
-                            Vec3::scale(v_camera_up,    (frand() - 0.5f) * 99.0f),
-                            Vec3::scale(v_camera_right, (frand() - 0.5f) * 99.0f)
-                        );
+                        Vec3 v_delta =
+                            V_CAMERA_UP    * frand(-49.5f, 49.5f) +
+                            V_CAMERA_RIGHT * frand(-49.5f, 49.5f);
 
                         // Buffer the most recent sample
                         Vec3& v_sample = av_samples[i_ray_count & (Sample::I_ADAPTIVE_BUFFER_SIZE - 1)];
 
+                        // Accumulate the sample result into the current pixel
                         v_sample = samplefn(
-                            Vec3::add(
-                                Scene::V_FOCAL_POINT,
-                                v_delta
-                            ),
-                            Vec3::normalize(
-                                Vec3::sub(
-                                    Vec3::scale(
-                                        Vec3::add(
-                                            Vec3::scale(v_camera_up, frand() + x),
-                                            Vec3::add(
-                                                Vec3::scale(v_camera_right, frand() + y),
-                                                v_eye_offset
-                                            )
-                                        ),
-                                        16.0f
-                                    ),
-                                    v_delta
-                                )
+                            V_FOCAL_POINT + v_delta,
+                            ~(
+                                (
+                                    V_CAMERA_UP    * (frand() + x) +
+                                    V_CAMERA_RIGHT * (frand() + y) +
+                                    V_EYE_OFFSET
+                                ) * 16.0f - v_delta
                             )
                         );
 
-                        // Accumulate the sample result into the current pixel
-                        v_pixel = Vec3::add(
-                            v_sample,
-                            v_pixel
-                        );
 
+
+                        // Accumulate the sample result into the current pixel
+                        v_pixel += v_sample;
 
                         // Check if the short duration average is close enough to the all time average that we believe
                         // the pixel value to be stable.
@@ -594,28 +452,19 @@ namespace Scene {
                             i_ray_count >= i_min_adaptive_ray_count &&
                             (i_ray_count & (Sample::I_ADAPTIVE_BUFFER_SIZE - 1)) == (Sample::I_ADAPTIVE_BUFFER_SIZE - 1)
                         ) {
-                            Vec3 v_average = Vec3::scale(
-                                v_pixel,
-                                1.0f/(i_ray_count + 1)
-                            );
+                            Vec3 v_average = v_pixel * (1.0f/(i_ray_count + 1));
 
-                            Vec3 v_last = av_samples[0];
+                            Vec3 v_last    = av_samples[0];
                             for (int s = 1; s < Sample::I_ADAPTIVE_BUFFER_SIZE; ++s) {
-                                v_last = Vec3::add(v_last, av_samples[s]);
+                                v_last += av_samples[s];
                             }
 
-                            v_last = Vec3::sub(
-                                Vec3::scale(v_last, 1.0f/Sample::I_ADAPTIVE_BUFFER_SIZE),
-                                v_average
-                            );
+                            v_last = v_last * (1.0f/Sample::I_ADAPTIVE_BUFFER_SIZE) - v_average;
 
-                            float32 f_dot_sum = Vec3::dot(v_last, v_last);
+                            float32 f_dot_sum = v_last ^ v_last;
 
                             if (f_dot_sum < Sample::F_RGB_SIMILARITY_LIMIT) {
-                                v_pixel = Vec3::scale(
-                                    v_pixel,
-                                    (float32)I_MAX_RAYS / (float32)(i_ray_count + 1)
-                                );
+                                v_pixel *= (float32)I_MAX_RAYS / (float32)(i_ray_count + 1);
                                 break;
                             }
                         }
@@ -625,25 +474,26 @@ namespace Scene {
                     if (i_min_adaptive_ray_count < Sample::I_ADAPTIVE_BUFFER_SIZE) {
                         i_min_adaptive_ray_count = Sample::I_ADAPTIVE_BUFFER_SIZE;
                     }
-                    v_pixel = Vec3::scale(v_pixel, F_SAMPLE_SCALE);
-                    WRITE_RAY_DENSITY(ray_count);
+                    v_pixel *= F_SAMPLE_SCALE;
 
                 } else {
-                    v_pixel = Vec3::scale(Material::shadeSky(v_probe_direction), I_MAX_RAYS * F_SAMPLE_SCALE);
-                    WRITE_RAY_DENSITY(0);
+                    v_pixel = Material::shadeSky(v_probe_direction) * (I_MAX_RAYS * F_SAMPLE_SCALE);
                 }
 
-                v_pixel = Vec3::add(v_pixel, Scene::V_AMBIENT_RGB);
+                v_pixel += Scene::V_AMBIENT_RGB;
 
                 // Convert to integers and push out to ppm output stream
-                std::fprintf(out, "%c%c%c", (int)v_pixel.x, (int)v_pixel.y, (int)v_pixel.z);
+                std::fprintf(
+                    r_out,
+                    "%c%c%c",
+                    (int)v_pixel.x,
+                    (int)v_pixel.y,
+                    (int)v_pixel.z
+                );
             }
         }
 
-        // Only the profile call or the render timing call will be compiled in, never both
-        TIME_RENDER_DONE();
-        PROF_EXIT(Profiling::Entry::RENDER);
-        DONE_RAY_DENSITY_MAP();
+
     }
 
 }
@@ -656,14 +506,13 @@ namespace Scene {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 int main() {
-    std::FILE* out = fopen(PPMNAME, "wb");
-    if (out) {
+    std::FILE* r_out = std::fopen(PPMNAME, "wb");
+    if (r_out) {
         std::printf("Rendering to " PPMNAME "...\n");
         Scene::init();
-        Scene::render(out);
+        Scene::render(r_out);
         Scene::done();
-        std::fclose(out);
-        PROF_DUMP();
+        std::fclose(r_out);
     } else {
         std::printf("Unable to open output file\n");
     }

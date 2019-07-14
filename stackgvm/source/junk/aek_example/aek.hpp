@@ -47,11 +47,14 @@ inline Vec3 calculateHalfVector(const Vec3& v_direction, const Vec3& v_normal) {
 namespace Scene {
 
     // Basic Data
-    const Vec3    V_CAMERA_DIR   (-6.0f, -16.0f,  0.0f);
-    const Vec3    V_FOCAL_POINT  (17.0f,  16.0f,  8.0f);
-    const Vec3    V_NORMAL_UP    ( 0.0f,   0.0f,  1.0f);
-    const Vec3    V_AMBIENT_RGB  (13.0f,  13.0f, 13.0f);
-    const Vec3    V_LIGHT_ORIGIN ( 9.0f,   9.0f, 16.0f);
+    const Vec3
+        V_CAMERA_DIR   (-6.0f, -16.0f,  0.0f),
+        V_FOCAL_POINT  (17.0f,  16.0f,  8.0f),
+        V_NORMAL_UP    ( 0.0f,   0.0f,  1.0f),
+        V_AMBIENT_RGB  (13.0f,  13.0f, 13.0f),
+        V_LIGHT_ORIGIN ( 9.0f,   9.0f, 16.0f)
+    ;
+
     const float32 F_SPHERE_RADIUS = 1.0f;
 
     /**
@@ -71,6 +74,17 @@ namespace Scene {
     };
 
     const int32 I_BITMAP_ROWS = sizeof(AI_BITMAP)/sizeof(int32);
+
+    // Derived constants
+    const Vec3
+        // Camera vectors
+        V_CAMERA_FORWARD = ~V_CAMERA_DIR,
+        V_CAMERA_UP      = ~(V_NORMAL_UP * V_CAMERA_FORWARD) * F_IMAGE_SCALE,
+        V_CAMERA_RIGHT   = ~(V_CAMERA_FORWARD * V_CAMERA_UP) * F_IMAGE_SCALE,
+
+        // Offset from eye to coner of focal plane
+        V_EYE_OFFSET     = V_CAMERA_FORWARD + (V_CAMERA_UP + V_CAMERA_RIGHT) * -(I_IMAGE_SIZE >> 1)
+    ;
 
     // Scene initialisation
     void init();
@@ -98,12 +112,17 @@ namespace Material {
     } Kind;
 
     // Material properties
-    const float32 F_MIRROR_ALBEDO = 0.75f;
+    const float32
+        F_MIRROR_ALBEDO  = 0.75f,
+        F_SPECULAR_POWER = 99.0f
+    ;
 
     // Material Colours
-    const Vec3    V_SKY_RGB        (0.7f, 0.6f, 1.0f);
-    const Vec3    V_TILE_RED_RGB   (3.0f, 1.0f, 1.0f);
-    const Vec3    V_TILE_WHITE_RGB (3.0f, 3.0f, 3.0f);
+    const Vec3
+        V_SKY_RGB        (0.7f, 0.6f, 1.0f),
+        V_TILE_RED_RGB   (3.0f, 1.0f, 1.0f),
+        V_TILE_WHITE_RGB (3.0f, 3.0f, 3.0f);
+
 
     // Shading function for Sky Material
     inline Vec3 shadeSky(const Vec3& v_direction) {
@@ -112,6 +131,7 @@ namespace Material {
         f_gradient *= f_gradient;
         return V_SKY_RGB * f_gradient;
     }
+
 
     // Shading function for Floor Material
     inline Vec3 shadeFloor(Vec3& v_intersection, float32 f_lambertian) {
@@ -124,10 +144,11 @@ namespace Material {
         ) * (f_lambertian * 0.2f + 0.1f);
     }
 
+
     // Shading function for Specular intensity
     inline float32 specularity(const Vec3& v_light, const Vec3& v_half_vector, float32 f_lambertian) {
         return (f_lambertian > 0.0f) ?
-            std::pow((v_light ^ v_half_vector), 99.0f) :
+            std::pow((v_light ^ v_half_vector), F_SPECULAR_POWER) :
             0.0f;
     }
 

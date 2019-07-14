@@ -49,7 +49,7 @@ namespace Scene {
 namespace Ray {
 
     /**
-     * Vanilla trace behaviour. Traces a ray into the Scene in order to determine what is hit, at what distance and
+     * Vanilla trace() behaviour. Traces a ray into the Scene in order to determine what is hit, at what distance and
      * what the surface normal (if any) is at that location. Returns the material type of the entity that was hit and
      * where relevant, updates f_distance and v_normal.
      *
@@ -127,7 +127,7 @@ namespace Ray {
 namespace Sample {
 
     /**
-     * Vanilla sample behaviour. Traces a ray into the Scene and depending on which Material was hit, calculates an
+     * Vanilla sample() behaviour. Traces a ray into the Scene and depending on which Material was hit, calculates an
      * RGB value, taking into consideration the material and lighting conditions.
      *
      * 1) Where the trace heads into the sky, we use the sky shading Material behaviour to calculate the RGB value.
@@ -163,9 +163,9 @@ namespace Sample {
             v_light = ~(
                 Vec3(
                     // lighting direction, plus a bit of randomness to generate soft shadows.
-                    9.0f + frand(),
-                    9.0f + frand(),
-                    16.0f
+                    Scene::V_LIGHT_ORIGIN.x + frand(),
+                    Scene::V_LIGHT_ORIGIN.y + frand(),
+                    Scene::V_LIGHT_ORIGIN.z
                 ) - v_intersection
             ),
 
@@ -201,20 +201,13 @@ namespace Sample {
 
 namespace Scene {
 
+    /**
+     * Main render() function
+     */
     void render(std::FILE* r_out) {
         std::fprintf(r_out, "P6 %d %d 255 ", I_IMAGE_SIZE, I_IMAGE_SIZE);
 
         Profiling::Nanotime u_start = Profiling::mark();
-
-        Vec3
-            // camera direction vectors
-            v_camera_forward = ~V_CAMERA_DIR,
-            v_camera_up      = ~(V_NORMAL_UP * v_camera_forward) * F_IMAGE_SCALE,
-            v_camera_right   = ~(v_camera_forward * v_camera_up) * F_IMAGE_SCALE,
-
-            // Offset from eye to coner of focal plane
-            v_eye_offset     = v_camera_forward + (v_camera_up + v_camera_right) * -(I_IMAGE_SIZE >> 1)
-        ;
 
         for (int y = I_IMAGE_SIZE; y--;) {
             for (int x = I_IMAGE_SIZE; x--;) {
@@ -227,17 +220,17 @@ namespace Scene {
 
                     // Random delta to be added for depth of field effects
                     Vec3 v_delta =
-                        v_camera_up    * frand(-49.5f, 49.5f) +
-                        v_camera_right * frand(-49.5f, 49.5f);
+                        V_CAMERA_UP    * frand(-49.5f, 49.5f) +
+                        V_CAMERA_RIGHT * frand(-49.5f, 49.5f);
 
                     // Accumulate the sample result into the current pixel
                     v_pixel += Sample::sample(
                         V_FOCAL_POINT + v_delta,
                         ~(
                             (
-                                v_camera_up    * (frand() + x) +
-                                v_camera_right * (frand() + y) +
-                                v_eye_offset
+                                V_CAMERA_UP    * (frand() + x) +
+                                V_CAMERA_RIGHT * (frand() + y) +
+                                V_EYE_OFFSET
                             ) * 16.0f - v_delta
                         )
                     ) * F_SAMPLE_SCALE;
