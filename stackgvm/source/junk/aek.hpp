@@ -77,6 +77,27 @@ class Vec3 {
     Vec3(const float32 v) : x(v), y(v), z(v) { }
     Vec3(const float32 a, const float32 b, const float32 c) : x(a), y(b), z(c) { }
 
+    Vec3& add(const Vec3 v) {
+        x += v.x;
+        y += v.y;
+        z += v.z;
+        return *this;
+    }
+
+    Vec3& sub(const Vec3 v) {
+        x -= v.x;
+        y -= v.y;
+        z -= v.z;
+        return *this;
+    }
+
+    Vec3& scale(const float f) {
+        x *= f;
+        y *= f;
+        z *= f;
+        return *this;
+    }
+
     // Sum two Vec3
     static Vec3 add(const Vec3& v1, const Vec3& v2) {
         return Vec3(
@@ -134,6 +155,11 @@ inline float32 frand() {
     return F_INV_RAND_MAX * rand();
 }
 
+// Get a random number in the range f_min - f_max
+inline float32 frand(const float32 f_min, const float32 f_max) {
+    return frand() * (f_max - f_min) + f_min;
+}
+
 inline Vec3 calculateHalfVector(const Vec3& v_direction, const Vec3& v_normal) {
     return Vec3::add(
         v_direction,
@@ -154,10 +180,11 @@ inline Vec3 calculateHalfVector(const Vec3& v_direction, const Vec3& v_normal) {
 namespace Scene {
 
     // Basic Data
-    const Vec3 V_CAMERA_DIR  (-6.0f, -16.0f,  0.0f);
-    const Vec3 V_FOCAL_POINT (17.0f,  16.0f,  8.0f);
-    const Vec3 V_NORMAL_UP   (0.0f,    0.0f,  1.0f);
-    const Vec3 V_AMBIENT_RGB (13.0f,  13.0f, 13.0f);
+    const Vec3 V_CAMERA_DIR   (-6.0f, -16.0f,  0.0f);
+    const Vec3 V_FOCAL_POINT  (17.0f,  16.0f,  8.0f);
+    const Vec3 V_NORMAL_UP    (0.0f,    0.0f,  1.0f);
+    const Vec3 V_AMBIENT_RGB  (13.0f,  13.0f, 13.0f);
+    const Vec3 V_LIGHT_ORIGIN ( 9.0f,   9.0f, 16.0f);
 
     // Bitmap
     const int32 AI_BITMAP[] = {

@@ -318,9 +318,9 @@ namespace Sample {
         v_light = Vec3::normalize(
             Vec3::sub(
                 Vec3( // lighting direction, plus a bit of randomness to generate soft shadows.
-                    9.0f + frand(),
-                    9.0f + frand(),
-                    16.0f
+                    Scene::V_LIGHT_ORIGIN.x + frand(),
+                    Scene::V_LIGHT_ORIGIN.y + frand(),
+                    Scene::V_LIGHT_ORIGIN.z
                 ),
                 v_intersection
             )
@@ -479,6 +479,47 @@ namespace Sample {
 
 namespace Scene {
 
+    // camera direction vectors
+    const Vec3
+        V_CAMERA_FORWARD = Vec3::normalize( // Unit forwards
+            Scene::V_CAMERA_DIR
+        ),
+
+        V_CAMERA_UP = Vec3::scale( // Unit up - Z is up in this system
+            Vec3::normalize(
+                Vec3::cross(
+                    Scene::V_NORMAL_UP,
+                    V_CAMERA_FORWARD
+                )
+            ),
+            F_IMAGE_SCALE
+        ),
+
+        V_CAMERA_RIGHT = Vec3::scale( // Unit right
+            Vec3::normalize(
+                Vec3::cross(V_CAMERA_FORWARD, V_CAMERA_UP)
+            ),
+            F_IMAGE_SCALE
+        ),
+
+        V_EYE_OFFSET = Vec3::add( // Offset frm eye to coner of focal plane
+            Vec3::scale(
+                Vec3::add(V_CAMERA_UP, V_CAMERA_RIGHT),
+                -(I_IMAGE_SIZE >> 1)
+            ),
+            V_CAMERA_FORWARD
+        ),
+
+        V_PROBE_DELTA = Vec3::add(
+            V_CAMERA_UP,
+            V_CAMERA_RIGHT
+        ),
+
+        V_PROBE_ORIGIN = Vec3::add(
+            Scene::V_FOCAL_POINT,
+            V_PROBE_DELTA
+        );
+
     void render(std::FILE* out) {
 
         INIT_RAY_DENSITY_MAP("aek3b_rays.ppm");
@@ -489,47 +530,6 @@ namespace Scene {
         PROF_ENTER(Profiling::Entry::I_RENDER);
         TIME_RENDER_INIT();
 
-        // camera direction vectors
-        Vec3
-            v_camera_forward = Vec3::normalize( // Unit forwards
-                Scene::V_CAMERA_DIR
-            ),
-
-            v_camera_up = Vec3::scale( // Unit up - Z is up in this system
-                Vec3::normalize(
-                    Vec3::cross(
-                        Scene::V_NORMAL_UP,
-                        v_camera_forward
-                    )
-                ),
-                F_IMAGE_SCALE
-            ),
-
-            v_camera_right = Vec3::scale( // Unit right
-                Vec3::normalize(
-                    Vec3::cross(v_camera_forward, v_camera_up)
-                ),
-                F_IMAGE_SCALE
-            ),
-
-            v_eye_offset = Vec3::add( // Offset frm eye to coner of focal plane
-                Vec3::scale(
-                    Vec3::add(v_camera_up, v_camera_right),
-                    -(I_IMAGE_SIZE >> 1)
-                ),
-                v_camera_forward
-            ),
-
-            v_probe_delta = Vec3::add(
-                v_camera_up,
-                v_camera_right
-            ),
-
-            v_probe_origin = Vec3::add(
-                Scene::V_FOCAL_POINT,
-                v_probe_delta
-            )
-        ;
 
         for (int y = I_IMAGE_SIZE; y--;) {
             int i_min_adaptive_ray_count = Sample::I_ADAPTIVE_BUFFER_SIZE;
@@ -542,19 +542,19 @@ namespace Scene {
                     Vec3::sub(
                         Vec3::scale(
                             Vec3::add(
-                                Vec3::scale(v_camera_up, 0.5f + x),
+                                Vec3::scale(V_CAMERA_UP, 0.5f + x),
                                 Vec3::add(
-                                    Vec3::scale(v_camera_right, 0.5f + y),
-                                    v_eye_offset
+                                    Vec3::scale(V_CAMERA_RIGHT, 0.5f + y),
+                                    V_EYE_OFFSET
                                 )
                             ),
                             16.0f
                         ),
-                        v_probe_delta
+                        V_PROBE_DELTA
                     )
                 );
 
-                Material::Kind i_material = Ray::traceMaterialOnly(v_probe_origin, v_probe_direction, 1.10f, -0.01f);
+                Material::Kind i_material = Ray::traceMaterialOnly(V_PROBE_ORIGIN, v_probe_direction, 1.10f, -0.01f);
 
                 if (i_material != Material::I_SKY) {
                     Vec3 av_samples[Sample::I_ADAPTIVE_BUFFER_SIZE];
@@ -570,8 +570,8 @@ namespace Scene {
 
                         // Random delta to be added for depth of field effects
                         Vec3 v_delta = Vec3::add(
-                            Vec3::scale(v_camera_up,    (frand() - 0.5f) * 99.0f),
-                            Vec3::scale(v_camera_right, (frand() - 0.5f) * 99.0f)
+                            Vec3::scale(V_CAMERA_UP,    frand(-49.5f, 49.5f)),
+                            Vec3::scale(V_CAMERA_RIGHT, frand(-49.5f, 49.5f))
                         );
 
                         // Buffer the most recent sample
@@ -586,10 +586,10 @@ namespace Scene {
                                 Vec3::sub(
                                     Vec3::scale(
                                         Vec3::add(
-                                            Vec3::scale(v_camera_up, frand() + x),
+                                            Vec3::scale(V_CAMERA_UP, frand() + x),
                                             Vec3::add(
-                                                Vec3::scale(v_camera_right, frand() + y),
-                                                v_eye_offset
+                                                Vec3::scale(V_CAMERA_RIGHT, frand() + y),
+                                                V_EYE_OFFSET
                                             )
                                         ),
                                         16.0f
@@ -600,11 +600,7 @@ namespace Scene {
                         );
 
                         // Accumulate the sample result into the current pixel
-                        v_pixel = Vec3::add(
-                            v_sample,
-                            v_pixel
-                        );
-
+                        v_pixel.add(v_sample);
 
                         // Check if the short duration average is close enough to the all time average that we believe
                         // the pixel value to be stable.
@@ -619,7 +615,7 @@ namespace Scene {
 
                             Vec3 v_last = av_samples[0];
                             for (int s = 1; s < Sample::I_ADAPTIVE_BUFFER_SIZE; ++s) {
-                                v_last = Vec3::add(v_last, av_samples[s]);
+                                v_last.add(av_samples[s]);
                             }
 
                             v_last = Vec3::sub(
@@ -630,20 +626,19 @@ namespace Scene {
                             float32 f_dot_sum = Vec3::dot(v_last, v_last);
 
                             if (f_dot_sum < Sample::F_RGB_SIMILARITY_LIMIT) {
-                                v_pixel = Vec3::scale(
-                                    v_pixel,
-                                    (float32)I_MAX_RAYS / (float32)(i_ray_count + 1)
-                                );
+                                v_pixel.scale((float32)I_MAX_RAYS / (float32)(i_ray_count + 1));
                                 break;
                             }
                         }
                     }
 
-                    i_min_adaptive_ray_count = i_ray_count >> 1;
-                    if (i_min_adaptive_ray_count < Sample::I_ADAPTIVE_BUFFER_SIZE) {
-                        i_min_adaptive_ray_count = Sample::I_ADAPTIVE_BUFFER_SIZE;
-                    }
-                    v_pixel = Vec3::scale(v_pixel, F_SAMPLE_SCALE);
+                    // Update the minimum adaptive ray count parameter
+                    i_ray_count >>= 1;
+                    i_min_adaptive_ray_count = i_min_adaptive_ray_count < Sample::I_ADAPTIVE_BUFFER_SIZE ?
+                        i_min_adaptive_ray_count = Sample::I_ADAPTIVE_BUFFER_SIZE :
+                        i_ray_count;
+
+                    v_pixel.scale(F_SAMPLE_SCALE);
                     WRITE_RAY_DENSITY(ray_count);
 
                 } else {
@@ -651,7 +646,7 @@ namespace Scene {
                     WRITE_RAY_DENSITY(0);
                 }
 
-                v_pixel = Vec3::add(v_pixel, Scene::V_AMBIENT_RGB);
+                v_pixel.add(Scene::V_AMBIENT_RGB);
 
                 // Convert to integers and push out to ppm output stream
                 std::fprintf(out, "%c%c%c", (int)v_pixel.x, (int)v_pixel.y, (int)v_pixel.z);
