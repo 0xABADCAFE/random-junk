@@ -20,17 +20,22 @@ namespace Scene {
     Vec3* av_spheres    = 0;
     int   i_num_spheres = 0;
 
+    /**
+     * Scene initialisation now unpacks the awkward bitmap representation of the scene objects into an array that can
+     * be directly traversed within intersection test code. Given how many times the intersection test happens, this
+     * represents a large time saving over v1.
+     */
     void init() {
         // Calclulate how many spheres we have, allocate space and unpack the bitmap
         av_spheres    = 0;
         i_num_spheres = 0;
         int i_column  = 0;
         for (int i = 0; i < I_BITMAP_ROWS; ++i) {
-            i_num_spheres += __builtin_popcount(AI_BITMAP[i]);
+            i_num_spheres += __builtin_popcount(AI_BITMAP[i]); // builtin, returns number of bits set in an int.
             i_column |= AI_BITMAP[i];
         }
 
-        i_column = 8 * sizeof(int32) - __builtin_clz(i_column);
+        i_column = 8 * sizeof(int32) - __builtin_clz(i_column); // builtin, returns number of leading zeros in an int.
 
         av_spheres = new Vec3[i_num_spheres];
         for (int i = 0; i_column--;) {
@@ -208,6 +213,45 @@ namespace Sample {
 
 namespace Scene {
 
+    /**
+     * Vanilla renderPixel() behaviour. Slightly tweaked over the v1 version so that scaling of the samples happens
+     * once after summation.
+     */
+    Vec3 renderPixel(const int x, const int y) {
+        // Use a vector for the pixel. The values here are in the range 0.0 - 255.0 rather than the 0.0 - 1.0
+        Vec3 v_pixel;
+
+        // Cast 64 rays per pixel for sampling
+        for (int ray_count = I_MAX_RAYS; ray_count--;) {
+
+            // Random delta to be added for depth of field effects
+            Vec3 v_delta =
+                V_CAMERA_UP    * frand(-49.5f, 49.5f) +
+                V_CAMERA_RIGHT * frand(-49.5f, 49.5f);
+
+            // Accumulate the sample result into the current pixel
+            v_pixel += Sample::sample(
+                V_FOCAL_POINT + v_delta,
+                ~(
+                    (
+                        V_CAMERA_UP    * (frand() + x) +
+                        V_CAMERA_RIGHT * (frand() + y) +
+                        V_EYE_OFFSET
+                    ) * 16.0f - v_delta
+                )
+            );
+        }
+
+        // Scale the sample and add on the ambient term
+        v_pixel *= F_SAMPLE_SCALE;
+        v_pixel += V_AMBIENT_RGB;
+        return v_pixel;
+    }
+
+    /**
+     * Main render() function. Essentially this just renders the image one pixel at a time and converts the Vec3 output
+     * to an integer RGB value for writing to disk.
+     */
     void render(std::FILE* r_out) {
         std::fprintf(r_out, "P6 %d %d 255 ", I_IMAGE_SIZE, I_IMAGE_SIZE);
 
@@ -215,35 +259,7 @@ namespace Scene {
 
         for (int y = I_IMAGE_SIZE; y--;) {
             for (int x = I_IMAGE_SIZE; x--;) {
-
-                // Use a vector for the pixel. The values here are in the range 0.0 - 255.0 rather than the 0.0 - 1.0
-                Vec3 v_pixel;
-
-                // Cast 64 rays per pixel for sampling
-                for (int ray_count = I_MAX_RAYS; ray_count--;) {
-
-                    // Random delta to be added for depth of field effects
-                    Vec3 v_delta =
-                        V_CAMERA_UP    * frand(-49.5f, 49.5f) +
-                        V_CAMERA_RIGHT * frand(-49.5f, 49.5f);
-
-                    // Accumulate the sample result into the current pixel
-                    v_pixel += Sample::sample(
-                        V_FOCAL_POINT + v_delta,
-                        ~(
-                            (
-                                V_CAMERA_UP    * (frand() + x) +
-                                V_CAMERA_RIGHT * (frand() + y) +
-                                V_EYE_OFFSET
-                            ) * 16.0f - v_delta
-                        )
-                    );
-                }
-
-                // Scale the sample and add on the ambient term
-                v_pixel *= F_SAMPLE_SCALE;
-                v_pixel += V_AMBIENT_RGB;
-
+                Vec3 v_pixel = renderPixel(x, y);
                 // Convert to integers and push out to ppm output stream
                 std::fprintf(
                     r_out,

@@ -22,10 +22,9 @@ const float32 F_IMAGE_SCALE   = 1.024f / I_IMAGE_SIZE;
 const float32 F_RGB_SCALE     = 3.5f;
 const float32 F_SAMPLE_SCALE  = F_RGB_SCALE * (64.0f / I_MAX_RAYS);
 
-const float32 F_INV_RAND_MAX = 1.0f / RAND_MAX;
-
 // Get a random number in the range 0.0 - 1.0
 inline float32 frand() {
+    static const float32 F_INV_RAND_MAX = 1.0f / RAND_MAX;
     return F_INV_RAND_MAX * rand();
 }
 
@@ -89,6 +88,9 @@ namespace Scene {
     // Scene initialisation
     void init();
 
+    // Render a single pixel
+    Vec3 renderPixel(const int x, const int y);
+
     // Render the Scene to a file output
     void render(std::FILE* r_out, int i_image_size);
 
@@ -113,8 +115,8 @@ namespace Material {
 
     // Material properties
     const float32
-        F_MIRROR_ALBEDO  = 0.75f,
-        F_SPECULAR_POWER = 99.0f
+        F_MIRROR_ALBEDO  = 0.75f, // How reflective I_MIRROR material is
+        F_SPECULAR_POWER = 99.0f  // Power to raise the exponent to for specular reflections on I_MIRROR materials
     ;
 
     // Material Colours

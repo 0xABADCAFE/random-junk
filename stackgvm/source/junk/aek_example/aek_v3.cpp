@@ -22,17 +22,22 @@ namespace Scene {
     Vec3* av_spheres    = 0;
     int   i_num_spheres = 0;
 
+    /**
+     * Scene initialisation now unpacks the awkward bitmap representation of the scene objects into an array that can
+     * be directly traversed within intersection test code. Given how many times the intersection test happens, this
+     * represents a large time saving over v1.
+     */
     void init() {
         // Calclulate how many spheres we have, allocate space and unpack the bitmap
         av_spheres    = 0;
         i_num_spheres = 0;
         int i_column  = 0;
         for (int i = 0; i < I_BITMAP_ROWS; ++i) {
-            i_num_spheres += __builtin_popcount(AI_BITMAP[i]);
+            i_num_spheres += __builtin_popcount(AI_BITMAP[i]);  // builtin, returns number of bits set in an int.
             i_column |= AI_BITMAP[i];
         }
 
-        i_column = 8 * sizeof(int32) - __builtin_clz(i_column);
+        i_column = 8 * sizeof(int32) - __builtin_clz(i_column); // builtin, returns number of leading zeros in an int.
 
         av_spheres = new Vec3[i_num_spheres];
         for (int i = 0; i_column--;) {
@@ -382,15 +387,103 @@ namespace Scene {
         V_PROBE_ORIGIN   = V_FOCAL_POINT + V_PROBE_DELTA
     ;
 
+    /**
+     * Adaptive variant of renderPixel() that examines how the last Sample::I_ADAPTIVE_BUFFER_SIZE samples differ from
+     * the total running average so far. Where the difference is less than Sample::F_RGB_SIMILARITY_LIMIT, we assume
+     * that the value will not become strongly divergent later and can early out the sampling. This allows for large
+     * performance improvements as many regions of the image will resolve quickly.
+     *
+     * In order to improve numerical stability, we assert that the current pixel cannot require less than half the
+     * number of samples of the preceding pixel.
+     */
+    Vec3 renderPixelAdaptive(const int x, const int y, Material::Kind i_material, int& i_min_adaptive_ray_count) {
+
+        // Round robin buffer of the most recent number of samples.
+        Vec3 av_samples[Sample::I_ADAPTIVE_BUFFER_SIZE];
+        Vec3 v_pixel;
+
+        // Decide which sample function to use based on the material that was passed in.
+        Sample::Function samplefn = (Material::I_MIRROR == i_material) ?
+            Sample::sampleFirstBounce :
+            Sample::sampleNoBounce
+        ;
+
+        int i_ray_count = 0;
+
+        // Cast up to MAX_RAYS rays per pixel for sampling
+        for (; i_ray_count < I_MAX_RAYS; ++i_ray_count) {
+
+            // Random delta to be added for depth of field effects
+            Vec3 v_delta =
+                V_CAMERA_UP    * frand(-49.5f, 49.5f) +
+                V_CAMERA_RIGHT * frand(-49.5f, 49.5f);
+
+            // Buffer the most recent sample in a
+            Vec3& v_sample = av_samples[i_ray_count & (Sample::I_ADAPTIVE_BUFFER_SIZE - 1)];
+
+            // Accumulate the sample result into the current pixel
+            v_sample = samplefn(
+                V_FOCAL_POINT + v_delta,
+                ~(
+                    (
+                        V_CAMERA_UP    * (frand() + x) +
+                        V_CAMERA_RIGHT * (frand() + y) +
+                        V_EYE_OFFSET
+                    ) * 16.0f - v_delta
+                )
+            );
+
+            // Accumulate the sample result into the current pixel
+            v_pixel += v_sample;
+
+            // Check if the short duration average is close enough to the all time average that we believe
+            // the pixel value to be stable.
+            if (
+                i_ray_count >= i_min_adaptive_ray_count &&
+                (i_ray_count & (Sample::I_ADAPTIVE_BUFFER_SIZE - 1)) == (Sample::I_ADAPTIVE_BUFFER_SIZE - 1)
+            ) {
+                Vec3 v_average = v_pixel * (1.0f/(i_ray_count + 1));
+                Vec3 v_last    = av_samples[0];
+                for (int s = 1; s < Sample::I_ADAPTIVE_BUFFER_SIZE; ++s) {
+                    v_last += av_samples[s];
+                }
+
+                v_last = v_last * (1.0f/Sample::I_ADAPTIVE_BUFFER_SIZE) - v_average;
+
+                float32 f_dot_sum = v_last ^ v_last;
+
+                if (f_dot_sum < Sample::F_RGB_SIMILARITY_LIMIT) {
+                    v_pixel *= (float32)I_MAX_RAYS / (float32)(i_ray_count + 1);
+                    break;
+                }
+            }
+        }
+
+        // Update the minimum adaptive ray count parameter
+        i_ray_count >>= 1;
+        i_min_adaptive_ray_count = i_min_adaptive_ray_count < Sample::I_ADAPTIVE_BUFFER_SIZE ?
+            i_min_adaptive_ray_count = Sample::I_ADAPTIVE_BUFFER_SIZE :
+            i_ray_count;
+
+        v_pixel *= F_SAMPLE_SCALE;
+        return v_pixel;
+    }
+
+    /**
+     * Main render() function. Before rendering a Pixel, performs a probe to see what Material(s) are expected to be
+     * hit for the primary rays. This is then used to invoke one of the optimised sample() variants.
+     */
     void render(std::FILE* r_out) {
 
         std::fprintf(r_out, "P6 %d %d 255 ", I_IMAGE_SIZE, I_IMAGE_SIZE);
 
+        Profiling::Nanotime u_start = Profiling::mark();
+
         for (int y = I_IMAGE_SIZE; y--;) {
+            // Re-initialise the minimum adaptive ray count value per image line
             int i_min_adaptive_ray_count = Sample::I_ADAPTIVE_BUFFER_SIZE;
             for (int x = I_IMAGE_SIZE; x--;) {
-                // Use a vector for the pixel. The values here are in the range 0.0 - 255.0 rather than the 0.0 - 1.0
-                Vec3 v_pixel(0.0f);
+                Vec3 v_pixel = Scene::V_AMBIENT_RGB;
 
                 // Perform a material probe first. If we don't hit a sphere we can use an optimised sample function
                 Vec3 v_probe_direction = ~(
@@ -402,6 +495,11 @@ namespace Scene {
                     ) * 16.0f - V_PROBE_DELTA
                 );
 
+                // The material probe slightly exaggerates the size of the spheres so that we will use the more
+                // in-depth sampling method within the vicinity, preserving the DoF and antialias on the edges.
+                // Similarly, the apparent horizon is adjusted upwards slightly so that we do not just short circuit
+                // to the sky shading routine along the horizon.
+
                 Material::Kind i_material = Ray::traceMaterialOnly(
                     V_PROBE_ORIGIN,
                     v_probe_direction,
@@ -409,78 +507,13 @@ namespace Scene {
                     F_FLOOR_PROBE_OFFSET
                 );
 
-                if (i_material != Material::I_SKY) {
-                    Vec3 av_samples[Sample::I_ADAPTIVE_BUFFER_SIZE];
-                    Sample::Function samplefn = (Material::I_MIRROR == i_material) ?
-                        Sample::sampleFirstBounce :
-                        Sample::sampleNoBounce
-                    ;
-
-                    int i_ray_count = 0;
-
-                    // Cast up to MAX_RAYS rays per pixel for sampling
-                    for (; i_ray_count < I_MAX_RAYS; ++i_ray_count) {
-
-                        // Random delta to be added for depth of field effects
-                        Vec3 v_delta =
-                            V_CAMERA_UP    * frand(-49.5f, 49.5f) +
-                            V_CAMERA_RIGHT * frand(-49.5f, 49.5f);
-
-                        // Buffer the most recent sample
-                        Vec3& v_sample = av_samples[i_ray_count & (Sample::I_ADAPTIVE_BUFFER_SIZE - 1)];
-
-                        // Accumulate the sample result into the current pixel
-                        v_sample = samplefn(
-                            V_FOCAL_POINT + v_delta,
-                            ~(
-                                (
-                                    V_CAMERA_UP    * (frand() + x) +
-                                    V_CAMERA_RIGHT * (frand() + y) +
-                                    V_EYE_OFFSET
-                                ) * 16.0f - v_delta
-                            )
-                        );
-
-
-
-                        // Accumulate the sample result into the current pixel
-                        v_pixel += v_sample;
-
-                        // Check if the short duration average is close enough to the all time average that we believe
-                        // the pixel value to be stable.
-                        if (
-                            i_ray_count >= i_min_adaptive_ray_count &&
-                            (i_ray_count & (Sample::I_ADAPTIVE_BUFFER_SIZE - 1)) == (Sample::I_ADAPTIVE_BUFFER_SIZE - 1)
-                        ) {
-                            Vec3 v_average = v_pixel * (1.0f/(i_ray_count + 1));
-
-                            Vec3 v_last    = av_samples[0];
-                            for (int s = 1; s < Sample::I_ADAPTIVE_BUFFER_SIZE; ++s) {
-                                v_last += av_samples[s];
-                            }
-
-                            v_last = v_last * (1.0f/Sample::I_ADAPTIVE_BUFFER_SIZE) - v_average;
-
-                            float32 f_dot_sum = v_last ^ v_last;
-
-                            if (f_dot_sum < Sample::F_RGB_SIMILARITY_LIMIT) {
-                                v_pixel *= (float32)I_MAX_RAYS / (float32)(i_ray_count + 1);
-                                break;
-                            }
-                        }
-                    }
-
-                    i_min_adaptive_ray_count = i_ray_count >> 1;
-                    if (i_min_adaptive_ray_count < Sample::I_ADAPTIVE_BUFFER_SIZE) {
-                        i_min_adaptive_ray_count = Sample::I_ADAPTIVE_BUFFER_SIZE;
-                    }
-                    v_pixel *= F_SAMPLE_SCALE;
-
+                // If we've hit sky, then we don't need to actually do any further sampling. Instead we can shade the
+                // pixel using only the probe vector, which was traced right through the centre.
+                if (Material::I_SKY == i_material) {
+                    v_pixel += Material::shadeSky(v_probe_direction) * (I_MAX_RAYS * F_SAMPLE_SCALE);
                 } else {
-                    v_pixel = Material::shadeSky(v_probe_direction) * (I_MAX_RAYS * F_SAMPLE_SCALE);
+                    v_pixel += renderPixelAdaptive(x, y, i_material, i_min_adaptive_ray_count);
                 }
-
-                v_pixel += Scene::V_AMBIENT_RGB;
 
                 // Convert to integers and push out to ppm output stream
                 std::fprintf(
@@ -493,7 +526,12 @@ namespace Scene {
             }
         }
 
+        Profiling::Nanotime u_end = Profiling::mark();
 
+        std::printf(
+            "Total render() time %0.6f seconds\n",
+            (float64)(u_end - u_start) / 1e9
+        );
     }
 
 }

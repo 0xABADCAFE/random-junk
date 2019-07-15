@@ -202,7 +202,40 @@ namespace Sample {
 namespace Scene {
 
     /**
-     * Main render() function
+     * Vanilla renderPixel() behaviour. Traces many rays through the pixel, each with a random pertubation to the
+     * direction and focal point to ensure that a stochastically sampled RGB value is generated.
+     */
+    Vec3 renderPixel(const int x, const int y) {
+        // Use a vector for the pixel. The values here are in the range 0.0 - 255.0 rather than the 0.0 - 1.0
+        Vec3 v_pixel = V_AMBIENT_RGB;
+
+        // Cast 64 rays per pixel for sampling
+        for (int ray_count = I_MAX_RAYS; ray_count--;) {
+
+            // Random delta to be added for depth of field effects
+            Vec3 v_delta =
+                V_CAMERA_UP    * frand(-49.5f, 49.5f) +
+                V_CAMERA_RIGHT * frand(-49.5f, 49.5f);
+
+            // Accumulate the sample result into the current pixel
+            v_pixel += Sample::sample(
+                V_FOCAL_POINT + v_delta,
+                ~(
+                    (
+                        V_CAMERA_UP    * (frand() + x) +
+                        V_CAMERA_RIGHT * (frand() + y) +
+                        V_EYE_OFFSET
+                    ) * 16.0f - v_delta
+                )
+            ) * F_SAMPLE_SCALE;
+        }
+        return v_pixel;
+    }
+
+
+    /**
+     * Main render() function. Essentially this just renders the image one pixel at a time and converts the Vec3 output
+     * to an integer RGB value for writing to disk.
      */
     void render(std::FILE* r_out) {
         std::fprintf(r_out, "P6 %d %d 255 ", I_IMAGE_SIZE, I_IMAGE_SIZE);
@@ -211,31 +244,7 @@ namespace Scene {
 
         for (int y = I_IMAGE_SIZE; y--;) {
             for (int x = I_IMAGE_SIZE; x--;) {
-
-                // Use a vector for the pixel. The values here are in the range 0.0 - 255.0 rather than the 0.0 - 1.0
-                Vec3 v_pixel = V_AMBIENT_RGB;
-
-                // Cast 64 rays per pixel for sampling
-                for (int ray_count = I_MAX_RAYS; ray_count--;) {
-
-                    // Random delta to be added for depth of field effects
-                    Vec3 v_delta =
-                        V_CAMERA_UP    * frand(-49.5f, 49.5f) +
-                        V_CAMERA_RIGHT * frand(-49.5f, 49.5f);
-
-                    // Accumulate the sample result into the current pixel
-                    v_pixel += Sample::sample(
-                        V_FOCAL_POINT + v_delta,
-                        ~(
-                            (
-                                V_CAMERA_UP    * (frand() + x) +
-                                V_CAMERA_RIGHT * (frand() + y) +
-                                V_EYE_OFFSET
-                            ) * 16.0f - v_delta
-                        )
-                    ) * F_SAMPLE_SCALE;
-                }
-
+                Vec3 v_pixel = renderPixel(x, y);
                 // Convert to integers and push out to ppm output stream
                 std::fprintf(
                     r_out,
