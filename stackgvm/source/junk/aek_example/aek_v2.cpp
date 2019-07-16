@@ -1,12 +1,26 @@
-// De-golfed version of the Business Card Raytracer by Andrew Kensler
-
 #include "aek.hpp"
 
-#ifdef __LP64__
-    #define PPMNAME "aek_v2_64.ppm"
-#else
-    #define PPMNAME "aek_v2_32.ppm"
-#endif
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Main
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+int main() {
+    const char* S_PPMNAME = "aek_v2.ppm";
+    std::FILE* r_out = std::fopen(S_PPMNAME, "wb");
+    if (r_out) {
+        std::printf("Rendering to %s...\n", S_PPMNAME);
+        Scene::init();
+        Scene::render(r_out);
+        Scene::done();
+        std::fclose(r_out);
+    } else {
+        std::printf("Unable to open output file\n");
+    }
+    return 0;
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -31,7 +45,7 @@ namespace Scene {
         i_num_spheres = 0;
         int i_column  = 0;
         for (int i = 0; i < I_BITMAP_ROWS; ++i) {
-            i_num_spheres += __builtin_popcount(AI_BITMAP[i]); // builtin, returns number of bits set in an int.
+            i_num_spheres += __builtin_popcount(AI_BITMAP[i]);  // builtin, returns number of bits set in an int.
             i_column |= AI_BITMAP[i];
         }
 
@@ -282,22 +296,4 @@ namespace Scene {
 }
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-//  Main
-//
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-int main() {
-    std::FILE* r_out = std::fopen(PPMNAME, "wb");
-    if (r_out) {
-        std::printf("Rendering to " PPMNAME "...\n");
-        Scene::init();
-        Scene::render(r_out);
-        Scene::done();
-        std::fclose(r_out);
-    } else {
-        std::printf("Unable to open output file\n");
-    }
-    return 0;
-}
