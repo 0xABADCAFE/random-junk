@@ -22,21 +22,6 @@ const float32 F_IMAGE_SCALE   = 1.024f / I_IMAGE_SIZE;
 const float32 F_RGB_SCALE     = 3.5f;
 const float32 F_SAMPLE_SCALE  = F_RGB_SCALE * (64.0f / I_MAX_RAYS);
 
-// Get a random number in the range 0.0 - 1.0
-inline float32 frand() {
-    static const float32 F_INV_RAND_MAX = 1.0f / RAND_MAX;
-    return F_INV_RAND_MAX * rand();
-}
-
-inline float32 frand(const float32 f_min, const float32 f_max) {
-    return frand() * (f_max - f_min) + f_min;
-}
-
-inline Vec3 calculateHalfVector(const Vec3& v_direction, const Vec3& v_normal) {
-    return v_direction + v_normal * (v_normal ^ v_direction) * -2.0f;
-}
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //  Scene
@@ -92,7 +77,7 @@ namespace Scene {
     Vec3 renderPixel(const int x, const int y);
 
     // Render the Scene to a file output
-    void render(std::FILE* r_out, int i_image_size);
+    void render(std::FILE* r_out);
 
     // Scene completion
     void done();
@@ -204,5 +189,19 @@ namespace Profiling {
         return   u_mark + r_current.tv_nsec;
     }
 };
+
+// Get a random number in the range 0.0 - 1.0
+inline float32 frand() {
+    static const float32 F_INV_RAND_MAX = 1.0f / RAND_MAX;
+    return F_INV_RAND_MAX * rand();
+}
+
+inline float32 frand(const float32 f_min, const float32 f_max) {
+    return frand() * (f_max - f_min) + f_min;
+}
+
+inline Vec3 calculateHalfVector(const Vec3& v_direction, const Vec3& v_normal) {
+    return v_direction + v_normal * (v_normal ^ v_direction) * -2.0f;
+}
 
 #endif
