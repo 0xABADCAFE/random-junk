@@ -409,7 +409,7 @@ GFUNC(trace) {
     fclt_il     (0, gf_distance_min, f_trace_p, 9 + BOC_SIZE)                               // BOC_SIZE
         copy_ll     (f_trace_p, f_trace_distance)                                           // 3 [1, 1, 1]
         vcopy_il    (gv_normal_up, v_trace_normal)                                          // 3 [1, 1, 1]
-        load_sl     (127, i_trace_material)                                                 // 3 [1, 1, 1]
+        load_sl     (1, i_trace_material)                                                   // 3 [1, 1, 1]
 
 // Check if trace maybe hits a sphere
 //     for (int32 j = 9; j--;) {
@@ -496,7 +496,7 @@ GFUNC(trace) {
                     vfmul_lll   (v_trace_direction, f_trace_distance, v_trace_temp)         // 4 [1, 1, 1, 1]
                     vadd_lll    (v_trace_temp, v_trace_p, v_trace_temp)                     // 4 [1, 1, 1, 1]
                     vnorm_ll    (v_trace_temp, v_trace_normal)                              // 3 [1, 1, 1]
-                    load_sl     (64, i_trace_material)                                      // 3 [1, 1, 1]
+                    load_sl     (2, i_trace_material)                                       // 3 [1, 1, 1]
 // k--
     dbnn_l      (f_trace_k, -(27 + 3*BOC_SIZE) - (40 + BOC_SIZE))                           // 4 [1, 1, 2]
 // j--
@@ -633,7 +633,7 @@ GFUNC(sample) {
 //       (lambertian * 0.2 + 0.1)
 //     );
 //   }
-    bbc_sl      (0, m_sample_temp_1, 35 + 2*BOC_SIZE)                           // BOC_SIZE
+    bne_ls      (m_sample_temp_1, 1, 35 + 2*BOC_SIZE)                           // BOC_SIZE
         fmul_ill    (gf_point_2, f_sample_lambertian, f_sample_lambertian)      // 4 [1, 1, 1, 1]
         fadd_ill    (gf_point_1, f_sample_lambertian, f_sample_lambertian)      // 4 [1, 1, 1, 1]
         vfmul_lil   (v_sample_intersection, gf_point_2, v_sample_intersection)  // 4 [1, 1, 1, 1]

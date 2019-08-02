@@ -2,16 +2,13 @@
     #define _GVM_PROFILING_HPP_
 namespace GVM {
     #ifdef _GVM_OPT_PROFILING_
-    class Profiler {
-        public:
-            struct FuncProfile {
-                uint32  callCount;
-                float32 incWallTime;
-                float32 childWallTime;
-                float32 minIncWallTime;
-                float32 maxIncWallTime;
-            };
 
+    /**
+     * Profiler
+     *
+     * Basic profiling class. We only emit this code when making a profiled build.
+     */
+    class Profiler {
         public:
             static Result init(const size_t numFunctions, const size_t maxCallDepth);
             static void done();
@@ -19,12 +16,30 @@ namespace GVM {
             static void enterFunction(const uint16 id);
             static void leaveFunction();
 
+            static void calibrate();
+
         private:
+            /**
+             * FuncProfile
+             *
+             * Tracks time spent in functions and call count
+             */
+            struct FuncProfile {
+                NanoTime::Value incWallTime;
+                NanoTime::Value childWallTime;
+                uint32 callCount;
+            };
+
+            /**
+             * StackEntry
+             *
+             * Tracks current position and start time stamps in the callgraph
+             */
             struct StackEntry {
-                float32 mark;
-                float32 childAccum;
-                uint16  functionId;
-                uint16  reserved;
+                NanoTime::Value mark;
+                NanoTime::Value childAccum;
+                uint16 functionId;
+                uint16 reserved;
             };
 
             // All the profiling data is allocated together
@@ -38,8 +53,6 @@ namespace GVM {
             static StackEntry*   profileStack;
             static size_t        numFunctions;
             static size_t        maxCallDepth;
-
-            static FloatClock    timer;
     };
         #define PROFILE_ENTRY(f)    Profiler::enterFunction(f)
         #define PROFILE_EXIT()      Profiler::leaveFunction()
