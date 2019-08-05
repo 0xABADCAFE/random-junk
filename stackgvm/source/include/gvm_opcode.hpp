@@ -44,6 +44,8 @@ namespace GVM {
             _ADDA_SI0,  // Add small integer to indirect[0]
             _ADDA_SI1,  // Add small integer to indirect[1]
 
+            _SWPIDX,    // Exchange indirect[0] and indirect[1]
+
             _LOAD_L0, // Load local reference directly into indirect[0]
             _LOAD_L1, // Load local reference directly into indirect[1]
 
@@ -95,13 +97,14 @@ namespace GVM {
             _NEG_LI,
             _NEG_II,
 
-            // Three operand integer addition: Commutative, 4 unique variants
+            // Three operand integer addition: Commutative, 4 unique variants plus 1 extended address mode
             _ADD_LLL,
             _ADD_ILL,
             _ADD_LLI,
             _ADD_ILI,
+            _ADD_X,
 
-            // Three operand integer subtraction: Noncommutative, 7 unique variants
+            // Three operand integer subtraction: Noncommutative, 7 unique variants plus 1 extended address mode
             _SUB_LLL,
             _SUB_ILL,
             _SUB_LLI,
@@ -109,14 +112,16 @@ namespace GVM {
             _SUB_LIL,
             _SUB_IIL,
             _SUB_LII,
+            _SUB_X,
 
-            // Three operand integer multiplication: Commutative, 4 unique variants
+            // Three operand integer multiplication: Commutative, 4 unique variants plus 1 extended address mode
             _MUL_LLL,
             _MUL_ILL,
             _MUL_LLI,
             _MUL_ILI,
+            _MUL_X,
 
-            // Three operand integer division: Noncommutative, 7 unique variants
+            // Three operand integer division: Noncommutative, 7 unique variants plus 1 extended address mode
             _DIV_LLL,
             _DIV_ILL,
             _DIV_LLI,
@@ -124,8 +129,9 @@ namespace GVM {
             _DIV_LIL,
             _DIV_IIL,
             _DIV_LII,
+            _DIV_X,
 
-            // Three operand integer modulo: Noncommutative, 7 unique variants
+            // Three operand integer modulo: Noncommutative, 7 unique variants plus 1 extended address mode
             _MOD_LLL,
             _MOD_ILL,
             _MOD_LLI,
@@ -133,24 +139,28 @@ namespace GVM {
             _MOD_LIL,
             _MOD_IIL,
             _MOD_LII,
+            _MOD_X,
 
-            // Three operand logical AND: Commutative, 4 unique variants
+            // Three operand logical AND: Commutative, 4 unique variants plus 1 extended address mode
             _AND_LLL,
             _AND_ILL,
             _AND_LLI,
             _AND_ILI,
+            _AND_X,
 
-            // Three operand logical OR: Commutative, 4 unique variants
+            // Three operand logical OR: Commutative, 4 unique variants plus 1 extended address mode
             _OR_LLL,
             _OR_ILL,
             _OR_LLI,
             _OR_ILI,
+            _OR_X,
 
-            // Three operand logical XOR: Commutative, 4 unique variants
+            // Three operand logical XOR: Commutative, 4 unique variants plus 1 extended address mode
             _XOR_LLL,
             _XOR_ILL,
             _XOR_LLI,
             _XOR_ILI,
+            _XOR_X,
 
             // Three operand logical shift left: Noncommutative, 4 supported variants
             _LSL_LLL,
@@ -164,17 +174,19 @@ namespace GVM {
             _LSR_LLI,
             _LSR_ILI,
 
-            // Integer Maximum: Commutative, 4 unique variants
+            // Integer Maximum: Commutative, 4 unique variants plus 1 extended address mode
             _MAX_LLL,
             _MAX_ILL,
             _MAX_LLI,
             _MAX_ILI,
+            _MAX_X,
 
-            // Integer Minumum: Commutative, 4 unique variants
+            // Integer Minumum: Commutative, 4 unique variants plus 1 extended address mode
             _MIN_LLL,
             _MIN_ILL,
             _MIN_LLI,
             _MIN_ILI,
+            _MIN_X,
 
             // Floating point specific instructions ////////////////////////////////////////////////////////////////////
 
@@ -197,13 +209,14 @@ namespace GVM {
             _FNEG_LI,
             _FNEG_II,
 
-            // Three operand float addition: Commutative, 4 unique variants
+            // Three operand float addition: Commutative, 4 unique variants plus 1 extended address mode
             _FADD_LLL,
             _FADD_ILL,
             _FADD_LLI,
             _FADD_ILI,
+            _FADD_X,
 
-            // Three operand float subtraction: Noncommutative, 7 unique variants
+            // Three operand float subtraction: Noncommutative, 7 unique variants plus 1 extended address mode
             _FSUB_LLL,
             _FSUB_ILL,
             _FSUB_LLI,
@@ -211,14 +224,16 @@ namespace GVM {
             _FSUB_LIL,
             _FSUB_IIL,
             _FSUB_LII,
+            _FSUB_X,
 
-            // Three operand float multiplication: Commutative, 4 unique variants
+            // Three operand float multiplication: Commutative, 4 unique variants plus 1 extended address mode
             _FMUL_LLL,
             _FMUL_ILL,
             _FMUL_LLI,
             _FMUL_ILI,
+            _FMUL_X,
 
-            // Three operand float division: Noncommutative, 7 unique variants
+            // Three operand float division: Noncommutative, 7 unique variants plus 1 extended address mode
             _FDIV_LLL,
             _FDIV_ILL,
             _FDIV_LLI,
@@ -226,8 +241,9 @@ namespace GVM {
             _FDIV_LIL,
             _FDIV_IIL,
             _FDIV_LII,
+            _FDIV_X,
 
-            // Three operand float modulo: Noncommutative, 7 unique variants
+            // Three operand float modulo: Noncommutative, 7 unique variants plus 1 extended address mode
             _FMOD_LLL,
             _FMOD_ILL,
             _FMOD_LLI,
@@ -235,18 +251,21 @@ namespace GVM {
             _FMOD_LIL,
             _FMOD_IIL,
             _FMOD_LII,
+            _FMOD_X,
 
-            // Floating Point Maximum: Commutative, 4 unique variants
+            // Floating Point Maximum: Commutative, 4 unique variants plus 1 extended address mode
             _FMAX_LLL,
             _FMAX_ILL,
             _FMAX_LLI,
             _FMAX_ILI,
+            _FMAX_X,
 
-            // Floating Point Minimum: Commutative, 4 unique variants
+            // Floating Point Minimum: Commutative, 4 unique variants plus 1 extended address mode
             _FMIN_LLL,
             _FMIN_ILL,
             _FMIN_LLI,
             _FMIN_ILI,
+            _FMIN_X,
 
             _FPOW_LLL,   // Power
 
@@ -281,13 +300,14 @@ namespace GVM {
 
             // Three operand vector instructions
 
-            // Vector addition: Commutative, 4 unique variants
+            // Vector addition: Commutative, 4 unique variants plus 1 extended address mode
             _VADD_LLL,
             _VADD_ILL,
             _VADD_LLI,
             _VADD_ILI,
+            _VADD_X,
 
-            // Vector subtraction: Noncommutative, 7 unique variants
+            // Vector subtraction: Noncommutative, 7 unique variants plus 1 extended address mode
             _VSUB_LLL,
             _VSUB_ILL,
             _VSUB_LLI,
@@ -295,14 +315,16 @@ namespace GVM {
             _VSUB_LIL,
             _VSUB_IIL,
             _VSUB_LII,
+            _VSUB_X,
 
-            // Dot product (scalar result): Commutative, 4 unique variants
+            // Dot product (scalar result): Commutative, 4 unique variants plus 1 extended address mode
             _VDOT_LLL,
             _VDOT_ILL,
             _VDOT_LLI,
             _VDOT_ILI,
+            _VDOT_X,
 
-            // Cross product (vector result): Noncommutative, 7 unique variants
+            // Cross product (vector result): Noncommutative, 7 unique variants plus 1 extended address mode
             _VCROSS_LLL,
             _VCROSS_ILL,
             _VCROSS_LLI,
@@ -310,8 +332,9 @@ namespace GVM {
             _VCROSS_LIL,
             _VCROSS_IIL,
             _VCROSS_LII,
+            _VCROSS_X,
 
-            // Vector multiply by float: Commutative, 7 variants due to different input operand types
+            // Vector multiply by float: Commutative, 7 variants due to different input operand types plus 1 extended address mode
             _VFMUL_LLL,
             _VFMUL_ILL,
             _VFMUL_LLI,
@@ -319,6 +342,7 @@ namespace GVM {
             _VFMUL_LIL,
             _VFMUL_IIL,
             _VFMUL_LII,
+            _VFMUL_X,
 
             // Branch On condition (See Condition below)
             _BOC,
@@ -445,6 +469,170 @@ namespace GVM {
             _V_NE_LI0,              // Local == Indirect[0]
             _V_NE_LI1,              // Local == Indirect[1]
             _V_NE_II,               // Indirect[0] == Indirect[1]
+            _MAX
+        };
+    };
+
+    namespace ExtendedAddress {
+        // L   = Local stack frame (1 byte for stack frame location)
+        // In  = Indirection[n] fixed offset (1 byte for offset value)
+        // InX = Indirection[n] local offset (1 byte for stack frame location to offset)
+        enum {
+
+            // Three operand distinct, 5 byte
+
+            // [Opcode] [Address] [Operand 0] [Operand 1] [Operand 2]
+
+            //_L_L_L,     // Covered by _LLL
+            //_L_L_I0,    // Covered by _LLI
+            _L_L_I1,
+            _L_L_I0X,
+            _L_L_I1X,
+
+            //_L_I0_L,    // Covered by _LIL
+            _L_I0_I0,
+            //_L_I0_I1,   // Covered by _LII
+            _L_I0_I0X,
+            _L_I0_I1X,
+
+            _L_I1_L,
+            _L_I1_I0,
+            _L_I1_I1,
+            _L_I1_I0X,
+            _L_I1_I1X,
+
+            _L_I0X_L,
+            _L_I0X_I0,
+            _L_I0X_I1,
+            _L_I0X_I0X,
+            _L_I0X_I1X,
+
+            _L_I1X_L,
+            _L_I1X_I0,
+            _L_I1X_I1,
+            _L_I1X_I0X,
+            _L_I1X_I1X,
+
+            //_I0_L_L,    // Covered by _ILL
+            _I0_L_I0,
+            //_I0_L_I1,   // Covered by _ILI
+            _I0_L_I0X,
+            _I0_L_I1X,
+
+            _I0_I0_L,
+            _I0_I0_I0,
+            _I0_I0_I1,
+            _I0_I0_I0X,
+            _I0_I0_I1X,
+            //_I0_I1_L,   // Covered by _IIL
+
+            _I0_I1_I0,
+            _I0_I1_I1,
+            _I0_I1_I0X,
+            _I0_I1_I1X,
+
+            _I0_I0X_L,
+            _I0_I0X_I0,
+            _I0_I0X_I1,
+            _I0_I0X_I0X,
+            _I0_I0X_I1X,
+
+            _I0_I1X_L,
+            _I0_I1X_I0,
+            _I0_I1X_I1,
+            _I0_I1X_I0X,
+            _I0_I1X_I1X,
+
+            _I1_L_L,
+            _I1_L_I0,
+            _I1_L_I1,
+            _I1_L_I0X,
+            _I1_L_I1X,
+
+            _I1_I0_L,
+            _I1_I0_I0,
+            _I1_I0_I1,
+            _I1_I0_I0X,
+            _I1_I0_I1X,
+
+            _I1_I1_L,
+            _I1_I1_I0,
+            _I1_I1_I1,
+            _I1_I1_I0X,
+            _I1_I1_I1X,
+
+            _I1_I0X_L,
+            _I1_I0X_I0,
+            _I1_I0X_I1,
+            _I1_I0X_I0X,
+            _I1_I0X_I1X,
+
+            _I1_I1X_L,
+            _I1_I1X_I0,
+            _I1_I1X_I1,
+            _I1_I1X_I0X,
+            _I1_I1X_I1X,
+
+            _I0X_L_L,
+            _I0X_L_I0,
+            _I0X_L_I1,
+            _I0X_L_I0X,
+            _I0X_L_I1X,
+
+            _I0X_I0_L,
+            _I0X_I0_I0,
+            _I0X_I0_I1,
+            _I0X_I0_I0X,
+            _I0X_I0_I1X,
+
+            _I0X_I1_L,
+            _I0X_I1_I0,
+            _I0X_I1_I1,
+            _I0X_I1_I0X,
+            _I0X_I1_I1X,
+
+            _I0X_I0X_L,
+            _I0X_I0X_I0,
+            _I0X_I0X_I1,
+            _I0X_I0X_I0X,
+            _I0X_I0X_I1X,
+
+            _I0X_I1X_L,
+            _I0X_I1X_I0,
+            _I0X_I1X_I1,
+            _I0X_I1X_I0X,
+            _I0X_I1X_I1X,
+
+            _I1X_L_L,
+            _I1X_L_I0,
+            _I1X_L_I1,
+            _I1X_L_I0X,
+            _I1X_L_I1X,
+
+            _I1X_I0_L,
+            _I1X_I0_I0,
+            _I1X_I0_I1,
+            _I1X_I0_I0X,
+            _I1X_I0_I1X,
+
+            _I1X_I1_L,
+            _I1X_I1_I0,
+            _I1X_I1_I1,
+            _I1X_I1_I0X,
+            _I1X_I1_I1X,
+
+            _I1X_I0X_L,
+            _I1X_I0X_I0,
+            _I1X_I0X_I1,
+            _I1X_I0X_I0X,
+            _I1X_I0X_I1X,
+
+            _I1X_I1X_L,
+            _I1X_I1X_I0,
+            _I1X_I1X_I1,
+            _I1X_I1X_I0X,
+            _I1X_I1X_I1X,
+
             _MAX
         };
     };
