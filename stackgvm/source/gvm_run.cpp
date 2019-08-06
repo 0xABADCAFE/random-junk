@@ -126,6 +126,8 @@ using namespace GVM;
     #define DUMP_OPCODE_COUNTS
 #endif
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 const SCALAR_F invRMax = 1.0f / (SCALAR_F)RAND_MAX;
 
 Result Interpreter::run() {
@@ -154,3 +156,6 @@ forever:
     }
     return SUCCESS;
 }
+
+
+
