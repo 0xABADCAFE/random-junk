@@ -17,28 +17,30 @@ using namespace GVM;
 
 #define FETCHA switch(pc[1])
 
-// Get the address of a Local variable
-#define L(p)   &frameStack[(int8)pc[(p)+2]]
-
-// Get the address of the variable pointed to by i0 + unsigned 8-bit constant offset
-#define I0(p)  &callStack->indirection[0][pc[(p)+2]]
-
-// Get the address of the variable pointed to by i1 + unsigned 8-bit constant offset
-#define I1(p)  &callStack->indirection[1][pc[(p)+2]]
-
-// Get the address of the variable pointed to by i0 + signed 32-bit offset stored in Local Variable
-#define I0X(p) &callStack->indirection[0][frameStack[(int8)pc[(p)+2]].i]
-
-// Get the address of the variable pointed to by i1 + signed 32-bit offset stored in Local Variable
-#define I1X(p) &callStack->indirection[1][frameStack[(int8)pc[(p)+2]].i]
-
-// Get the address of the variable pointed to by reference in Local Variable + unsigned 8-bit constant offset
-#define R(p)   &frameStack[(int8)pc[(p)+2]].a[pc[(p)+3]]
-
 #define OSIZE 2 // Size of operation plus address byte
 #define LSIZE 1 // Size of local operand
 #define ISIZE 1 // Size of indirection register operand
 #define RSIZE 2 // Size of local reference operand
+
+// Get the address of a Local variable
+#define L(p)   &frameStack[(int8)pc[(p) + OSIZE]]
+
+// Get the address of the variable pointed to by i0 + unsigned 8-bit constant offset
+#define I0(p)  &callStack->indirection[0][pc[(p) + OSIZE]]
+
+// Get the address of the variable pointed to by i1 + unsigned 8-bit constant offset
+#define I1(p)  &callStack->indirection[1][pc[(p) + OSIZE]]
+
+// Get the address of the variable pointed to by i0 + signed 32-bit offset stored in Local Variable
+#define I0X(p) &callStack->indirection[0][frameStack[(int8)pc[(p) + OSIZE]].i]
+
+// Get the address of the variable pointed to by i1 + signed 32-bit offset stored in Local Variable
+#define I1X(p) &callStack->indirection[1][frameStack[(int8)pc[(p) + OSIZE]].i]
+
+// Get the address of the variable pointed to by reference in Local Variable + unsigned 8-bit constant offset
+#define R(p)   &frameStack[(int8)pc[(p) + OSIZE]].a[pc[(p) + OSIZE + LSIZE]]
+
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

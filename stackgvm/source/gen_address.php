@@ -20,7 +20,7 @@ const AANNOTATE = [
     'R'   => 'local[const uint8]',
 ];
 
-echo "        // This file automatically generated. Do not edit.\n\n";
+echo "// This file automatically generated. Do not edit.\n\n";
 
 $aModes = [];
 $aLines = explode("\n", file_get_contents('include/gvm_opcode_address.hpp'));
@@ -32,8 +32,8 @@ foreach($aLines as $sLine) {
 
 foreach ($aModes as $sMode) {
     $aOperands = explode('_', $sMode);
-    echo "        EA(", $sMode, ") {\n";
-    echo "            // ",
+    echo "EA(", $sMode, ") {\n";
+    echo "    // ",
         implode(
             ', ',
             array_map(
@@ -48,12 +48,12 @@ foreach ($aModes as $sMode) {
     $sOffset  = '0';
 
     foreach ($aOperands as $sOperand) {
-        echo "            op", $iOperand++, " = ", $sOperand, "(", $sOffset, ");\n";
+        echo "    op", $iOperand++, " = ", $sOperand, "(", $sOffset, ");\n";
         $sOffset .= ' + ' . ASIZE[$sOperand];
     }
 
     echo
-        "            return OSIZE + ",
+        "    return OSIZE + ",
         implode(
         ' + ',
             array_map(
@@ -64,5 +64,5 @@ foreach ($aModes as $sMode) {
             )
         ), ";\n";
 
-    echo "        }\n\n";
+    echo "}\n\n";
 }
