@@ -10,7 +10,7 @@
 using namespace GVM;
 
 #ifdef _GVM_ANNOTATE_ASM_
-    #define EA(a)  case ExtendedAddress::_##a: asm("; EA EA("#a);
+    #define EA(a)  case ExtendedAddress::_##a: asm("; EA("#a"):");
 #else
     #define EA(a)  case ExtendedAddress::_##a:
 #endif
