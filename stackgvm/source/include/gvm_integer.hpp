@@ -303,6 +303,16 @@ IS(ADD_ILI) {
     NEXT;
 }
 
+IS(ADD_X) {
+    Scalar *op1, *op2, *op3;
+    if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
+        op3->i = op1->i + op2->i;
+        STEP(step);
+        NEXT;
+    }
+    EXIT(EXEC_HALT_AND_CATCH_FIRE);
+}
+
 // Three operand Integer Subtraction (Noncommutative, 7 unique variants) ///////////////////////////////////////////////
 
 IS(SUB_LLL) {
@@ -417,6 +427,16 @@ IS(SUB_LII) {
     NEXT;
 }
 
+IS(SUB_X) {
+    Scalar *op1, *op2, *op3;
+    if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
+        op3->i = op1->i - op2->i;
+        STEP(step);
+        NEXT;
+    }
+    EXIT(EXEC_HALT_AND_CATCH_FIRE);
+}
+
 // Three Operand Integer Multiplication (Commutative, 4 unique variants) ///////////////////////////////////////////////
 
 IS(MUL_LLL) {
@@ -481,6 +501,16 @@ IS(MUL_ILI) {
     gvmDebugOpcode("%d", (int)IX1(2).i);
     STEP(4);
     NEXT;
+}
+
+IS(MUL_X) {
+    Scalar *op1, *op2, *op3;
+    if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
+        op3->i = op1->i * op2->i;
+        STEP(step);
+        NEXT;
+    }
+    EXIT(EXEC_HALT_AND_CATCH_FIRE);
 }
 
 // Three Operand Integer Division (Noncommutative, 7 unique variants) //////////////////////////////////////////////////
@@ -630,6 +660,20 @@ IS(DIV_LII) {
     NEXT;
 }
 
+IS(DIV_X) {
+    Scalar *op1, *op2, *op3;
+    if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
+        if (0 == op2->i) {
+            gvmDebugOpcode("Abort with Zero Divide");
+            EXIT(EXEC_DIVISION_BY_ZERO);
+        }
+        op3->i = op1->i / op2->i;
+        STEP(step);
+        NEXT;
+    }
+    EXIT(EXEC_HALT_AND_CATCH_FIRE);
+}
+
 // Three Operand Integer Modulo (Noncommutative, 7 unique variants) ////////////////////////////////////////////////////
 
 IS(MOD_LLL) {
@@ -772,6 +816,20 @@ IS(MOD_LII) {
     NEXT;
 }
 
+IS(MOD_X) {
+    Scalar *op1, *op2, *op3;
+    if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
+        if (0 == op2->i) {
+            gvmDebugOpcode("Abort with Zero Divide");
+            EXIT(EXEC_DIVISION_BY_ZERO);
+        }
+        op3->i = op1->i % op2->i;
+        STEP(step);
+        NEXT;
+    }
+    EXIT(EXEC_HALT_AND_CATCH_FIRE);
+}
+
 // Three Operand Logical AND (Commutative, 4 unique variants) //////////////////////////////////////////////////////////
 
 IS(AND_LLL) {
@@ -836,6 +894,16 @@ IS(AND_ILI) {
     gvmDebugOpcode("0x%08X", (unsigned)IX1(2).u);
     STEP(4);
     NEXT;
+}
+
+IS(AND_X) {
+    Scalar *op1, *op2, *op3;
+    if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
+        op3->i = op1->i & op2->i;
+        STEP(step);
+        NEXT;
+    }
+    EXIT(EXEC_HALT_AND_CATCH_FIRE);
 }
 
 // Three Operand Logical OR (Commutative, 4 unique variants) ///////////////////////////////////////////////////////////
@@ -904,6 +972,16 @@ IS(OR_ILI) {
     NEXT;
 }
 
+IS(OR_X) {
+    Scalar *op1, *op2, *op3;
+    if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
+        op3->i = op1->i | op2->i;
+        STEP(step);
+        NEXT;
+    }
+    EXIT(EXEC_HALT_AND_CATCH_FIRE);
+}
+
 // Three Operand Logical XOR (Commutative, 4 unique variants) //////////////////////////////////////////////////////////
 
 IS(XOR_LLL) {
@@ -968,6 +1046,16 @@ IS(XOR_ILI) {
     gvmDebugOpcode("0x%08X", (unsigned)IX1(2).u);
     STEP(4);
     NEXT;
+}
+
+IS(XOR_X) {
+    Scalar *op1, *op2, *op3;
+    if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
+        op3->i = op1->i ^ op2->i;
+        STEP(step);
+        NEXT;
+    }
+    EXIT(EXEC_HALT_AND_CATCH_FIRE);
 }
 
 // Three Operand Logical Shift Left (Noncommutative, 4 supported variants) /////////////////////////////////////////////
@@ -1176,6 +1264,16 @@ IS(MAX_ILI) {
     NEXT;
 }
 
+IS(MAX_X) {
+    Scalar *op1, *op2, *op3;
+    if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
+        op3->i = op1->i > op2->i ? op1->i : op2->i;
+        STEP(step);
+        NEXT;
+    }
+    EXIT(EXEC_HALT_AND_CATCH_FIRE);
+}
+
 
 // Three Operand Integer Minumum (Commutative, 4 unique variants) //////////////////////////////////////////////////////
 
@@ -1249,4 +1347,14 @@ IS(MIN_ILI) {
     gvmDebugOpcode("%d", (unsigned)IX1(2).u);
     STEP(4);
     NEXT;
+}
+
+IS(MIN_X) {
+    Scalar *op1, *op2, *op3;
+    if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
+        op3->i = op1->i < op2->i ? op1->i : op2->i;
+        STEP(step);
+        NEXT;
+    }
+    EXIT(EXEC_HALT_AND_CATCH_FIRE);
 }
