@@ -1282,7 +1282,7 @@ IS(MIN_LLL) {
     int32 i1 = LOC(0).i;
     int32 i2 = LOC(1).i;
     gvmDebugOpcode(
-        "min.i (%d), (%d), (%d) : max(%d, %d) => ",
+        "min.i (%d), (%d), (%d) : min(%d, %d) => ",
         (int)OPS(0),
         (int)OPS(1),
         (int)OPS(2),
@@ -1300,7 +1300,7 @@ IS(MIN_ILL) {
     int32 i1 = IX0(0).i;
     int32 i2 = LOC(1).i;
     gvmDebugOpcode(
-        "min.i (i0+%u), (%d), (%d) : max(%d, %d) => ",
+        "min.i (i0+%u), (%d), (%d) : min(%d, %d) => ",
         (unsigned)OPU(0),
         (int)OPS(1),
         (int)OPS(2),
@@ -1318,7 +1318,7 @@ IS(MIN_LLI) {
     int32 i1 = LOC(0).i;
     int32 i2 = LOC(1).i;
     gvmDebugOpcode(
-        "min.i (%d), (%d), (i0+%u) : max(%d, %d) => ",
+        "min.i (%d), (%d), (i0+%u) : min(%d, %d) => ",
         (int)OPS(0),
         (int)OPS(1),
         (unsigned)OPU(2),
@@ -1336,7 +1336,7 @@ IS(MIN_ILI) {
     int32 i1 = IX0(0).i;
     int32 i2 = LOC(1).i;
     gvmDebugOpcode(
-        "min.i (i0+%u), (%d), (i1+%u) : max(%d, %d) => ",
+        "min.i (i0+%u), (%d), (i1+%u) : min(%d, %d) => ",
         (unsigned)OPU(0),
         (int)OPS(1),
         (unsigned)OPU(2),
