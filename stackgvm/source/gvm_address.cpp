@@ -41,7 +41,11 @@ using namespace GVM;
 #define R(p)   &frameStack[(int8)pc[(p) + OSIZE]].a[pc[(p) + OSIZE + LSIZE]]
 
 
-
+#ifdef _GVM_DEBUG_OPCODES_
+    #define gvmDebugAddress(...) std::fprintf(stderr, __VA_ARGS__)
+#else
+    #define gvmDebugAddress(...)
+#endif
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 

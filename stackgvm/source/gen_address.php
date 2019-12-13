@@ -20,6 +20,33 @@ const AANNOTATE = [
     'R'   => 'local[const uint8]',
 ];
 
+const ADEBUGPRINTF = [
+    'L'   => '(%d)',
+    'I0'  => '(i0+%u)',
+    'I1'  => '(i1+%u)',
+    'I0X' => '(i0+(%d))',
+    'I1X' => '(i1+(%d))',
+    'R'   => '((%d)+%u)',
+];
+
+const ADEBUGVALUES = [
+    'L'   => '(int8)pc[%d + OSIZE]',
+    'I0'  => '(uint8)pc[%d + OSIZE]',
+    'I1'  => '(uint8)pc[%d + OSIZE]',
+    'I0X' => '(uint8)pc[%d + OSIZE], (int8)pc[%d + OSIZE]',
+    'I1X' => '(uint8)pc[%d + OSIZE], (int8)pc[%d + OSIZE]',
+    'R'   => '(int8)pc[%d + OSIZE], (uint8)pc[%d + OSIZE]',
+];
+
+const ADEBUPARMCOUNT = [
+    'L'   => 1,
+    'I0'  => 1,
+    'I1'  => 1,
+    'I0X' => 2,
+    'I1X' => 2,
+    'R'   => 2,
+];
+
 echo "// This file automatically generated. Do not edit.\n\n";
 
 $aModes = [];
@@ -44,6 +71,35 @@ foreach ($aModes as $sMode) {
             )
         ),
         "\n";
+
+    echo "    gvmDebugAddress(\n        \"",
+        implode(
+            ', ',
+            array_map(
+                function($sMode) {
+                    return ADEBUGPRINTF[$sMode];
+                },
+                $aOperands
+            )
+        ),
+        "\",\n        ";
+
+
+    $iOffset = 0;
+    $aLines = [];
+    foreach ($aOperands as $iOperand => $sMode) {
+        switch (ADEBUPARMCOUNT[$sMode]) {
+            case 1:
+                $aLines[] = sprintf(ADEBUGVALUES[$sMode], $iOffset++);
+                break;
+            case 2:
+                $aLines[] = sprintf(ADEBUGVALUES[$sMode], $iOffset++, $iOffset++);
+                break;
+        }
+    }
+
+    echo implode(",\n        ", $aLines), "\n    );\n";
+
     $iOperand = 1;
     $sOffset  = '0';
 
