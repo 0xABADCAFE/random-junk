@@ -6,6 +6,7 @@
 
 #include "include/gvm_core.hpp"
 #include "include/gvm_debug.hpp"
+#include <cstdio>
 
 using namespace GVM;
 

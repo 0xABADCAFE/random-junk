@@ -380,6 +380,9 @@ Result Interpreter::exitFunction() {
 
     if (callStack > callStackBase) {
         const uint8* returnTo = callStack->returnAddress;
+#ifdef _GVM_DEBUG_FUNCTIONS_
+        int currentId = callStack->functionId;
+#endif
         --callStack;
         if (frameStack - callStack->frameSize < frameStackBase) {
             gvmDebug("GVM::Interpreter::exitFunction() : Frame Stack Underflow.\n");
