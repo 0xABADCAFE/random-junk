@@ -350,6 +350,8 @@ IS(VADD_ILI) {
 #include "gvm_vector_add.hpp"
 }
 
+// TODO VADD_X
+
 // Three Operand Vector Subtraction (Noncommutative, 7 unique variants) ////////////////////////////////////////////////
 
 IS(VSUB_LLL) {
@@ -471,6 +473,7 @@ IS(VSUB_LII) {
 #include "gvm_vector_subtract.hpp"
 }
 
+// TODO VSUB_X
 
 // Three Operand Dot Product (Scalar Float Result) /////////////////////////////////////////////////////////////////////
 
@@ -554,6 +557,7 @@ IS(VDOT_ILI) {
     NEXT;
 }
 
+// TODO VDOT_X
 
 // Three Operand Cross Product (Noncommutative, 7 unique variants) /////////////////////////////////////////////////////
 IS(VCROSS_LLL) {
@@ -675,6 +679,8 @@ IS(VCROSS_LII) {
 }
 
 
+// TODO VCROSS_X
+
 // Three Operand Vector Scale (Commutative, mixed args, 7 unique variants) /////////////////////////////////////////////
 IS(VFMUL_LLL) {
     gvmDebugOpcode(
@@ -795,3 +801,6 @@ IS(VFMUL_LII) {
 #include "gvm_vector_scale_by_float.hpp"
 
 }
+
+// TODO VFMUL_X
+
