@@ -305,6 +305,7 @@ IS(ADD_ILI) {
 
 IS(ADD_X) {
     Scalar *op1, *op2, *op3;
+    gvmDebugOpcode("add.i ");
     if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
         op3->i = op1->i + op2->i;
         STEP(step);
@@ -429,6 +430,7 @@ IS(SUB_LII) {
 
 IS(SUB_X) {
     Scalar *op1, *op2, *op3;
+    gvmDebugOpcode("sub.i ");
     if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
         op3->i = op1->i - op2->i;
         STEP(step);
@@ -505,6 +507,7 @@ IS(MUL_ILI) {
 
 IS(MUL_X) {
     Scalar *op1, *op2, *op3;
+    gvmDebugOpcode("mul.i ");
     if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
         op3->i = op1->i * op2->i;
         STEP(step);
@@ -662,6 +665,7 @@ IS(DIV_LII) {
 
 IS(DIV_X) {
     Scalar *op1, *op2, *op3;
+    gvmDebugOpcode("div.i ");
     if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
         if (0 == op2->i) {
             gvmDebugOpcode("Abort with Zero Divide");
@@ -818,6 +822,7 @@ IS(MOD_LII) {
 
 IS(MOD_X) {
     Scalar *op1, *op2, *op3;
+    gvmDebugOpcode("mod.i ");
     if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
         if (0 == op2->i) {
             gvmDebugOpcode("Abort with Zero Divide");
@@ -898,6 +903,7 @@ IS(AND_ILI) {
 
 IS(AND_X) {
     Scalar *op1, *op2, *op3;
+    gvmDebugOpcode("and ");
     if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
         op3->i = op1->i & op2->i;
         STEP(step);
@@ -974,6 +980,7 @@ IS(OR_ILI) {
 
 IS(OR_X) {
     Scalar *op1, *op2, *op3;
+    gvmDebugOpcode("or ");
     if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
         op3->i = op1->i | op2->i;
         STEP(step);
@@ -1050,6 +1057,7 @@ IS(XOR_ILI) {
 
 IS(XOR_X) {
     Scalar *op1, *op2, *op3;
+    gvmDebugOpcode("xor ");
     if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
         op3->i = op1->i ^ op2->i;
         STEP(step);
@@ -1266,6 +1274,7 @@ IS(MAX_ILI) {
 
 IS(MAX_X) {
     Scalar *op1, *op2, *op3;
+    gvmDebugOpcode("max.i ");
     if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
         op3->i = op1->i > op2->i ? op1->i : op2->i;
         STEP(step);
@@ -1351,6 +1360,7 @@ IS(MIN_ILI) {
 
 IS(MIN_X) {
     Scalar *op1, *op2, *op3;
+    gvmDebugOpcode("min.i ");
     if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
         op3->i = op1->i < op2->i ? op1->i : op2->i;
         STEP(step);

@@ -252,6 +252,17 @@ IS(FADD_ILI) {
     NEXT;
 }
 
+IS(FADD_X) {
+    Scalar *op1, *op2, *op3;
+    gvmDebugOpcode("add.f ");
+    if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
+        op3->f = op1->f + op2->f;
+        STEP(step);
+        NEXT;
+    }
+    EXIT(EXEC_HALT_AND_CATCH_FIRE);
+}
+
 // Three Operand Float Subtraction (Noncommutative, 7 unique variants) /////////////////////////////////////////////////
 
 IS(FSUB_LLL) {
@@ -366,6 +377,17 @@ IS(FSUB_LII) {
     NEXT;
 }
 
+IS(FSUB_X) {
+    Scalar *op1, *op2, *op3;
+    gvmDebugOpcode("sub.f ");
+    if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
+        op3->f = op1->f - op2->f;
+        STEP(step);
+        NEXT;
+    }
+    EXIT(EXEC_HALT_AND_CATCH_FIRE);
+}
+
 // Three Operand Float Multiplication (Commutative, 4 unique variants) /////////////////////////////////////////////////
 
 IS(FMUL_LLL) {
@@ -430,6 +452,17 @@ IS(FMUL_ILI) {
     gvmDebugOpcode("%g", IX1(2).f);
     STEP(4);
     NEXT;
+}
+
+IS(FMUL_X) {
+    Scalar *op1, *op2, *op3;
+    gvmDebugOpcode("mul.f ");
+    if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
+        op3->f = op1->f * op2->f;
+        STEP(step);
+        NEXT;
+    }
+    EXIT(EXEC_HALT_AND_CATCH_FIRE);
 }
 
 // Three Operand Float Division (Noncommutative, 7 unique variants) ////////////////////////////////////////////////////
@@ -545,6 +578,17 @@ IS(FDIV_LII) {
     NEXT;
 }
 
+IS(FDIV_X) {
+    Scalar *op1, *op2, *op3;
+    gvmDebugOpcode("div.f ");
+    if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
+        op3->f = op1->f / op2->f;
+        STEP(step);
+        NEXT;
+    }
+    EXIT(EXEC_HALT_AND_CATCH_FIRE);
+}
+
 // Three Operand Float Modulo (Noncommutative, 7 unique variants) //////////////////////////////////////////////////////
 
 IS(FMOD_LLL) {
@@ -658,6 +702,18 @@ IS(FMOD_LII) {
     NEXT;
 }
 
+
+IS(FMOD_X) {
+    Scalar *op1, *op2, *op3;
+    gvmDebugOpcode("mod.f ");
+    if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
+        op3->f = std::fmod(op1->f, op2->f);
+        STEP(step);
+        NEXT;
+    }
+    EXIT(EXEC_HALT_AND_CATCH_FIRE);
+}
+
 // Three Operand Float Maximum (Commutative, 4 unique variants) ////////////////////////////////////////////////////////
 
 IS(FMAX_LLL) {
@@ -732,6 +788,17 @@ IS(FMAX_ILI) {
     NEXT;
 }
 
+IS(FMAX_X) {
+    Scalar *op1, *op2, *op3;
+    gvmDebugOpcode("max.f ");
+    if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
+        op3->f = op1->f > op2->f ? op1->f : op2->f;
+        STEP(step);
+        NEXT;
+    }
+    EXIT(EXEC_HALT_AND_CATCH_FIRE);
+}
+
 // Three Operand Flaot Minumum (Commutative, 4 unique variants) ////////////////////////////////////////////////////////
 
 IS(FMIN_LLL) {
@@ -804,6 +871,17 @@ IS(FMIN_ILI) {
     gvmDebugOpcode("%g", IX1(2).f);
     STEP(4);
     NEXT;
+}
+
+IS(FMIN_X) {
+    Scalar *op1, *op2, *op3;
+    gvmDebugOpcode("min.f ");
+    if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
+        op3->f = op1->f < op2->f ? op1->f : op2->f;
+        STEP(step);
+        NEXT;
+    }
+    EXIT(EXEC_HALT_AND_CATCH_FIRE);
 }
 
 IS(FPOW_LLL) {
