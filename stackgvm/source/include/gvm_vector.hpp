@@ -350,7 +350,30 @@ IS(VADD_ILI) {
 #include "gvm_vector_add.hpp"
 }
 
-// TODO VADD_X
+IS(VADD_X) {
+    Scalar *op1, *op2, *op3;
+    gvmDebugOpcode("add.v ");
+    if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
+        vs1 = (float*)op1;
+        vs2 = (float*)op2;
+        vd  = (float*)op3;
+        gvmDebugOpcode(
+            "{ %g, %g, %g } + { %g, %g, %g } => ",
+            vs1[0], vs1[1], vs1[2],
+            vs2[0], vs2[1], vs2[2]
+        );
+        vd[0] = vs1[0] + vs2[0];
+        vd[1] = vs1[1] + vs2[1];
+        vd[2] = vs1[2] + vs2[2];
+        gvmDebugOpcode(
+            "{ %g, %g, %g }",
+            vd[0], vd[1], vd[2]
+        );
+        STEP(step);
+        NEXT;
+    }
+    EXIT(EXEC_HALT_AND_CATCH_FIRE);
+}
 
 // Three Operand Vector Subtraction (Noncommutative, 7 unique variants) ////////////////////////////////////////////////
 
@@ -473,7 +496,30 @@ IS(VSUB_LII) {
 #include "gvm_vector_subtract.hpp"
 }
 
-// TODO VSUB_X
+IS(VSUB_X) {
+    Scalar *op1, *op2, *op3;
+    gvmDebugOpcode("sub.v ");
+    if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
+        vs1 = (float*)op1;
+        vs2 = (float*)op2;
+        vd  = (float*)op3;
+        gvmDebugOpcode(
+            "{ %g, %g, %g } - { %g, %g, %g } => ",
+            vs1[0], vs1[1], vs1[2],
+            vs2[0], vs2[1], vs2[2]
+        );
+        vd[0] = vs1[0] - vs2[0];
+        vd[1] = vs1[1] - vs2[1];
+        vd[2] = vs1[2] - vs2[2];
+        gvmDebugOpcode(
+            "{ %g, %g, %g }",
+            vd[0], vd[1], vd[2]
+        );
+        STEP(step);
+        NEXT;
+    }
+    EXIT(EXEC_HALT_AND_CATCH_FIRE);
+}
 
 // Three Operand Dot Product (Scalar Float Result) /////////////////////////////////////////////////////////////////////
 
@@ -557,7 +603,24 @@ IS(VDOT_ILI) {
     NEXT;
 }
 
-// TODO VDOT_X
+IS(VDOT_X) {
+    Scalar *op1, *op2, *op3;
+    gvmDebugOpcode("vdot.f ");
+    if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
+        vs1 = (float*)op1;
+        vs2 = (float*)op2;
+        op3->f = vs1[0] * vs2[0] + vs1[1] * vs2[1] + vs1[2] * vs2[2];
+        gvmDebugOpcode(
+            "{ %g, %g, %g } . { %g, %g, %g } => %g",
+            vs1[0], vs1[1], vs1[2],
+            vs2[0], vs2[1], vs2[2],
+            op3->f
+        );
+        STEP(step);
+        NEXT;
+    }
+    EXIT(EXEC_HALT_AND_CATCH_FIRE);
+}
 
 // Three Operand Cross Product (Noncommutative, 7 unique variants) /////////////////////////////////////////////////////
 IS(VCROSS_LLL) {
@@ -802,5 +865,30 @@ IS(VFMUL_LII) {
 
 }
 
-// TODO VFMUL_X
+IS(VFMUL_X) {
+    Scalar *op1, *op2, *op3;
+    gvmDebugOpcode("mulf.v ");
+    if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
+        vs1 = (float*)op1;
+        sf  = op2->f;
+        vd  = (float*)op3;
+        gvmDebugOpcode(
+            "{ %g, %g, %g } * %g => ",
+            vs1[0], vs1[1], vs1[2],
+            sf
+        );
+
+        vd[0] = vs1[0] * sf;
+        vd[1] = vs1[1] * sf;
+        vd[2] = vs1[2] * sf;
+
+        gvmDebugOpcode(
+            "{ %g, %g, %g }",
+            vd[0], vd[1], vd[2]
+        );
+        STEP(step);
+        NEXT;
+    }
+    EXIT(EXEC_HALT_AND_CATCH_FIRE);
+}
 
