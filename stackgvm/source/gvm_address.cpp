@@ -39,7 +39,7 @@ using namespace GVM;
 #define I1X(p) &callStack->indirection[1][frameStack[(int8)pc[(p) + OSIZE]].i]
 
 // Get the address of the variable pointed to by reference in Local Variable + unsigned 8-bit constant offset
-#define R(p)   &frameStack[(int8)pc[(p) + OSIZE]].a[pc[(p) + OSIZE + LSIZE]]
+#define R(p)   &(frameStack[(int8)pc[(p) + OSIZE]].a[pc[(p) + OSIZE + LSIZE]])
 
 
 #ifdef _GVM_DEBUG_OPCODES_

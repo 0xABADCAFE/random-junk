@@ -30,6 +30,9 @@ uint8 _gvm_test1[] = {
     call    (2)
     hcall   (1)            // Call host function (1)
     copy_ll (3, 0)         // fs[0] = fs[3]
+
+    Opcode::_ADD_X, ExtendedAddress::_R_R_R, 4, 1, 4, 2, 4, 3,
+
     ret
 };
 
@@ -74,22 +77,26 @@ int main() {
     stack[0].i = 0;
     stack[1].i = 1;
     stack[2].i = 2;
+    stack[3].i = 69;
+    stack[4].a = stack;
 
     std::printf(
-        "\nBefore\n\tstack[0] = %d\n\tstack[1] = %d\n\tstack[2] = %d\n",
+        "\nBefore\n\tstack[0] = %d\n\tstack[1] = %d\n\tstack[2] = %d\n\tstack[3] = %d\n",
         (int)stack[0].i,
         (int)stack[1].i,
-        (int)stack[2].i
+        (int)stack[2].i,
+        (int)stack[3].i
     );
 
     Result result = Interpreter::invoke(1);
 
     std::printf(
-        "\nAfter\n\tResult = %d\n\tstack[0] = %d\n\tstack[1] = %d\n\tstack[2] = %d\n",
+        "\nAfter\n\tResult = %d\n\tstack[0] = %d\n\tstack[1] = %d\n\tstack[2] = %d\n\tstack[3] = %d\n",
         result,
         (int)stack[0].i,
         (int)stack[1].i,
-        (int)stack[2].i
+        (int)stack[2].i,
+        (int)stack[3].i
     );
 
     Interpreter::done();

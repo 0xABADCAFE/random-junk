@@ -307,7 +307,13 @@ IS(ADD_X) {
     Scalar *op1, *op2, *op3;
     gvmDebugOpcode("add.i ");
     if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
+        gvmDebugOpcode(
+            " : %d + %d => ",
+            (int)op1->i,
+            (int)op2->i
+        );
         op3->i = op1->i + op2->i;
+        gvmDebugOpcode("%d", (int)op3->i);
         STEP(step);
         NEXT;
     }
@@ -432,7 +438,13 @@ IS(SUB_X) {
     Scalar *op1, *op2, *op3;
     gvmDebugOpcode("sub.i ");
     if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
+        gvmDebugOpcode(
+            " : %d - %d => ",
+            (int)op1->i,
+            (int)op2->i
+        );
         op3->i = op1->i - op2->i;
+        gvmDebugOpcode("%d", (int)op3->i);
         STEP(step);
         NEXT;
     }
@@ -509,7 +521,13 @@ IS(MUL_X) {
     Scalar *op1, *op2, *op3;
     gvmDebugOpcode("mul.i ");
     if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
+        gvmDebugOpcode(
+            " : %d * %d => ",
+            (int)op1->i,
+            (int)op2->i
+        );
         op3->i = op1->i * op2->i;
+        gvmDebugOpcode("%d", (int)op3->i);
         STEP(step);
         NEXT;
     }
@@ -667,11 +685,17 @@ IS(DIV_X) {
     Scalar *op1, *op2, *op3;
     gvmDebugOpcode("div.i ");
     if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
+        gvmDebugOpcode(
+            " : %d / %d => ",
+            (int)op1->i,
+            (int)op2->i
+        );
         if (0 == op2->i) {
             gvmDebugOpcode("Abort with Zero Divide");
             EXIT(EXEC_DIVISION_BY_ZERO);
         }
         op3->i = op1->i / op2->i;
+        gvmDebugOpcode("%d", (int)op3->i);
         STEP(step);
         NEXT;
     }
@@ -824,11 +848,17 @@ IS(MOD_X) {
     Scalar *op1, *op2, *op3;
     gvmDebugOpcode("mod.i ");
     if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
+        gvmDebugOpcode(
+            " : %d % %d => ",
+            (int)op1->i,
+            (int)op2->i
+        );
         if (0 == op2->i) {
             gvmDebugOpcode("Abort with Zero Divide");
             EXIT(EXEC_DIVISION_BY_ZERO);
         }
         op3->i = op1->i % op2->i;
+        gvmDebugOpcode("%d", (int)op3->i);
         STEP(step);
         NEXT;
     }
@@ -905,7 +935,13 @@ IS(AND_X) {
     Scalar *op1, *op2, *op3;
     gvmDebugOpcode("and ");
     if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
-        op3->i = op1->i & op2->i;
+        gvmDebugOpcode(
+            " : 0x%08X & 0x%08X => ",
+            (unsigned)op1->u,
+            (unsigned)op2->u
+        );
+        op3->u = op1->u & op2->u;
+        gvmDebugOpcode("0x%08X", (unsigned)op3->u);
         STEP(step);
         NEXT;
     }
@@ -982,7 +1018,13 @@ IS(OR_X) {
     Scalar *op1, *op2, *op3;
     gvmDebugOpcode("or ");
     if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
-        op3->i = op1->i | op2->i;
+        gvmDebugOpcode(
+            " : 0x%08X  0x%08X => ",
+            (unsigned)op1->u,
+            (unsigned)op2->u
+        );
+        op3->u = op1->u | op2->u;
+        gvmDebugOpcode("0x%08X", (unsigned)op3->u);
         STEP(step);
         NEXT;
     }
@@ -1059,7 +1101,13 @@ IS(XOR_X) {
     Scalar *op1, *op2, *op3;
     gvmDebugOpcode("xor ");
     if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
-        op3->i = op1->i ^ op2->i;
+        gvmDebugOpcode(
+            " : 0x%08X ^ 0x%08X => ",
+            (unsigned)op1->u,
+            (unsigned)op2->u
+        );
+        op3->u = op1->u ^ op2->u;
+        gvmDebugOpcode("0x%08X", (unsigned)op3->u);
         STEP(step);
         NEXT;
     }
@@ -1213,7 +1261,7 @@ IS(MAX_LLL) {
         (int)i2
     );
     LOC(2).i  = i1 > i2 ? i1 : i2;
-    gvmDebugOpcode("%d", (unsigned)LOC(2).u);
+    gvmDebugOpcode("%d", (int)LOC(2).i);
     STEP(4);
     NEXT;
 }
@@ -1231,7 +1279,7 @@ IS(MAX_ILL) {
         (int)i2
     );
     LOC(2).i  = i1 > i2 ? i1 : i2;
-    gvmDebugOpcode("%d", (unsigned)LOC(2).u);
+    gvmDebugOpcode("%d", (int)LOC(2).i);
     STEP(4);
     NEXT;
 }
@@ -1249,7 +1297,7 @@ IS(MAX_LLI) {
         (int)i2
     );
     IX0(0).i  = i1 > i2 ? i1 : i2;
-    gvmDebugOpcode("%d", (unsigned)IX0(2).u);
+    gvmDebugOpcode("%d", (int)IX0(2).i);
     STEP(4);
     NEXT;
 }
@@ -1267,7 +1315,7 @@ IS(MAX_ILI) {
         (int)i2
     );
     IX1(2).i  = i1 > i2 ? i1 : i2;
-    gvmDebugOpcode("%d", (unsigned)IX1(2).u);
+    gvmDebugOpcode("%d", (int)IX1(2).i);
     STEP(4);
     NEXT;
 }
@@ -1276,7 +1324,13 @@ IS(MAX_X) {
     Scalar *op1, *op2, *op3;
     gvmDebugOpcode("max.i ");
     if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
+        gvmDebugOpcode(
+            " : max(%d, %d) => ",
+            (int)op1->i,
+            (int)op2->i
+        );
         op3->i = op1->i > op2->i ? op1->i : op2->i;
+        gvmDebugOpcode("%d", (int)op3->i);
         STEP(step);
         NEXT;
     }
@@ -1299,7 +1353,7 @@ IS(MIN_LLL) {
         (int)i2
     );
     LOC(2).i  = i1 < i2 ? i1 : i2;
-    gvmDebugOpcode("%d", (unsigned)LOC(2).u);
+    gvmDebugOpcode("%d", (int)LOC(2).i);
     STEP(4);
     NEXT;
 }
@@ -1317,7 +1371,7 @@ IS(MIN_ILL) {
         (int)i2
     );
     LOC(2).i  = i1 < i2 ? i1 : i2;
-    gvmDebugOpcode("%d", (unsigned)LOC(2).u);
+    gvmDebugOpcode("%d", (int)LOC(2).i);
     STEP(4);
     NEXT;
 }
@@ -1335,7 +1389,7 @@ IS(MIN_LLI) {
         (int)i2
     );
     IX0(0).i  = i1 < i2 ? i1 : i2;
-    gvmDebugOpcode("%d", (unsigned)IX0(2).u);
+    gvmDebugOpcode("%d", (int)IX0(2).i);
     STEP(4);
     NEXT;
 }
@@ -1353,7 +1407,7 @@ IS(MIN_ILI) {
         (int)i2
     );
     IX1(2).i  = i1 < i2 ? i1 : i2;
-    gvmDebugOpcode("%d", (unsigned)IX1(2).u);
+    gvmDebugOpcode("%d", (int)IX1(2).i);
     STEP(4);
     NEXT;
 }
@@ -1362,7 +1416,13 @@ IS(MIN_X) {
     Scalar *op1, *op2, *op3;
     gvmDebugOpcode("min.i ");
     if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
+        gvmDebugOpcode(
+            " : min(%d, %d) => ",
+            (int)op1->i,
+            (int)op2->i
+        );
         op3->i = op1->i < op2->i ? op1->i : op2->i;
+        gvmDebugOpcode("%d", (int)op3->i);
         STEP(step);
         NEXT;
     }
