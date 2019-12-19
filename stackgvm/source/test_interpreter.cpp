@@ -70,7 +70,8 @@ Scalar* globalData[] = {
 
 int main() {
     std::printf("Max Opcode %d\n", Opcode::_MAX);
-    std::printf("Max Condition %d\n", Condition::_MAX);
+    std::printf("Max CC %d\n", Condition::_MAX);
+    std::printf("Max EA %d\n", ExtendedAddress::_MAX);
 
     Interpreter::init(100, 0, functionTable, hostFunctionTable, globalData);
     Scalar* stack = Interpreter::stack();
