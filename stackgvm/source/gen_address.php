@@ -21,12 +21,12 @@ const AANNOTATE = [
 ];
 
 const ADEBUGPRINTF = [
-    'L'   => '{%d}',
-    'I0'  => 'i0[%u]',
-    'I1'  => 'i1[%u]',
-    'I0X' => 'i0[{%d}]',
-    'I1X' => 'i1[{%d}]',
-    'R'   => '{%d}[%u]',
+    'L'   => 'OPF_L',
+    'I0'  => 'OPF_I0',
+    'I1'  => 'OPF_I1',
+    'I0X' => 'OPF_I0X',
+    'I1X' => 'OPF_I1X',
+    'R'   => 'OPF_R',
 ];
 
 const ADEBUGVALUES = [
@@ -72,9 +72,9 @@ foreach ($aModes as $sMode) {
         ),
         "\n";
 
-    echo "    gvmDebugAddress(\n        \"",
+    echo "    gvmDebugAddress(\n        ",
         implode(
-            ', ',
+            ' ", " ',
             array_map(
                 function($sMode) {
                     return ADEBUGPRINTF[$sMode];
@@ -82,7 +82,7 @@ foreach ($aModes as $sMode) {
                 $aOperands
             )
         ),
-        "\",\n        ";
+        ",\n        ";
 
 
     $iOffset = 0;

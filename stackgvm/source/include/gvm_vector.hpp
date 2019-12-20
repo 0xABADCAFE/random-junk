@@ -13,7 +13,7 @@ IS(VRND_L) {
     vd[1] = y*sf;
     vd[2] = z*sf;
     gvmDebugOpcode(
-        "rnd.v {%d} : { %g, %g, %g }",
+        "rnd.v " OPF_L " : { %g, %g, %g }",
         (int)OPS(0),
         vd[0],
         vd[1],
@@ -27,7 +27,7 @@ IS(VRND_L) {
 
 IS(VCOPY_LL) {
     gvmDebugOpcode(
-        "copy.v {%d}, {%d} : ",
+        "copy.v " OPF_L ", " OPF_L " : ",
         (int)OPS(0),
         (int)OPS(1)
     );
@@ -42,7 +42,7 @@ IS(VCOPY_LL) {
 
 IS(VCOPY_IL) {
     gvmDebugOpcode(
-        "copy.v i0[%u], {%d} : ",
+        "copy.v " OPF_I0 ", " OPF_L " : ",
         (unsigned)OPU(0),
         (int)OPS(1)
     );
@@ -57,7 +57,7 @@ IS(VCOPY_IL) {
 
 IS(VCOPY_LI) {
     gvmDebugOpcode(
-        "copy.v {%d}, i0[%u] : ",
+        "copy.v " OPF_L ", " OPF_I0 " : ",
         (int)OPS(0),
         (unsigned)OPU(1)
     );
@@ -72,7 +72,7 @@ IS(VCOPY_LI) {
 
 IS(VCOPY_II) {
     gvmDebugOpcode(
-        "copy.v i0[%u], i1[%u] : ",
+        "copy.v " OPF_I0 ", " OPF_I1 " : ",
         (unsigned)OPU(0),
         (unsigned)OPU(1)
     );
@@ -88,7 +88,7 @@ IS(VCOPY_II) {
 
 IS(VNEG_LL) {
     gvmDebugOpcode(
-        "neg.v {%d}, {%d} : ",
+        "neg.v " OPF_L ", " OPF_L " : ",
         (int)OPS(0),
         (int)OPS(1)
     );
@@ -103,7 +103,7 @@ IS(VNEG_LL) {
 
 IS(VNEG_IL) {
     gvmDebugOpcode(
-        "neg.v i0[%u], {%d} : ",
+        "neg.v " OPF_I0 ", " OPF_L " : ",
         (unsigned)OPU(0),
         (int)OPS(1)
     );
@@ -118,7 +118,7 @@ IS(VNEG_IL) {
 
 IS(VNEG_LI) {
     gvmDebugOpcode(
-        "neg.v {%d}, i0[%u] : ",
+        "neg.v " OPF_L ", " OPF_I0 " : ",
         (int)OPS(0),
         (unsigned)OPU(1)
     );
@@ -133,7 +133,7 @@ IS(VNEG_LI) {
 
 IS(VNEG_II) {
     gvmDebugOpcode(
-        "neg.v i0[%u], i1[%u] : ",
+        "neg.v " OPF_I0 ", " OPF_I1 " : ",
         (unsigned)OPU(0),
         (unsigned)OPU(1)
     );
@@ -149,7 +149,7 @@ IS(VNEG_II) {
 
 IS(VNORM_LL) {
     gvmDebugOpcode(
-        "vnrm.v {%d}, {%d} : ",
+        "vnrm.v " OPF_L ", " OPF_L " : ",
         (int)OPS(0),
         (int)OPS(1)
     );
@@ -164,7 +164,7 @@ IS(VNORM_LL) {
 
 IS(VNORM_IL) {
     gvmDebugOpcode(
-        "vnrm.v i0[%u], {%d} : ",
+        "vnrm.v " OPF_I0 ", " OPF_L " : ",
         (unsigned)OPU(0),
         (int)OPS(1)
     );
@@ -179,7 +179,7 @@ IS(VNORM_IL) {
 
 IS(VNORM_LI) {
     gvmDebugOpcode(
-        "vnrm.v {%d}, i0[%u] : ",
+        "vnrm.v " OPF_L ", " OPF_I0 " : ",
         (int)OPS(0),
         (unsigned)OPU(1)
     );
@@ -194,7 +194,7 @@ IS(VNORM_LI) {
 
 IS(VNORM_II) {
     gvmDebugOpcode(
-        "vnrm.v i0[%u], i1[%u] : ",
+        "vnrm.v " OPF_I0 ", " OPF_I1 " : ",
         (unsigned)OPU(0),
         (unsigned)OPU(1)
     );
@@ -211,7 +211,7 @@ IS(VNORM_II) {
 IS(VMAG_LL) {
     SCALAR_F* v = VLOC(0);
     gvmDebugOpcode(
-        "vmag.f {%d}, {%d} : |{ %g, %g, %g }| => ",
+        "vmag.f " OPF_L ", " OPF_L " : |{ %g, %g, %g }| => ",
         (int)OPS(0),
         (int)OPS(1),
         v[0], v[1], v[2]
@@ -229,7 +229,7 @@ IS(VMAG_LL) {
 IS(VMAG_IL) {
     SCALAR_F* v = VIX0(0);
     gvmDebugOpcode(
-        "vmag.f i0[%u], {%d} : |{ %g, %g, %g }| => ",
+        "vmag.f " OPF_I0 ", " OPF_L " : |{ %g, %g, %g }| => ",
         (unsigned)OPU(0),
         (int)OPS(1),
         v[0], v[1], v[2]
@@ -247,7 +247,7 @@ IS(VMAG_IL) {
 IS(VMAG_LI) {
     SCALAR_F* v = VLOC(0);
     gvmDebugOpcode(
-        "vmag.f {%d}, i0[%u] : |{ %g, %g, %g }| => ",
+        "vmag.f " OPF_L ", " OPF_I0 " : |{ %g, %g, %g }| => ",
         (int)OPS(0),
         (unsigned)OPU(1),
         v[0], v[1], v[2]
@@ -265,7 +265,7 @@ IS(VMAG_LI) {
 IS(VMAG_II) {
     SCALAR_F* v = VIX0(0);
     gvmDebugOpcode(
-        "vmag.f i0[%u], i1[%u] : |{ %g, %g, %g }| => ",
+        "vmag.f " OPF_I0 ", " OPF_I1 " : |{ %g, %g, %g }| => ",
         (unsigned)OPU(0),
         (unsigned)OPU(1),
         v[0], v[1], v[2]
@@ -285,7 +285,7 @@ IS(VMAG_II) {
 // Three Operand Vector Addition (Commutative, 4 unique variants) //////////////////////////////////////////////////////
 IS(VADD_LLL) {
     gvmDebugOpcode(
-        "add.v {%d}, {%d}, {%d} : ",
+        "add.v " OPF_L ", " OPF_L ", " OPF_L " : ",
         (int)OPS(0),
         (int)OPS(1),
         (int)OPS(2)
@@ -302,7 +302,7 @@ IS(VADD_LLL) {
 
 IS(VADD_ILL) {
     gvmDebugOpcode(
-        "add.v i0[%u], {%d}, {%d} : ",
+        "add.v " OPF_I0 ", " OPF_L ", " OPF_L " : ",
         (unsigned)OPU(0),
         (int)OPS(1),
         (int)OPS(2)
@@ -319,7 +319,7 @@ IS(VADD_ILL) {
 
 IS(VADD_LLI) {
     gvmDebugOpcode(
-        "add.v {%d}, {%d}, i0[%u] : ",
+        "add.v " OPF_L ", " OPF_L ", " OPF_I0 " : ",
         (int)OPS(0),
         (int)OPS(1),
         (unsigned)OPU(2)
@@ -336,7 +336,7 @@ IS(VADD_LLI) {
 
 IS(VADD_ILI) {
     gvmDebugOpcode(
-        "add.v i0[%u], {%d}, i1[%u] : ",
+        "add.v " OPF_I0 ", " OPF_L ", " OPF_I1 " : ",
         (unsigned)OPU(0),
         (int)OPS(1),
         (unsigned)OPU(2)
@@ -379,7 +379,7 @@ IS(VADD_X) {
 
 IS(VSUB_LLL) {
     gvmDebugOpcode(
-        "sub.v {%d}, {%d}, {%d} : ",
+        "sub.v " OPF_L ", " OPF_L ", " OPF_L " : ",
         (int)OPS(0),
         (int)OPS(1),
         (int)OPS(2)
@@ -396,7 +396,7 @@ IS(VSUB_LLL) {
 
 IS(VSUB_ILL) {
     gvmDebugOpcode(
-        "sub.v i0[%u], {%d}, {%d} : ",
+        "sub.v " OPF_I0 ", " OPF_L ", " OPF_L " : ",
         (unsigned)OPU(0),
         (int)OPS(1),
         (int)OPS(2)
@@ -413,7 +413,7 @@ IS(VSUB_ILL) {
 
 IS(VSUB_LLI) {
     gvmDebugOpcode(
-        "sub.v {%d}, {%d}, i0[%u] : ",
+        "sub.v " OPF_L ", " OPF_L ", " OPF_I0 " : ",
         (int)OPS(0),
         (int)OPS(1),
         (unsigned)OPU(2)
@@ -430,7 +430,7 @@ IS(VSUB_LLI) {
 
 IS(VSUB_ILI) {
     gvmDebugOpcode(
-        "sub.v i0[%u], {%d}, i1[%u] : ",
+        "sub.v " OPF_I0 ", " OPF_L ", " OPF_I1 " : ",
         (unsigned)OPU(0),
         (int)OPS(1),
         (unsigned)OPU(2)
@@ -447,7 +447,7 @@ IS(VSUB_ILI) {
 
 IS(VSUB_LIL) {
     gvmDebugOpcode(
-        "sub.v {%d}, i0[%u], {%d} : ",
+        "sub.v " OPF_L ", " OPF_I0 ", " OPF_L " : ",
         (int)OPS(0),
         (unsigned)OPU(1),
         (int)OPS(2)
@@ -464,7 +464,7 @@ IS(VSUB_LIL) {
 
 IS(VSUB_IIL) {
     gvmDebugOpcode(
-        "sub.v i0[%u], i1[%u], {%d} : ",
+        "sub.v " OPF_I0 ", " OPF_I1 ", " OPF_L " : ",
         (unsigned)OPU(0),
         (unsigned)OPU(1),
         (int)OPS(2)
@@ -481,7 +481,7 @@ IS(VSUB_IIL) {
 
 IS(VSUB_LII) {
     gvmDebugOpcode(
-        "sub.v {%d}, i0[%u], i1[%u] : ",
+        "sub.v " OPF_L ", " OPF_I0 ", " OPF_I1 " : ",
         (int)OPS(0),
         (unsigned)OPU(1),
         (unsigned)OPU(2)
@@ -525,7 +525,7 @@ IS(VSUB_X) {
 
 IS(VDOT_LLL) {
     gvmDebugOpcode(
-        "vdot.f {%d}, {%d}, {%d} : ",
+        "vdot.f " OPF_L ", " OPF_L ", " OPF_L " : ",
         (int)OPS(0),
         (int)OPS(1),
         (int)OPS(2)
@@ -545,7 +545,7 @@ IS(VDOT_LLL) {
 
 IS(VDOT_ILL) {
     gvmDebugOpcode(
-        "vdot.f %u(sf), {%d}, {%d} : ",
+        "vdot.f %u(sf), " OPF_L ", " OPF_L " : ",
         (unsigned)OPU(0),
         (int)OPS(1),
         (int)OPS(2)
@@ -565,7 +565,7 @@ IS(VDOT_ILL) {
 
 IS(VDOT_LLI) {
     gvmDebugOpcode(
-        "vdot.f {%d}, {%d}, i0[%u] : ",
+        "vdot.f " OPF_L ", " OPF_L ", " OPF_I0 " : ",
         (int)OPS(0),
         (int)OPS(1),
         (unsigned)OPU(2)
@@ -585,7 +585,7 @@ IS(VDOT_LLI) {
 
 IS(VDOT_ILI) {
     gvmDebugOpcode(
-        "vdot.f i0[%u], {%d}, i1[%u] : ",
+        "vdot.f " OPF_I0 ", " OPF_L ", " OPF_I1 " : ",
         (int)OPS(0),
         (int)OPS(1),
         (int)OPS(2)
@@ -625,7 +625,7 @@ IS(VDOT_X) {
 // Three Operand Cross Product (Noncommutative, 7 unique variants) /////////////////////////////////////////////////////
 IS(VCROSS_LLL) {
     gvmDebugOpcode(
-        "mul.v {%d}, {%d}, {%d} : ",
+        "mul.v " OPF_L ", " OPF_L ", " OPF_L " : ",
         (int)OPS(0),
         (int)OPS(1),
         (int)OPS(2)
@@ -642,7 +642,7 @@ IS(VCROSS_LLL) {
 
 IS(VCROSS_ILL) {
     gvmDebugOpcode(
-        "mul.v i0[%u], {%d}, {%d} : ",
+        "mul.v " OPF_I0 ", " OPF_L ", " OPF_L " : ",
         (unsigned)OPU(0),
         (int)OPS(1),
         (int)OPS(2)
@@ -659,7 +659,7 @@ IS(VCROSS_ILL) {
 
 IS(VCROSS_LLI) {
     gvmDebugOpcode(
-        "mul.v {%d}, {%d}, i0[%u] : ",
+        "mul.v " OPF_L ", " OPF_L ", " OPF_I0 " : ",
         (int)OPS(0),
         (int)OPS(1),
         (unsigned)OPU(2)
@@ -676,7 +676,7 @@ IS(VCROSS_LLI) {
 
 IS(VCROSS_ILI) {
     gvmDebugOpcode(
-        "mul.v i0[%u], {%d}, i1[%u] : ",
+        "mul.v " OPF_I0 ", " OPF_L ", " OPF_I1 " : ",
         (unsigned)OPU(0),
         (int)OPS(1),
         (unsigned)OPU(2)
@@ -693,7 +693,7 @@ IS(VCROSS_ILI) {
 
 IS(VCROSS_LIL) {
     gvmDebugOpcode(
-        "mul.v i0[%u], i0[%u], i1[%u] : ",
+        "mul.v " OPF_I0 ", " OPF_I0 ", " OPF_I1 " : ",
         (int)OPS(0),
         (unsigned)OPU(1),
         (int)OPS(2)
@@ -710,7 +710,7 @@ IS(VCROSS_LIL) {
 
 IS(VCROSS_IIL) {
     gvmDebugOpcode(
-        "mul.v i0[%u], i1[%u], {%d} : ",
+        "mul.v " OPF_I0 ", " OPF_I1 ", " OPF_L " : ",
         (unsigned)OPU(0),
         (unsigned)OPU(1),
         (int)OPS(2)
@@ -727,7 +727,7 @@ IS(VCROSS_IIL) {
 
 IS(VCROSS_LII) {
     gvmDebugOpcode(
-        "mul.v {%d}, i0[%u], i1[%u] : ",
+        "mul.v " OPF_L ", " OPF_I0 ", " OPF_I1 " : ",
         (int)OPS(0),
         (unsigned)OPU(1),
         (unsigned)OPU(2)
@@ -747,7 +747,7 @@ IS(VCROSS_LII) {
 // Three Operand Vector Scale (Commutative, mixed args, 7 unique variants) /////////////////////////////////////////////
 IS(VFMUL_LLL) {
     gvmDebugOpcode(
-        "mulf.v {%d}, {%d}, {%d} : ",
+        "mulf.v " OPF_L ", " OPF_L ", " OPF_L " : ",
         (int)OPS(0),
         (int)OPS(1),
         (int)OPS(2)
@@ -764,7 +764,7 @@ IS(VFMUL_LLL) {
 
 IS(VFMUL_ILL) {
     gvmDebugOpcode(
-        "mulf.v i0[%u], {%d}, {%d} : ",
+        "mulf.v " OPF_I0 ", " OPF_L ", " OPF_L " : ",
         (unsigned)OPU(0),
         (int)OPS(1),
         (int)OPS(2)
@@ -781,7 +781,7 @@ IS(VFMUL_ILL) {
 
 IS(VFMUL_LLI) {
     gvmDebugOpcode(
-        "mulf.v {%d}, {%d}, i0[%u] : ",
+        "mulf.v " OPF_L ", " OPF_L ", " OPF_I0 " : ",
         (int)OPS(0),
         (int)OPS(1),
         (unsigned)OPU(2)
@@ -798,7 +798,7 @@ IS(VFMUL_LLI) {
 
 IS(VFMUL_ILI) {
     gvmDebugOpcode(
-        "mulf.v i0[%u], {%d}, i1[%u] : ",
+        "mulf.v " OPF_I0 ", " OPF_L ", " OPF_I1 " : ",
         (unsigned)OPU(0),
         (int)OPS(1),
         (unsigned)OPU(2)
@@ -815,7 +815,7 @@ IS(VFMUL_ILI) {
 
 IS(VFMUL_LIL) {
     gvmDebugOpcode(
-        "mulf.v {%d}, i0[%u], {%d} : ",
+        "mulf.v " OPF_L ", " OPF_I0 ", " OPF_L " : ",
         (int)OPS(0),
         (unsigned)OPU(1),
         (int)OPS(2)
@@ -832,7 +832,7 @@ IS(VFMUL_LIL) {
 
 IS(VFMUL_IIL) {
     gvmDebugOpcode(
-        "mulf.v i0[%u], i1[%u], {%d} : ",
+        "mulf.v " OPF_I0 ", " OPF_I1 ", " OPF_L " : ",
         (unsigned)OPU(0),
         (unsigned)OPU(1),
         (int)OPS(2)
@@ -849,7 +849,7 @@ IS(VFMUL_IIL) {
 
 IS(VFMUL_LII) {
     gvmDebugOpcode(
-        "mulf.v {%d}, i0[%u], i1[%u] : ",
+        "mulf.v " OPF_L ", " OPF_I0 ", " OPF_I1 " : ",
         (int)OPS(0),
         (unsigned)OPU(1),
         (unsigned)OPU(2)
