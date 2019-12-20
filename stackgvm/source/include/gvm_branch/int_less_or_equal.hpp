@@ -2,7 +2,7 @@
 // Local <= Small Integer Literal
 BCC(I_LE_LS) {
     gvmDebugOpcode(
-        "bcc le.i (%d), #%d, %d : %d <= %d => ",
+        "bcc le.i {%d}, #%d, %d : %d <= %d => ",
         (int)OPS(1),
         (int)S8(2),
         (int)JBRA(3),
@@ -18,7 +18,7 @@ BCC(I_LE_LS) {
 // Indirect[0] <= Small Integer Literal
 BCC(I_LE_I0S) {
     gvmDebugOpcode(
-        "bcc le.i (i0 + %u), #%d, %d : %d <= %d => ",
+        "bcc le.i i0[%u], #%d, %d : %d <= %d => ",
         (unsigned)OPU(1),
         (int)S8(2),
         (int)JBRA(3),
@@ -34,7 +34,7 @@ BCC(I_LE_I0S) {
 // Indirect[1] <= Small Integer Literal
 BCC(I_LE_I1S) {
     gvmDebugOpcode(
-        "bcc le.i (i1 + %u), #%d, %d : %d <= %d => ",
+        "bcc le.i i1[%u], #%d, %d : %d <= %d => ",
         (unsigned)OPU(1),
         (int)S8(2),
         (int)JBRA(3),
@@ -50,7 +50,7 @@ BCC(I_LE_I1S) {
 // Local <= Local
 BCC(I_LE_LL) {
     gvmDebugOpcode(
-        "bcc le.i (%d), (%d), %d : %d <= %d => ",
+        "bcc le.i {%d}, {%d}, %d : %d <= %d => ",
         (int)OPS(1),
         (int)OPS(2),
         (int)JBRA(3),
@@ -66,7 +66,7 @@ BCC(I_LE_LL) {
 // Local <= Indirect[0]
 BCC(I_LE_LI0) {
     gvmDebugOpcode(
-        "bcc le.i (%d), (i0 + %u), %d : %d <= %d => ",
+        "bcc le.i {%d}, i0[%u], %d : %d <= %d => ",
         OPS(1),
         (unsigned)OPU(2),
         (int)JBRA(3),
@@ -82,7 +82,7 @@ BCC(I_LE_LI0) {
 // Local <= Indirect[1]
 BCC(I_LE_LI1) {
     gvmDebugOpcode(
-        "bcc le.i (%d), (i1 + %u), %d : %d <= %d => ",
+        "bcc le.i {%d}, i1[%u], %d : %d <= %d => ",
         OPS(1),
         (unsigned)OPU(2),
         (int)JBRA(3),
@@ -98,7 +98,7 @@ BCC(I_LE_LI1) {
 // Indirect[0] <= Indirect[1]
 BCC(I_LE_II) {
     gvmDebugOpcode(
-        "bcc le.i (i0 + %u), (i1 + %u), %d : %d <= %d => ",
+        "bcc le.i i0[%u], i1[%u], %d : %d <= %d => ",
         (unsigned)OPU(1),
         (unsigned)OPU(2),
         (int)JBRA(3),

@@ -2,7 +2,7 @@
 // Local !== Small Integer Literal
 BCC(X_NE_LS) {
     gvmDebugOpcode(
-        "bcc ne.i (%d), #%d, %d : %d != %d => ",
+        "bcc ne.i {%d}, #%d, %d : %d != %d => ",
         (int)OPS(1),
         (int)S8(2),
         (int)JBRA(3),
@@ -18,7 +18,7 @@ BCC(X_NE_LS) {
 // Indirect[0] !== Small Integer Literal
 BCC(X_NE_I0S) {
     gvmDebugOpcode(
-        "bcc.i ne.i (i0 + %u), #%d, %d : %d != %d => ",
+        "bcc.i ne.i i0[%u], #%d, %d : %d != %d => ",
         (unsigned)OPU(1),
         (int)S8(2),
         (int)JBRA(3),
@@ -34,7 +34,7 @@ BCC(X_NE_I0S) {
 // Indirect[1] !== Small Integer Literal
 BCC(X_NE_I1S) {
     gvmDebugOpcode(
-        "bcc ne.i (i1 + %u), #%d, %d : %d != %d => ",
+        "bcc ne.i i1[%u], #%d, %d : %d != %d => ",
         (unsigned)OPU(1),
         (int)S8(2),
         (int)JBRA(3),
@@ -50,7 +50,7 @@ BCC(X_NE_I1S) {
 // Local !== Local
 BCC(X_NE_LL) {
     gvmDebugOpcode(
-        "bcc ne (%d), (%d), %d : 0x%08X != 0x%08X => ",
+        "bcc ne {%d}, {%d}, %d : 0x%08X != 0x%08X => ",
         (int)OPS(1),
         (int)OPS(2),
         (int)JBRA(3),
@@ -66,7 +66,7 @@ BCC(X_NE_LL) {
 // Local !== Indirect[0]
 BCC(X_NE_LI0) {
     gvmDebugOpcode(
-        "bcc ne (%d), (i0 + %u), %d : 0x%08X != 0x%08X => ",
+        "bcc ne {%d}, i0[%u], %d : 0x%08X != 0x%08X => ",
         (int)OPS(1),
         (unsigned)OPU(2),
         (int)JBRA(3),
@@ -82,7 +82,7 @@ BCC(X_NE_LI0) {
 // Local !== Indirect[1]
 BCC(X_NE_LI1) {
     gvmDebugOpcode(
-        "bcc ne (%d), (i1 + %u), %d : 0x%08X != 0x%08X => ",
+        "bcc ne {%d}, i1[%u], %d : 0x%08X != 0x%08X => ",
         (int)OPS(1),
         (unsigned)OPU(2),
         (int)JBRA(3),
@@ -98,7 +98,7 @@ BCC(X_NE_LI1) {
 // Indirect[0] !== Indirect[1]
 BCC(X_NE_II) {
     gvmDebugOpcode(
-        "bcc ne (i0 + %u), (i1 + %u), %d : 0x%08X != 0x%08X => ",
+        "bcc ne i0[%u], i1[%u], %d : 0x%08X != 0x%08X => ",
         (unsigned)OPU(1),
         (unsigned)OPU(2),
         (int)JBRA(3),
@@ -110,3 +110,4 @@ BCC(X_NE_II) {
     }
     BOC_SKIPPED
 }
+
