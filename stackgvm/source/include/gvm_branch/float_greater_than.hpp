@@ -2,7 +2,7 @@
 // Local > Local
 BCC(F_GT_LL) {
     gvmDebugOpcode(
-        "bcc gt.f " OPF_L ", " OPF_L ", %d : %e > %e => ",
+        "bgt.f " OPF_L ", " OPF_L ", %d : %e > %e => ",
         (int)OPS(1),
         (int)OPS(2),
         (int)JBRA(3),
@@ -18,7 +18,7 @@ BCC(F_GT_LL) {
 // Local > Indirect[0]
 BCC(F_GT_LI0) {
     gvmDebugOpcode(
-        "bcc gt.f " OPF_L ", " OPF_I0 ", %d : %e > %e => ",
+        "bgt.f " OPF_L ", " OPF_I0 ", %d : %e > %e => ",
         (int)OPS(1),
         (unsigned)OPU(2),
         (int)JBRA(3),
@@ -34,7 +34,7 @@ BCC(F_GT_LI0) {
 // Local > Indirect[1]
 BCC(F_GT_LI1) {
     gvmDebugOpcode(
-        "bcc gt.f " OPF_L ", " OPF_I1 ", %d : %e > %e => ",
+        "bgt.f " OPF_L ", " OPF_I1 ", %d : %e > %e => ",
         (int)OPS(1),
         (unsigned)OPU(2),
         (int)JBRA(3),
@@ -50,7 +50,7 @@ BCC(F_GT_LI1) {
 // Indirect[0] > Indirect[1]
 BCC(F_GT_II) {
     gvmDebugOpcode(
-        "bcc gt.f " OPF_I0 ", " OPF_I1 ", %d : %e > %e => ",
+        "bgt.f " OPF_I0 ", " OPF_I1 ", %d : %e > %e => ",
         (unsigned)OPU(1),
         (unsigned)OPU(2),
         (int)JBRA(3),

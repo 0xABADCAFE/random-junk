@@ -4,7 +4,7 @@ BCC(V_EQ_LL) {
     us = ULOC(1);
     ud = ULOC(2);
     gvmDebugOpcode(
-        "bcc eq.v " OPF_L ", " OPF_L ", %d : ",
+        "beq.v " OPF_L ", " OPF_L ", %d : ",
         (int)OPS(1),
         (int)OPS(2),
         (int)JBRA(3)
@@ -25,7 +25,7 @@ BCC(V_EQ_LI0) {
     us = ULOC(1);
     ud = UIX0(2);
     gvmDebugOpcode(
-        "bcc eq.v " OPF_L ", " OPF_I0 ", %d : ",
+        "beq.v " OPF_L ", " OPF_I0 ", %d : ",
         (int)OPS(1),
         (unsigned)OPU(2),
         (int)JBRA(3)
@@ -45,7 +45,7 @@ BCC(V_EQ_LI1) {
     us = ULOC(1);
     ud = UIX1(2);
     gvmDebugOpcode(
-        "bcc eq.v " OPF_L ", " OPF_I1 ", %d : ",
+        "beq.v " OPF_L ", " OPF_I1 ", %d : ",
         (int)OPS(1),
         (unsigned)OPU(2),
         (int)JBRA(3)
@@ -65,7 +65,7 @@ BCC(V_EQ_II) {
     us = UIX0(1);
     ud = UIX1(2);
     gvmDebugOpcode(
-        "bcc eq.v " OPF_I0 ", " OPF_I1 ", %d : ",
+        "beq.v " OPF_I0 ", " OPF_I1 ", %d : ",
         (unsigned)OPU(1),
         (unsigned)OPU(2),
         (int)JBRA(3)

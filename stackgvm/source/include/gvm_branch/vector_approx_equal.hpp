@@ -4,7 +4,7 @@ BCC(V_AE_LL) {
     vs1 = VLOC(1);
     vs2 = VLOC(2);
     gvmDebugOpcode(
-        "bcc ae.v " OPF_L ", " OPF_L ", %d : ",
+        "bae.v " OPF_L ", " OPF_L ", %d : ",
         (int)OPS(1),
         (int)OPS(2),
         (int)JBRA(3)
@@ -25,7 +25,7 @@ BCC(V_AE_LI0) {
     vs1 = VLOC(1);
     vs2 = VIX0(2);
     gvmDebugOpcode(
-        "bcc ae.v " OPF_L ", " OPF_I0 ", %d : ",
+        "bae.v " OPF_L ", " OPF_I0 ", %d : ",
         (int)OPS(1),
         (unsigned)OPU(2),
         (int)JBRA(3)
@@ -45,7 +45,7 @@ BCC(V_AE_LI1) {
     vs1 = VLOC(1);
     vs2 = VIX1(2);
     gvmDebugOpcode(
-        "bcc ae.v " OPF_L ", " OPF_I1 ", %d : ",
+        "bae.v " OPF_L ", " OPF_I1 ", %d : ",
         (int)OPS(1),
         (unsigned)OPU(2),
         (int)JBRA(3)
@@ -65,7 +65,7 @@ BCC(V_AE_II) {
     vs1 = VIX0(1);
     vs2 = VIX1(2);
     gvmDebugOpcode(
-        "bcc ae.v " OPF_I0 ", " OPF_I1 ", %d : ",
+        "bae.v " OPF_I0 ", " OPF_I1 ", %d : ",
         (unsigned)OPU(1),
         (unsigned)OPU(2),
         (int)JBRA(3)

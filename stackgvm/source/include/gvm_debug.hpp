@@ -10,6 +10,7 @@
         #define gvmDebug(...) std::fprintf(stderr, __VA_ARGS__)
 
         #define OPF_S   "#%d"
+        #define OPF_SU  "#%u"
         #define OPF_L   "{%d}"
         #define OPF_I0  "i0[%u]"
         #define OPF_I1  "i1[%u]"

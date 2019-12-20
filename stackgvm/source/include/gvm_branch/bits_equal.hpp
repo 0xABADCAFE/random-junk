@@ -2,7 +2,7 @@
 // Local === Small Integer Literal
 BCC(X_EQ_LS) {
     gvmDebugOpcode(
-        "bcc eq.i " OPF_L ", #%d, %d : %d == %d => ",
+        "beq.i " OPF_L ", #%d, %d : %d == %d => ",
         (int)OPS(1),
         (int)S8(2),
         (int)JBRA(3),
@@ -18,7 +18,7 @@ BCC(X_EQ_LS) {
 // Indirect[0] === Small Integer Literal
 BCC(X_EQ_I0S) {
     gvmDebugOpcode(
-        "bcc eq.i i0 [%u], #%d, %d : %d == %d => ",
+        "beq.i i0 [%u], #%d, %d : %d == %d => ",
         (unsigned)OPU(1),
         (int)S8(2),
         (int)JBRA(3),
@@ -34,7 +34,7 @@ BCC(X_EQ_I0S) {
 // Indirect[1] === Small Integer Literal
 BCC(X_EQ_I1S) {
     gvmDebugOpcode(
-        "bcc eq.i " OPF_I1 ", #%d, %d : %d == %d => ",
+        "beq.i " OPF_I1 ", #%d, %d : %d == %d => ",
         (unsigned)OPU(1),
         (int)S8(2),
         (int)JBRA(3),
@@ -50,7 +50,7 @@ BCC(X_EQ_I1S) {
 // Local == Local
 BCC(X_EQ_LL) {
     gvmDebugOpcode(
-        "bcc eq " OPF_L ", " OPF_L ", %d : 0x%08X == 0x%08X => ",
+        "beq " OPF_L ", " OPF_L ", %d : 0x%08X == 0x%08X => ",
         (int)OPS(1),
         (int)OPS(2),
         (int)JBRA(3),
@@ -66,7 +66,7 @@ BCC(X_EQ_LL) {
 // Local == Indirect[0]
 BCC(X_EQ_LI0) {
     gvmDebugOpcode(
-        "bcc eq " OPF_L ", " OPF_I0 ", %d : 0x%08X == 0x%08X => ",
+        "beq " OPF_L ", " OPF_I0 ", %d : 0x%08X == 0x%08X => ",
         (int)OPS(1),
         (unsigned)OPU(2),
         (int)JBRA(3),
@@ -82,7 +82,7 @@ BCC(X_EQ_LI0) {
 // Local == Indirect[1]
 BCC(X_EQ_LI1) {
     gvmDebugOpcode(
-        "bcc eq " OPF_L ", " OPF_I1 ", %d : 0x%08X == 0x%08X => ",
+        "beq " OPF_L ", " OPF_I1 ", %d : 0x%08X == 0x%08X => ",
         (int)OPS(1),
         (unsigned)OPU(2),
         (int)JBRA(3),
@@ -98,7 +98,7 @@ BCC(X_EQ_LI1) {
 // Indirect[0] == Indirect[1]
 BCC(X_EQ_II) {
     gvmDebugOpcode(
-        "bcc eq " OPF_I0 ", " OPF_I1 ", %d : 0x%08X == 0x%08X => ",
+        "beq " OPF_I0 ", " OPF_I1 ", %d : 0x%08X == 0x%08X => ",
         (unsigned)OPU(1),
         (unsigned)OPU(2),
         (int)JBRA(3),

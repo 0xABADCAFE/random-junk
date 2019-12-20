@@ -2,7 +2,7 @@
 // Literal bit clear in Local
 BCC(X_BC_SL) {
     gvmDebugOpcode(
-        "bcc clr #%u, " OPF_L ", %d : 0x%08X => ",
+        "bbc " OPF_SU ", " OPF_L ", %d : 0x%08X => ",
         (unsigned)U8(1),
         (int)OPS(2),
         (int)JBRA(3),
@@ -17,7 +17,7 @@ BCC(X_BC_SL) {
 // Literal bit clear in Indirect[0]
 BCC(X_BC_SI0) {
     gvmDebugOpcode(
-        "bcc clr #%u, " OPF_I0 ", %d : 0x%08X => ",
+        "bbc " OPF_SU ", " OPF_I0 ", %d : 0x%08X => ",
         (unsigned)U8(1),
         (unsigned)OPU(2),
         (int)JBRA(3),
@@ -32,7 +32,7 @@ BCC(X_BC_SI0) {
 // Literal bit clear in Indirect[1]
 BCC(X_BC_SI1) {
     gvmDebugOpcode(
-        "bcc clr #%u, " OPF_I1 ", %d : 0x%08X => ",
+        "bbc " OPF_SU ", " OPF_I1 ", %d : 0x%08X => ",
         (unsigned)U8(1),
         (unsigned)OPU(2),
         (int)JBRA(3),
@@ -47,7 +47,7 @@ BCC(X_BC_SI1) {
 // Local bit clear in Local
 BCC(X_BC_LL) {
     gvmDebugOpcode(
-        "bcc clr " OPF_L ", " OPF_L ", %d : 0x%08X => ",
+        "bbc " OPF_L ", " OPF_L ", %d : 0x%08X => ",
         (int)OPS(1),
         (int)OPS(2),
         (int)JBRA(3),
@@ -62,7 +62,7 @@ BCC(X_BC_LL) {
 // Local bit clear in Indirect[0]
 BCC(X_BC_LI0) {
     gvmDebugOpcode(
-        "bcc clr " OPF_L ", " OPF_I0 ", %d : 0x%08X => ",
+        "bbc " OPF_L ", " OPF_I0 ", %d : 0x%08X => ",
         (int)OPS(1),
         (unsigned)OPU(2),
         (int)JBRA(3),
@@ -77,7 +77,7 @@ BCC(X_BC_LI0) {
 // Local bit clear in Indirect[1]
 BCC(X_BC_LI1) {
     gvmDebugOpcode(
-        "bcc clr " OPF_L ", " OPF_I1 ", %d : 0x%08X => ",
+        "bbc " OPF_L ", " OPF_I1 ", %d : 0x%08X => ",
         (int)OPS(1),
         (unsigned)OPU(2),
         (int)JBRA(3),
