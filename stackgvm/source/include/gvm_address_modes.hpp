@@ -3,7 +3,7 @@
 EA(L_L_I1) {
     // local, local, i1[const uint8]
     gvmDebugAddress(
-        "(%d), (%d), (i1+%u)",
+        "{%d}, {%d}, i1[%u]",
         (int8)pc[0 + OSIZE],
         (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE]
@@ -17,7 +17,7 @@ EA(L_L_I1) {
 EA(L_L_I0X) {
     // local, local, i0[local int32]
     gvmDebugAddress(
-        "(%d), (%d), (i0+(%d))",
+        "{%d}, {%d}, i0[{%d}]",
         (int8)pc[0 + OSIZE],
         (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE]
@@ -31,7 +31,7 @@ EA(L_L_I0X) {
 EA(L_L_I1X) {
     // local, local, i1[local int32]
     gvmDebugAddress(
-        "(%d), (%d), (i1+(%d))",
+        "{%d}, {%d}, i1[{%d}]",
         (int8)pc[0 + OSIZE],
         (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE]
@@ -45,7 +45,7 @@ EA(L_L_I1X) {
 EA(L_L_R) {
     // local, local, local[const uint8]
     gvmDebugAddress(
-        "(%d), (%d), ((%d)+%u)",
+        "{%d}, {%d}, {%d}[%u]",
         (int8)pc[0 + OSIZE],
         (int8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE], (uint8)pc[3 + OSIZE]
@@ -59,7 +59,7 @@ EA(L_L_R) {
 EA(L_I0_I0) {
     // local, i0[const uint8], i0[const uint8]
     gvmDebugAddress(
-        "(%d), (i0+%u), (i0+%u)",
+        "{%d}, i0[%u], i0[%u]",
         (int8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE]
@@ -73,7 +73,7 @@ EA(L_I0_I0) {
 EA(L_I0_I0X) {
     // local, i0[const uint8], i0[local int32]
     gvmDebugAddress(
-        "(%d), (i0+%u), (i0+(%d))",
+        "{%d}, i0[%u], i0[{%d}]",
         (int8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE]
@@ -87,7 +87,7 @@ EA(L_I0_I0X) {
 EA(L_I0_I1X) {
     // local, i0[const uint8], i1[local int32]
     gvmDebugAddress(
-        "(%d), (i0+%u), (i1+(%d))",
+        "{%d}, i0[%u], i1[{%d}]",
         (int8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE]
@@ -101,7 +101,7 @@ EA(L_I0_I1X) {
 EA(L_I0_R) {
     // local, i0[const uint8], local[const uint8]
     gvmDebugAddress(
-        "(%d), (i0+%u), ((%d)+%u)",
+        "{%d}, i0[%u], {%d}[%u]",
         (int8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE], (uint8)pc[3 + OSIZE]
@@ -115,7 +115,7 @@ EA(L_I0_R) {
 EA(L_I1_L) {
     // local, i1[const uint8], local
     gvmDebugAddress(
-        "(%d), (i1+%u), (%d)",
+        "{%d}, i1[%u], {%d}",
         (int8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE]
@@ -129,7 +129,7 @@ EA(L_I1_L) {
 EA(L_I1_I0) {
     // local, i1[const uint8], i0[const uint8]
     gvmDebugAddress(
-        "(%d), (i1+%u), (i0+%u)",
+        "{%d}, i1[%u], i0[%u]",
         (int8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE]
@@ -143,7 +143,7 @@ EA(L_I1_I0) {
 EA(L_I1_I1) {
     // local, i1[const uint8], i1[const uint8]
     gvmDebugAddress(
-        "(%d), (i1+%u), (i1+%u)",
+        "{%d}, i1[%u], i1[%u]",
         (int8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE]
@@ -157,7 +157,7 @@ EA(L_I1_I1) {
 EA(L_I1_I0X) {
     // local, i1[const uint8], i0[local int32]
     gvmDebugAddress(
-        "(%d), (i1+%u), (i0+(%d))",
+        "{%d}, i1[%u], i0[{%d}]",
         (int8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE]
@@ -171,7 +171,7 @@ EA(L_I1_I0X) {
 EA(L_I1_I1X) {
     // local, i1[const uint8], i1[local int32]
     gvmDebugAddress(
-        "(%d), (i1+%u), (i1+(%d))",
+        "{%d}, i1[%u], i1[{%d}]",
         (int8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE]
@@ -185,7 +185,7 @@ EA(L_I1_I1X) {
 EA(L_I1_R) {
     // local, i1[const uint8], local[const uint8]
     gvmDebugAddress(
-        "(%d), (i1+%u), ((%d)+%u)",
+        "{%d}, i1[%u], {%d}[%u]",
         (int8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE], (uint8)pc[3 + OSIZE]
@@ -199,7 +199,7 @@ EA(L_I1_R) {
 EA(L_I0X_L) {
     // local, i0[local int32], local
     gvmDebugAddress(
-        "(%d), (i0+(%d)), (%d)",
+        "{%d}, i0[{%d}], {%d}",
         (int8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE], (int8)pc[2 + OSIZE],
         (int8)pc[3 + OSIZE]
@@ -213,7 +213,7 @@ EA(L_I0X_L) {
 EA(L_I0X_I0) {
     // local, i0[local int32], i0[const uint8]
     gvmDebugAddress(
-        "(%d), (i0+(%d)), (i0+%u)",
+        "{%d}, i0[{%d}], i0[%u]",
         (int8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE], (int8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE]
@@ -227,7 +227,7 @@ EA(L_I0X_I0) {
 EA(L_I0X_I1) {
     // local, i0[local int32], i1[const uint8]
     gvmDebugAddress(
-        "(%d), (i0+(%d)), (i1+%u)",
+        "{%d}, i0[{%d}], i1[%u]",
         (int8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE], (int8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE]
@@ -241,7 +241,7 @@ EA(L_I0X_I1) {
 EA(L_I0X_I0X) {
     // local, i0[local int32], i0[local int32]
     gvmDebugAddress(
-        "(%d), (i0+(%d)), (i0+(%d))",
+        "{%d}, i0[{%d}], i0[{%d}]",
         (int8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE], (int8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE], (int8)pc[4 + OSIZE]
@@ -255,7 +255,7 @@ EA(L_I0X_I0X) {
 EA(L_I0X_I1X) {
     // local, i0[local int32], i1[local int32]
     gvmDebugAddress(
-        "(%d), (i0+(%d)), (i1+(%d))",
+        "{%d}, i0[{%d}], i1[{%d}]",
         (int8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE], (int8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE], (int8)pc[4 + OSIZE]
@@ -269,7 +269,7 @@ EA(L_I0X_I1X) {
 EA(L_I0X_R) {
     // local, i0[local int32], local[const uint8]
     gvmDebugAddress(
-        "(%d), (i0+(%d)), ((%d)+%u)",
+        "{%d}, i0[{%d}], {%d}[%u]",
         (int8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE], (int8)pc[2 + OSIZE],
         (int8)pc[3 + OSIZE], (uint8)pc[4 + OSIZE]
@@ -283,7 +283,7 @@ EA(L_I0X_R) {
 EA(L_I1X_L) {
     // local, i1[local int32], local
     gvmDebugAddress(
-        "(%d), (i1+(%d)), (%d)",
+        "{%d}, i1[{%d}], {%d}",
         (int8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE], (int8)pc[2 + OSIZE],
         (int8)pc[3 + OSIZE]
@@ -297,7 +297,7 @@ EA(L_I1X_L) {
 EA(L_I1X_I0) {
     // local, i1[local int32], i0[const uint8]
     gvmDebugAddress(
-        "(%d), (i1+(%d)), (i0+%u)",
+        "{%d}, i1[{%d}], i0[%u]",
         (int8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE], (int8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE]
@@ -311,7 +311,7 @@ EA(L_I1X_I0) {
 EA(L_I1X_I1) {
     // local, i1[local int32], i1[const uint8]
     gvmDebugAddress(
-        "(%d), (i1+(%d)), (i1+%u)",
+        "{%d}, i1[{%d}], i1[%u]",
         (int8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE], (int8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE]
@@ -325,7 +325,7 @@ EA(L_I1X_I1) {
 EA(L_I1X_I0X) {
     // local, i1[local int32], i0[local int32]
     gvmDebugAddress(
-        "(%d), (i1+(%d)), (i0+(%d))",
+        "{%d}, i1[{%d}], i0[{%d}]",
         (int8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE], (int8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE], (int8)pc[4 + OSIZE]
@@ -339,7 +339,7 @@ EA(L_I1X_I0X) {
 EA(L_I1X_I1X) {
     // local, i1[local int32], i1[local int32]
     gvmDebugAddress(
-        "(%d), (i1+(%d)), (i1+(%d))",
+        "{%d}, i1[{%d}], i1[{%d}]",
         (int8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE], (int8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE], (int8)pc[4 + OSIZE]
@@ -353,7 +353,7 @@ EA(L_I1X_I1X) {
 EA(L_I1X_R) {
     // local, i1[local int32], local[const uint8]
     gvmDebugAddress(
-        "(%d), (i1+(%d)), ((%d)+%u)",
+        "{%d}, i1[{%d}], {%d}[%u]",
         (int8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE], (int8)pc[2 + OSIZE],
         (int8)pc[3 + OSIZE], (uint8)pc[4 + OSIZE]
@@ -367,7 +367,7 @@ EA(L_I1X_R) {
 EA(L_R_L) {
     // local, local[const uint8], local
     gvmDebugAddress(
-        "(%d), ((%d)+%u), (%d)",
+        "{%d}, {%d}[%u], {%d}",
         (int8)pc[0 + OSIZE],
         (int8)pc[1 + OSIZE], (uint8)pc[2 + OSIZE],
         (int8)pc[3 + OSIZE]
@@ -381,7 +381,7 @@ EA(L_R_L) {
 EA(L_R_I0) {
     // local, local[const uint8], i0[const uint8]
     gvmDebugAddress(
-        "(%d), ((%d)+%u), (i0+%u)",
+        "{%d}, {%d}[%u], i0[%u]",
         (int8)pc[0 + OSIZE],
         (int8)pc[1 + OSIZE], (uint8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE]
@@ -395,7 +395,7 @@ EA(L_R_I0) {
 EA(L_R_I1) {
     // local, local[const uint8], i1[const uint8]
     gvmDebugAddress(
-        "(%d), ((%d)+%u), (i1+%u)",
+        "{%d}, {%d}[%u], i1[%u]",
         (int8)pc[0 + OSIZE],
         (int8)pc[1 + OSIZE], (uint8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE]
@@ -409,7 +409,7 @@ EA(L_R_I1) {
 EA(L_R_I0X) {
     // local, local[const uint8], i0[local int32]
     gvmDebugAddress(
-        "(%d), ((%d)+%u), (i0+(%d))",
+        "{%d}, {%d}[%u], i0[{%d}]",
         (int8)pc[0 + OSIZE],
         (int8)pc[1 + OSIZE], (uint8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE], (int8)pc[4 + OSIZE]
@@ -423,7 +423,7 @@ EA(L_R_I0X) {
 EA(L_R_I1X) {
     // local, local[const uint8], i1[local int32]
     gvmDebugAddress(
-        "(%d), ((%d)+%u), (i1+(%d))",
+        "{%d}, {%d}[%u], i1[{%d}]",
         (int8)pc[0 + OSIZE],
         (int8)pc[1 + OSIZE], (uint8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE], (int8)pc[4 + OSIZE]
@@ -437,7 +437,7 @@ EA(L_R_I1X) {
 EA(L_R_R) {
     // local, local[const uint8], local[const uint8]
     gvmDebugAddress(
-        "(%d), ((%d)+%u), ((%d)+%u)",
+        "{%d}, {%d}[%u], {%d}[%u]",
         (int8)pc[0 + OSIZE],
         (int8)pc[1 + OSIZE], (uint8)pc[2 + OSIZE],
         (int8)pc[3 + OSIZE], (uint8)pc[4 + OSIZE]
@@ -451,7 +451,7 @@ EA(L_R_R) {
 EA(I0_L_I0) {
     // i0[const uint8], local, i0[const uint8]
     gvmDebugAddress(
-        "(i0+%u), (%d), (i0+%u)",
+        "i0[%u], {%d}, i0[%u]",
         (uint8)pc[0 + OSIZE],
         (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE]
@@ -465,7 +465,7 @@ EA(I0_L_I0) {
 EA(I0_L_I0X) {
     // i0[const uint8], local, i0[local int32]
     gvmDebugAddress(
-        "(i0+%u), (%d), (i0+(%d))",
+        "i0[%u], {%d}, i0[{%d}]",
         (uint8)pc[0 + OSIZE],
         (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE]
@@ -479,7 +479,7 @@ EA(I0_L_I0X) {
 EA(I0_L_I1X) {
     // i0[const uint8], local, i1[local int32]
     gvmDebugAddress(
-        "(i0+%u), (%d), (i1+(%d))",
+        "i0[%u], {%d}, i1[{%d}]",
         (uint8)pc[0 + OSIZE],
         (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE]
@@ -493,7 +493,7 @@ EA(I0_L_I1X) {
 EA(I0_L_R) {
     // i0[const uint8], local, local[const uint8]
     gvmDebugAddress(
-        "(i0+%u), (%d), ((%d)+%u)",
+        "i0[%u], {%d}, {%d}[%u]",
         (uint8)pc[0 + OSIZE],
         (int8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE], (uint8)pc[3 + OSIZE]
@@ -507,7 +507,7 @@ EA(I0_L_R) {
 EA(I0_I0_L) {
     // i0[const uint8], i0[const uint8], local
     gvmDebugAddress(
-        "(i0+%u), (i0+%u), (%d)",
+        "i0[%u], i0[%u], {%d}",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE]
@@ -521,7 +521,7 @@ EA(I0_I0_L) {
 EA(I0_I0_I0) {
     // i0[const uint8], i0[const uint8], i0[const uint8]
     gvmDebugAddress(
-        "(i0+%u), (i0+%u), (i0+%u)",
+        "i0[%u], i0[%u], i0[%u]",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE]
@@ -535,7 +535,7 @@ EA(I0_I0_I0) {
 EA(I0_I0_I1) {
     // i0[const uint8], i0[const uint8], i1[const uint8]
     gvmDebugAddress(
-        "(i0+%u), (i0+%u), (i1+%u)",
+        "i0[%u], i0[%u], i1[%u]",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE]
@@ -549,7 +549,7 @@ EA(I0_I0_I1) {
 EA(I0_I0_I0X) {
     // i0[const uint8], i0[const uint8], i0[local int32]
     gvmDebugAddress(
-        "(i0+%u), (i0+%u), (i0+(%d))",
+        "i0[%u], i0[%u], i0[{%d}]",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE]
@@ -563,7 +563,7 @@ EA(I0_I0_I0X) {
 EA(I0_I0_I1X) {
     // i0[const uint8], i0[const uint8], i1[local int32]
     gvmDebugAddress(
-        "(i0+%u), (i0+%u), (i1+(%d))",
+        "i0[%u], i0[%u], i1[{%d}]",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE]
@@ -577,7 +577,7 @@ EA(I0_I0_I1X) {
 EA(I0_I0_R) {
     // i0[const uint8], i0[const uint8], local[const uint8]
     gvmDebugAddress(
-        "(i0+%u), (i0+%u), ((%d)+%u)",
+        "i0[%u], i0[%u], {%d}[%u]",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE], (uint8)pc[3 + OSIZE]
@@ -591,7 +591,7 @@ EA(I0_I0_R) {
 EA(I0_I1_I0) {
     // i0[const uint8], i1[const uint8], i0[const uint8]
     gvmDebugAddress(
-        "(i0+%u), (i1+%u), (i0+%u)",
+        "i0[%u], i1[%u], i0[%u]",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE]
@@ -605,7 +605,7 @@ EA(I0_I1_I0) {
 EA(I0_I1_I1) {
     // i0[const uint8], i1[const uint8], i1[const uint8]
     gvmDebugAddress(
-        "(i0+%u), (i1+%u), (i1+%u)",
+        "i0[%u], i1[%u], i1[%u]",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE]
@@ -619,7 +619,7 @@ EA(I0_I1_I1) {
 EA(I0_I1_I0X) {
     // i0[const uint8], i1[const uint8], i0[local int32]
     gvmDebugAddress(
-        "(i0+%u), (i1+%u), (i0+(%d))",
+        "i0[%u], i1[%u], i0[{%d}]",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE]
@@ -633,7 +633,7 @@ EA(I0_I1_I0X) {
 EA(I0_I1_I1X) {
     // i0[const uint8], i1[const uint8], i1[local int32]
     gvmDebugAddress(
-        "(i0+%u), (i1+%u), (i1+(%d))",
+        "i0[%u], i1[%u], i1[{%d}]",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE]
@@ -647,7 +647,7 @@ EA(I0_I1_I1X) {
 EA(I0_I1_R) {
     // i0[const uint8], i1[const uint8], local[const uint8]
     gvmDebugAddress(
-        "(i0+%u), (i1+%u), ((%d)+%u)",
+        "i0[%u], i1[%u], {%d}[%u]",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE], (uint8)pc[3 + OSIZE]
@@ -661,7 +661,7 @@ EA(I0_I1_R) {
 EA(I0_I0X_L) {
     // i0[const uint8], i0[local int32], local
     gvmDebugAddress(
-        "(i0+%u), (i0+(%d)), (%d)",
+        "i0[%u], i0[{%d}], {%d}",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE], (int8)pc[2 + OSIZE],
         (int8)pc[3 + OSIZE]
@@ -675,7 +675,7 @@ EA(I0_I0X_L) {
 EA(I0_I0X_I0) {
     // i0[const uint8], i0[local int32], i0[const uint8]
     gvmDebugAddress(
-        "(i0+%u), (i0+(%d)), (i0+%u)",
+        "i0[%u], i0[{%d}], i0[%u]",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE], (int8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE]
@@ -689,7 +689,7 @@ EA(I0_I0X_I0) {
 EA(I0_I0X_I1) {
     // i0[const uint8], i0[local int32], i1[const uint8]
     gvmDebugAddress(
-        "(i0+%u), (i0+(%d)), (i1+%u)",
+        "i0[%u], i0[{%d}], i1[%u]",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE], (int8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE]
@@ -703,7 +703,7 @@ EA(I0_I0X_I1) {
 EA(I0_I0X_I0X) {
     // i0[const uint8], i0[local int32], i0[local int32]
     gvmDebugAddress(
-        "(i0+%u), (i0+(%d)), (i0+(%d))",
+        "i0[%u], i0[{%d}], i0[{%d}]",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE], (int8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE], (int8)pc[4 + OSIZE]
@@ -717,7 +717,7 @@ EA(I0_I0X_I0X) {
 EA(I0_I0X_I1X) {
     // i0[const uint8], i0[local int32], i1[local int32]
     gvmDebugAddress(
-        "(i0+%u), (i0+(%d)), (i1+(%d))",
+        "i0[%u], i0[{%d}], i1[{%d}]",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE], (int8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE], (int8)pc[4 + OSIZE]
@@ -731,7 +731,7 @@ EA(I0_I0X_I1X) {
 EA(I0_I0X_R) {
     // i0[const uint8], i0[local int32], local[const uint8]
     gvmDebugAddress(
-        "(i0+%u), (i0+(%d)), ((%d)+%u)",
+        "i0[%u], i0[{%d}], {%d}[%u]",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE], (int8)pc[2 + OSIZE],
         (int8)pc[3 + OSIZE], (uint8)pc[4 + OSIZE]
@@ -745,7 +745,7 @@ EA(I0_I0X_R) {
 EA(I0_I1X_L) {
     // i0[const uint8], i1[local int32], local
     gvmDebugAddress(
-        "(i0+%u), (i1+(%d)), (%d)",
+        "i0[%u], i1[{%d}], {%d}",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE], (int8)pc[2 + OSIZE],
         (int8)pc[3 + OSIZE]
@@ -759,7 +759,7 @@ EA(I0_I1X_L) {
 EA(I0_I1X_I0) {
     // i0[const uint8], i1[local int32], i0[const uint8]
     gvmDebugAddress(
-        "(i0+%u), (i1+(%d)), (i0+%u)",
+        "i0[%u], i1[{%d}], i0[%u]",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE], (int8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE]
@@ -773,7 +773,7 @@ EA(I0_I1X_I0) {
 EA(I0_I1X_I1) {
     // i0[const uint8], i1[local int32], i1[const uint8]
     gvmDebugAddress(
-        "(i0+%u), (i1+(%d)), (i1+%u)",
+        "i0[%u], i1[{%d}], i1[%u]",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE], (int8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE]
@@ -787,7 +787,7 @@ EA(I0_I1X_I1) {
 EA(I0_I1X_I0X) {
     // i0[const uint8], i1[local int32], i0[local int32]
     gvmDebugAddress(
-        "(i0+%u), (i1+(%d)), (i0+(%d))",
+        "i0[%u], i1[{%d}], i0[{%d}]",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE], (int8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE], (int8)pc[4 + OSIZE]
@@ -801,7 +801,7 @@ EA(I0_I1X_I0X) {
 EA(I0_I1X_I1X) {
     // i0[const uint8], i1[local int32], i1[local int32]
     gvmDebugAddress(
-        "(i0+%u), (i1+(%d)), (i1+(%d))",
+        "i0[%u], i1[{%d}], i1[{%d}]",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE], (int8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE], (int8)pc[4 + OSIZE]
@@ -815,7 +815,7 @@ EA(I0_I1X_I1X) {
 EA(I0_I1X_R) {
     // i0[const uint8], i1[local int32], local[const uint8]
     gvmDebugAddress(
-        "(i0+%u), (i1+(%d)), ((%d)+%u)",
+        "i0[%u], i1[{%d}], {%d}[%u]",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE], (int8)pc[2 + OSIZE],
         (int8)pc[3 + OSIZE], (uint8)pc[4 + OSIZE]
@@ -829,7 +829,7 @@ EA(I0_I1X_R) {
 EA(I0_R_L) {
     // i0[const uint8], local[const uint8], local
     gvmDebugAddress(
-        "(i0+%u), ((%d)+%u), (%d)",
+        "i0[%u], {%d}[%u], {%d}",
         (uint8)pc[0 + OSIZE],
         (int8)pc[1 + OSIZE], (uint8)pc[2 + OSIZE],
         (int8)pc[3 + OSIZE]
@@ -843,7 +843,7 @@ EA(I0_R_L) {
 EA(I0_R_I0) {
     // i0[const uint8], local[const uint8], i0[const uint8]
     gvmDebugAddress(
-        "(i0+%u), ((%d)+%u), (i0+%u)",
+        "i0[%u], {%d}[%u], i0[%u]",
         (uint8)pc[0 + OSIZE],
         (int8)pc[1 + OSIZE], (uint8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE]
@@ -857,7 +857,7 @@ EA(I0_R_I0) {
 EA(I0_R_I1) {
     // i0[const uint8], local[const uint8], i1[const uint8]
     gvmDebugAddress(
-        "(i0+%u), ((%d)+%u), (i1+%u)",
+        "i0[%u], {%d}[%u], i1[%u]",
         (uint8)pc[0 + OSIZE],
         (int8)pc[1 + OSIZE], (uint8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE]
@@ -871,7 +871,7 @@ EA(I0_R_I1) {
 EA(I0_R_I0X) {
     // i0[const uint8], local[const uint8], i0[local int32]
     gvmDebugAddress(
-        "(i0+%u), ((%d)+%u), (i0+(%d))",
+        "i0[%u], {%d}[%u], i0[{%d}]",
         (uint8)pc[0 + OSIZE],
         (int8)pc[1 + OSIZE], (uint8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE], (int8)pc[4 + OSIZE]
@@ -885,7 +885,7 @@ EA(I0_R_I0X) {
 EA(I0_R_I1X) {
     // i0[const uint8], local[const uint8], i1[local int32]
     gvmDebugAddress(
-        "(i0+%u), ((%d)+%u), (i1+(%d))",
+        "i0[%u], {%d}[%u], i1[{%d}]",
         (uint8)pc[0 + OSIZE],
         (int8)pc[1 + OSIZE], (uint8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE], (int8)pc[4 + OSIZE]
@@ -899,7 +899,7 @@ EA(I0_R_I1X) {
 EA(I0_R_R) {
     // i0[const uint8], local[const uint8], local[const uint8]
     gvmDebugAddress(
-        "(i0+%u), ((%d)+%u), ((%d)+%u)",
+        "i0[%u], {%d}[%u], {%d}[%u]",
         (uint8)pc[0 + OSIZE],
         (int8)pc[1 + OSIZE], (uint8)pc[2 + OSIZE],
         (int8)pc[3 + OSIZE], (uint8)pc[4 + OSIZE]
@@ -913,7 +913,7 @@ EA(I0_R_R) {
 EA(I1_L_L) {
     // i1[const uint8], local, local
     gvmDebugAddress(
-        "(i1+%u), (%d), (%d)",
+        "i1[%u], {%d}, {%d}",
         (uint8)pc[0 + OSIZE],
         (int8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE]
@@ -927,7 +927,7 @@ EA(I1_L_L) {
 EA(I1_L_I0) {
     // i1[const uint8], local, i0[const uint8]
     gvmDebugAddress(
-        "(i1+%u), (%d), (i0+%u)",
+        "i1[%u], {%d}, i0[%u]",
         (uint8)pc[0 + OSIZE],
         (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE]
@@ -941,7 +941,7 @@ EA(I1_L_I0) {
 EA(I1_L_I1) {
     // i1[const uint8], local, i1[const uint8]
     gvmDebugAddress(
-        "(i1+%u), (%d), (i1+%u)",
+        "i1[%u], {%d}, i1[%u]",
         (uint8)pc[0 + OSIZE],
         (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE]
@@ -955,7 +955,7 @@ EA(I1_L_I1) {
 EA(I1_L_I0X) {
     // i1[const uint8], local, i0[local int32]
     gvmDebugAddress(
-        "(i1+%u), (%d), (i0+(%d))",
+        "i1[%u], {%d}, i0[{%d}]",
         (uint8)pc[0 + OSIZE],
         (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE]
@@ -969,7 +969,7 @@ EA(I1_L_I0X) {
 EA(I1_L_I1X) {
     // i1[const uint8], local, i1[local int32]
     gvmDebugAddress(
-        "(i1+%u), (%d), (i1+(%d))",
+        "i1[%u], {%d}, i1[{%d}]",
         (uint8)pc[0 + OSIZE],
         (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE]
@@ -983,7 +983,7 @@ EA(I1_L_I1X) {
 EA(I1_L_R) {
     // i1[const uint8], local, local[const uint8]
     gvmDebugAddress(
-        "(i1+%u), (%d), ((%d)+%u)",
+        "i1[%u], {%d}, {%d}[%u]",
         (uint8)pc[0 + OSIZE],
         (int8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE], (uint8)pc[3 + OSIZE]
@@ -997,7 +997,7 @@ EA(I1_L_R) {
 EA(I1_I0_L) {
     // i1[const uint8], i0[const uint8], local
     gvmDebugAddress(
-        "(i1+%u), (i0+%u), (%d)",
+        "i1[%u], i0[%u], {%d}",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE]
@@ -1011,7 +1011,7 @@ EA(I1_I0_L) {
 EA(I1_I0_I0) {
     // i1[const uint8], i0[const uint8], i0[const uint8]
     gvmDebugAddress(
-        "(i1+%u), (i0+%u), (i0+%u)",
+        "i1[%u], i0[%u], i0[%u]",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE]
@@ -1025,7 +1025,7 @@ EA(I1_I0_I0) {
 EA(I1_I0_I1) {
     // i1[const uint8], i0[const uint8], i1[const uint8]
     gvmDebugAddress(
-        "(i1+%u), (i0+%u), (i1+%u)",
+        "i1[%u], i0[%u], i1[%u]",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE]
@@ -1039,7 +1039,7 @@ EA(I1_I0_I1) {
 EA(I1_I0_I0X) {
     // i1[const uint8], i0[const uint8], i0[local int32]
     gvmDebugAddress(
-        "(i1+%u), (i0+%u), (i0+(%d))",
+        "i1[%u], i0[%u], i0[{%d}]",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE]
@@ -1053,7 +1053,7 @@ EA(I1_I0_I0X) {
 EA(I1_I0_I1X) {
     // i1[const uint8], i0[const uint8], i1[local int32]
     gvmDebugAddress(
-        "(i1+%u), (i0+%u), (i1+(%d))",
+        "i1[%u], i0[%u], i1[{%d}]",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE]
@@ -1067,7 +1067,7 @@ EA(I1_I0_I1X) {
 EA(I1_I0_R) {
     // i1[const uint8], i0[const uint8], local[const uint8]
     gvmDebugAddress(
-        "(i1+%u), (i0+%u), ((%d)+%u)",
+        "i1[%u], i0[%u], {%d}[%u]",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE], (uint8)pc[3 + OSIZE]
@@ -1081,7 +1081,7 @@ EA(I1_I0_R) {
 EA(I1_I1_L) {
     // i1[const uint8], i1[const uint8], local
     gvmDebugAddress(
-        "(i1+%u), (i1+%u), (%d)",
+        "i1[%u], i1[%u], {%d}",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE]
@@ -1095,7 +1095,7 @@ EA(I1_I1_L) {
 EA(I1_I1_I0) {
     // i1[const uint8], i1[const uint8], i0[const uint8]
     gvmDebugAddress(
-        "(i1+%u), (i1+%u), (i0+%u)",
+        "i1[%u], i1[%u], i0[%u]",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE]
@@ -1109,7 +1109,7 @@ EA(I1_I1_I0) {
 EA(I1_I1_I1) {
     // i1[const uint8], i1[const uint8], i1[const uint8]
     gvmDebugAddress(
-        "(i1+%u), (i1+%u), (i1+%u)",
+        "i1[%u], i1[%u], i1[%u]",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE]
@@ -1123,7 +1123,7 @@ EA(I1_I1_I1) {
 EA(I1_I1_I0X) {
     // i1[const uint8], i1[const uint8], i0[local int32]
     gvmDebugAddress(
-        "(i1+%u), (i1+%u), (i0+(%d))",
+        "i1[%u], i1[%u], i0[{%d}]",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE]
@@ -1137,7 +1137,7 @@ EA(I1_I1_I0X) {
 EA(I1_I1_I1X) {
     // i1[const uint8], i1[const uint8], i1[local int32]
     gvmDebugAddress(
-        "(i1+%u), (i1+%u), (i1+(%d))",
+        "i1[%u], i1[%u], i1[{%d}]",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE]
@@ -1151,7 +1151,7 @@ EA(I1_I1_I1X) {
 EA(I1_I1_R) {
     // i1[const uint8], i1[const uint8], local[const uint8]
     gvmDebugAddress(
-        "(i1+%u), (i1+%u), ((%d)+%u)",
+        "i1[%u], i1[%u], {%d}[%u]",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE], (uint8)pc[3 + OSIZE]
@@ -1165,7 +1165,7 @@ EA(I1_I1_R) {
 EA(I1_I0X_L) {
     // i1[const uint8], i0[local int32], local
     gvmDebugAddress(
-        "(i1+%u), (i0+(%d)), (%d)",
+        "i1[%u], i0[{%d}], {%d}",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE], (int8)pc[2 + OSIZE],
         (int8)pc[3 + OSIZE]
@@ -1179,7 +1179,7 @@ EA(I1_I0X_L) {
 EA(I1_I0X_I0) {
     // i1[const uint8], i0[local int32], i0[const uint8]
     gvmDebugAddress(
-        "(i1+%u), (i0+(%d)), (i0+%u)",
+        "i1[%u], i0[{%d}], i0[%u]",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE], (int8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE]
@@ -1193,7 +1193,7 @@ EA(I1_I0X_I0) {
 EA(I1_I0X_I1) {
     // i1[const uint8], i0[local int32], i1[const uint8]
     gvmDebugAddress(
-        "(i1+%u), (i0+(%d)), (i1+%u)",
+        "i1[%u], i0[{%d}], i1[%u]",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE], (int8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE]
@@ -1207,7 +1207,7 @@ EA(I1_I0X_I1) {
 EA(I1_I0X_I0X) {
     // i1[const uint8], i0[local int32], i0[local int32]
     gvmDebugAddress(
-        "(i1+%u), (i0+(%d)), (i0+(%d))",
+        "i1[%u], i0[{%d}], i0[{%d}]",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE], (int8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE], (int8)pc[4 + OSIZE]
@@ -1221,7 +1221,7 @@ EA(I1_I0X_I0X) {
 EA(I1_I0X_I1X) {
     // i1[const uint8], i0[local int32], i1[local int32]
     gvmDebugAddress(
-        "(i1+%u), (i0+(%d)), (i1+(%d))",
+        "i1[%u], i0[{%d}], i1[{%d}]",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE], (int8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE], (int8)pc[4 + OSIZE]
@@ -1235,7 +1235,7 @@ EA(I1_I0X_I1X) {
 EA(I1_I0X_R) {
     // i1[const uint8], i0[local int32], local[const uint8]
     gvmDebugAddress(
-        "(i1+%u), (i0+(%d)), ((%d)+%u)",
+        "i1[%u], i0[{%d}], {%d}[%u]",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE], (int8)pc[2 + OSIZE],
         (int8)pc[3 + OSIZE], (uint8)pc[4 + OSIZE]
@@ -1249,7 +1249,7 @@ EA(I1_I0X_R) {
 EA(I1_I1X_L) {
     // i1[const uint8], i1[local int32], local
     gvmDebugAddress(
-        "(i1+%u), (i1+(%d)), (%d)",
+        "i1[%u], i1[{%d}], {%d}",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE], (int8)pc[2 + OSIZE],
         (int8)pc[3 + OSIZE]
@@ -1263,7 +1263,7 @@ EA(I1_I1X_L) {
 EA(I1_I1X_I0) {
     // i1[const uint8], i1[local int32], i0[const uint8]
     gvmDebugAddress(
-        "(i1+%u), (i1+(%d)), (i0+%u)",
+        "i1[%u], i1[{%d}], i0[%u]",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE], (int8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE]
@@ -1277,7 +1277,7 @@ EA(I1_I1X_I0) {
 EA(I1_I1X_I1) {
     // i1[const uint8], i1[local int32], i1[const uint8]
     gvmDebugAddress(
-        "(i1+%u), (i1+(%d)), (i1+%u)",
+        "i1[%u], i1[{%d}], i1[%u]",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE], (int8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE]
@@ -1291,7 +1291,7 @@ EA(I1_I1X_I1) {
 EA(I1_I1X_I0X) {
     // i1[const uint8], i1[local int32], i0[local int32]
     gvmDebugAddress(
-        "(i1+%u), (i1+(%d)), (i0+(%d))",
+        "i1[%u], i1[{%d}], i0[{%d}]",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE], (int8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE], (int8)pc[4 + OSIZE]
@@ -1305,7 +1305,7 @@ EA(I1_I1X_I0X) {
 EA(I1_I1X_I1X) {
     // i1[const uint8], i1[local int32], i1[local int32]
     gvmDebugAddress(
-        "(i1+%u), (i1+(%d)), (i1+(%d))",
+        "i1[%u], i1[{%d}], i1[{%d}]",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE], (int8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE], (int8)pc[4 + OSIZE]
@@ -1319,7 +1319,7 @@ EA(I1_I1X_I1X) {
 EA(I1_I1X_R) {
     // i1[const uint8], i1[local int32], local[const uint8]
     gvmDebugAddress(
-        "(i1+%u), (i1+(%d)), ((%d)+%u)",
+        "i1[%u], i1[{%d}], {%d}[%u]",
         (uint8)pc[0 + OSIZE],
         (uint8)pc[1 + OSIZE], (int8)pc[2 + OSIZE],
         (int8)pc[3 + OSIZE], (uint8)pc[4 + OSIZE]
@@ -1333,7 +1333,7 @@ EA(I1_I1X_R) {
 EA(I1_R_L) {
     // i1[const uint8], local[const uint8], local
     gvmDebugAddress(
-        "(i1+%u), ((%d)+%u), (%d)",
+        "i1[%u], {%d}[%u], {%d}",
         (uint8)pc[0 + OSIZE],
         (int8)pc[1 + OSIZE], (uint8)pc[2 + OSIZE],
         (int8)pc[3 + OSIZE]
@@ -1347,7 +1347,7 @@ EA(I1_R_L) {
 EA(I1_R_I0) {
     // i1[const uint8], local[const uint8], i0[const uint8]
     gvmDebugAddress(
-        "(i1+%u), ((%d)+%u), (i0+%u)",
+        "i1[%u], {%d}[%u], i0[%u]",
         (uint8)pc[0 + OSIZE],
         (int8)pc[1 + OSIZE], (uint8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE]
@@ -1361,7 +1361,7 @@ EA(I1_R_I0) {
 EA(I1_R_I1) {
     // i1[const uint8], local[const uint8], i1[const uint8]
     gvmDebugAddress(
-        "(i1+%u), ((%d)+%u), (i1+%u)",
+        "i1[%u], {%d}[%u], i1[%u]",
         (uint8)pc[0 + OSIZE],
         (int8)pc[1 + OSIZE], (uint8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE]
@@ -1375,7 +1375,7 @@ EA(I1_R_I1) {
 EA(I1_R_I0X) {
     // i1[const uint8], local[const uint8], i0[local int32]
     gvmDebugAddress(
-        "(i1+%u), ((%d)+%u), (i0+(%d))",
+        "i1[%u], {%d}[%u], i0[{%d}]",
         (uint8)pc[0 + OSIZE],
         (int8)pc[1 + OSIZE], (uint8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE], (int8)pc[4 + OSIZE]
@@ -1389,7 +1389,7 @@ EA(I1_R_I0X) {
 EA(I1_R_I1X) {
     // i1[const uint8], local[const uint8], i1[local int32]
     gvmDebugAddress(
-        "(i1+%u), ((%d)+%u), (i1+(%d))",
+        "i1[%u], {%d}[%u], i1[{%d}]",
         (uint8)pc[0 + OSIZE],
         (int8)pc[1 + OSIZE], (uint8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE], (int8)pc[4 + OSIZE]
@@ -1403,7 +1403,7 @@ EA(I1_R_I1X) {
 EA(I1_R_R) {
     // i1[const uint8], local[const uint8], local[const uint8]
     gvmDebugAddress(
-        "(i1+%u), ((%d)+%u), ((%d)+%u)",
+        "i1[%u], {%d}[%u], {%d}[%u]",
         (uint8)pc[0 + OSIZE],
         (int8)pc[1 + OSIZE], (uint8)pc[2 + OSIZE],
         (int8)pc[3 + OSIZE], (uint8)pc[4 + OSIZE]
@@ -1417,7 +1417,7 @@ EA(I1_R_R) {
 EA(I0X_L_L) {
     // i0[local int32], local, local
     gvmDebugAddress(
-        "(i0+(%d)), (%d), (%d)",
+        "i0[{%d}], {%d}, {%d}",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE],
         (int8)pc[3 + OSIZE]
@@ -1431,7 +1431,7 @@ EA(I0X_L_L) {
 EA(I0X_L_I0) {
     // i0[local int32], local, i0[const uint8]
     gvmDebugAddress(
-        "(i0+(%d)), (%d), (i0+%u)",
+        "i0[{%d}], {%d}, i0[%u]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE]
@@ -1445,7 +1445,7 @@ EA(I0X_L_I0) {
 EA(I0X_L_I1) {
     // i0[local int32], local, i1[const uint8]
     gvmDebugAddress(
-        "(i0+(%d)), (%d), (i1+%u)",
+        "i0[{%d}], {%d}, i1[%u]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE]
@@ -1459,7 +1459,7 @@ EA(I0X_L_I1) {
 EA(I0X_L_I0X) {
     // i0[local int32], local, i0[local int32]
     gvmDebugAddress(
-        "(i0+(%d)), (%d), (i0+(%d))",
+        "i0[{%d}], {%d}, i0[{%d}]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE], (int8)pc[4 + OSIZE]
@@ -1473,7 +1473,7 @@ EA(I0X_L_I0X) {
 EA(I0X_L_I1X) {
     // i0[local int32], local, i1[local int32]
     gvmDebugAddress(
-        "(i0+(%d)), (%d), (i1+(%d))",
+        "i0[{%d}], {%d}, i1[{%d}]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE], (int8)pc[4 + OSIZE]
@@ -1487,7 +1487,7 @@ EA(I0X_L_I1X) {
 EA(I0X_L_R) {
     // i0[local int32], local, local[const uint8]
     gvmDebugAddress(
-        "(i0+(%d)), (%d), ((%d)+%u)",
+        "i0[{%d}], {%d}, {%d}[%u]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE],
         (int8)pc[3 + OSIZE], (uint8)pc[4 + OSIZE]
@@ -1501,7 +1501,7 @@ EA(I0X_L_R) {
 EA(I0X_I0_L) {
     // i0[local int32], i0[const uint8], local
     gvmDebugAddress(
-        "(i0+(%d)), (i0+%u), (%d)",
+        "i0[{%d}], i0[%u], {%d}",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE],
         (int8)pc[3 + OSIZE]
@@ -1515,7 +1515,7 @@ EA(I0X_I0_L) {
 EA(I0X_I0_I0) {
     // i0[local int32], i0[const uint8], i0[const uint8]
     gvmDebugAddress(
-        "(i0+(%d)), (i0+%u), (i0+%u)",
+        "i0[{%d}], i0[%u], i0[%u]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE]
@@ -1529,7 +1529,7 @@ EA(I0X_I0_I0) {
 EA(I0X_I0_I1) {
     // i0[local int32], i0[const uint8], i1[const uint8]
     gvmDebugAddress(
-        "(i0+(%d)), (i0+%u), (i1+%u)",
+        "i0[{%d}], i0[%u], i1[%u]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE]
@@ -1543,7 +1543,7 @@ EA(I0X_I0_I1) {
 EA(I0X_I0_I0X) {
     // i0[local int32], i0[const uint8], i0[local int32]
     gvmDebugAddress(
-        "(i0+(%d)), (i0+%u), (i0+(%d))",
+        "i0[{%d}], i0[%u], i0[{%d}]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE], (int8)pc[4 + OSIZE]
@@ -1557,7 +1557,7 @@ EA(I0X_I0_I0X) {
 EA(I0X_I0_I1X) {
     // i0[local int32], i0[const uint8], i1[local int32]
     gvmDebugAddress(
-        "(i0+(%d)), (i0+%u), (i1+(%d))",
+        "i0[{%d}], i0[%u], i1[{%d}]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE], (int8)pc[4 + OSIZE]
@@ -1571,7 +1571,7 @@ EA(I0X_I0_I1X) {
 EA(I0X_I0_R) {
     // i0[local int32], i0[const uint8], local[const uint8]
     gvmDebugAddress(
-        "(i0+(%d)), (i0+%u), ((%d)+%u)",
+        "i0[{%d}], i0[%u], {%d}[%u]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE],
         (int8)pc[3 + OSIZE], (uint8)pc[4 + OSIZE]
@@ -1585,7 +1585,7 @@ EA(I0X_I0_R) {
 EA(I0X_I1_L) {
     // i0[local int32], i1[const uint8], local
     gvmDebugAddress(
-        "(i0+(%d)), (i1+%u), (%d)",
+        "i0[{%d}], i1[%u], {%d}",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE],
         (int8)pc[3 + OSIZE]
@@ -1599,7 +1599,7 @@ EA(I0X_I1_L) {
 EA(I0X_I1_I0) {
     // i0[local int32], i1[const uint8], i0[const uint8]
     gvmDebugAddress(
-        "(i0+(%d)), (i1+%u), (i0+%u)",
+        "i0[{%d}], i1[%u], i0[%u]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE]
@@ -1613,7 +1613,7 @@ EA(I0X_I1_I0) {
 EA(I0X_I1_I1) {
     // i0[local int32], i1[const uint8], i1[const uint8]
     gvmDebugAddress(
-        "(i0+(%d)), (i1+%u), (i1+%u)",
+        "i0[{%d}], i1[%u], i1[%u]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE]
@@ -1627,7 +1627,7 @@ EA(I0X_I1_I1) {
 EA(I0X_I1_I0X) {
     // i0[local int32], i1[const uint8], i0[local int32]
     gvmDebugAddress(
-        "(i0+(%d)), (i1+%u), (i0+(%d))",
+        "i0[{%d}], i1[%u], i0[{%d}]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE], (int8)pc[4 + OSIZE]
@@ -1641,7 +1641,7 @@ EA(I0X_I1_I0X) {
 EA(I0X_I1_I1X) {
     // i0[local int32], i1[const uint8], i1[local int32]
     gvmDebugAddress(
-        "(i0+(%d)), (i1+%u), (i1+(%d))",
+        "i0[{%d}], i1[%u], i1[{%d}]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE], (int8)pc[4 + OSIZE]
@@ -1655,7 +1655,7 @@ EA(I0X_I1_I1X) {
 EA(I0X_I1_R) {
     // i0[local int32], i1[const uint8], local[const uint8]
     gvmDebugAddress(
-        "(i0+(%d)), (i1+%u), ((%d)+%u)",
+        "i0[{%d}], i1[%u], {%d}[%u]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE],
         (int8)pc[3 + OSIZE], (uint8)pc[4 + OSIZE]
@@ -1669,7 +1669,7 @@ EA(I0X_I1_R) {
 EA(I0X_I0X_L) {
     // i0[local int32], i0[local int32], local
     gvmDebugAddress(
-        "(i0+(%d)), (i0+(%d)), (%d)",
+        "i0[{%d}], i0[{%d}], {%d}",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE],
         (int8)pc[4 + OSIZE]
@@ -1683,7 +1683,7 @@ EA(I0X_I0X_L) {
 EA(I0X_I0X_I0) {
     // i0[local int32], i0[local int32], i0[const uint8]
     gvmDebugAddress(
-        "(i0+(%d)), (i0+(%d)), (i0+%u)",
+        "i0[{%d}], i0[{%d}], i0[%u]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE],
         (uint8)pc[4 + OSIZE]
@@ -1697,7 +1697,7 @@ EA(I0X_I0X_I0) {
 EA(I0X_I0X_I1) {
     // i0[local int32], i0[local int32], i1[const uint8]
     gvmDebugAddress(
-        "(i0+(%d)), (i0+(%d)), (i1+%u)",
+        "i0[{%d}], i0[{%d}], i1[%u]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE],
         (uint8)pc[4 + OSIZE]
@@ -1711,7 +1711,7 @@ EA(I0X_I0X_I1) {
 EA(I0X_I0X_I0X) {
     // i0[local int32], i0[local int32], i0[local int32]
     gvmDebugAddress(
-        "(i0+(%d)), (i0+(%d)), (i0+(%d))",
+        "i0[{%d}], i0[{%d}], i0[{%d}]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE],
         (uint8)pc[4 + OSIZE], (int8)pc[5 + OSIZE]
@@ -1725,7 +1725,7 @@ EA(I0X_I0X_I0X) {
 EA(I0X_I0X_I1X) {
     // i0[local int32], i0[local int32], i1[local int32]
     gvmDebugAddress(
-        "(i0+(%d)), (i0+(%d)), (i1+(%d))",
+        "i0[{%d}], i0[{%d}], i1[{%d}]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE],
         (uint8)pc[4 + OSIZE], (int8)pc[5 + OSIZE]
@@ -1739,7 +1739,7 @@ EA(I0X_I0X_I1X) {
 EA(I0X_I0X_R) {
     // i0[local int32], i0[local int32], local[const uint8]
     gvmDebugAddress(
-        "(i0+(%d)), (i0+(%d)), ((%d)+%u)",
+        "i0[{%d}], i0[{%d}], {%d}[%u]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE],
         (int8)pc[4 + OSIZE], (uint8)pc[5 + OSIZE]
@@ -1753,7 +1753,7 @@ EA(I0X_I0X_R) {
 EA(I0X_I1X_L) {
     // i0[local int32], i1[local int32], local
     gvmDebugAddress(
-        "(i0+(%d)), (i1+(%d)), (%d)",
+        "i0[{%d}], i1[{%d}], {%d}",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE],
         (int8)pc[4 + OSIZE]
@@ -1767,7 +1767,7 @@ EA(I0X_I1X_L) {
 EA(I0X_I1X_I0) {
     // i0[local int32], i1[local int32], i0[const uint8]
     gvmDebugAddress(
-        "(i0+(%d)), (i1+(%d)), (i0+%u)",
+        "i0[{%d}], i1[{%d}], i0[%u]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE],
         (uint8)pc[4 + OSIZE]
@@ -1781,7 +1781,7 @@ EA(I0X_I1X_I0) {
 EA(I0X_I1X_I1) {
     // i0[local int32], i1[local int32], i1[const uint8]
     gvmDebugAddress(
-        "(i0+(%d)), (i1+(%d)), (i1+%u)",
+        "i0[{%d}], i1[{%d}], i1[%u]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE],
         (uint8)pc[4 + OSIZE]
@@ -1795,7 +1795,7 @@ EA(I0X_I1X_I1) {
 EA(I0X_I1X_I0X) {
     // i0[local int32], i1[local int32], i0[local int32]
     gvmDebugAddress(
-        "(i0+(%d)), (i1+(%d)), (i0+(%d))",
+        "i0[{%d}], i1[{%d}], i0[{%d}]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE],
         (uint8)pc[4 + OSIZE], (int8)pc[5 + OSIZE]
@@ -1809,7 +1809,7 @@ EA(I0X_I1X_I0X) {
 EA(I0X_I1X_I1X) {
     // i0[local int32], i1[local int32], i1[local int32]
     gvmDebugAddress(
-        "(i0+(%d)), (i1+(%d)), (i1+(%d))",
+        "i0[{%d}], i1[{%d}], i1[{%d}]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE],
         (uint8)pc[4 + OSIZE], (int8)pc[5 + OSIZE]
@@ -1823,7 +1823,7 @@ EA(I0X_I1X_I1X) {
 EA(I0X_I1X_R) {
     // i0[local int32], i1[local int32], local[const uint8]
     gvmDebugAddress(
-        "(i0+(%d)), (i1+(%d)), ((%d)+%u)",
+        "i0[{%d}], i1[{%d}], {%d}[%u]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE],
         (int8)pc[4 + OSIZE], (uint8)pc[5 + OSIZE]
@@ -1837,7 +1837,7 @@ EA(I0X_I1X_R) {
 EA(I0X_R_L) {
     // i0[local int32], local[const uint8], local
     gvmDebugAddress(
-        "(i0+(%d)), ((%d)+%u), (%d)",
+        "i0[{%d}], {%d}[%u], {%d}",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE], (uint8)pc[3 + OSIZE],
         (int8)pc[4 + OSIZE]
@@ -1851,7 +1851,7 @@ EA(I0X_R_L) {
 EA(I0X_R_I0) {
     // i0[local int32], local[const uint8], i0[const uint8]
     gvmDebugAddress(
-        "(i0+(%d)), ((%d)+%u), (i0+%u)",
+        "i0[{%d}], {%d}[%u], i0[%u]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE], (uint8)pc[3 + OSIZE],
         (uint8)pc[4 + OSIZE]
@@ -1865,7 +1865,7 @@ EA(I0X_R_I0) {
 EA(I0X_R_I1) {
     // i0[local int32], local[const uint8], i1[const uint8]
     gvmDebugAddress(
-        "(i0+(%d)), ((%d)+%u), (i1+%u)",
+        "i0[{%d}], {%d}[%u], i1[%u]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE], (uint8)pc[3 + OSIZE],
         (uint8)pc[4 + OSIZE]
@@ -1879,7 +1879,7 @@ EA(I0X_R_I1) {
 EA(I0X_R_I0X) {
     // i0[local int32], local[const uint8], i0[local int32]
     gvmDebugAddress(
-        "(i0+(%d)), ((%d)+%u), (i0+(%d))",
+        "i0[{%d}], {%d}[%u], i0[{%d}]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE], (uint8)pc[3 + OSIZE],
         (uint8)pc[4 + OSIZE], (int8)pc[5 + OSIZE]
@@ -1893,7 +1893,7 @@ EA(I0X_R_I0X) {
 EA(I0X_R_I1X) {
     // i0[local int32], local[const uint8], i1[local int32]
     gvmDebugAddress(
-        "(i0+(%d)), ((%d)+%u), (i1+(%d))",
+        "i0[{%d}], {%d}[%u], i1[{%d}]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE], (uint8)pc[3 + OSIZE],
         (uint8)pc[4 + OSIZE], (int8)pc[5 + OSIZE]
@@ -1907,7 +1907,7 @@ EA(I0X_R_I1X) {
 EA(I0X_R_R) {
     // i0[local int32], local[const uint8], local[const uint8]
     gvmDebugAddress(
-        "(i0+(%d)), ((%d)+%u), ((%d)+%u)",
+        "i0[{%d}], {%d}[%u], {%d}[%u]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE], (uint8)pc[3 + OSIZE],
         (int8)pc[4 + OSIZE], (uint8)pc[5 + OSIZE]
@@ -1921,7 +1921,7 @@ EA(I0X_R_R) {
 EA(I1X_L_L) {
     // i1[local int32], local, local
     gvmDebugAddress(
-        "(i1+(%d)), (%d), (%d)",
+        "i1[{%d}], {%d}, {%d}",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE],
         (int8)pc[3 + OSIZE]
@@ -1935,7 +1935,7 @@ EA(I1X_L_L) {
 EA(I1X_L_I0) {
     // i1[local int32], local, i0[const uint8]
     gvmDebugAddress(
-        "(i1+(%d)), (%d), (i0+%u)",
+        "i1[{%d}], {%d}, i0[%u]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE]
@@ -1949,7 +1949,7 @@ EA(I1X_L_I0) {
 EA(I1X_L_I1) {
     // i1[local int32], local, i1[const uint8]
     gvmDebugAddress(
-        "(i1+(%d)), (%d), (i1+%u)",
+        "i1[{%d}], {%d}, i1[%u]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE]
@@ -1963,7 +1963,7 @@ EA(I1X_L_I1) {
 EA(I1X_L_I0X) {
     // i1[local int32], local, i0[local int32]
     gvmDebugAddress(
-        "(i1+(%d)), (%d), (i0+(%d))",
+        "i1[{%d}], {%d}, i0[{%d}]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE], (int8)pc[4 + OSIZE]
@@ -1977,7 +1977,7 @@ EA(I1X_L_I0X) {
 EA(I1X_L_I1X) {
     // i1[local int32], local, i1[local int32]
     gvmDebugAddress(
-        "(i1+(%d)), (%d), (i1+(%d))",
+        "i1[{%d}], {%d}, i1[{%d}]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE], (int8)pc[4 + OSIZE]
@@ -1991,7 +1991,7 @@ EA(I1X_L_I1X) {
 EA(I1X_L_R) {
     // i1[local int32], local, local[const uint8]
     gvmDebugAddress(
-        "(i1+(%d)), (%d), ((%d)+%u)",
+        "i1[{%d}], {%d}, {%d}[%u]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE],
         (int8)pc[3 + OSIZE], (uint8)pc[4 + OSIZE]
@@ -2005,7 +2005,7 @@ EA(I1X_L_R) {
 EA(I1X_I0_L) {
     // i1[local int32], i0[const uint8], local
     gvmDebugAddress(
-        "(i1+(%d)), (i0+%u), (%d)",
+        "i1[{%d}], i0[%u], {%d}",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE],
         (int8)pc[3 + OSIZE]
@@ -2019,7 +2019,7 @@ EA(I1X_I0_L) {
 EA(I1X_I0_I0) {
     // i1[local int32], i0[const uint8], i0[const uint8]
     gvmDebugAddress(
-        "(i1+(%d)), (i0+%u), (i0+%u)",
+        "i1[{%d}], i0[%u], i0[%u]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE]
@@ -2033,7 +2033,7 @@ EA(I1X_I0_I0) {
 EA(I1X_I0_I1) {
     // i1[local int32], i0[const uint8], i1[const uint8]
     gvmDebugAddress(
-        "(i1+(%d)), (i0+%u), (i1+%u)",
+        "i1[{%d}], i0[%u], i1[%u]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE]
@@ -2047,7 +2047,7 @@ EA(I1X_I0_I1) {
 EA(I1X_I0_I0X) {
     // i1[local int32], i0[const uint8], i0[local int32]
     gvmDebugAddress(
-        "(i1+(%d)), (i0+%u), (i0+(%d))",
+        "i1[{%d}], i0[%u], i0[{%d}]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE], (int8)pc[4 + OSIZE]
@@ -2061,7 +2061,7 @@ EA(I1X_I0_I0X) {
 EA(I1X_I0_I1X) {
     // i1[local int32], i0[const uint8], i1[local int32]
     gvmDebugAddress(
-        "(i1+(%d)), (i0+%u), (i1+(%d))",
+        "i1[{%d}], i0[%u], i1[{%d}]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE], (int8)pc[4 + OSIZE]
@@ -2075,7 +2075,7 @@ EA(I1X_I0_I1X) {
 EA(I1X_I0_R) {
     // i1[local int32], i0[const uint8], local[const uint8]
     gvmDebugAddress(
-        "(i1+(%d)), (i0+%u), ((%d)+%u)",
+        "i1[{%d}], i0[%u], {%d}[%u]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE],
         (int8)pc[3 + OSIZE], (uint8)pc[4 + OSIZE]
@@ -2089,7 +2089,7 @@ EA(I1X_I0_R) {
 EA(I1X_I1_L) {
     // i1[local int32], i1[const uint8], local
     gvmDebugAddress(
-        "(i1+(%d)), (i1+%u), (%d)",
+        "i1[{%d}], i1[%u], {%d}",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE],
         (int8)pc[3 + OSIZE]
@@ -2103,7 +2103,7 @@ EA(I1X_I1_L) {
 EA(I1X_I1_I0) {
     // i1[local int32], i1[const uint8], i0[const uint8]
     gvmDebugAddress(
-        "(i1+(%d)), (i1+%u), (i0+%u)",
+        "i1[{%d}], i1[%u], i0[%u]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE]
@@ -2117,7 +2117,7 @@ EA(I1X_I1_I0) {
 EA(I1X_I1_I1) {
     // i1[local int32], i1[const uint8], i1[const uint8]
     gvmDebugAddress(
-        "(i1+(%d)), (i1+%u), (i1+%u)",
+        "i1[{%d}], i1[%u], i1[%u]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE]
@@ -2131,7 +2131,7 @@ EA(I1X_I1_I1) {
 EA(I1X_I1_I0X) {
     // i1[local int32], i1[const uint8], i0[local int32]
     gvmDebugAddress(
-        "(i1+(%d)), (i1+%u), (i0+(%d))",
+        "i1[{%d}], i1[%u], i0[{%d}]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE], (int8)pc[4 + OSIZE]
@@ -2145,7 +2145,7 @@ EA(I1X_I1_I0X) {
 EA(I1X_I1_I1X) {
     // i1[local int32], i1[const uint8], i1[local int32]
     gvmDebugAddress(
-        "(i1+(%d)), (i1+%u), (i1+(%d))",
+        "i1[{%d}], i1[%u], i1[{%d}]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE], (int8)pc[4 + OSIZE]
@@ -2159,7 +2159,7 @@ EA(I1X_I1_I1X) {
 EA(I1X_I1_R) {
     // i1[local int32], i1[const uint8], local[const uint8]
     gvmDebugAddress(
-        "(i1+(%d)), (i1+%u), ((%d)+%u)",
+        "i1[{%d}], i1[%u], {%d}[%u]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE],
         (int8)pc[3 + OSIZE], (uint8)pc[4 + OSIZE]
@@ -2173,7 +2173,7 @@ EA(I1X_I1_R) {
 EA(I1X_I0X_L) {
     // i1[local int32], i0[local int32], local
     gvmDebugAddress(
-        "(i1+(%d)), (i0+(%d)), (%d)",
+        "i1[{%d}], i0[{%d}], {%d}",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE],
         (int8)pc[4 + OSIZE]
@@ -2187,7 +2187,7 @@ EA(I1X_I0X_L) {
 EA(I1X_I0X_I0) {
     // i1[local int32], i0[local int32], i0[const uint8]
     gvmDebugAddress(
-        "(i1+(%d)), (i0+(%d)), (i0+%u)",
+        "i1[{%d}], i0[{%d}], i0[%u]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE],
         (uint8)pc[4 + OSIZE]
@@ -2201,7 +2201,7 @@ EA(I1X_I0X_I0) {
 EA(I1X_I0X_I1) {
     // i1[local int32], i0[local int32], i1[const uint8]
     gvmDebugAddress(
-        "(i1+(%d)), (i0+(%d)), (i1+%u)",
+        "i1[{%d}], i0[{%d}], i1[%u]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE],
         (uint8)pc[4 + OSIZE]
@@ -2215,7 +2215,7 @@ EA(I1X_I0X_I1) {
 EA(I1X_I0X_I0X) {
     // i1[local int32], i0[local int32], i0[local int32]
     gvmDebugAddress(
-        "(i1+(%d)), (i0+(%d)), (i0+(%d))",
+        "i1[{%d}], i0[{%d}], i0[{%d}]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE],
         (uint8)pc[4 + OSIZE], (int8)pc[5 + OSIZE]
@@ -2229,7 +2229,7 @@ EA(I1X_I0X_I0X) {
 EA(I1X_I0X_I1X) {
     // i1[local int32], i0[local int32], i1[local int32]
     gvmDebugAddress(
-        "(i1+(%d)), (i0+(%d)), (i1+(%d))",
+        "i1[{%d}], i0[{%d}], i1[{%d}]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE],
         (uint8)pc[4 + OSIZE], (int8)pc[5 + OSIZE]
@@ -2243,7 +2243,7 @@ EA(I1X_I0X_I1X) {
 EA(I1X_I0X_R) {
     // i1[local int32], i0[local int32], local[const uint8]
     gvmDebugAddress(
-        "(i1+(%d)), (i0+(%d)), ((%d)+%u)",
+        "i1[{%d}], i0[{%d}], {%d}[%u]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE],
         (int8)pc[4 + OSIZE], (uint8)pc[5 + OSIZE]
@@ -2257,7 +2257,7 @@ EA(I1X_I0X_R) {
 EA(I1X_I1X_L) {
     // i1[local int32], i1[local int32], local
     gvmDebugAddress(
-        "(i1+(%d)), (i1+(%d)), (%d)",
+        "i1[{%d}], i1[{%d}], {%d}",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE],
         (int8)pc[4 + OSIZE]
@@ -2271,7 +2271,7 @@ EA(I1X_I1X_L) {
 EA(I1X_I1X_I0) {
     // i1[local int32], i1[local int32], i0[const uint8]
     gvmDebugAddress(
-        "(i1+(%d)), (i1+(%d)), (i0+%u)",
+        "i1[{%d}], i1[{%d}], i0[%u]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE],
         (uint8)pc[4 + OSIZE]
@@ -2285,7 +2285,7 @@ EA(I1X_I1X_I0) {
 EA(I1X_I1X_I1) {
     // i1[local int32], i1[local int32], i1[const uint8]
     gvmDebugAddress(
-        "(i1+(%d)), (i1+(%d)), (i1+%u)",
+        "i1[{%d}], i1[{%d}], i1[%u]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE],
         (uint8)pc[4 + OSIZE]
@@ -2299,7 +2299,7 @@ EA(I1X_I1X_I1) {
 EA(I1X_I1X_I0X) {
     // i1[local int32], i1[local int32], i0[local int32]
     gvmDebugAddress(
-        "(i1+(%d)), (i1+(%d)), (i0+(%d))",
+        "i1[{%d}], i1[{%d}], i0[{%d}]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE],
         (uint8)pc[4 + OSIZE], (int8)pc[5 + OSIZE]
@@ -2313,7 +2313,7 @@ EA(I1X_I1X_I0X) {
 EA(I1X_I1X_I1X) {
     // i1[local int32], i1[local int32], i1[local int32]
     gvmDebugAddress(
-        "(i1+(%d)), (i1+(%d)), (i1+(%d))",
+        "i1[{%d}], i1[{%d}], i1[{%d}]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE],
         (uint8)pc[4 + OSIZE], (int8)pc[5 + OSIZE]
@@ -2327,7 +2327,7 @@ EA(I1X_I1X_I1X) {
 EA(I1X_I1X_R) {
     // i1[local int32], i1[local int32], local[const uint8]
     gvmDebugAddress(
-        "(i1+(%d)), (i1+(%d)), ((%d)+%u)",
+        "i1[{%d}], i1[{%d}], {%d}[%u]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE],
         (int8)pc[4 + OSIZE], (uint8)pc[5 + OSIZE]
@@ -2341,7 +2341,7 @@ EA(I1X_I1X_R) {
 EA(I1X_R_L) {
     // i1[local int32], local[const uint8], local
     gvmDebugAddress(
-        "(i1+(%d)), ((%d)+%u), (%d)",
+        "i1[{%d}], {%d}[%u], {%d}",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE], (uint8)pc[3 + OSIZE],
         (int8)pc[4 + OSIZE]
@@ -2355,7 +2355,7 @@ EA(I1X_R_L) {
 EA(I1X_R_I0) {
     // i1[local int32], local[const uint8], i0[const uint8]
     gvmDebugAddress(
-        "(i1+(%d)), ((%d)+%u), (i0+%u)",
+        "i1[{%d}], {%d}[%u], i0[%u]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE], (uint8)pc[3 + OSIZE],
         (uint8)pc[4 + OSIZE]
@@ -2369,7 +2369,7 @@ EA(I1X_R_I0) {
 EA(I1X_R_I1) {
     // i1[local int32], local[const uint8], i1[const uint8]
     gvmDebugAddress(
-        "(i1+(%d)), ((%d)+%u), (i1+%u)",
+        "i1[{%d}], {%d}[%u], i1[%u]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE], (uint8)pc[3 + OSIZE],
         (uint8)pc[4 + OSIZE]
@@ -2383,7 +2383,7 @@ EA(I1X_R_I1) {
 EA(I1X_R_I0X) {
     // i1[local int32], local[const uint8], i0[local int32]
     gvmDebugAddress(
-        "(i1+(%d)), ((%d)+%u), (i0+(%d))",
+        "i1[{%d}], {%d}[%u], i0[{%d}]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE], (uint8)pc[3 + OSIZE],
         (uint8)pc[4 + OSIZE], (int8)pc[5 + OSIZE]
@@ -2397,7 +2397,7 @@ EA(I1X_R_I0X) {
 EA(I1X_R_I1X) {
     // i1[local int32], local[const uint8], i1[local int32]
     gvmDebugAddress(
-        "(i1+(%d)), ((%d)+%u), (i1+(%d))",
+        "i1[{%d}], {%d}[%u], i1[{%d}]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE], (uint8)pc[3 + OSIZE],
         (uint8)pc[4 + OSIZE], (int8)pc[5 + OSIZE]
@@ -2411,7 +2411,7 @@ EA(I1X_R_I1X) {
 EA(I1X_R_R) {
     // i1[local int32], local[const uint8], local[const uint8]
     gvmDebugAddress(
-        "(i1+(%d)), ((%d)+%u), ((%d)+%u)",
+        "i1[{%d}], {%d}[%u], {%d}[%u]",
         (uint8)pc[0 + OSIZE], (int8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE], (uint8)pc[3 + OSIZE],
         (int8)pc[4 + OSIZE], (uint8)pc[5 + OSIZE]
@@ -2425,7 +2425,7 @@ EA(I1X_R_R) {
 EA(R_L_L) {
     // local[const uint8], local, local
     gvmDebugAddress(
-        "((%d)+%u), (%d), (%d)",
+        "{%d}[%u], {%d}, {%d}",
         (int8)pc[0 + OSIZE], (uint8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE],
         (int8)pc[3 + OSIZE]
@@ -2439,7 +2439,7 @@ EA(R_L_L) {
 EA(R_L_I0) {
     // local[const uint8], local, i0[const uint8]
     gvmDebugAddress(
-        "((%d)+%u), (%d), (i0+%u)",
+        "{%d}[%u], {%d}, i0[%u]",
         (int8)pc[0 + OSIZE], (uint8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE]
@@ -2453,7 +2453,7 @@ EA(R_L_I0) {
 EA(R_L_I1) {
     // local[const uint8], local, i1[const uint8]
     gvmDebugAddress(
-        "((%d)+%u), (%d), (i1+%u)",
+        "{%d}[%u], {%d}, i1[%u]",
         (int8)pc[0 + OSIZE], (uint8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE]
@@ -2467,7 +2467,7 @@ EA(R_L_I1) {
 EA(R_L_I0X) {
     // local[const uint8], local, i0[local int32]
     gvmDebugAddress(
-        "((%d)+%u), (%d), (i0+(%d))",
+        "{%d}[%u], {%d}, i0[{%d}]",
         (int8)pc[0 + OSIZE], (uint8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE], (int8)pc[4 + OSIZE]
@@ -2481,7 +2481,7 @@ EA(R_L_I0X) {
 EA(R_L_I1X) {
     // local[const uint8], local, i1[local int32]
     gvmDebugAddress(
-        "((%d)+%u), (%d), (i1+(%d))",
+        "{%d}[%u], {%d}, i1[{%d}]",
         (int8)pc[0 + OSIZE], (uint8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE], (int8)pc[4 + OSIZE]
@@ -2495,7 +2495,7 @@ EA(R_L_I1X) {
 EA(R_L_R) {
     // local[const uint8], local, local[const uint8]
     gvmDebugAddress(
-        "((%d)+%u), (%d), ((%d)+%u)",
+        "{%d}[%u], {%d}, {%d}[%u]",
         (int8)pc[0 + OSIZE], (uint8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE],
         (int8)pc[3 + OSIZE], (uint8)pc[4 + OSIZE]
@@ -2509,7 +2509,7 @@ EA(R_L_R) {
 EA(R_I0_L) {
     // local[const uint8], i0[const uint8], local
     gvmDebugAddress(
-        "((%d)+%u), (i0+%u), (%d)",
+        "{%d}[%u], i0[%u], {%d}",
         (int8)pc[0 + OSIZE], (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE],
         (int8)pc[3 + OSIZE]
@@ -2523,7 +2523,7 @@ EA(R_I0_L) {
 EA(R_I0_I0) {
     // local[const uint8], i0[const uint8], i0[const uint8]
     gvmDebugAddress(
-        "((%d)+%u), (i0+%u), (i0+%u)",
+        "{%d}[%u], i0[%u], i0[%u]",
         (int8)pc[0 + OSIZE], (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE]
@@ -2537,7 +2537,7 @@ EA(R_I0_I0) {
 EA(R_I0_I1) {
     // local[const uint8], i0[const uint8], i1[const uint8]
     gvmDebugAddress(
-        "((%d)+%u), (i0+%u), (i1+%u)",
+        "{%d}[%u], i0[%u], i1[%u]",
         (int8)pc[0 + OSIZE], (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE]
@@ -2551,7 +2551,7 @@ EA(R_I0_I1) {
 EA(R_I0_I0X) {
     // local[const uint8], i0[const uint8], i0[local int32]
     gvmDebugAddress(
-        "((%d)+%u), (i0+%u), (i0+(%d))",
+        "{%d}[%u], i0[%u], i0[{%d}]",
         (int8)pc[0 + OSIZE], (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE], (int8)pc[4 + OSIZE]
@@ -2565,7 +2565,7 @@ EA(R_I0_I0X) {
 EA(R_I0_I1X) {
     // local[const uint8], i0[const uint8], i1[local int32]
     gvmDebugAddress(
-        "((%d)+%u), (i0+%u), (i1+(%d))",
+        "{%d}[%u], i0[%u], i1[{%d}]",
         (int8)pc[0 + OSIZE], (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE], (int8)pc[4 + OSIZE]
@@ -2579,7 +2579,7 @@ EA(R_I0_I1X) {
 EA(R_I0_R) {
     // local[const uint8], i0[const uint8], local[const uint8]
     gvmDebugAddress(
-        "((%d)+%u), (i0+%u), ((%d)+%u)",
+        "{%d}[%u], i0[%u], {%d}[%u]",
         (int8)pc[0 + OSIZE], (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE],
         (int8)pc[3 + OSIZE], (uint8)pc[4 + OSIZE]
@@ -2593,7 +2593,7 @@ EA(R_I0_R) {
 EA(R_I1_L) {
     // local[const uint8], i1[const uint8], local
     gvmDebugAddress(
-        "((%d)+%u), (i1+%u), (%d)",
+        "{%d}[%u], i1[%u], {%d}",
         (int8)pc[0 + OSIZE], (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE],
         (int8)pc[3 + OSIZE]
@@ -2607,7 +2607,7 @@ EA(R_I1_L) {
 EA(R_I1_I0) {
     // local[const uint8], i1[const uint8], i0[const uint8]
     gvmDebugAddress(
-        "((%d)+%u), (i1+%u), (i0+%u)",
+        "{%d}[%u], i1[%u], i0[%u]",
         (int8)pc[0 + OSIZE], (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE]
@@ -2621,7 +2621,7 @@ EA(R_I1_I0) {
 EA(R_I1_I1) {
     // local[const uint8], i1[const uint8], i1[const uint8]
     gvmDebugAddress(
-        "((%d)+%u), (i1+%u), (i1+%u)",
+        "{%d}[%u], i1[%u], i1[%u]",
         (int8)pc[0 + OSIZE], (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE]
@@ -2635,7 +2635,7 @@ EA(R_I1_I1) {
 EA(R_I1_I0X) {
     // local[const uint8], i1[const uint8], i0[local int32]
     gvmDebugAddress(
-        "((%d)+%u), (i1+%u), (i0+(%d))",
+        "{%d}[%u], i1[%u], i0[{%d}]",
         (int8)pc[0 + OSIZE], (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE], (int8)pc[4 + OSIZE]
@@ -2649,7 +2649,7 @@ EA(R_I1_I0X) {
 EA(R_I1_I1X) {
     // local[const uint8], i1[const uint8], i1[local int32]
     gvmDebugAddress(
-        "((%d)+%u), (i1+%u), (i1+(%d))",
+        "{%d}[%u], i1[%u], i1[{%d}]",
         (int8)pc[0 + OSIZE], (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE],
         (uint8)pc[3 + OSIZE], (int8)pc[4 + OSIZE]
@@ -2663,7 +2663,7 @@ EA(R_I1_I1X) {
 EA(R_I1_R) {
     // local[const uint8], i1[const uint8], local[const uint8]
     gvmDebugAddress(
-        "((%d)+%u), (i1+%u), ((%d)+%u)",
+        "{%d}[%u], i1[%u], {%d}[%u]",
         (int8)pc[0 + OSIZE], (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE],
         (int8)pc[3 + OSIZE], (uint8)pc[4 + OSIZE]
@@ -2677,7 +2677,7 @@ EA(R_I1_R) {
 EA(R_I0X_L) {
     // local[const uint8], i0[local int32], local
     gvmDebugAddress(
-        "((%d)+%u), (i0+(%d)), (%d)",
+        "{%d}[%u], i0[{%d}], {%d}",
         (int8)pc[0 + OSIZE], (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE],
         (int8)pc[4 + OSIZE]
@@ -2691,7 +2691,7 @@ EA(R_I0X_L) {
 EA(R_I0X_I0) {
     // local[const uint8], i0[local int32], i0[const uint8]
     gvmDebugAddress(
-        "((%d)+%u), (i0+(%d)), (i0+%u)",
+        "{%d}[%u], i0[{%d}], i0[%u]",
         (int8)pc[0 + OSIZE], (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE],
         (uint8)pc[4 + OSIZE]
@@ -2705,7 +2705,7 @@ EA(R_I0X_I0) {
 EA(R_I0X_I1) {
     // local[const uint8], i0[local int32], i1[const uint8]
     gvmDebugAddress(
-        "((%d)+%u), (i0+(%d)), (i1+%u)",
+        "{%d}[%u], i0[{%d}], i1[%u]",
         (int8)pc[0 + OSIZE], (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE],
         (uint8)pc[4 + OSIZE]
@@ -2719,7 +2719,7 @@ EA(R_I0X_I1) {
 EA(R_I0X_I0X) {
     // local[const uint8], i0[local int32], i0[local int32]
     gvmDebugAddress(
-        "((%d)+%u), (i0+(%d)), (i0+(%d))",
+        "{%d}[%u], i0[{%d}], i0[{%d}]",
         (int8)pc[0 + OSIZE], (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE],
         (uint8)pc[4 + OSIZE], (int8)pc[5 + OSIZE]
@@ -2733,7 +2733,7 @@ EA(R_I0X_I0X) {
 EA(R_I0X_I1X) {
     // local[const uint8], i0[local int32], i1[local int32]
     gvmDebugAddress(
-        "((%d)+%u), (i0+(%d)), (i1+(%d))",
+        "{%d}[%u], i0[{%d}], i1[{%d}]",
         (int8)pc[0 + OSIZE], (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE],
         (uint8)pc[4 + OSIZE], (int8)pc[5 + OSIZE]
@@ -2747,7 +2747,7 @@ EA(R_I0X_I1X) {
 EA(R_I0X_R) {
     // local[const uint8], i0[local int32], local[const uint8]
     gvmDebugAddress(
-        "((%d)+%u), (i0+(%d)), ((%d)+%u)",
+        "{%d}[%u], i0[{%d}], {%d}[%u]",
         (int8)pc[0 + OSIZE], (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE],
         (int8)pc[4 + OSIZE], (uint8)pc[5 + OSIZE]
@@ -2761,7 +2761,7 @@ EA(R_I0X_R) {
 EA(R_I1X_L) {
     // local[const uint8], i1[local int32], local
     gvmDebugAddress(
-        "((%d)+%u), (i1+(%d)), (%d)",
+        "{%d}[%u], i1[{%d}], {%d}",
         (int8)pc[0 + OSIZE], (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE],
         (int8)pc[4 + OSIZE]
@@ -2775,7 +2775,7 @@ EA(R_I1X_L) {
 EA(R_I1X_I0) {
     // local[const uint8], i1[local int32], i0[const uint8]
     gvmDebugAddress(
-        "((%d)+%u), (i1+(%d)), (i0+%u)",
+        "{%d}[%u], i1[{%d}], i0[%u]",
         (int8)pc[0 + OSIZE], (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE],
         (uint8)pc[4 + OSIZE]
@@ -2789,7 +2789,7 @@ EA(R_I1X_I0) {
 EA(R_I1X_I1) {
     // local[const uint8], i1[local int32], i1[const uint8]
     gvmDebugAddress(
-        "((%d)+%u), (i1+(%d)), (i1+%u)",
+        "{%d}[%u], i1[{%d}], i1[%u]",
         (int8)pc[0 + OSIZE], (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE],
         (uint8)pc[4 + OSIZE]
@@ -2803,7 +2803,7 @@ EA(R_I1X_I1) {
 EA(R_I1X_I0X) {
     // local[const uint8], i1[local int32], i0[local int32]
     gvmDebugAddress(
-        "((%d)+%u), (i1+(%d)), (i0+(%d))",
+        "{%d}[%u], i1[{%d}], i0[{%d}]",
         (int8)pc[0 + OSIZE], (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE],
         (uint8)pc[4 + OSIZE], (int8)pc[5 + OSIZE]
@@ -2817,7 +2817,7 @@ EA(R_I1X_I0X) {
 EA(R_I1X_I1X) {
     // local[const uint8], i1[local int32], i1[local int32]
     gvmDebugAddress(
-        "((%d)+%u), (i1+(%d)), (i1+(%d))",
+        "{%d}[%u], i1[{%d}], i1[{%d}]",
         (int8)pc[0 + OSIZE], (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE],
         (uint8)pc[4 + OSIZE], (int8)pc[5 + OSIZE]
@@ -2831,7 +2831,7 @@ EA(R_I1X_I1X) {
 EA(R_I1X_R) {
     // local[const uint8], i1[local int32], local[const uint8]
     gvmDebugAddress(
-        "((%d)+%u), (i1+(%d)), ((%d)+%u)",
+        "{%d}[%u], i1[{%d}], {%d}[%u]",
         (int8)pc[0 + OSIZE], (uint8)pc[1 + OSIZE],
         (uint8)pc[2 + OSIZE], (int8)pc[3 + OSIZE],
         (int8)pc[4 + OSIZE], (uint8)pc[5 + OSIZE]
@@ -2845,7 +2845,7 @@ EA(R_I1X_R) {
 EA(R_R_L) {
     // local[const uint8], local[const uint8], local
     gvmDebugAddress(
-        "((%d)+%u), ((%d)+%u), (%d)",
+        "{%d}[%u], {%d}[%u], {%d}",
         (int8)pc[0 + OSIZE], (uint8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE], (uint8)pc[3 + OSIZE],
         (int8)pc[4 + OSIZE]
@@ -2859,7 +2859,7 @@ EA(R_R_L) {
 EA(R_R_I0) {
     // local[const uint8], local[const uint8], i0[const uint8]
     gvmDebugAddress(
-        "((%d)+%u), ((%d)+%u), (i0+%u)",
+        "{%d}[%u], {%d}[%u], i0[%u]",
         (int8)pc[0 + OSIZE], (uint8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE], (uint8)pc[3 + OSIZE],
         (uint8)pc[4 + OSIZE]
@@ -2873,7 +2873,7 @@ EA(R_R_I0) {
 EA(R_R_I1) {
     // local[const uint8], local[const uint8], i1[const uint8]
     gvmDebugAddress(
-        "((%d)+%u), ((%d)+%u), (i1+%u)",
+        "{%d}[%u], {%d}[%u], i1[%u]",
         (int8)pc[0 + OSIZE], (uint8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE], (uint8)pc[3 + OSIZE],
         (uint8)pc[4 + OSIZE]
@@ -2887,7 +2887,7 @@ EA(R_R_I1) {
 EA(R_R_I0X) {
     // local[const uint8], local[const uint8], i0[local int32]
     gvmDebugAddress(
-        "((%d)+%u), ((%d)+%u), (i0+(%d))",
+        "{%d}[%u], {%d}[%u], i0[{%d}]",
         (int8)pc[0 + OSIZE], (uint8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE], (uint8)pc[3 + OSIZE],
         (uint8)pc[4 + OSIZE], (int8)pc[5 + OSIZE]
@@ -2901,7 +2901,7 @@ EA(R_R_I0X) {
 EA(R_R_I1X) {
     // local[const uint8], local[const uint8], i1[local int32]
     gvmDebugAddress(
-        "((%d)+%u), ((%d)+%u), (i1+(%d))",
+        "{%d}[%u], {%d}[%u], i1[{%d}]",
         (int8)pc[0 + OSIZE], (uint8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE], (uint8)pc[3 + OSIZE],
         (uint8)pc[4 + OSIZE], (int8)pc[5 + OSIZE]
@@ -2915,7 +2915,7 @@ EA(R_R_I1X) {
 EA(R_R_R) {
     // local[const uint8], local[const uint8], local[const uint8]
     gvmDebugAddress(
-        "((%d)+%u), ((%d)+%u), ((%d)+%u)",
+        "{%d}[%u], {%d}[%u], {%d}[%u]",
         (int8)pc[0 + OSIZE], (uint8)pc[1 + OSIZE],
         (int8)pc[2 + OSIZE], (uint8)pc[3 + OSIZE],
         (int8)pc[4 + OSIZE], (uint8)pc[5 + OSIZE]

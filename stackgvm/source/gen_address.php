@@ -21,12 +21,12 @@ const AANNOTATE = [
 ];
 
 const ADEBUGPRINTF = [
-    'L'   => '(%d)',
-    'I0'  => '(i0+%u)',
-    'I1'  => '(i1+%u)',
-    'I0X' => '(i0+(%d))',
-    'I1X' => '(i1+(%d))',
-    'R'   => '((%d)+%u)',
+    'L'   => '{%d}',
+    'I0'  => 'i0[%u]',
+    'I1'  => 'i1[%u]',
+    'I0X' => 'i0[{%d}]',
+    'I1X' => 'i1[{%d}]',
+    'R'   => '{%d}[%u]',
 ];
 
 const ADEBUGVALUES = [
