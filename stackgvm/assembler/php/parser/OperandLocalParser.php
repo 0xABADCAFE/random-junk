@@ -18,13 +18,13 @@ class OperandLocalParser implements Parser {
      * @implements OperandParser::parse()
      */
     public function parse(string $sExpression) : int {
-        $this->assertSyntax($sExpression);
-        return $this->oIntExpressionParser->parse($sExpression);
+        return $this->oIntExpressionParser->parse($this->assertSyntax($sExpression));
     }
 
     private function assertSyntax(string $sExpression) {
-        if (!preg_match(OperandKind::MATCH_LOCAL, $sExpression)) {
-            throw new ParseException("Malformed stack position '" . $sExpression. "', integer must be enclosed in parenthesis.");
+        if (!preg_match(OperandKind::MATCH_LOCAL, $sExpression, $aMatches)) {
+            throw new ParseException("Malformed stack position '" . $sExpression. "', integer expression must be enclosed in braces.");
         }
+        return $aMatches[1];
     }
 }
