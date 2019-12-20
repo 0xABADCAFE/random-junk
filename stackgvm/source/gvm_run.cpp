@@ -26,7 +26,7 @@ using namespace GVM;
     #define SAVE_IR(idx)     callStack->indirection[(idx)] =  myIR[(idx)]
     #define PRGC             myPC
     #define SAVE_PRGC        programCounter = myPC
-    #define LOC(operand)   ( myFS[(int8)myPC[(operand) + 1]] )
+    #define OP_LOCAL(operand)   ( myFS[(int8)myPC[(operand) + 1]] )
 #else
     #define DECLARE_PTRS
     #define UPDATE_PTRS
@@ -34,20 +34,16 @@ using namespace GVM;
     #define SAVE_IR(idx)
     #define PRGC             programCounter
     #define SAVE_PRGC
-    #define LOC(operand)   ( frameStack[(int8)programCounter[(operand) + 1]] )
+    #define OP_LOCAL(operand)   ( frameStack[(int8)programCounter[(operand) + 1]] )
 #endif
 
 #ifdef _GVM_DEBUG_OPCODES_
-    #define OPS(o) ((int)PRGC[(o)+1])
-    #define OPU(o) ((unsigned)PRGC[(o)+1])
     //#define IS(opcode)          case Opcode::_##opcode: std::fprintf(stderr, "\t%-10s %3d %3d %3d\n", #opcode, (int)PRGC[1], (int)PRGC[2], (int)PRGC[3]);
     #define IS(opcode) case Opcode::_##opcode: gvmDebug("\n%p : ", PRGC);
     #define gvmDebugOpcode(...) std::fprintf(stderr, __VA_ARGS__)
-    #define gvmDebugJump(o) gvmDebugOpcode("jump to %p\n", PRGC + (int)J16((o)));
+    #define gvmDebugJump(o) gvmDebugOpcode("jump to %p\n", PRGC + (int)OP_JUMP_S16((o)));
     #define gvmDebugSkip()  gvmDebugOpcode("skip")
 #else
-    #define OPS(o)
-    #define OPU(o)
 #ifdef _GVM_ANNOTATE_ASM_
     #define IS(opcode)    case Opcode::_##opcode: asm("; "#opcode);
 #else
@@ -75,41 +71,39 @@ using namespace GVM;
 // Parameter is the operand byte number.
 
 // Vector local operand, returns a SCALAR_F pointer to the zeroth element of the vector
-#define VLOC(operand)  ( (SCALAR_F*)&LOC(operand) )
+#define OP_LOCAL_VEC_3F(operand)  ( (SCALAR_F*)&OP_LOCAL(operand) )
 
 // Vector expressed as triplet of unsigned words - for data transfer operations
-#define ULOC(operand)  ( (SCALAR_U*)&LOC(operand) )
+#define OP_LOCAL_VEC_3(operand)  ( (SCALAR_U*)&OP_LOCAL(operand) )
 
 // Indirect Operand, dereferences one of the index registers by the unsigned 8-bit operand.
 
-#define IX(idx, operand) ( IR(idx)[PRGC[(operand) + 1]] )
-#define IX0(operand)     ( IR(0)[PRGC[(operand) + 1]] )
-#define IX1(operand)     ( IR(1)[PRGC[(operand) + 1]] )
+#define OP_INDIRECT(idx, operand)  ( IR(idx)[PRGC[(operand) + 1]] )
+#define OP_INDIRECT_0(operand)     ( IR(0)[PRGC[(operand) + 1]] )
+#define OP_INDIRECT_1(operand)     ( IR(1)[PRGC[(operand) + 1]] )
 
 
 // Vector Indirect Operand,
-#define VIX0(operand)    ((SCALAR_F*)&IX0(operand))
-#define VIX1(operand)    ((SCALAR_F*)&IX1(operand))
+#define OP_INDIRECT_0_VEC_3F(operand)    ((SCALAR_F*)&OP_INDIRECT_0(operand))
+#define OP_INDIRECT_1_VEC_3F(operand)    ((SCALAR_F*)&OP_INDIRECT_1(operand))
 
 // Vector expressed as triplet of unsigned words - for data transfoer operations
-#define UIX0(operand)    ((SCALAR_U*)&IX0(operand))
-#define UIX1(operand)    ((SCALAR_U*)&IX1(operand))
+#define OP_INDIRECT_0_VEC_3(operand)    ((SCALAR_U*)&OP_INDIRECT_0(operand))
+#define OP_INDIRECT_1_VEC_3(operand)    ((SCALAR_U*)&OP_INDIRECT_1(operand))
 
 // Jump displaceents
-#define J16(operand)  (int16)(((uint16)PRGC[(operand) + 1] << 8) | PRGC[(operand) + 2])
-#define J8(operand)   (int8)PRGC[(operand) + 1]
+#define OP_JUMP_S16(operand)  (int16)(((uint16)PRGC[(operand) + 1] << 8) | PRGC[(operand) + 2])
+#define OP_JUMP_S8(operand)   (int8)PRGC[(operand) + 1]
 
 // Literal values
-#define S8(operand)   (int8)PRGC[(operand) + 1]
-#define U8(operand)   PRGC[(operand) + 1]
-#define S16(operand)  (int16)(((uint16)PRGC[(operand) + 1] << 8) | PRGC[(operand) + 2])
-#define U16(operand)  (((uint16)PRGC[(operand) + 1] << 8) | PRGC[(operand) + 2])
+#define OP_LITERAL_S8(operand)   (int8)PRGC[(operand) + 1]
+#define OP_LITERAL_U8(operand)   PRGC[(operand) + 1]
 
 // Symbol ID
-#define SYM(operand)  (((uint16)PRGC[(operand) + 1] << 8) | PRGC[(operand) + 2])
+#define OP_SYMBOL_ID(operand)  (((uint16)PRGC[(operand) + 1] << 8) | PRGC[(operand) + 2])
 
 // Return address
-#define RTA(size)  (PRGC + (size))
+#define RETURN_ADDRESS(size)  (PRGC + (size))
 
 #ifdef _GVM_OPT_PROFILE_OPCODE_COUNTS_
     #define INIT_OPCODE_COUNTS static uint64 perInstructionCounts[256] = { 0 }

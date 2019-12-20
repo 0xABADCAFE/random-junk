@@ -1,13 +1,13 @@
 
 // Local == Local
 BCC(V_EQ_LL) {
-    us = ULOC(1);
-    ud = ULOC(2);
+    us = OP_LOCAL_VEC_3(1);
+    ud = OP_LOCAL_VEC_3(2);
     gvmDebugOpcode(
         "beq.v " OPF_L ", " OPF_L ", %d : ",
-        (int)OPS(1),
-        (int)OPS(2),
-        (int)JBRA(3)
+        (int)OP_LITERAL_S8(1),
+        (int)OP_LITERAL_S8(2),
+        (int)OP_JUMP_OFFSET(3)
     );
 
     if (
@@ -22,13 +22,13 @@ BCC(V_EQ_LL) {
 
 // Local == Indirect[0]
 BCC(V_EQ_LI0) {
-    us = ULOC(1);
-    ud = UIX0(2);
+    us = OP_LOCAL_VEC_3(1);
+    ud = OP_INDIRECT_0_VEC_3(2);
     gvmDebugOpcode(
         "beq.v " OPF_L ", " OPF_I0 ", %d : ",
-        (int)OPS(1),
-        (unsigned)OPU(2),
-        (int)JBRA(3)
+        (int)OP_LITERAL_S8(1),
+        (unsigned)OP_LITERAL_U8(2),
+        (int)OP_JUMP_OFFSET(3)
     );
     if (
         ud[0] == us[0] &&
@@ -42,13 +42,13 @@ BCC(V_EQ_LI0) {
 
 // Local == Indirect[1]
 BCC(V_EQ_LI1) {
-    us = ULOC(1);
-    ud = UIX1(2);
+    us = OP_LOCAL_VEC_3(1);
+    ud = OP_INDIRECT_1_VEC_3(2);
     gvmDebugOpcode(
         "beq.v " OPF_L ", " OPF_I1 ", %d : ",
-        (int)OPS(1),
-        (unsigned)OPU(2),
-        (int)JBRA(3)
+        (int)OP_LITERAL_S8(1),
+        (unsigned)OP_LITERAL_U8(2),
+        (int)OP_JUMP_OFFSET(3)
     );
     if (
         ud[0] == us[0] &&
@@ -62,13 +62,13 @@ BCC(V_EQ_LI1) {
 
 // Indirect[0] == Indirect[1]
 BCC(V_EQ_II) {
-    us = UIX0(1);
-    ud = UIX1(2);
+    us = OP_INDIRECT_0_VEC_3(1);
+    ud = OP_INDIRECT_1_VEC_3(2);
     gvmDebugOpcode(
         "beq.v " OPF_I0 ", " OPF_I1 ", %d : ",
-        (unsigned)OPU(1),
-        (unsigned)OPU(2),
-        (int)JBRA(3)
+        (unsigned)OP_LITERAL_U8(1),
+        (unsigned)OP_LITERAL_U8(2),
+        (int)OP_JUMP_OFFSET(3)
     );
     if (
         ud[0] == us[0] &&

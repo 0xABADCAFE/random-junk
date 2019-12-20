@@ -3,10 +3,10 @@
 // Branch on Condition ///////// ///////////////////////////////////////////////////////////////////////////////////////
 
 #ifdef _GVM_OPT_BCC_16_BIT_
-    #define JBRA(n) J16(n)
+    #define OP_JUMP_OFFSET(n) OP_JUMP_S16(n)
     #define JSKIP 6
 #else
-    #define JBRA(n) J8(n)
+    #define OP_JUMP_OFFSET(n) OP_JUMP_S8(n)
     #define JSKIP 5
 #endif
 
@@ -16,7 +16,7 @@
     #define BOC_SKIPPED goto boc_branch_skipped;
     #define HANDLE_BOC_TAKEN \
     gvmDebugJump(3); \
-    STEP(JBRA(3)); \
+    STEP(OP_JUMP_OFFSET(3)); \
     NEXT;
 
     #define HANDLE_BOC_SKIPPED \
@@ -28,7 +28,7 @@
 
     #define BOC_TAKEN \
     gvmDebugJump(3); \
-    STEP(JBRA(3)); \
+    STEP(OP_JUMP_OFFSET(3)); \
     NEXT;
 
     #define BOC_SKIPPED \

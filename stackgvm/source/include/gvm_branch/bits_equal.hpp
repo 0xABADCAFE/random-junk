@@ -3,13 +3,13 @@
 BCC(X_EQ_LS) {
     gvmDebugOpcode(
         "beq.i " OPF_L ", #%d, %d : %d == %d => ",
-        (int)OPS(1),
-        (int)S8(2),
-        (int)JBRA(3),
-        (int)LOC(1).i,
-        (int)S8(2)
+        (int)OP_LITERAL_S8(1),
+        (int)OP_LITERAL_S8(2),
+        (int)OP_JUMP_OFFSET(3),
+        (int)OP_LOCAL(1).i,
+        (int)OP_LITERAL_S8(2)
     );
-    if (LOC(1).i == S8(2)) {
+    if (OP_LOCAL(1).i == OP_LITERAL_S8(2)) {
         BOC_TAKEN
     }
     BOC_SKIPPED
@@ -19,13 +19,13 @@ BCC(X_EQ_LS) {
 BCC(X_EQ_I0S) {
     gvmDebugOpcode(
         "beq.i i0 [%u], #%d, %d : %d == %d => ",
-        (unsigned)OPU(1),
-        (int)S8(2),
-        (int)JBRA(3),
-        (int)IX0(1).i,
-        (int)S8(2)
+        (unsigned)OP_LITERAL_U8(1),
+        (int)OP_LITERAL_S8(2),
+        (int)OP_JUMP_OFFSET(3),
+        (int)OP_INDIRECT_0(1).i,
+        (int)OP_LITERAL_S8(2)
     );
-    if (IX0(1).i == S8(2)) {
+    if (OP_INDIRECT_0(1).i == OP_LITERAL_S8(2)) {
         BOC_TAKEN
     }
     BOC_SKIPPED
@@ -35,13 +35,13 @@ BCC(X_EQ_I0S) {
 BCC(X_EQ_I1S) {
     gvmDebugOpcode(
         "beq.i " OPF_I1 ", #%d, %d : %d == %d => ",
-        (unsigned)OPU(1),
-        (int)S8(2),
-        (int)JBRA(3),
-        (int)IX1(1).i,
-        (int)S8(2)
+        (unsigned)OP_LITERAL_U8(1),
+        (int)OP_LITERAL_S8(2),
+        (int)OP_JUMP_OFFSET(3),
+        (int)OP_INDIRECT_1(1).i,
+        (int)OP_LITERAL_S8(2)
     );
-    if (IX1(1).i == S8(2)) {
+    if (OP_INDIRECT_1(1).i == OP_LITERAL_S8(2)) {
         BOC_TAKEN
     }
     BOC_SKIPPED
@@ -51,13 +51,13 @@ BCC(X_EQ_I1S) {
 BCC(X_EQ_LL) {
     gvmDebugOpcode(
         "beq " OPF_L ", " OPF_L ", %d : 0x%08X == 0x%08X => ",
-        (int)OPS(1),
-        (int)OPS(2),
-        (int)JBRA(3),
-        (unsigned)LOC(1).u,
-        (unsigned)LOC(2).u
+        (int)OP_LITERAL_S8(1),
+        (int)OP_LITERAL_S8(2),
+        (int)OP_JUMP_OFFSET(3),
+        (unsigned)OP_LOCAL(1).u,
+        (unsigned)OP_LOCAL(2).u
     );
-    if (LOC(1).u == LOC(2).u) {
+    if (OP_LOCAL(1).u == OP_LOCAL(2).u) {
         BOC_TAKEN
     }
     BOC_SKIPPED
@@ -67,13 +67,13 @@ BCC(X_EQ_LL) {
 BCC(X_EQ_LI0) {
     gvmDebugOpcode(
         "beq " OPF_L ", " OPF_I0 ", %d : 0x%08X == 0x%08X => ",
-        (int)OPS(1),
-        (unsigned)OPU(2),
-        (int)JBRA(3),
-        (unsigned)LOC(1).u,
-        (unsigned)IX0(2).u
+        (int)OP_LITERAL_S8(1),
+        (unsigned)OP_LITERAL_U8(2),
+        (int)OP_JUMP_OFFSET(3),
+        (unsigned)OP_LOCAL(1).u,
+        (unsigned)OP_INDIRECT_0(2).u
     );
-    if (LOC(1).u == IX0(2).u) {
+    if (OP_LOCAL(1).u == OP_INDIRECT_0(2).u) {
         BOC_TAKEN
     }
     BOC_SKIPPED
@@ -83,13 +83,13 @@ BCC(X_EQ_LI0) {
 BCC(X_EQ_LI1) {
     gvmDebugOpcode(
         "beq " OPF_L ", " OPF_I1 ", %d : 0x%08X == 0x%08X => ",
-        (int)OPS(1),
-        (unsigned)OPU(2),
-        (int)JBRA(3),
-        (unsigned)LOC(1).u,
-        (unsigned)IX1(2).u
+        (int)OP_LITERAL_S8(1),
+        (unsigned)OP_LITERAL_U8(2),
+        (int)OP_JUMP_OFFSET(3),
+        (unsigned)OP_LOCAL(1).u,
+        (unsigned)OP_INDIRECT_1(2).u
     );
-    if (LOC(1).u == IX1(2).u) {
+    if (OP_LOCAL(1).u == OP_INDIRECT_1(2).u) {
         BOC_TAKEN
     }
     BOC_SKIPPED
@@ -99,13 +99,13 @@ BCC(X_EQ_LI1) {
 BCC(X_EQ_II) {
     gvmDebugOpcode(
         "beq " OPF_I0 ", " OPF_I1 ", %d : 0x%08X == 0x%08X => ",
-        (unsigned)OPU(1),
-        (unsigned)OPU(2),
-        (int)JBRA(3),
-        (unsigned)IX0(1).u,
-        (unsigned)IX1(2).u
+        (unsigned)OP_LITERAL_U8(1),
+        (unsigned)OP_LITERAL_U8(2),
+        (int)OP_JUMP_OFFSET(3),
+        (unsigned)OP_INDIRECT_0(1).u,
+        (unsigned)OP_INDIRECT_1(2).u
     );
-    if (IX0(1).u == IX1(2).u) {
+    if (OP_INDIRECT_0(1).u == OP_INDIRECT_1(2).u) {
         BOC_TAKEN
     }
     BOC_SKIPPED
