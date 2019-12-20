@@ -113,7 +113,7 @@ IS(RET) {
 
 IS(LI0BNN) {
     gvmDebugOpcode(
-        "libnn (i0+%u), %d : %p != null => ",
+        "libnn i0[%u], %d : %p != null => ",
         (unsigned)OPU(0),
         (int)(int)J16(1),
         IX0(0).a
@@ -131,7 +131,7 @@ IS(LI0BNN) {
 
 IS(LI1BNN) {
     gvmDebugOpcode(
-        "libnn (i1+%u), %d : %p != null => ",
+        "libnn i1[%u], %d : %p != null => ",
         (unsigned)OPU(0),
         (int)(int)J16(1),
         IX1(0).a
@@ -155,7 +155,7 @@ IS(ADDR_LL) {
     // Get address of local variable into local variable
     LOC(1).a = &LOC(0);
     gvmDebugOpcode(
-        "addr (%d), (%d) : %p",
+        "addr {%d}, {%d} : %p",
         (int)OPS(0),
         (int)OPS(1),
         LOC(1).a
@@ -168,7 +168,7 @@ IS(ADDR_I0L) {
     // Get address of indirect [0] variable into local variable
     LOC(1).a = &IX0(0);
     gvmDebugOpcode(
-        "addr (i0+%u), (%d) : %p",
+        "addr i0[%u], {%d} : %p",
         (unsigned)OPU(0),
         (int)OPS(1),
         LOC(1).a
@@ -181,7 +181,7 @@ IS(ADDR_I1L) {
     // Get address of indirect [1] variable into local variable
     LOC(1).a = &IX1(0);
     gvmDebugOpcode(
-        "addr (i1+%u), (%d) : %p",
+        "addr i1[%u], {%d} : %p",
         (unsigned)OPU(0),
         (int)OPS(1),
         LOC(1).a
@@ -194,7 +194,7 @@ IS(ADDR_DL) {
     // Load the address of a global data symbol to a local variable
     uint32 symbolId = SYM(0);
     gvmDebugOpcode(
-        "addr $%04X, (%d) : ",
+        "addr $%04X, {%d} : ",
         (unsigned)symbolId,
         (int)OPS(2)
     );
@@ -212,7 +212,7 @@ IS(ADDR_DI0) {
     // Load the address of a global data symbol to an indirect [0] variable
     uint32 symbolId = SYM(0);
     gvmDebugOpcode(
-        "addr $%04X, (i0+%u) : ",
+        "addr $%04X, i0[%u] : ",
         (unsigned)symbolId,
         (unsigned)OPU(2)
     );
@@ -230,7 +230,7 @@ IS(ADDR_DI1) {
     // Load the address of a global data symbol to an indirect [1] variable
     uint32 symbolId = SYM(0);
     gvmDebugOpcode(
-        "addr $%04X, (i1+%u) : ",
+        "addr $%04X, i1[%u] : ",
         (unsigned)symbolId,
         (unsigned)OPU(2)
     );
@@ -367,7 +367,7 @@ IS(LOAD_HL) {
 IS(COPY_LL) {
     // Copy a local scalar to a local scalar
     gvmDebugOpcode(
-        "copy (%d), (%d) : 0x%08X",
+        "copy {%d}, {%d} : 0x%08X",
         (int)OPS(0),
         (int)OPS(1),
         (unsigned)LOC(0).u
@@ -381,7 +381,7 @@ IS(COPY_LL) {
 IS(COPY_I0L) {
     // Copy an indirect scalar to a local
     gvmDebugOpcode(
-        "copy (i0+%u), (%d) : 0x%08X",
+        "copy i0[%u], {%d} : 0x%08X",
         (unsigned)OPU(0),
         (int)OPS(1),
         (unsigned)IX0(0).u
@@ -395,7 +395,7 @@ IS(COPY_I0L) {
 IS(COPY_I1L) {
     // Copy an indirect scalar to a local
     gvmDebugOpcode(
-        "copy (i1+%u) (%d) : 0x%08X",
+        "copy i1[%u] {%d} : 0x%08X",
         (unsigned)OPU(0),
         (int)OPS(1),
         (unsigned)IX1(0).u
@@ -408,7 +408,7 @@ IS(COPY_I1L) {
 IS(CPIX_I0L) {
     // Copy indirect indexed by local to local
     gvmDebugOpcode(
-        "copy (i0+%u)[(%d)], (%d) : [%u] => 0x%08X",
+        "copy i0[%u][{%d}], {%d} : [%u] => 0x%08X",
         (unsigned)OPU(0),
         (int)OPS(1),
         (int)OPS(2),
@@ -423,7 +423,7 @@ IS(CPIX_I0L) {
 IS(CPIX_I1L) {
     // Copy indirect indexed by local to local
     gvmDebugOpcode(
-        "copy (i1+%u)[(%d)], (%d) : [%u] => 0x%08X",
+        "copy i1[%u][{%d}], {%d} : [%u] => 0x%08X",
         (unsigned)OPU(0),
         (int)OPS(1),
         (int)OPS(2),
@@ -437,7 +437,7 @@ IS(CPIX_I1L) {
 
 IS(COPY_LI0) {
     gvmDebugOpcode(
-        "copy (%d), (i0+%u) : 0x%08X",
+        "copy {%d}, i0[%u] : 0x%08X",
         (int)OPS(0),
         (unsigned)OPU(1),
         (unsigned)LOC(0).u
@@ -450,7 +450,7 @@ IS(COPY_LI0) {
 
 IS(COPY_LI1) {
     gvmDebugOpcode(
-        "copy (%d), (i0+%u) : 0x%08X",
+        "copy {%d}, i0[%u] : 0x%08X",
         (int)OPS(0),
         (unsigned)OPU(1),
         (unsigned)LOC(0).u
@@ -463,7 +463,7 @@ IS(COPY_LI1) {
 
 IS(COPY_II) {
     gvmDebugOpcode(
-        "copy (i0+%u), (i1+%u) : 0x%08X",
+        "copy i0[%u], i1[%u] : 0x%08X",
         (unsigned)OPU(0),
         (unsigned)OPU(1),
         (unsigned)IX0(0).u
@@ -479,7 +479,7 @@ IS(COPY_II) {
 IS(ITOF_LL) {
     // Cast integer to float
     gvmDebugOpcode(
-        "ito.f (%d), (%d) : %d => ",
+        "ito.f {%d}, {%d} : %d => ",
         (unsigned)OPU(0),
         (int)OPS(1),
         (int)LOC(0).i
@@ -493,7 +493,7 @@ IS(ITOF_LL) {
 IS(FTOI_LL) {
     // Cast float to integer
     gvmDebugOpcode(
-        "fto.i (%d), (%d) : %e => ",
+        "fto.i {%d}, {%d} : %e => ",
         (unsigned)OPU(0),
         (int)OPS(1),
         LOC(0).f

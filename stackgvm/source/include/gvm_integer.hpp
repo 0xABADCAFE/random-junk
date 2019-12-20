@@ -6,7 +6,7 @@
 
 IS(DBNZ_L) {
     gvmDebugOpcode(
-        "dbnz.i (%d), %d : --%d != 0 => ",
+        "dbnz.i {%d}, %d : --%d != 0 => ",
         (int)OPS(0),
         (int)J16(1),
         (int)LOC(0).i
@@ -26,7 +26,7 @@ IS(DBNZ_L) {
 
 IS(DBNN_L) {
     gvmDebugOpcode(
-        "dbnn.i (%d), %d : --%d >= 0 => ",
+        "dbnn.i {%d}, %d : --%d >= 0 => ",
         (int)OPS(0),
         (int)J16(1),
         (int)LOC(0).i
@@ -48,7 +48,7 @@ IS(DBNN_L) {
 IS(LOAD_SL) {
     LOC(1).i = S8(0);
     gvmDebugOpcode(
-        "copy %d, (%d) : %d",
+        "copy #%d, {%d} : %d",
         (int)OPS(0),
         (int)OPS(1),
         (int)LOC(1).i
@@ -60,7 +60,7 @@ IS(LOAD_SL) {
 IS(LOAD_SI0) {
     IX0(1).i = S8(0);
     gvmDebugOpcode(
-        "copy %d, (i0+%u) : %d",
+        "copy #%d, i0[%u] : %d",
         (int)OPS(0),
         (unsigned)OPU(1),
         (int)IX0(1).i
@@ -72,7 +72,7 @@ IS(LOAD_SI0) {
 IS(LOAD_SI1) {
     IX1(1).i = S8(0);
     gvmDebugOpcode(
-        "copy %d, (i1+%u) : %d",
+        "copy #%d, i1[%u] : %d",
         (int)OPS(0),
         (unsigned)OPU(1),
         (int)IX1(1).i
@@ -87,7 +87,7 @@ IS(BSET_SL) {
     // Set bit in local
     LOC(1).u |= 1 << U8(0);
     gvmDebugOpcode(
-        "bset %u, (%d) : 0x%08X",
+        "bset %u, {%d} : 0x%08X",
         (unsigned)OPU(0),
         (int)OPS(1),
         (int)LOC(1).u
@@ -100,7 +100,7 @@ IS(BSET_SI) {
     // Set bit in indirect
     IX0(1).u |= 1 << U8(0);
     gvmDebugOpcode(
-        "bset %u, (i0+%u) : 0x%08X",
+        "bset %u, i0[%u] : 0x%08X",
         (unsigned)OPU(0),
         (unsigned)OPU(1),
         (unsigned)IX0(1).u
@@ -115,7 +115,7 @@ IS(BCLR_SL) {
     // Clear bit in local
     LOC(1).u &= ~(1 << U8(0));
     gvmDebugOpcode(
-        "bclr %u, (%d) : 0x%08X",
+        "bclr %u, {%d} : 0x%08X",
         (unsigned)OPU(0),
         (int)OPS(1),
         (unsigned)LOC(1).u
@@ -128,7 +128,7 @@ IS(BCLR_SI) {
     // Clear bit in indirect
     IX0(1).u &= ~(1 << U8(0));
     gvmDebugOpcode(
-        "bclr %u, (i0+%u) : 0x%08X",
+        "bclr %u, i0[%u] : 0x%08X",
         (unsigned)OPU(0),
         (unsigned)OPU(1),
         (unsigned)IX0(1).u
@@ -142,7 +142,7 @@ IS(BCLR_SI) {
 IS(NOT_LL) {
     LOC(1).u = ~LOC(0).u;
     gvmDebugOpcode(
-        "not (%d), (%d) : 0x%08X",
+        "not {%d}, {%d} : 0x%08X",
         (int)OPS(0),
         (int)OPS(1),
         (unsigned)LOC(1).u
@@ -154,7 +154,7 @@ IS(NOT_LL) {
 IS(NOT_IL) {
     LOC(1).u = ~IX0(0).u;
     gvmDebugOpcode(
-        "not (i0+%u), (%d) : 0x%08X",
+        "not i0[%u], {%d} : 0x%08X",
         (unsigned)OPU(0),
         (int)OPS(1),
         (unsigned)LOC(1).u
@@ -166,7 +166,7 @@ IS(NOT_IL) {
 IS(NOT_LI) {
     IX0(1).u = ~LOC(0).u;
     gvmDebugOpcode(
-        "not (%d), (i0+%u) : 0x%08X",
+        "not {%d}, i0[%u] : 0x%08X",
         (int)OPS(0),
         (unsigned)OPU(1),
         (unsigned)IX0(1).u
@@ -178,7 +178,7 @@ IS(NOT_LI) {
 IS(NOT_II) {
     IX1(1).u = ~IX0(0).u;
     gvmDebugOpcode(
-        "not (i0+%u), (i1+%u) : 0x%08X",
+        "not i0[%u], i1[%u] : 0x%08X",
         (unsigned)OPU(0),
         (unsigned)OPU(1),
         (unsigned)IX1(1).u
@@ -192,7 +192,7 @@ IS(NOT_II) {
 IS(NEG_LL) {
     LOC(1).i = -LOC(0).i;
     gvmDebugOpcode(
-        "neg.i (%d), (%d) : %d",
+        "neg.i {%d}, {%d} : %d",
         (int)OPS(0),
         (int)OPS(1),
         (int)LOC(1).i
@@ -204,7 +204,7 @@ IS(NEG_LL) {
 IS(NEG_IL) {
     LOC(1).i = -IX0(0).i;
     gvmDebugOpcode(
-        "neg.i (i0+%u), (%d) : %d",
+        "neg.i i0[%u], {%d} : %d",
         (unsigned)OPU(0),
         (int)OPS(1),
         (int)LOC(1).i
@@ -216,7 +216,7 @@ IS(NEG_IL) {
 IS(NEG_LI) {
     IX0(1).i = -LOC(0).i;
     gvmDebugOpcode(
-        "neg.i (%d), (i0+%u) : %d",
+        "neg.i {%d}, i0[%u] : %d",
         (int)OPS(0),
         (unsigned)OPU(1),
         (int)IX0(1).i
@@ -228,7 +228,7 @@ IS(NEG_LI) {
 IS(NEG_II) {
     IX1(1).i = -IX0(0).i;
     gvmDebugOpcode(
-        "neg.i (i0+%u), (i1+%u) : %d",
+        "neg.i i0[%u], i1[%u] : %d",
         (unsigned)OPU(0),
         (unsigned)OPU(1),
         (int)IX1(1).i
@@ -242,7 +242,7 @@ IS(NEG_II) {
 IS(ADD_LLL) {
     // Local + Local -> Local
     gvmDebugOpcode(
-        "add.i (%d), (%d), (%d) : %d + %d => ",
+        "add.i {%d}, {%d}, {%d} : %d + %d => ",
         (int)OPS(0),
         (int)OPS(1),
         (int)OPS(2),
@@ -258,7 +258,7 @@ IS(ADD_LLL) {
 IS(ADD_ILL) {
     // Indirect + Local -> Local
     gvmDebugOpcode(
-        "add.i (i0+%u), (%d), (%d) : %d + %d => ",
+        "add.i i0[%u], {%d}, {%d} : %d + %d => ",
         (unsigned)OPU(0),
         (int)OPS(1),
         (int)OPS(2),
@@ -274,7 +274,7 @@ IS(ADD_ILL) {
 IS(ADD_LLI) {
     // Local + Local -> Indirect
     gvmDebugOpcode(
-        "add.i (%d), (%d), (i0+%u) : %d + %d => ",
+        "add.i {%d}, {%d}, i0[%u] : %d + %d => ",
         (int)OPS(0),
         (int)OPS(1),
         (unsigned)OPU(2),
@@ -290,7 +290,7 @@ IS(ADD_LLI) {
 IS(ADD_ILI) {
     // Indirect + Local -> Indirect
     gvmDebugOpcode(
-        "add.i (i0+%u), (%d), (i1+%u) : %d + %d => ",
+        "add.i i0[%u], {%d}, i1[%u] : %d + %d => ",
         (unsigned)OPU(0),
         (int)OPS(1),
         (unsigned)OPU(2),
@@ -325,7 +325,7 @@ IS(ADD_X) {
 IS(SUB_LLL) {
     // Local - Local -> Local
     gvmDebugOpcode(
-        "sub.i (%d), (%d), (%d) : %d - %d => ",
+        "sub.i {%d}, {%d}, {%d} : %d - %d => ",
         (int)OPS(0),
         (int)OPS(1),
         (int)OPS(2),
@@ -341,7 +341,7 @@ IS(SUB_LLL) {
 IS(SUB_ILL) {
     // Indirect - Local -> Local
     gvmDebugOpcode(
-        "sub.i (i0+%u), (%d), (%d) : %d - %d => ",
+        "sub.i i0[%u], {%d}, {%d} : %d - %d => ",
         (unsigned)OPU(0),
         (int)OPS(1),
         (int)OPS(2),
@@ -357,7 +357,7 @@ IS(SUB_ILL) {
 IS(SUB_LLI) {
     // Local - Local -> Indirect
     gvmDebugOpcode(
-        "sub.i (%d), (%d), (i0+%u) : %d - %d => ",
+        "sub.i {%d}, {%d}, i0[%u] : %d - %d => ",
         (int)OPS(0),
         (int)OPS(1),
         (unsigned)OPU(2),
@@ -373,7 +373,7 @@ IS(SUB_LLI) {
 IS(SUB_ILI) {
     // Indirect - Local -> Indirect
     gvmDebugOpcode(
-        "sub.i (i0+%u), (%d), (i1+%u) : %d - %d => ",
+        "sub.i i0[%u], {%d}, i1[%u] : %d - %d => ",
         (unsigned)OPU(0),
         (int)OPS(1),
         (unsigned)OPU(2),
@@ -389,7 +389,7 @@ IS(SUB_ILI) {
 IS(SUB_LIL) {
     // Local - Indirect -> Local
     gvmDebugOpcode(
-        "sub.i (%d), (i0+%u), (%d) : %d - %d => ",
+        "sub.i {%d}, i0[%u], {%d} : %d - %d => ",
         (int)OPS(0),
         (unsigned)OPU(1),
         (int)OPS(2),
@@ -405,7 +405,7 @@ IS(SUB_LIL) {
 IS(SUB_IIL) {
     // Indirect - Indirect -> Local
     gvmDebugOpcode(
-        "sub.i (i0+%u), (i1+%u), (%d) : %d - %d => ",
+        "sub.i i0[%u], i1[%u], {%d} : %d - %d => ",
         (unsigned)OPU(0),
         (unsigned)OPU(1),
         (int)OPS(2),
@@ -421,7 +421,7 @@ IS(SUB_IIL) {
 IS(SUB_LII) {
     // Local - Indirect -> Indirect
     gvmDebugOpcode(
-        "sub.i (i0+%u), (i1+%u), (%d) : %d - %d => ",
+        "sub.i i0[%u], i1[%u], {%d} : %d - %d => ",
         (unsigned)OPU(0),
         (unsigned)OPU(1),
         (int)OPS(2),
@@ -456,7 +456,7 @@ IS(SUB_X) {
 IS(MUL_LLL) {
     // Local * Local -> Local
     gvmDebugOpcode(
-        "mul.i (%d), (%d), (%d) : %d * %d => ",
+        "mul.i {%d}, {%d}, {%d} : %d * %d => ",
         (int)OPS(0),
         (int)OPS(1),
         (int)OPS(2),
@@ -472,7 +472,7 @@ IS(MUL_LLL) {
 IS(MUL_ILL) {
     // Indirect * Local -> Local
     gvmDebugOpcode(
-        "mul.i (i0+%u), (%d), (%d) : %d * %d => ",
+        "mul.i i0[%u], {%d}, {%d} : %d * %d => ",
         (unsigned)OPU(0),
         (int)OPS(1),
         (int)OPS(2),
@@ -488,7 +488,7 @@ IS(MUL_ILL) {
 IS(MUL_LLI) {
     // Local * Local -> Indirect
     gvmDebugOpcode(
-        "mul.i (%d), (%d), (i0+%u) : %d * %d => ",
+        "mul.i {%d}, {%d}, i0[%u] : %d * %d => ",
         (int)OPS(0),
         (int)OPS(1),
         (unsigned)OPU(2),
@@ -504,7 +504,7 @@ IS(MUL_LLI) {
 IS(MUL_ILI) {
     // Indirect * Local -> Indirect
     gvmDebugOpcode(
-        "mul.i (i0+%u), (%d), (i1+%u) : %d * %d => ",
+        "mul.i i0[%u], {%d}, i1[%u] : %d * %d => ",
         (unsigned)OPU(0),
         (int)OPS(1),
         (unsigned)OPU(2),
@@ -540,7 +540,7 @@ IS(DIV_LLL) {
     // Local / Local -> Local
     int32 denominator = LOC(1).i;
     gvmDebugOpcode(
-        "div.i (%d), (%d), (%d) : %d / %d => ",
+        "div.i {%d}, {%d}, {%d} : %d / %d => ",
         (int)OPS(0),
         (int)OPS(1),
         (int)OPS(2),
@@ -560,7 +560,7 @@ IS(DIV_ILL) {
     // Indirect / Local -> Local
     int32 denominator = LOC(1).i;
     gvmDebugOpcode(
-        "div.i (i0+%u), (%d), (%d) : %d / %d => ",
+        "div.i i0[%u], {%d}, {%d} : %d / %d => ",
         (unsigned)OPU(0),
         (int)OPS(1),
         (int)OPS(2),
@@ -580,7 +580,7 @@ IS(DIV_LLI) {
     // Local / Local -> Indirect
     int32 denominator = LOC(1).i;
     gvmDebugOpcode(
-        "div.i (%d), (%d), (i0+%u) : %d / %d => ",
+        "div.i {%d}, {%d}, i0[%u] : %d / %d => ",
         (int)OPS(0),
         (int)OPS(1),
         (unsigned)OPU(2),
@@ -601,7 +601,7 @@ IS(DIV_ILI) {
     // Indirect / Local -> Indirect
     int32 denominator = LOC(1).i;
     gvmDebugOpcode(
-        "div.i (i0+%u), (%d), (i1+%u) : %d / %d => ",
+        "div.i i0[%u], {%d}, i1[%u] : %d / %d => ",
         (unsigned)OPU(0),
         (int)OPS(1),
         (unsigned)OPU(2),
@@ -622,7 +622,7 @@ IS(DIV_LIL) {
     // Local / Indirect -> Local
     int32 denominator = IX0(1).i;
     gvmDebugOpcode(
-        "div.i (%d), (i0+%u), (%d) : %d / %d => ",
+        "div.i {%d}, i0[%u], {%d} : %d / %d => ",
         (int)OPS(0),
         (unsigned)OPU(1),
         (int)OPS(2),
@@ -643,7 +643,7 @@ IS(DIV_IIL) {
     // Indirect / Indirect -> Local
     int32 denominator = IX1(1).i;
     gvmDebugOpcode(
-        "div.i (i0+%u), (i1+%u), (%d) : %d / %d => ",
+        "div.i i0[%u], i1[%u], {%d} : %d / %d => ",
         (unsigned)OPU(0),
         (unsigned)OPU(1),
         (int)OPS(2),
@@ -664,7 +664,7 @@ IS(DIV_LII) {
     // Local / Indirect -> Indirect
     int32 denominator = IX0(1).i;
     gvmDebugOpcode(
-        "div.i (%d), (i0+%u), (i1+%u) : %d / %d => ",
+        "div.i {%d}, i0[%u], i1[%u] : %d / %d => ",
         (int)OPS(0),
         (unsigned)OPU(1),
         (unsigned)OPU(2),
@@ -708,7 +708,7 @@ IS(MOD_LLL) {
     // Local % Local -> Local
     int32 denominator = LOC(1).i;
     gvmDebugOpcode(
-        "mod.i (%d), (%d), (%d) : %d / %d => ",
+        "mod.i {%d}, {%d}, {%d} : %d / %d => ",
         (int)OPS(0),
         (int)OPS(1),
         (int)OPS(2),
@@ -728,7 +728,7 @@ IS(MOD_ILL) {
     // Indirect % Local -> Local
     int32 denominator = LOC(1).i;
     gvmDebugOpcode(
-        "mod.i (i0+%u), (%d), (%d) : %d / %d => ",
+        "mod.i i0[%u], {%d}, {%d} : %d / %d => ",
         (unsigned)OPU(0),
         (int)OPS(1),
         (int)OPS(2),
@@ -748,7 +748,7 @@ IS(MOD_LLI) {
     // Local % Local -> Indirect
     int32 denominator = LOC(1).i;
     gvmDebugOpcode(
-        "mod.i (%d), (%d), (i0+%u) : %d / %d => ",
+        "mod.i {%d}, {%d}, i0[%u] : %d / %d => ",
         (int)OPS(0),
         (int)OPS(1),
         (unsigned)OPU(2),
@@ -768,7 +768,7 @@ IS(MOD_ILI) {
     // Indirect % Local -> Indirect
     int32 denominator = LOC(1).i;
     gvmDebugOpcode(
-        "mod.i (i0+%u), (%d), (i1+%u) : %d / %d => ",
+        "mod.i i0[%u], {%d}, i1[%u] : %d / %d => ",
         (unsigned)OPU(0),
         (int)OPS(1),
         (unsigned)OPU(2),
@@ -788,7 +788,7 @@ IS(MOD_LIL) {
     // Local % Indirect -> Local
     int32 denominator = IX0(1).i;
     gvmDebugOpcode(
-        "mod.i (%d), (i0+%u), (%d) : %d / %d => ",
+        "mod.i {%d}, i0[%u], {%d} : %d / %d => ",
         (int)OPS(0),
         (unsigned)OPU(1),
         (int)OPS(2),
@@ -808,7 +808,7 @@ IS(MOD_IIL) {
     // Indirect % Indirect -> Local
     int32 denominator = IX1(1).i;
     gvmDebugOpcode(
-        "mod.i (i0+%u), (i1+%u), (%d) : %d / %d => ",
+        "mod.i i0[%u], i1[%u], {%d} : %d / %d => ",
         (unsigned)OPU(0),
         (unsigned)OPU(1),
         (int)OPS(2),
@@ -828,7 +828,7 @@ IS(MOD_LII) {
     // Local % Indirect -> Indirect
     int32 denominator = IX0(1).i;
     gvmDebugOpcode(
-        "mod.i (%d), (i0+%u), (i1+%u) : %d / %d => ",
+        "mod.i {%d}, i0[%u], i1[%u] : %d / %d => ",
         (int)OPS(0),
         (unsigned)OPU(1),
         (unsigned)OPU(2),
@@ -870,7 +870,7 @@ IS(MOD_X) {
 IS(AND_LLL) {
     // Local & Local -> Local
     gvmDebugOpcode(
-        "and (%d), (%d), (%d) : 0x%08X & 0x%08X => ",
+        "and {%d}, {%d}, {%d} : 0x%08X & 0x%08X => ",
         (int)OPS(0),
         (int)OPS(1),
         (int)OPS(2),
@@ -886,7 +886,7 @@ IS(AND_LLL) {
 IS(AND_ILL) {
     // Indirect & Local -> Local
     gvmDebugOpcode(
-        "and (i0+%u), (%d), (%d) : 0x%08X & 0x%08X => ",
+        "and i0[%u], {%d}, {%d} : 0x%08X & 0x%08X => ",
         (unsigned)OPU(0),
         (int)OPS(1),
         (int)OPS(2),
@@ -902,7 +902,7 @@ IS(AND_ILL) {
 IS(AND_LLI) {
     // Local & Local -> Indirect
     gvmDebugOpcode(
-        "and (%d), (%d), (i0+%u) : 0x%08X & 0x%08X => ",
+        "and {%d}, {%d}, i0[%u] : 0x%08X & 0x%08X => ",
         (int)OPS(0),
         (int)OPS(1),
         (unsigned)OPU(2),
@@ -918,7 +918,7 @@ IS(AND_LLI) {
 IS(AND_ILI) {
     // Indirect & Local -> Indirect
     gvmDebugOpcode(
-        "and (i0+%u), (%d), (i1+%u) : 0x%08X & 0x%08X => ",
+        "and i0[%u], {%d}, i1[%u] : 0x%08X & 0x%08X => ",
         (unsigned)OPU(0),
         (int)OPS(1),
         (unsigned)OPU(2),
@@ -953,7 +953,7 @@ IS(AND_X) {
 IS(OR_LLL) {
     // Local | Local -> Local
     gvmDebugOpcode(
-        "or (%d), (%d), (%d) : 0x%08X | 0x%08X => ",
+        "or {%d}, {%d}, {%d} : 0x%08X | 0x%08X => ",
         (int)OPS(0),
         (int)OPS(1),
         (int)OPS(2),
@@ -969,7 +969,7 @@ IS(OR_LLL) {
 IS(OR_ILL) {
     // Indirect | Local -> Local
     gvmDebugOpcode(
-        "or (i0+%u), (%d), (%d) : 0x%08X | 0x%08X => ",
+        "or i0[%u], {%d}, {%d} : 0x%08X | 0x%08X => ",
         (unsigned)OPU(0),
         (int)OPS(1),
         (int)OPS(2),
@@ -985,7 +985,7 @@ IS(OR_ILL) {
 IS(OR_LLI) {
     // Local | Local -> Indirect
     gvmDebugOpcode(
-        "or (%d), (%d), (i0+%u) : 0x%08X | 0x%08X => ",
+        "or {%d}, {%d}, i0[%u] : 0x%08X | 0x%08X => ",
         (int)OPS(0),
         (int)OPS(1),
         (unsigned)OPU(2),
@@ -1001,7 +1001,7 @@ IS(OR_LLI) {
 IS(OR_ILI) {
     // Indirect | Local -> Indirect
     gvmDebugOpcode(
-        "or (i0+%u), (%d), (i1+%u) : 0x%08X | 0x%08X => ",
+        "or i0[%u], {%d}, i1[%u] : 0x%08X | 0x%08X => ",
         (unsigned)OPU(0),
         (int)OPS(1),
         (unsigned)OPU(2),
@@ -1036,7 +1036,7 @@ IS(OR_X) {
 IS(XOR_LLL) {
     // Local ^ Local -> Local
     gvmDebugOpcode(
-        "xor (%d), (%d), (%d) : 0x%08X ^ 0x%08X => ",
+        "xor {%d}, {%d}, {%d} : 0x%08X ^ 0x%08X => ",
         (int)OPS(0),
         (int)OPS(1),
         (int)OPS(2),
@@ -1052,7 +1052,7 @@ IS(XOR_LLL) {
 IS(XOR_ILL) {
     // Indirect ^ Local -> Local
     gvmDebugOpcode(
-        "xor (i0+%u), (%d), (%d) : 0x%08X ^ 0x%08X => ",
+        "xor i0[%u], {%d}, {%d} : 0x%08X ^ 0x%08X => ",
         (unsigned)OPU(0),
         (int)OPS(1),
         (int)OPS(2),
@@ -1068,7 +1068,7 @@ IS(XOR_ILL) {
 IS(XOR_LLI) {
     // Local ^ Local -> Indirect
     gvmDebugOpcode(
-        "xor (%d), (%d), (i0+%u) : 0x%08X ^ 0x%08X => ",
+        "xor {%d}, {%d}, i0[%u] : 0x%08X ^ 0x%08X => ",
         (int)OPS(0),
         (int)OPS(1),
         (unsigned)OPU(2),
@@ -1084,7 +1084,7 @@ IS(XOR_LLI) {
 IS(XOR_ILI) {
     // Indirect ^ Local -> Indirect
     gvmDebugOpcode(
-        "xor (i0+%u), (%d), (i1+%u) : 0x%08X ^ 0x%08X => ",
+        "xor i0[%u], {%d}, i1[%u] : 0x%08X ^ 0x%08X => ",
         (unsigned)OPU(0),
         (int)OPS(1),
         (unsigned)OPU(2),
@@ -1119,7 +1119,7 @@ IS(XOR_X) {
 IS(LSL_LLL) {
     // Local << Local -> Local
     gvmDebugOpcode(
-        "lsl (%d), (%d), (%d) : 0x%08X << %u => ",
+        "lsl {%d}, {%d}, {%d} : 0x%08X << %u => ",
         (int)OPS(0),
         (int)OPS(1),
         (int)OPS(2),
@@ -1135,7 +1135,7 @@ IS(LSL_LLL) {
 IS(LSL_ILL) {
     // Indirect << Local -> Local
     gvmDebugOpcode(
-        "lsl (i0+%u), (%d), (%d) : 0x%08X << %u => ",
+        "lsl i0[%u], {%d}, {%d} : 0x%08X << %u => ",
         (unsigned)OPU(0),
         (int)OPS(1),
         (int)OPS(2),
@@ -1151,7 +1151,7 @@ IS(LSL_ILL) {
 IS(LSL_LLI) {
     // Local << Local -> Indirect
     gvmDebugOpcode(
-        "lsl (%d), (%d), (i0+%u) : 0x%08X << %u => ",
+        "lsl {%d}, {%d}, i0[%u] : 0x%08X << %u => ",
         (int)OPS(0),
         (int)OPS(1),
         (unsigned)OPU(2),
@@ -1167,7 +1167,7 @@ IS(LSL_LLI) {
 IS(LSL_ILI) {
     // Indirect << Local -> Indirect
     gvmDebugOpcode(
-        "lsl (i0+%u), (%d), (i1+%u) : 0x%08X << %u => ",
+        "lsl i0[%u], {%d}, i1[%u] : 0x%08X << %u => ",
         (unsigned)OPU(0),
         (int)OPS(1),
         (unsigned)OPU(2),
@@ -1185,7 +1185,7 @@ IS(LSL_ILI) {
 IS(LSR_LLL) {
     // Local >> Local -> Local
     gvmDebugOpcode(
-        "lsr (%d), (%d), (%d) : 0x%08X << %u => ",
+        "lsr {%d}, {%d}, {%d} : 0x%08X << %u => ",
         (int)OPS(0),
         (int)OPS(1),
         (int)OPS(2),
@@ -1201,7 +1201,7 @@ IS(LSR_LLL) {
 IS(LSR_ILL) {
     // Indirect >> Local -> Local
     gvmDebugOpcode(
-        "lsr (i0+%u), (%d), (%d) : 0x%08X >> %u => ",
+        "lsr i0[%u], {%d}, {%d} : 0x%08X >> %u => ",
         (unsigned)OPU(0),
         (int)OPS(1),
         (int)OPS(2),
@@ -1217,7 +1217,7 @@ IS(LSR_ILL) {
 IS(LSR_LLI) {
     // Local >> Local -> Indirect
     gvmDebugOpcode(
-        "lsr (%d), (%d), (i0+%u) : 0x%08X >> %u => ",
+        "lsr {%d}, {%d}, i0[%u] : 0x%08X >> %u => ",
         (int)OPS(0),
         (int)OPS(1),
         (unsigned)OPU(2),
@@ -1233,7 +1233,7 @@ IS(LSR_LLI) {
 IS(LSR_ILI) {
     // Indirect >> Local -> Indirect
     gvmDebugOpcode(
-        "lsl (i0+%u), (%d), (i1+%u) : 0x%08X >> %u => ",
+        "lsl i0[%u], {%d}, i1[%u] : 0x%08X >> %u => ",
         (unsigned)OPU(0),
         (int)OPS(1),
         (unsigned)OPU(2),
@@ -1253,7 +1253,7 @@ IS(MAX_LLL) {
     int32 i1 = LOC(0).i;
     int32 i2 = LOC(1).i;
     gvmDebugOpcode(
-        "max.i (%d), (%d), (%d) : max(%d, %d) => ",
+        "max.i {%d}, {%d}, {%d} : max(%d, %d) => ",
         (int)OPS(0),
         (int)OPS(1),
         (int)OPS(2),
@@ -1271,7 +1271,7 @@ IS(MAX_ILL) {
     int32 i1 = IX0(0).i;
     int32 i2 = LOC(1).i;
     gvmDebugOpcode(
-        "max.i (i0+%u), (%d), (%d) : max(%d, %d) => ",
+        "max.i i0[%u], {%d}, {%d} : max(%d, %d) => ",
         (unsigned)OPU(0),
         (int)OPS(1),
         (int)OPS(2),
@@ -1289,7 +1289,7 @@ IS(MAX_LLI) {
     int32 i1 = LOC(0).i;
     int32 i2 = LOC(1).i;
     gvmDebugOpcode(
-        "max.i (%d), (%d), (i0+%u) : max(%d, %d) => ",
+        "max.i {%d}, {%d}, i0[%u] : max(%d, %d) => ",
         (int)OPS(0),
         (int)OPS(1),
         (unsigned)OPU(2),
@@ -1307,7 +1307,7 @@ IS(MAX_ILI) {
     int32 i1 = IX0(0).i;
     int32 i2 = LOC(1).i;
     gvmDebugOpcode(
-        "max.i (i0+%u), (%d), (i1+%u) : max(%d, %d) => ",
+        "max.i i0[%u], {%d}, i1[%u] : max(%d, %d) => ",
         (unsigned)OPU(0),
         (int)OPS(1),
         (unsigned)OPU(2),
@@ -1345,7 +1345,7 @@ IS(MIN_LLL) {
     int32 i1 = LOC(0).i;
     int32 i2 = LOC(1).i;
     gvmDebugOpcode(
-        "min.i (%d), (%d), (%d) : min(%d, %d) => ",
+        "min.i {%d}, {%d}, {%d} : min(%d, %d) => ",
         (int)OPS(0),
         (int)OPS(1),
         (int)OPS(2),
@@ -1363,7 +1363,7 @@ IS(MIN_ILL) {
     int32 i1 = IX0(0).i;
     int32 i2 = LOC(1).i;
     gvmDebugOpcode(
-        "min.i (i0+%u), (%d), (%d) : min(%d, %d) => ",
+        "min.i i0[%u], {%d}, {%d} : min(%d, %d) => ",
         (unsigned)OPU(0),
         (int)OPS(1),
         (int)OPS(2),
@@ -1381,7 +1381,7 @@ IS(MIN_LLI) {
     int32 i1 = LOC(0).i;
     int32 i2 = LOC(1).i;
     gvmDebugOpcode(
-        "min.i (%d), (%d), (i0+%u) : min(%d, %d) => ",
+        "min.i {%d}, {%d}, i0[%u] : min(%d, %d) => ",
         (int)OPS(0),
         (int)OPS(1),
         (unsigned)OPU(2),
@@ -1399,7 +1399,7 @@ IS(MIN_ILI) {
     int32 i1 = IX0(0).i;
     int32 i2 = LOC(1).i;
     gvmDebugOpcode(
-        "min.i (i0+%u), (%d), (i1+%u) : min(%d, %d) => ",
+        "min.i i0[%u], {%d}, i1[%u] : min(%d, %d) => ",
         (unsigned)OPU(0),
         (int)OPS(1),
         (unsigned)OPU(2),
