@@ -2,14 +2,14 @@
 // Local ~= Local
 BCC(F_AE_LL) {
     gvmDebugOpcode(
-        "bcc ae.f (%d), (%d), %d : %e ~= %e => ",
-        (int)OPS(1),
-        (int)OPS(2),
-        (int)JBRA(3),
-        LOC(1).f,
-        LOC(2).f
+        "bae.f " OPF_L ", " OPF_L ", %d : %e ~= %e => ",
+        (int)OP_LITERAL_S8(1),
+        (int)OP_LITERAL_S8(2),
+        (int)OP_JUMP_OFFSET(3),
+        OP_LOCAL(1).f,
+        OP_LOCAL(2).f
     );
-    sf = (LOC(1).f - LOC(2).f);
+    sf = (OP_LOCAL(1).f - OP_LOCAL(2).f);
     sf *= sf;
     if (sf < (FLT_EPSILON * FLT_EPSILON)) {
         BOC_TAKEN
@@ -20,14 +20,14 @@ BCC(F_AE_LL) {
 // Local ~= Indirect[0]
 BCC(F_AE_LI0) {
     gvmDebugOpcode(
-        "bcc ae.f (%d), (i0 + %u), %d : %e ~= %e => ",
-        (int)OPS(1),
-        (unsigned)OPU(2),
-        (int)JBRA(3),
-        LOC(1).f,
-        IX0(2).f
+        "bae.f " OPF_L ", " OPF_I0 ", %d : %e ~= %e => ",
+        (int)OP_LITERAL_S8(1),
+        (unsigned)OP_LITERAL_U8(2),
+        (int)OP_JUMP_OFFSET(3),
+        OP_LOCAL(1).f,
+        OP_INDIRECT_0(2).f
     );
-    sf = (LOC(1).f - IX0(2).f);
+    sf = (OP_LOCAL(1).f - OP_INDIRECT_0(2).f);
     sf *= sf;
     if (sf < (FLT_EPSILON * FLT_EPSILON)) {
         BOC_TAKEN
@@ -38,14 +38,14 @@ BCC(F_AE_LI0) {
 // Local ~= Indirect[1]
 BCC(F_AE_LI1) {
     gvmDebugOpcode(
-        "bcc ae.f (%d), (i1 + %u), %d : %e ~= %e => ",
-        (int)OPS(1),
-        (unsigned)OPU(2),
-        (int)JBRA(3),
-        LOC(1).f,
-        IX1(2).f
+        "bae.f " OPF_L ", " OPF_I1 ", %d : %e ~= %e => ",
+        (int)OP_LITERAL_S8(1),
+        (unsigned)OP_LITERAL_U8(2),
+        (int)OP_JUMP_OFFSET(3),
+        OP_LOCAL(1).f,
+        OP_INDIRECT_1(2).f
     );
-    sf = (LOC(1).f - IX1(2).f);
+    sf = (OP_LOCAL(1).f - OP_INDIRECT_1(2).f);
     sf *= sf;
     if (sf < (FLT_EPSILON * FLT_EPSILON)) {
         BOC_TAKEN
@@ -56,14 +56,14 @@ BCC(F_AE_LI1) {
 // Indirect[0] ~= Indirect[1]
 BCC(F_AE_II) {
     gvmDebugOpcode(
-        "bcc ae.f (i0 + %u), (i1 + %u), %d : %e ~= %e => ",
-        (unsigned)OPU(1),
-        (unsigned)OPU(2),
-        (int)JBRA(3),
-        IX0(1).f,
-        IX1(2).f
+        "bae.f " OPF_I0 ", " OPF_I1 ", %d : %e ~= %e => ",
+        (unsigned)OP_LITERAL_U8(1),
+        (unsigned)OP_LITERAL_U8(2),
+        (int)OP_JUMP_OFFSET(3),
+        OP_INDIRECT_0(1).f,
+        OP_INDIRECT_1(2).f
     );
-    sf = (IX0(1).f - IX1(2).f);
+    sf = (OP_INDIRECT_0(1).f - OP_INDIRECT_1(2).f);
     sf *= sf;
     if (sf < (FLT_EPSILON * FLT_EPSILON)) {
         BOC_TAKEN

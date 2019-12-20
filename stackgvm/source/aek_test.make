@@ -1,6 +1,6 @@
 # Common include for building the interpreter
 
-OBJ = obj/$(ARCH)/aektest.o obj/$(ARCH)/host_machine.o obj/$(ARCH)/gvm_core.o obj/$(ARCH)/gvm_run.o obj/$(ARCH)/gvm_profiling.o
+OBJ = obj/$(ARCH)/aektest.o obj/$(ARCH)/host_machine.o obj/$(ARCH)/gvm_core.o obj/$(ARCH)/gvm_run.o obj/$(ARCH)/gvm_address.o obj/$(ARCH)/gvm_profiling.o
 
 $(BIN): $(OBJ) Makefile_aek.$(MEXT)
 	$(CXX) $(CXXFLAGS) $(OBJ) -o $(BIN)
@@ -15,6 +15,9 @@ obj/$(ARCH)/gvm_core.o: gvm_core.cpp
 	$(CXX) $(CXXFLAGS) -o $@ -c $<
 
 obj/$(ARCH)/gvm_run.o: gvm_run.cpp
+	$(CXX) $(CXXFLAGS) -o $@ -c $<
+
+obj/$(ARCH)/gvm_address.o: gvm_address.cpp
 	$(CXX) $(CXXFLAGS) -o $@ -c $<
 
 obj/$(ARCH)/gvm_profiling.o: gvm_profiling.cpp

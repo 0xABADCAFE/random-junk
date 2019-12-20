@@ -137,6 +137,7 @@ namespace GVM {
             static Result exitFunction();
             static Result invokeHostFunction(const uint16 functionId);
             static Result run();
+            static int    evaluateExtendedAddress3(const uint8* pc, Scalar*& op1, Scalar*& op2, Scalar*& op3);
             static Result validateTables(const FuncInfo* func, const HostCall* host, Scalar** data);
             static void   dumpFrame();
             static void   dumpCallStack();

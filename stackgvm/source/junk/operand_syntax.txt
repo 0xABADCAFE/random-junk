@@ -1,0 +1,42 @@
+
+Operand Syntax
+    #<const int expression>
+        Immediate integer value or constant expression resulting in such. Expressions can contain any integer legal
+        operators and parenthesis.
+
+        #0, #-1, #1 + 1, #2 * (6 + 3), ...
+
+    {<const integer expression, range -128:127>}
+        Local variable at specified stack frame location.
+
+        {0}, {1 + 3}, {2 + 3 * (5 - 2)}, {-2}, ...
+
+
+    i0[<const integer expression, range 0:255>]
+        Indirect variable, pointed to by i0 plus literal offset
+
+        i0[0], i0[(10 + 2) * 3], ...
+
+
+    i1[<const integer expression, range 0:255>]
+        Indirect variable, pointed to by i1 plus literal offset
+
+        i1[0], i1[(10 + 2) * 3], ...
+
+
+    i0[{<const integer expression, range -128:127>}]
+        Indirect variable, pointed to by i0 plus integer offset in local variable at specified stack frame location
+
+        i0[{1}], i0[{(10 + 2) * 3}], i0[{-1 * 4}], ...
+
+
+    i1[{<const integer expression, range -128:127>}]
+        Indirect variable, pointed to by i1 plus integer offset in local variable at specified stack frame locatiom
+
+        i1[{2}], i1[{(10 + 2) * 3}], ...
+
+
+    {<const integer expression, range -128:127>}[<const integer expression, range 0:255>]
+        Indirect variable, pointed to by reference in local variable at specified stack frame location plus literal offset
+
+        {0}[4], {1 + 3}[5 * 6], {-2}[(1 + 3)/2], ...

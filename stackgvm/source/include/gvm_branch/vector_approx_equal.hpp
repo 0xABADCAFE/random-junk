@@ -1,13 +1,13 @@
 
 // Local == Local
 BCC(V_AE_LL) {
-    vs1 = VLOC(1);
-    vs2 = VLOC(2);
+    vs1 = OP_LOCAL_VEC_3F(1);
+    vs2 = OP_LOCAL_VEC_3F(2);
     gvmDebugOpcode(
-        "bcc ae.v (%d), (%d), %d : ",
-        (int)OPS(1),
-        (int)OPS(2),
-        (int)JBRA(3)
+        "bae.v " OPF_L ", " OPF_L ", %d : ",
+        (int)OP_LITERAL_S8(1),
+        (int)OP_LITERAL_S8(2),
+        (int)OP_JUMP_OFFSET(3)
     );
 
     SCALAR_F
@@ -22,13 +22,13 @@ BCC(V_AE_LL) {
 
 // Local == Indirect[0]
 BCC(V_AE_LI0) {
-    vs1 = VLOC(1);
-    vs2 = VIX0(2);
+    vs1 = OP_LOCAL_VEC_3F(1);
+    vs2 = OP_INDIRECT_0_VEC_3F(2);
     gvmDebugOpcode(
-        "bcc ae.v (%d), (i0 + %u), %d : ",
-        (int)OPS(1),
-        (unsigned)OPU(2),
-        (int)JBRA(3)
+        "bae.v " OPF_L ", " OPF_I0 ", %d : ",
+        (int)OP_LITERAL_S8(1),
+        (unsigned)OP_LITERAL_U8(2),
+        (int)OP_JUMP_OFFSET(3)
     );
     SCALAR_F
     t  = vs1[0] - vs2[0]; sf = t * t;
@@ -42,13 +42,13 @@ BCC(V_AE_LI0) {
 
 // Local == Indirect[1]
 BCC(V_AE_LI1) {
-    vs1 = VLOC(1);
-    vs2 = VIX1(2);
+    vs1 = OP_LOCAL_VEC_3F(1);
+    vs2 = OP_INDIRECT_1_VEC_3F(2);
     gvmDebugOpcode(
-        "bcc ae.v (%d), (i1 + %u), %d : ",
-        (int)OPS(1),
-        (unsigned)OPU(2),
-        (int)JBRA(3)
+        "bae.v " OPF_L ", " OPF_I1 ", %d : ",
+        (int)OP_LITERAL_S8(1),
+        (unsigned)OP_LITERAL_U8(2),
+        (int)OP_JUMP_OFFSET(3)
     );
     SCALAR_F
     t  = vs1[0] - vs2[0]; sf = t * t;
@@ -62,13 +62,13 @@ BCC(V_AE_LI1) {
 
 // Indirect[0] == Indirect[1]
 BCC(V_AE_II) {
-    vs1 = VIX0(1);
-    vs2 = VIX1(2);
+    vs1 = OP_INDIRECT_0_VEC_3F(1);
+    vs2 = OP_INDIRECT_1_VEC_3F(2);
     gvmDebugOpcode(
-        "bcc ae.v (i0 + %u), (i1 + %u), %d : ",
-        (unsigned)OPU(1),
-        (unsigned)OPU(2),
-        (int)JBRA(3)
+        "bae.v " OPF_I0 ", " OPF_I1 ", %d : ",
+        (unsigned)OP_LITERAL_U8(1),
+        (unsigned)OP_LITERAL_U8(2),
+        (int)OP_JUMP_OFFSET(3)
     );
     SCALAR_F
     t  = vs1[0] - vs2[0]; sf = t * t;
