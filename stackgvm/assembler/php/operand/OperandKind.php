@@ -72,8 +72,8 @@ interface OperandKind {
     ];
 
     const
-        MATCH_LOCAL    = '/^\s*\(.*?\)\s*$/',
-        MATCH_INDIR    = '/^\s*\(\s*i(\d)\s*([\+\-]{1}.*?)\)\s*$/',
+        MATCH_LOCAL    = '/^\s*\{(.*?)\}\s*$/',
+        MATCH_INDIR    = '/^\s*i(\d)\[(.*?)\]\s*$/',
         MATCH_IDX      = '/^\s*i(\d)\s*$/',
         MATCH_BASE_10  = '/^\s*#{1}(.*?)\s*$/',
         MATCH_LABEL    = '/^\s*\.([A-Za-z_]{1}[0-9A-Za-z_]{0,})\s*$/',
