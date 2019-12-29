@@ -8,7 +8,8 @@
     #define _GVM_CORE_HPP_
     #include "host_machine.hpp"
     #include "gvm_opcode.hpp"
-
+    #include "gvm_scalar.hpp"
+    
 namespace GVM {
 
     typedef enum {
@@ -48,7 +49,7 @@ namespace GVM {
         TAG_MASK_REFERENCE = 3 << 30
     } SymbolIDTypeTag;
 
-    #include "gvm_scalar.hpp"
+
 
     /**
      * FuncInfo
