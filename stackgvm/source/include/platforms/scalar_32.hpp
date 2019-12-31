@@ -3,6 +3,9 @@
     
 namespace GVM {
 
+    /**
+     * Scalar definition for pure 32-bit GVM on 32-bit hosts.
+     */
     union Scalar;
 
     typedef int32   ScalarI;
@@ -10,19 +13,7 @@ namespace GVM {
     typedef float32 ScalarF;
     typedef Scalar* ScalarA;
     
-    /**
-     * Scalar
-     *
-     * Basic machine datatype.
-     */
-    union Scalar {
-        ScalarI i;
-        ScalarU u;
-        ScalarF f;
-        ScalarA a;
-        Scalar(int i)   : i(i) {}
-        Scalar(float f) : f(f) {}
-    };
+    DECLARE_SCALAR
 };
 
 #endif

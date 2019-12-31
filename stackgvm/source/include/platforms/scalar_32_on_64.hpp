@@ -3,12 +3,22 @@
     
 namespace GVM {
 
+    /**
+     * Scalar definition for 32-bit GVM on 64-bit host. This requires that the ScalarA type is no longer a pointer but a 32-bit proxy with pointer
+     * access semantics.
+     */
     union Scalar;
 
     typedef int32   ScalarI;
     typedef uint32  ScalarU;
     typedef float32 ScalarF;
     
+    /**
+     * ScalarA - Represents the address of a Scalar instance within some 32-bit confined block within the 64-bit host memory space.
+     * 
+     * Cannot have a constructor as this is used within the Scalar union definition. A straight derivative class ScalarAddress is defined for the
+     * express purpose of instantiation.
+     */
     class ScalarA {
         friend class ScalarMemory;
         
@@ -112,19 +122,28 @@ namespace GVM {
             }
     };
     
+    DECLARE_SCALAR
+
     /**
-     * Scalar
-     *
-     * Basic machine datatype.
+     * ScalarA reference operator implementation (requires Scalar is fully defined)
      */
-    union Scalar {
-        ScalarI i;
-        ScalarU u;
-        ScalarF f;
-        ScalarA a;
-        Scalar(int i)   : i(i) {}
-        Scalar(float f) : f(f) {}
-    };
+    inline Scalar* ScalarA::operator->() {
+        return &base[offset];
+    }
+
+    /**
+     * ScalarA dereference operator implementation (requires Scalar is fully defined)
+     */
+    inline Scalar& ScalarA::operator*() {
+        return base[offset];
+    }
+
+    /**
+     * ScalarA dereference operator implementation (requires Scalar is fully defined)
+     */
+    Scalar& ScalarA::operator[](const int p) {
+        return base[offset + p];
+    }
 };
 
 #endif
