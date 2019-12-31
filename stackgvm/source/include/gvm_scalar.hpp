@@ -1,47 +1,33 @@
 #ifndef _GVM_SCALAR_HPP
     #define _GVM_SCALAR_HPP
-
+    
 namespace GVM {
-
-    union Scalar;
-
+    
     /**
      * Scalar
      *
-     * Basic machine datatype.
+     * Basic GVM machine word type. Union of signed, unsigned, address and floating point value. This is a forwards reference
+     * to a varying implementation depending on the host platform, in particular whether it is 32 or 64-bit. Member fields are:
+     *
+     * .i : Signed integer
+     * .u : Unsigned integer
+     * .f : Floating point
+     * .a : Address reference (location of another Scalar instance) 
+     * 
      */
-
+    union Scalar;
+};
     #ifdef __LP64__
         #ifdef _GVM_OPT_64BIT_PURE_
-
-            #define SCALAR_I int64
-            #define SCALAR_U uint64
-            #define SCALAR_F float64
-    union Scalar {
-        int64   i;
-        uint64  u;
-        float64 f;
-        Scalar* a;
-        Scalar(int i)   : i(i) {}
-        Scalar(float f) : f(f) {}
-    };
+            // Pure 64-bit native implementation
+            #include "platforms/scalar_64.hpp";
         #else
-            #error "No 32bit on 64-bit target definition yet"
+            // 32-bit GVM interpreter running on a 64-bit host using a "short pointer", single large memory allocation model
+            #include "platforms/scalar_32_on_64.hpp";
         #endif
     #else
-        #define SCALAR_I int32
-        #define SCALAR_U uint32
-        #define SCALAR_F float32
-
-    union Scalar {
-        int32   i;
-        uint32  u;
-        float32 f;
-        Scalar* a;
-        Scalar(int i)   : i(i) {}
-        Scalar(float f) : f(f) {}
-    };
+        // 
+        #include "platforms/scalar_32.hpp";
     #endif
-};
 
 #endif

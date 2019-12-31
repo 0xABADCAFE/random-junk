@@ -354,9 +354,9 @@ IS(VADD_X) {
     Scalar *op1, *op2, *op3;
     gvmDebugOpcode("add.v ");
     if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
-        vs1 = (float*)op1;
-        vs2 = (float*)op2;
-        vd  = (float*)op3;
+        vs1 = (SCALAR_F*)op1;
+        vs2 = (SCALAR_F*)op2;
+        vd  = (SCALAR_F*)op3;
         gvmDebugOpcode(
             "{ %g, %g, %g } + { %g, %g, %g } => ",
             vs1[0], vs1[1], vs1[2],
@@ -500,9 +500,9 @@ IS(VSUB_X) {
     Scalar *op1, *op2, *op3;
     gvmDebugOpcode("sub.v ");
     if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
-        vs1 = (float*)op1;
-        vs2 = (float*)op2;
-        vd  = (float*)op3;
+        vs1 = (SCALAR_F*)op1;
+        vs2 = (SCALAR_F*)op2;
+        vd  = (SCALAR_F*)op3;
         gvmDebugOpcode(
             "{ %g, %g, %g } - { %g, %g, %g } => ",
             vs1[0], vs1[1], vs1[2],
@@ -607,8 +607,8 @@ IS(VDOT_X) {
     Scalar *op1, *op2, *op3;
     gvmDebugOpcode("vdot.f ");
     if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
-        vs1 = (float*)op1;
-        vs2 = (float*)op2;
+        vs1 = (SCALAR_F*)op1;
+        vs2 = (SCALAR_F*)op2;
         op3->f = vs1[0] * vs2[0] + vs1[1] * vs2[1] + vs1[2] * vs2[2];
         gvmDebugOpcode(
             "{ %g, %g, %g } . { %g, %g, %g } => %g",
@@ -869,9 +869,9 @@ IS(VFMUL_X) {
     Scalar *op1, *op2, *op3;
     gvmDebugOpcode("mulf.v ");
     if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
-        vs1 = (float*)op1;
+        vs1 = (SCALAR_F*)op1;
         sf  = op2->f;
-        vd  = (float*)op3;
+        vd  = (SCALAR_F*)op3;
         gvmDebugOpcode(
             "{ %g, %g, %g } * %g => ",
             vs1[0], vs1[1], vs1[2],
