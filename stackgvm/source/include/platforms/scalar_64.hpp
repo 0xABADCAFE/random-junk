@@ -4,23 +4,22 @@
 namespace GVM {
 
     union Scalar;
-        
-    typedef Scalar* ScalarRef;
-   
-    #define SCALAR_I int64
-    #define SCALAR_U uint64
-    #define SCALAR_F float64
-    
+
+    typedef int64   ScalarI;
+    typedef uint64  ScalarU;
+    typedef float64 ScalarF;
+    typedef Scalar* ScalarA;
+       
     /**
      * Scalar
      *
      * Basic machine datatype.
      */
     union Scalar {
-        int64     i;
-        uint64    u;
-        float64   f;
-        ScalarRef a;
+        ScalarI i;
+        ScalarU u;
+        ScalarF f;
+        ScalarA a;
         Scalar(int i)   : i(i) {}
         Scalar(float f) : f(f) {}
     };

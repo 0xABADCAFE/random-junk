@@ -10,7 +10,7 @@ BCC(V_AE_LL) {
         (int)OP_JUMP_OFFSET(3)
     );
 
-    SCALAR_F
+    ScalarF
     t  = vs1[0] - vs2[0]; sf = t * t;
     t  = vs1[1] - vs2[1]; sf += t * t;
     t  = vs1[2] - vs2[2]; sf += t * t;
@@ -30,7 +30,7 @@ BCC(V_AE_LI0) {
         (unsigned)OP_LITERAL_U8(2),
         (int)OP_JUMP_OFFSET(3)
     );
-    SCALAR_F
+    ScalarF
     t  = vs1[0] - vs2[0]; sf = t * t;
     t  = vs1[1] - vs2[1]; sf += t * t;
     t  = vs1[2] - vs2[2]; sf += t * t;
@@ -50,7 +50,7 @@ BCC(V_AE_LI1) {
         (unsigned)OP_LITERAL_U8(2),
         (int)OP_JUMP_OFFSET(3)
     );
-    SCALAR_F
+    ScalarF
     t  = vs1[0] - vs2[0]; sf = t * t;
     t  = vs1[1] - vs2[1]; sf += t * t;
     t  = vs1[2] - vs2[2]; sf += t * t;
@@ -70,7 +70,7 @@ BCC(V_AE_II) {
         (unsigned)OP_LITERAL_U8(2),
         (int)OP_JUMP_OFFSET(3)
     );
-    SCALAR_F
+    ScalarF
     t  = vs1[0] - vs2[0]; sf = t * t;
     t  = vs1[1] - vs2[1]; sf += t * t;
     t  = vs1[2] - vs2[2]; sf += t * t;

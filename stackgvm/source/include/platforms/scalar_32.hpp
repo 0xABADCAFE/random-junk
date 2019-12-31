@@ -5,11 +5,10 @@ namespace GVM {
 
     union Scalar;
 
-    typedef Scalar* ScalarRef;
-    
-    #define SCALAR_I int32
-    #define SCALAR_U uint32
-    #define SCALAR_F float32
+    typedef int32   ScalarI;
+    typedef uint32  ScalarU;
+    typedef float32 ScalarF;
+    typedef Scalar* ScalarA;
     
     /**
      * Scalar
@@ -17,10 +16,10 @@ namespace GVM {
      * Basic machine datatype.
      */
     union Scalar {
-        int32     i;
-        uint32    u;
-        float32   f;
-        ScalarRef a;
+        ScalarI i;
+        ScalarU u;
+        ScalarF f;
+        ScalarA a;
         Scalar(int i)   : i(i) {}
         Scalar(float f) : f(f) {}
     };

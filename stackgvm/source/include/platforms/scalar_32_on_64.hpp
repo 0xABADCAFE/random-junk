@@ -1,15 +1,15 @@
 #ifndef _GVM_SCALAR_32_ON_64_HPP
-    #define _GVM_SCALAR_32ON_64_HPP
+    #define _GVM_SCALAR_32_ON_64_HPP
     
 namespace GVM {
 
     union Scalar;
+
+    typedef int32   ScalarI;
+    typedef uint32  ScalarU;
+    typedef float32 ScalarF;
     
-    #define SCALAR_I int32
-    #define SCALAR_U uint32
-    #define SCALAR_F float32
- 
-    class ScalarRef {
+    class ScalarA {
         friend class ScalarMemory;
         
         private:
@@ -50,9 +50,9 @@ namespace GVM {
             /**
              * Increment Prefix
              * 
-             * @return ScalarRef& fluent
+             * @return ScalarA& fluent
              */
-            ScalarRef& operator++() {
+            ScalarA& operator++() {
                 ++offset;
                 return *this;
             };
@@ -60,9 +60,9 @@ namespace GVM {
             /**
              * Increment Postfix
              *          
-             * @return ScalarRef& fluent
+             * @return ScalarA& fluent
              */
-            ScalarRef& operator++(int) {
+            ScalarA& operator++(int) {
                 ++offset;
                 return *this;
             };
@@ -70,9 +70,9 @@ namespace GVM {
             /**
              * Decrement Prefix
              * 
-             * @return ScalarRef& fluent
+             * @return ScalarA& fluent
              */
-            ScalarRef& operator--() {
+            ScalarA& operator--() {
                 --offset;
                 return *this;
             };
@@ -80,9 +80,9 @@ namespace GVM {
             /**
              * Decrement Postfix
              *           
-             * @return ScalarRef& fluent
+             * @return ScalarA& fluent
              */
-            ScalarRef& operator--(int) {
+            ScalarA& operator--(int) {
                 --offset;
                 return *this;
             };
@@ -91,9 +91,9 @@ namespace GVM {
              * Literal assignment operator
              * 
              * @param uint32 x
-             * @return ScalarRef& fluent
+             * @return ScalarA& fluent
              */
-            ScalarRef& operator=(uint32 x) {
+            ScalarA& operator=(uint32 x) {
                 offset = x;
                 return *this;
             };
@@ -101,13 +101,13 @@ namespace GVM {
     };
 
     /**
-     * ScalarPtr
+     * ScalarAddress
      * 
-     * Constructable extension of ScalarRef for external use
+     * Constructable extension of ScalarA for external use
      */
-    class ScalarPtr : public ScalarRef {
+    class ScalarAddress : public ScalarA {
         public:
-            ScalarPtr(uint32 address) {
+            ScalarAddress(uint32 address) {
                 offset = address;
             }
     };
@@ -118,10 +118,10 @@ namespace GVM {
      * Basic machine datatype.
      */
     union Scalar {
-        int32     i;
-        uint32    u;
-        float32   f;
-        ScalarRef a;
+        ScalarI i;
+        ScalarU u;
+        ScalarF f;
+        ScalarA a;
         Scalar(int i)   : i(i) {}
         Scalar(float f) : f(f) {}
     };
