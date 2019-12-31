@@ -1,8 +1,8 @@
 #ifndef _GVM_SCALAR_HPP
     #define _GVM_SCALAR_HPP
-    
+
 namespace GVM {
-    
+
     /**
      * Scalar
      *
@@ -12,8 +12,8 @@ namespace GVM {
      * ScalarI .i : Signed integer
      * ScalarU .u : Unsigned integer
      * ScalarF .f : Floating point
-     * ScalarA .a : Address reference (dereferencable location of another Scalar instance) 
-     * 
+     * ScalarA .a : Address reference (dereferencable location of another Scalar instance)
+     *
      */
     union Scalar;
 };
@@ -33,14 +33,29 @@ namespace GVM {
     #ifdef __LP64__
         #ifdef _GVM_OPT_64BIT_PURE_
             // Pure 64-bit native implementation
-            #include "platforms/scalar_64.hpp";
+            #include "platforms/scalar_64.hpp"
         #else
             // 32-bit GVM interpreter running on a 64-bit host using a "short pointer", single large memory allocation model
-            #include "platforms/scalar_32_on_64.hpp";
+            #include "platforms/scalar_32_on_64.hpp"
         #endif
     #else
-        // 
-        #include "platforms/scalar_32.hpp";
+        //
+        #include "platforms/scalar_32.hpp"
     #endif
+
+namespace GVM {
+
+    /**
+     * ScalarAllocator
+     *
+     * (Interface for) Memory allocator for Scalar.
+     */
+    class ScalarAllocator {
+        public:
+            virtual ScalarA alloc(uint32 size)  = 0;
+            virtual void free(ScalarA address)  = 0;
+            virtual ~ScalarAllocator()          = 0;
+    };
+};
 
 #endif

@@ -9,7 +9,7 @@
     #include "host_machine.hpp"
     #include "gvm_opcode.hpp"
     #include "gvm_scalar.hpp"
-    
+
 namespace GVM {
 
     typedef enum {
@@ -72,6 +72,11 @@ namespace GVM {
         };
     };
 
+    /**
+     * HostCall
+     *
+     * Callable handle for host native functions
+     */
     typedef Result (*HostCall)(Scalar* stackFrame);
 
     /**
@@ -147,3 +152,4 @@ namespace GVM {
 };
 
 #endif
+
