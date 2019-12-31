@@ -708,7 +708,7 @@ IS(MOD_LLL) {
     // Local % Local -> Local
     int32 denominator = OP_LOCAL(1).i;
     gvmDebugOpcode(
-        "mod.i " OPF_L ", " OPF_L ", " OPF_L " : %d / %d => ",
+        "mod.i " OPF_L ", " OPF_L ", " OPF_L " : %d %% %d => ",
         (int)OP_LITERAL_S8(0),
         (int)OP_LITERAL_S8(1),
         (int)OP_LITERAL_S8(2),
@@ -728,7 +728,7 @@ IS(MOD_ILL) {
     // Indirect % Local -> Local
     int32 denominator = OP_LOCAL(1).i;
     gvmDebugOpcode(
-        "mod.i " OPF_I0 ", " OPF_L ", " OPF_L " : %d / %d => ",
+        "mod.i " OPF_I0 ", " OPF_L ", " OPF_L " : %d %% %d => ",
         (unsigned)OP_LITERAL_U8(0),
         (int)OP_LITERAL_S8(1),
         (int)OP_LITERAL_S8(2),
@@ -748,7 +748,7 @@ IS(MOD_LLI) {
     // Local % Local -> Indirect
     int32 denominator = OP_LOCAL(1).i;
     gvmDebugOpcode(
-        "mod.i " OPF_L ", " OPF_L ", " OPF_I0 " : %d / %d => ",
+        "mod.i " OPF_L ", " OPF_L ", " OPF_I0 " : %d %% %d => ",
         (int)OP_LITERAL_S8(0),
         (int)OP_LITERAL_S8(1),
         (unsigned)OP_LITERAL_U8(2),
@@ -768,7 +768,7 @@ IS(MOD_ILI) {
     // Indirect % Local -> Indirect
     int32 denominator = OP_LOCAL(1).i;
     gvmDebugOpcode(
-        "mod.i " OPF_I0 ", " OPF_L ", " OPF_I1 " : %d / %d => ",
+        "mod.i " OPF_I0 ", " OPF_L ", " OPF_I1 " : %d %% %d => ",
         (unsigned)OP_LITERAL_U8(0),
         (int)OP_LITERAL_S8(1),
         (unsigned)OP_LITERAL_U8(2),
@@ -788,7 +788,7 @@ IS(MOD_LIL) {
     // Local % Indirect -> Local
     int32 denominator = OP_INDIRECT_0(1).i;
     gvmDebugOpcode(
-        "mod.i " OPF_L ", " OPF_I0 ", " OPF_L " : %d / %d => ",
+        "mod.i " OPF_L ", " OPF_I0 ", " OPF_L " : %d %% %d => ",
         (int)OP_LITERAL_S8(0),
         (unsigned)OP_LITERAL_U8(1),
         (int)OP_LITERAL_S8(2),
@@ -808,7 +808,7 @@ IS(MOD_IIL) {
     // Indirect % Indirect -> Local
     int32 denominator = OP_INDIRECT_1(1).i;
     gvmDebugOpcode(
-        "mod.i " OPF_I0 ", " OPF_I1 ", " OPF_L " : %d / %d => ",
+        "mod.i " OPF_I0 ", " OPF_I1 ", " OPF_L " : %d %% %d => ",
         (unsigned)OP_LITERAL_U8(0),
         (unsigned)OP_LITERAL_U8(1),
         (int)OP_LITERAL_S8(2),
@@ -828,7 +828,7 @@ IS(MOD_LII) {
     // Local % Indirect -> Indirect
     int32 denominator = OP_INDIRECT_0(1).i;
     gvmDebugOpcode(
-        "mod.i " OPF_L ", " OPF_I0 ", " OPF_I1 " : %d / %d => ",
+        "mod.i " OPF_L ", " OPF_I0 ", " OPF_I1 " : %d %% %d => ",
         (int)OP_LITERAL_S8(0),
         (unsigned)OP_LITERAL_U8(1),
         (unsigned)OP_LITERAL_U8(2),
@@ -849,7 +849,7 @@ IS(MOD_X) {
     gvmDebugOpcode("mod.i ");
     if (int step = evaluateExtendedAddress3(PRGC, op1, op2, op3)) {
         gvmDebugOpcode(
-            " : %d % %d => ",
+            " : %d %% %d => ",
             (int)op1->i,
             (int)op2->i
         );

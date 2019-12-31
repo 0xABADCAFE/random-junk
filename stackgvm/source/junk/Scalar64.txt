@@ -1,0 +1,77 @@
+sizeof(Scalar)      : 4
+sizeof(ScalarRef32) : 4
+sizeof(ScalarPtr)   : 4
+Allocated array of 8 Scalar at host address 0x174dc30
+Test 1: 32-bit reference assignment via ->
+   0: 0x00000001
+   1: 0x00000000
+   2: 0x00000000
+   3: 0x00000000
+   4: 0x00000000
+   5: 0x00000000
+   6: 0x00000000
+   7: 0x00000000
+Test 2: 32-bit integer assignment via indirect reference
+   0: 0x00000001
+   1: 0xDEADBEEF
+   2: 0x00000000
+   3: 0x00000000
+   4: 0x00000000
+   5: 0x00000000
+   6: 0x00000000
+   7: 0x00000000
+Test 3: 32-bit integer assignment via indirect reference with pre increment
+   0: 0x00000002
+   1: 0xDEADBEEF
+   2: 0x01234567
+   3: 0x00000000
+   4: 0x00000000
+   5: 0x00000000
+   6: 0x00000000
+   7: 0x00000000
+Test 4: 32-bit integer assignment via indirect reference with post increment
+   0: 0x00000003
+   1: 0xDEADBEEF
+   2: 0x01234567
+   3: 0x89ABCDEF
+   4: 0x00000000
+   5: 0x00000000
+   6: 0x00000000
+   7: 0x00000000
+Test 5: 32-bit integer assignment via indirect reference with * dereference step
+   0: 0x00000004
+   1: 0xDEADBEEF
+   2: 0x01234567
+   3: 0x89ABCDEF
+   4: 0x45454545
+   5: 0x00000000
+   6: 0x00000000
+   7: 0x00000000
+Test 6: 32-bit integer assignment via [] subscripting
+   0: 0x00000004
+   1: 0xDEADBEEF
+   2: 0x01234567
+   3: 0x89ABCDEF
+   4: 0x45454545
+   5: 0xABADCAFE
+   6: 0x00000000
+   7: 0x00000000
+Test 7: 32-bit integer assignment via indirect reference with pre decrement
+   0: 0x00000004
+   1: 0xDEADBEEF
+   2: 0x01234567
+   3: 0x89ABCDEF
+   4: 0x45454545
+   5: 0xABADCAFE
+   6: 0x00000000
+   7: 0x10101010
+Test 7: 32-bit integer assignment via indirect reference with post decrement
+   0: 0x00000004
+   1: 0xDEADBEEF
+   2: 0x01234567
+   3: 0x89ABCDEF
+   4: 0x45454545
+   5: 0xABADCAFE
+   6: 0x01010101
+   7: 0x10101010
+Released scalar array

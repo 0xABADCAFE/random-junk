@@ -68,9 +68,9 @@ IS(BOC) {
         #include "gvm_branch/vector_not_equal.hpp"
     }
 
+    #pragma GCC diagnostic ignored "-Wunused-label"
     boc_branch_taken:
         HANDLE_BOC_TAKEN;
     boc_branch_skipped:
         HANDLE_BOC_SKIPPED;
-
 }

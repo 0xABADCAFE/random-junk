@@ -70,11 +70,11 @@ using namespace GVM;
 // Local Operand, dereferences a Scalar on the stack frame by the signed 8-bit operand.
 // Parameter is the operand byte number.
 
-// Vector local operand, returns a SCALAR_F pointer to the zeroth element of the vector
-#define OP_LOCAL_VEC_3F(operand)  ( (SCALAR_F*)&OP_LOCAL(operand) )
+// Vector local operand, returns a ScalarF pointer to the zeroth element of the vector
+#define OP_LOCAL_VEC_3F(operand)  ( (ScalarF*)&OP_LOCAL(operand) )
 
 // Vector expressed as triplet of unsigned words - for data transfer operations
-#define OP_LOCAL_VEC_3(operand)  ( (SCALAR_U*)&OP_LOCAL(operand) )
+#define OP_LOCAL_VEC_3(operand)  ( (ScalarU*)&OP_LOCAL(operand) )
 
 // Indirect Operand, dereferences one of the index registers by the unsigned 8-bit operand.
 
@@ -84,12 +84,12 @@ using namespace GVM;
 
 
 // Vector Indirect Operand,
-#define OP_INDIRECT_0_VEC_3F(operand)    ((SCALAR_F*)&OP_INDIRECT_0(operand))
-#define OP_INDIRECT_1_VEC_3F(operand)    ((SCALAR_F*)&OP_INDIRECT_1(operand))
+#define OP_INDIRECT_0_VEC_3F(operand)    ((ScalarF*)&OP_INDIRECT_0(operand))
+#define OP_INDIRECT_1_VEC_3F(operand)    ((ScalarF*)&OP_INDIRECT_1(operand))
 
 // Vector expressed as triplet of unsigned words - for data transfoer operations
-#define OP_INDIRECT_0_VEC_3(operand)    ((SCALAR_U*)&OP_INDIRECT_0(operand))
-#define OP_INDIRECT_1_VEC_3(operand)    ((SCALAR_U*)&OP_INDIRECT_1(operand))
+#define OP_INDIRECT_0_VEC_3(operand)    ((ScalarU*)&OP_INDIRECT_0(operand))
+#define OP_INDIRECT_1_VEC_3(operand)    ((ScalarU*)&OP_INDIRECT_1(operand))
 
 // Jump displaceents
 #define OP_JUMP_S16(operand)  (int16)(((uint16)PRGC[(operand) + 1] << 8) | PRGC[(operand) + 2])
@@ -122,13 +122,13 @@ using namespace GVM;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-const SCALAR_F invRMax = 1.0f / (SCALAR_F)RAND_MAX;
+const ScalarF invRMax = 1.0f / (ScalarF)RAND_MAX;
 
 Result Interpreter::run() {
     DECLARE_PTRS;
 
-    SCALAR_F *vs1, *vs2, *vd, sf;
-    SCALAR_U *us, *ud, tag;
+    ScalarF *vs1, *vs2, *vd, sf;
+    ScalarU *us, *ud, tag;
     Result  result;
 
     UPDATE_PTRS;

@@ -101,7 +101,7 @@ IS(RET) {
     // Return from the current function
     result = exitFunction();
     if (result != SUCCESS) {
-        std::fprintf(stderr, "\nExecuted: %llu instructions total.\n", numExecuted);
+        std::fprintf(stderr, "\nExecuted: %" FU64 " instructions total.\n", numExecuted);
         DUMP_OPCODE_COUNTS;
         EXIT(result);
     }

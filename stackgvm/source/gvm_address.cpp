@@ -41,7 +41,6 @@ using namespace GVM;
 // Get the address of the variable pointed to by reference in Local Variable + unsigned 8-bit constant offset
 #define R(p)   &(frameStack[(int8)pc[(p) + OSIZE]].a[pc[(p) + OSIZE + LSIZE]])
 
-
 #ifdef _GVM_DEBUG_OPCODES_
     #define gvmDebugAddress(...) std::fprintf(stderr, __VA_ARGS__)
 #else
@@ -56,6 +55,7 @@ using namespace GVM;
 int Interpreter::evaluateExtendedAddress3(const uint8* pc, Scalar*& op1, Scalar*& op2, Scalar*& op3) {
 
     FETCHA {
+        #pragma GCC diagnostic ignored "-Wformat-extra-args"
         #include "include/gvm_address_modes.hpp"
 
         default:
